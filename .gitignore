@@ -1,0 +1,6 @@
+node_modules
+dist
+.DB_store
+.vscode
+.idea
+.wepycache

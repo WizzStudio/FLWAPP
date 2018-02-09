@@ -1,0 +1,49 @@
+<style lang="scss" type="text/scss">
+  .container {
+    margin-top: 200 rpx;
+    display: flex;
+    justify-content: center;
+    .icon {
+      width: 100px;
+      height: 100px;
+    }
+  }
+
+  .title, .intro {
+    display: block;
+    text-align: center;
+  }
+
+  .intro {
+    font-size: 14px;
+    color: #b3b3b3;
+  }
+
+
+</style>
+
+<template>
+  <view class="container">
+    <image src="{{logoURL}}" class="icon"></image>
+  </view>
+  <p class="title">Red Flower Project</p>
+  <p class="intro">Connecting Mentor & Elite With Lightweight Platform.</p>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTitleText: '小红花'
+    }
+
+    onLoad () {
+      console.log('onLoad')
+    }
+
+    data = {
+      logoURL: '../static/images/logo.png'
+    }
+  }
+</script>
