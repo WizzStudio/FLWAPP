@@ -27,6 +27,7 @@
     "eslint-plugin-html": "^2.0.1",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^2.0.1",
+    "mockjs": "^1.0.1-beta3",
     "wepy-compiler-babel": "^1.5.1",
     "wepy-compiler-sass": "^1.3.8",
     "wepy-eslint": "^1.5.3"

@@ -18,7 +18,7 @@ export default class extends wepy.app {
   }
 
   onLaunch() {
-    console.log('on launch')
+//    console.log('on launch')
   }
 }
 </script>
