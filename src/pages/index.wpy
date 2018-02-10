@@ -40,7 +40,9 @@
 		}
 
 		onLoad () {
-			test()
+			test().catch((err) => {
+				console.log(err.errMsg)
+			})
 //			console.log('onLoad')
 		}
 

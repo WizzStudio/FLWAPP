@@ -11,6 +11,7 @@ function argumentsErr () {
 function methodErr () {
 	throw new Error('[http method error]: check METHOD params in ajax')
 }
+
 /**
  * 将map对象转换为URL参数
  * @param dataObject
@@ -38,32 +39,35 @@ export default (rurl = argumentsErr(), method = argumentsErr(), data = null, hea
 		}
 		if (_method === 'GET') {
 			if (data) {
-				console.log('get')
 				_url += createURLParamsByObject(data)
 			}
-			wx.request({
-				url: _url,
-				method: _method,
-				header: headers,
-				success: function (res) {
-					return Promise.resolve(res)
-				},
-				fail: function (err) {
-					return Promise.reject(err)
-				}
+			return new Promise((resolve, reject) => {
+				wx.request({
+					url: _url,
+					method: _method,
+					header: headers,
+					success: function (res) {
+						resolve(res)
+					},
+					fail: function (err) {
+						reject(err)
+					}
+				})
 			})
 		} else {
-			wx.request({
-				url: _url,
-				method: _method,
-				header: headers,
-				data: data,
-				success: function (res) {
-					return Promise.resolve(res)
-				},
-				fail: function (err) {
-					return Promise.reject(err)
-				}
+			return new Promise((resolve, reject) => {
+				wx.request({
+					url: _url,
+					method: _method,
+					header: headers,
+					data: data,
+					success: function (res) {
+						resolve(res)
+					},
+					fail: function (err) {
+						reject(err)
+					}
+				})
 			})
 		}
 	} else {
