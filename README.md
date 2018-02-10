@@ -4,7 +4,7 @@
 ![](https://img.shields.io/badge/wepy-framework-brightgreen.svg)
 ![](https://img.shields.io/badge/CTG-created-brightgreen.svg)
 
-![]()
+![](board.png)
 
 > Connecting Mentor & Elite With Lightweight Platform.
 
@@ -33,13 +33,13 @@
 ### 克隆仓库
 
 ```
-$ git clone
+$ git clone https://github.com/TGclub/FLWAPP.git
 ```
 
 ### 进入文件目录
 
 ```
-$ cd
+$ cd FLWAPP
 ```
 
 ### 下载依赖

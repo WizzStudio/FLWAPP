@@ -1,5 +1,9 @@
 node_modules
-dist
+dist/npm
+dist/pages
+dist/*.js
+dist/*.json
+dist/*.wxss
 .DB_store
 .vscode
 .idea
