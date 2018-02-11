@@ -4,6 +4,7 @@ dist/pages
 dist/*.js
 dist/*.json
 dist/*.wxss
+test/TestReport
 .DB_store
 .vscode
 .idea
