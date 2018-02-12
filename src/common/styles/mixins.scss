@@ -1,0 +1,82 @@
+// 水平居中盒子
+@mixin horMidBox {
+	display: flex;
+	flex-flow: nowrap column;
+	justify-content: center;
+}
+
+// 垂直居中盒子
+@mixin verMidBox {
+	display: flex;
+	flex-flow: nowrap column;
+	align-items: center;
+}
+
+// 水平垂直居中盒子
+@mixin allMidBox {
+	display: flex;
+	flex-flow: nowrap column;
+	justify-content: center;
+	align-items: center;
+}
+
+// 背景图片地址和大小 覆盖
+@mixin bgCover($url) {
+	background-image: url($url);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+
+// 设置盒子的圆角
+@mixin borderRadius($radius) {
+	-webkit-border-radius: $radius;
+	-moz-border-radius: $radius;
+	-ms-border-radius: $radius;
+	-o-border-radius: $radius;
+	border-radius: $radius;
+}
+
+// 宽高
+@mixin wh($width, $height) {
+	width: $width;
+	height: $height;
+}
+
+@mixin mgtb($top,$bot){
+	margin-top: $top;
+	margin-bottom: $bot;
+}
+
+@mixin pdtb($top,$bot){
+	padding-top: $top;
+	padding-bottom: $top;
+}
+
+@mixin underDashBorder(){
+	border: dashed $border;
+	border-width:0 0 1px 0 ;
+}
+
+/*横向盒子*/
+@mixin rowBox(){
+	display: flex;
+	flex-flow: row nowrap;
+}
+
+@mixin rowMidBox(){
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+}
+
+
+// 字体大小，颜色
+@mixin fontSizeColor($size, $color) {
+	font-size: $size;
+	color: $color;
+}
+
+// 全边框
+@mixin fullBorder($px,$color) {
+	border: $px solid $color;
+}
