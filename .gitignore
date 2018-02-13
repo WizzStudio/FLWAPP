@@ -1,9 +1,10 @@
 node_modules
 dist/npm
 dist/pages
-dist/*.js
-dist/*.json
-dist/*.wxss
+dist/**/*.js
+dist/**/*.json
+dist/**/*.wxss
+dist/**/*.wxml
 test/TestReport
 .DB_store
 .vscode

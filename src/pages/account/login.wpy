@@ -1,0 +1,40 @@
+<style lang="scss" type="text/scss">
+
+</style>
+
+<template>
+	<view>
+		<verifyBtn></verifyBtn>
+	</view>
+	<view>
+		<nextBtn></nextBtn>
+	</view>
+	<view>
+		<finishBtn></finishBtn>
+	</view>
+</template>
+
+<script>
+	import wepy from 'wepy'
+	import BasicButton from '../../components/Buttons/BasicButton'
+
+	export default class Login extends wepy.page {
+		config = {}
+		components = {
+			verifyBtn: BasicButton, // 验证码按钮
+			nextBtn: BasicButton, // 下一步按钮
+			finishBtn: BasicButton // 完成按钮
+		}
+		data = {}
+		computed = {}
+
+		onLoad () {}
+
+		onShow () {}
+
+		customFunction () {}
+
+		methods = {}
+		events = {}
+	}
+</script>

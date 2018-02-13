@@ -15,7 +15,7 @@
 	}
 
 	.intro {
-		font-size: 36rpx;
+		font-size: 36 rpx;
 		color: #b3b3b3;
 	}
 
@@ -23,6 +23,7 @@
 </style>
 
 <template>
+	<child></child>
 	<view class="container">
 		<image src="{{logoURL}}" class="icon"></image>
 	</view>
@@ -39,12 +40,21 @@
 			navigationBarTitleText: '小红花'
 		}
 
+		components = {}
+
 		onLoad () {
 			test().catch((err) => {
 				console.log(err.errMsg)
 			})
 //			console.log('onLoad')
+
 			// TODO：常用工具函数封装+任务分工和架构图
+		}
+
+		onShow () {
+			wx.navigateTo({
+				url: 'account/login'
+			})
 		}
 
 		data = {

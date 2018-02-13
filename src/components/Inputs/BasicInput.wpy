@@ -9,16 +9,10 @@
 <script>
   import wepy from 'wepy'
 
-  export default class ClassName extends wepy.page {
-    config = {}
+  export default class ClassName extends wepy.component {
     components = {}
     data = {}
     computed = {}
-
-    onLoad () {}
-
-    onShow () {}
-
     customFunction () {}
 
     methods = {}

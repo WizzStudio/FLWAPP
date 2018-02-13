@@ -1,0 +1,23 @@
+<style lang="scss" type="text/scss">
+
+</style>
+
+<template>
+	<div>
+	<p>this is a button</p>
+	</div>
+</template>
+
+<script>
+	import wepy from 'wepy'
+
+	export default class BasicButton extends wepy.component {
+		components = {}
+		data = {}
+		computed = {}
+		customFunction () {}
+
+		methods = {}
+		events = {}
+	}
+</script>
