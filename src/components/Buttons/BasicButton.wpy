@@ -1,10 +1,59 @@
 <style lang="scss" type="text/scss">
+	@import "../../common/styles/mixins";
+	@import "../../common/styles/variables";
 
+	.basic-btn {
+		@include allMidBox();
+		font-weight: 300;
+	}
+
+	.basic-btn.pink {
+		background: $pink;
+		color: $fontClr_4th;
+	}
+
+	.basic-btn.red {
+		background: $red;
+		color: $fontClr_4th;
+	}
+
+	.basic-btn.white {
+		background: $white;
+		color: $fontClr_2nd;
+		border: 1px solid $borderClr;
+	}
+
+	.basic-btn.red-border {
+		background: transparent;
+		border: 1px solid $red;
+		color: $red;
+	}
 </style>
 
+
 <template>
-	<div>
-	<p>this is a button</p>
+	<!--红-->
+	<div class="basic-btn red" wx-if="{{show&&color=='red'}}"
+			 style="height:{{height}}rpx;width:{{width}}rpx;border-radius:{{radius}}rpx;">
+		<p>{{title}}</p>
+	</div>
+
+	<!--粉红-->
+	<div class="basic-btn pink" wx-if="{{show&&color=='pink'}}"
+			 style="height:{{height}}rpx;width:{{width}}rpx;border-radius:{{radius}}rpx;">
+		<p>{{title}}</p>
+	</div>
+
+	<!--白-->
+	<div class="basic-btn white" wx-if="{{show&&color=='white'}}"
+			 style="height:{{height}}rpx;width:{{width}}rpx;border-radius:{{radius}}rpx;">
+		<p>{{title}}</p>
+	</div>
+
+	<!--红边框-->
+	<div class="basic-btn red-border" wx-if="{{show&&color=='red-border'}}"
+			 style="height:{{height}}rpx;width:{{width}}rpx;border-radius:{{radius}}rpx;">
+		<p>{{title}}</p>
 	</div>
 </template>
 
@@ -13,11 +62,40 @@
 
 	export default class BasicButton extends wepy.component {
 		components = {}
-		data = {}
+		data = {
+			colors: ['white', 'pink', 'red', 'red-border'] // 按钮颜色枚举
+		}
 		computed = {}
+
 		customFunction () {}
 
 		methods = {}
 		events = {}
+		props = {
+			title: {
+				type: String,
+				default: 'title'
+			},
+			width: {
+				type: String,
+				default: '200'
+			},
+			height: {
+				type: String,
+				default: '60'
+			},
+			show: {
+				type: Boolean,
+				default: true
+			},
+			color: {
+				type: String,
+				default: 'red-border'
+			},
+			radius: {
+				type: String,
+				default: '20'
+			}
+		}
 	}
 </script>

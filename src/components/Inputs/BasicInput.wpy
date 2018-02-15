@@ -3,7 +3,7 @@
 </style>
 
 <template>
-
+	<input type="text"/>
 </template>
 
 <script>

@@ -3,15 +3,9 @@
 </style>
 
 <template>
-	<view>
-		<verifyBtn></verifyBtn>
-	</view>
-	<view>
-		<nextBtn></nextBtn>
-	</view>
-	<view>
-		<finishBtn></finishBtn>
-	</view>
+	<p @tap="click">23123</p>
+	<p>{{test}}</p>
+	<verifyBtn width="500" height="80" title="下一步" radius="40" :color="" :show.sync="isNextBtnShow"></verifyBtn>
 </template>
 
 <script>
@@ -25,16 +19,31 @@
 			nextBtn: BasicButton, // 下一步按钮
 			finishBtn: BasicButton // 完成按钮
 		}
-		data = {}
+		data = {
+			// styles
+			isNextBtnShow: false,
+			test: 'test'
+		}
 		computed = {}
 
-		onLoad () {}
+		onLoad () {
+		}
 
-		onShow () {}
+		onShow () {
+
+		}
+
+		customData = {}
 
 		customFunction () {}
 
-		methods = {}
+		methods = {
+			click () {
+				console.log('get')
+				this.test = 'hello'
+				this.isNextBtnShow = true
+			}
+		}
 		events = {}
 	}
 </script>
