@@ -60,6 +60,9 @@
 <script>
 	import wepy from 'wepy'
 
+	/**
+	 * {props}: title 文字内容/height 高度/width 宽度/show 是否显示/color 风格/radius 圆角
+	 */
 	export default class BasicButton extends wepy.component {
 		components = {}
 		data = {
