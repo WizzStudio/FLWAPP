@@ -1,0 +1,13 @@
+// 旋转动画
+@mixin anmi-rotate() {
+	animation:  kf-rotate 20s  infinite
+}
+
+@keyframes kf-rotate {
+	0% {
+		transform: rotate(0);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}

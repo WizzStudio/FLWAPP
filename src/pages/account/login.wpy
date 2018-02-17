@@ -1,16 +1,114 @@
 <style lang="scss" type="text/scss">
+	@import "../../common/styles/variables";
+	@import "../../common/styles/mixins";
+	@import "../../common/styles/animate";
 
+	/*logo*/
+	.container-logo {
+		@include verMidBox();
+		margin-top: 120rpx;
+		margin-bottom: 200rpx;
+
+		.icon {
+			width: 100px;
+			height: 100px;
+		}
+
+		.title, .intro {
+			display: block;
+			text-align: center;
+		}
+
+		.intro {
+			color: #b3b3b3;
+			font-size: 28rpx;
+			font-weight: 300;
+		}
+	}
+	.anmi-rotate {
+		@include anmi-rotate()
+	}
+
+	/*邀请码相关*/
+	.login-invite{
+		box-sizing: border-box;
+		padding: 0 20rpx;
+		.container-input__invite {
+
+		}
+		.container-btn__next {
+			@include allMidBox();
+			margin-top: 145rpx;
+		}
+	}
+
+	/*手机号相关*/
+	.login-phone{
+		box-sizing: border-box;
+		padding: 0 20rpx;
+		.container-verify{
+			@include rowMidBox();
+			&__btn{
+				margin-left: 40rpx;
+			}
+		}
+		.container-btn__done {
+			@include allMidBox();
+			margin-top: 100rpx;
+		}
+		.container-input__verify {
+			margin-top: 40rpx;
+		}
+	}
 </style>
 
 <template>
-	<verifyBtn width="500" height="80" title="下一步" radius="40" :color="" :show.sync="isNextBtnShow"></verifyBtn>
-	<inviteCodeInput confirm-type="next" type="digit" width="200" placeholder="请输入手机号"></inviteCodeInput>
+	<!--logo-->
+	<view class="container-logo">
+		<image src="{{logoURL}}" class="icon anmi-rotate"></image>
+		<p class="title">小红花Project</p>
+		<p class="intro">链接优秀导师和精英人才的轻量级信息交互平台</p>
+	</view>
+
+	<view class="login-invite" wx-if="{{state ==0 || state == 1}}">
+		<!--邀请码输入框-->
+		<view class="container-input__invite">
+			<inviteCodeInput confirm-type="done" type="text" placeholder="请输入邀请码" key="invite"></inviteCodeInput>
+		</view>
+
+		<!--下一步按钮-->
+		<view class="container-btn__next">
+			<nextBtn width="500" height="80" title="下一步" radius="40" :color.sync="nextBtnColor" key="next"></nextBtn>
+		</view>
+
+	</view>
+
+	<view class="login-phone" wx-if="{{state >= 2}}">
+		<!--输入手机号&获取验证码-->
+		<view class="container-verify">
+			<phoneInput width="445" confirm-type="next" type="digit" placeholder="请输入手机号" key="phone"></phoneInput>
+			<view class="container-verify__btn">
+				<verifyBtn  width="182" height="55" :title.sync="verifyNum" radius="40" :color.sync="verifyBtnColor" key="verify" font="20"></verifyBtn>
+			</view>
+		</view>
+
+		<!--输入验证码-->
+		<view class="container-input__verify">
+			<verifyCodeInput confirm-type="done" type="digit" placeholder="请输入邀请码" key="verify"></verifyCodeInput>
+		</view>
+
+		<!--完成按钮-->
+		<view class="container-btn__done">
+			<finishBtn width="500" height="80" title="完成" radius="40" :color.sync="finishBtnColor" key="done"></finishBtn>
+		</view>
+	</view>
 </template>
 
 <script>
 	import wepy from 'wepy'
 	import BasicButton from '../../components/Buttons/BasicButton'
 	import BasicInput from '../../components/Inputs/BasicInput'
+	import {debounce, isInviteCode, isPhoneNumber, countFn, isVerifyCode} from '../../common/scripts/utils'
 
 	export default class Login extends wepy.page {
 		config = {}
@@ -18,12 +116,17 @@
 			verifyBtn: BasicButton, // 验证码按钮
 			nextBtn: BasicButton, // 下一步按钮
 			finishBtn: BasicButton, // 完成按钮
-			inviteCodeInput: BasicInput  // 邀请码输入框
+			inviteCodeInput: BasicInput,  // 邀请码输入框
+			phoneInput: BasicInput, // 电话号码输入框
+			verifyCodeInput: BasicInput // 验证码输入框
 		}
 		data = {
-			// styles
-			isNextBtnShow: false,
-			test: 'test'
+			nextBtnColor: 'pink',
+			finishBtnColor: 'pink',
+			verifyBtnColor: 'white',
+			logoURL: '../../static/images/logo.png',
+			state: 0, // 状态机初始状态
+			verifyNum: '获取验证码' // 获取手机验证码按钮上的文字显示
 		}
 		computed = {}
 
@@ -33,23 +136,107 @@
 		onShow () {
 
 		}
+		state0 () {
+			// 0：未输入邀请码或者输入错误
+			this.nextBtnColor = 'pink'
+			this.state = 0
+			this.$apply()
+		}
+		state1 () {
+			// 1：输入了正确格式的邀请码
+			this.state = 1
+			this.nextBtnColor = 'red'
+			this.$apply()
+		}
+		state2 () {
+			// 2: 邀请码验证正确
+			this.verifyBtnColor = 'white'
+			this.state = 2
+			this.$apply()
+		}
+		state3 () {
+			// 3：输入了正确格式的手机号
+			this.state = 3
+			this.verifyBtnColor = 'red-border'
+			this.$apply()
+		}
+		state4 () {
+			// 4: 点击获取邀请码
+			this.state = 4
+			let num = 60
+			countFn(60, 1000, () => {
+				num--
+				this.verifyNum = num.toString()
+				this.$apply()
+			}, () => {
+				this.state3()
+				this.verifyNum = '重新发送'
+				this.$apply()
+			})
+		}
+		state5 () {
+			// 5: 获取了邀请码但没有输入正确的格式
+			this.state = 5
+			this.finishBtnColor = 'pink'
+			this.$apply()
+		}
+		state6 () {
+			// 6: 获取了验证码且输入正确格式
+			this.state = 6
+			this.finishBtnColor = 'red'
+			this.$apply()
+		}
 
 		customData = {}
-
-		typing () {
-			console.log('hello')
-		}
-
 		methods = {
-			click () {
-				console.log('get')
-				this.test = 'hello'
-				this.isNextBtnShow = true
-			}
 		}
 		events = {
-			'input': (event) => {
-				console.log('get')
+			'input-typein': debounce((key, event) => {
+				/* 验证邀请码 */
+				if (isInviteCode(event.detail.value) && key === 'invite') {
+					this.state1()
+				}
+				if (!isInviteCode(event.detail.value) && key === 'invite') {
+					this.state0()
+				}
+				/* 验证手机号 */
+				if (isPhoneNumber(event.detail.value) && key === 'phone') {
+					this.state3()
+				}
+				if (!isPhoneNumber(event.detail.value) && key === 'phone') {
+					this.state2()
+				}
+				/* 验证验证码 */
+				if (isVerifyCode(event.detail.value) && key === 'verify') {
+					console.log('get')
+					this.state6()
+				}
+				if (!isVerifyCode(event.detail.value) && key === 'verify') {
+					this.state5()
+				}
+			}, 200),
+			'input-confirm': (key) => {
+			},
+			'btn-click': (key) => {
+				/* 邀请码格式通过 */
+				if (key === 'next' && this.state === 1) {
+					/* TODO 这里以后写验证邀请码的回调 */
+					console.log('该去验证邀请码了')
+					this.state2()
+				}
+				/* 手机号格式通过 */
+				if (key === 'verify' && this.state >= 3) {
+					console.log('该请求验证码了')
+					this.state4()
+				}
+
+				/* 验证码格式通过 */
+				if (key === 'done' && this.state === 6) {
+					console.log('该请求验证验证码了')
+					wx.showToast({
+						title: '欢迎使用~'
+					})
+				}
 			}
 		}
 	}

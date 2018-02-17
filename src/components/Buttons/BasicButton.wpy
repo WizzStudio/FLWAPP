@@ -34,26 +34,30 @@
 <template>
 	<!--红-->
 	<div class="basic-btn red" wx-if="{{show&&color=='red'}}"
-			 style="height:{{height}}rpx;width:{{width}}rpx;border-radius:{{radius}}rpx;">
-		<p>{{title}}</p>
+			 style="height:{{height}}rpx;width:{{width}}rpx;border-radius:{{radius}}rpx;"
+			 @tap="click">
+		<p style="font-size: {{font}}rpx;">{{title}}</p>
 	</div>
 
 	<!--粉红-->
 	<div class="basic-btn pink" wx-if="{{show&&color=='pink'}}"
-			 style="height:{{height}}rpx;width:{{width}}rpx;border-radius:{{radius}}rpx;">
-		<p>{{title}}</p>
+			 style="height:{{height}}rpx;width:{{width}}rpx;border-radius:{{radius}}rpx;"
+			 @tap="click">
+		<p style="font-size: {{font}}rpx;">{{title}}</p>
 	</div>
 
 	<!--白-->
 	<div class="basic-btn white" wx-if="{{show&&color=='white'}}"
-			 style="height:{{height}}rpx;width:{{width}}rpx;border-radius:{{radius}}rpx;">
-		<p>{{title}}</p>
+			 style="height:{{height}}rpx;width:{{width}}rpx;border-radius:{{radius}}rpx;"
+			 @tap="click">
+		<p style="font-size: {{font}}rpx;">{{title}}</p>
 	</div>
 
 	<!--红边框-->
 	<div class="basic-btn red-border" wx-if="{{show&&color=='red-border'}}"
-			 style="height:{{height}}rpx;width:{{width}}rpx;border-radius:{{radius}}rpx;">
-		<p>{{title}}</p>
+			 style="height:{{height}}rpx;width:{{width}}rpx;border-radius:{{radius}}rpx;"
+			 @tap="click">
+		<p style="font-size: {{font}}rpx;">{{title}}</p>
 	</div>
 </template>
 
@@ -72,7 +76,11 @@
 
 		customFunction () {}
 
-		methods = {}
+		methods = {
+			click (event) {
+				this.$emit('btn-click', this.key, event)
+			}
+		}
 		events = {}
 		props = {
 			title: {
@@ -98,6 +106,14 @@
 			radius: {
 				type: String,
 				default: '20'
+			},
+			key: {
+				type: String,
+				default: 'default-key'
+			},
+			font: {
+				type: String,
+				default: '40'
 			}
 		}
 	}

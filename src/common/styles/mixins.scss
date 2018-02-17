@@ -42,33 +42,32 @@
 	height: $height;
 }
 
-@mixin mgtb($top,$bot){
+@mixin mgtb($top,$bot) {
 	margin-top: $top;
 	margin-bottom: $bot;
 }
 
-@mixin pdtb($top,$bot){
+@mixin pdtb($top,$bot) {
 	padding-top: $top;
 	padding-bottom: $top;
 }
 
-@mixin underDashBorder(){
+@mixin underDashBorder() {
 	border: dashed $border;
-	border-width:0 0 1px 0 ;
+	border-width: 0 0 1px 0;
 }
 
 /*横向盒子*/
-@mixin rowBox(){
+@mixin rowBox() {
 	display: flex;
 	flex-flow: row nowrap;
 }
 
-@mixin rowMidBox(){
+@mixin rowMidBox() {
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: center;
 }
-
 
 // 字体大小，颜色
 @mixin fontSizeColor($size, $color) {
@@ -80,3 +79,4 @@
 @mixin fullBorder($px,$color) {
 	border: $px solid $color;
 }
+

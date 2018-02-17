@@ -3,12 +3,12 @@
 	@import "../../common/styles/variables";
 
 	.basic-input {
-		font-size: 16px;
+		font-size: 32rpx;
 		padding-left: 20rpx;
 		padding-bottom: 4rpx;
 		border-bottom: 1px solid $borderClr;
 		&__placeholder {
-			font-size: 16px;
+			font-size: 32rpx;
 			font-weight: 200;
 		}
 	}
@@ -19,7 +19,7 @@
 	}
 
 	.basic-input {
-		transition: all ease-in .1s;
+		transition: all ease-in .2s;
 	}
 </style>
 
@@ -40,6 +40,7 @@
 	 * 2. placeholder 占位字符
 	 * 3. type 种类：text文本输入键盘/number数字输入键盘/idcard身份证/digit带小数点的数字键盘
 	 * 4. confirm-type(send发送/search搜索/next下一步/go前往/done完成
+	 * 5. key特殊标识组件
 	 */
 	export default class BasicInput extends wepy.component {
 		components = {}
@@ -48,13 +49,13 @@
 
 		methods = {
 			oninput (e) {
-				this.$emit('input', e)
+				this.$emit('input-typein', this.key, e)
 			},
 			onfocus (e) {
-				this.$emit('onfocus', e)
+				this.$emit('input-focus', this.key, e)
 			},
 			onconfirm (e) {
-				this.$emit('confirm', e)
+				this.$emit('input-confirm', this.key, e)
 			}
 		}
 		events = {}
@@ -70,6 +71,10 @@
 			type: {
 				type: String,
 				default: 'text'
+			},
+			key: {
+				type: String,
+				default: 'default-key'
 			},
 			'confirm-type': {
 				type: String,

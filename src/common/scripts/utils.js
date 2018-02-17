@@ -11,7 +11,9 @@ const debounce = (fn, boomTime) => {
 		if (timer) {
 			clearTimeout(timer)
 		}
-		timer = setTimeout(fn, boomTime)
+		timer = setTimeout(() => {
+			fn.apply(this, arguments)
+		}, boomTime)
 	}
 }
 
@@ -25,7 +27,51 @@ const isPhoneNumber = (phoneNumber) => {
 	return reg.test(phoneNumber.toString())
 }
 
+const isInviteCode = (inviteCode) => {
+	if (inviteCode.length !== 4) {
+		return false
+	}
+	let reg = /(\d|[a-z]){4}/
+	return reg.test(inviteCode.toString())
+}
+
+const isVerifyCode = (VerifyCode) => {
+	if (VerifyCode.length !== 6) {
+		return false
+	}
+	let reg = /\d{6}/
+	return reg.test(VerifyCode.toString())
+}
+
+/**
+ * 循环计数器
+ * @param countTime 计数次数
+ * @param basicMs   单位计数间隔
+ * @param progressFn  单位计数触发函数
+ * @param callBackFn  计数完成回调函数
+ */
+const countFn = (countTime, basicMs, progressFn, callBackFn) => {
+	for (let i = 0; i < countTime; ++i) {
+		((j = i) => {
+			setTimeout(() => {
+				if (i === 0) {
+					console.log('count start!')
+				}
+				if (i === countTime - 1) {
+					console.log('count done!')
+					callBackFn()
+				} else {
+					progressFn()
+				}
+			}, basicMs * j)
+		})(i)
+	}
+}
+
 export {
 	debounce,
-	isPhoneNumber
+	isPhoneNumber,
+	isInviteCode,
+	isVerifyCode,
+	countFn
 }
