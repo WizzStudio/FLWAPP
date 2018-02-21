@@ -32,29 +32,7 @@
 
 
 <template>
-	<!--红-->
-	<div class="basic-btn red" wx-if="{{show&&color=='red'}}"
-			 style="height:{{height}}rpx;width:{{width}}rpx;border-radius:{{radius}}rpx;"
-			 @tap="click">
-		<p style="font-size: {{font}}rpx;">{{title}}</p>
-	</div>
-
-	<!--粉红-->
-	<div class="basic-btn pink" wx-if="{{show&&color=='pink'}}"
-			 style="height:{{height}}rpx;width:{{width}}rpx;border-radius:{{radius}}rpx;"
-			 @tap="click">
-		<p style="font-size: {{font}}rpx;">{{title}}</p>
-	</div>
-
-	<!--白-->
-	<div class="basic-btn white" wx-if="{{show&&color=='white'}}"
-			 style="height:{{height}}rpx;width:{{width}}rpx;border-radius:{{radius}}rpx;"
-			 @tap="click">
-		<p style="font-size: {{font}}rpx;">{{title}}</p>
-	</div>
-
-	<!--红边框-->
-	<div class="basic-btn red-border" wx-if="{{show&&color=='red-border'}}"
+	<div class="basic-btn  {{color}}"
 			 style="height:{{height}}rpx;width:{{width}}rpx;border-radius:{{radius}}rpx;"
 			 @tap="click">
 		<p style="font-size: {{font}}rpx;">{{title}}</p>
@@ -102,7 +80,7 @@
 			color: {
 				type: String,
 				default: 'red-border'
-			},
+			}
 			radius: {
 				type: String,
 				default: '20'
@@ -114,7 +92,7 @@
 			font: {
 				type: String,
 				default: '40'
-			}
+			},
 		}
 	}
 </script>

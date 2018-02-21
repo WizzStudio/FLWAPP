@@ -94,7 +94,7 @@
 
 		<!--输入验证码-->
 		<view class="container-input__verify">
-			<verifyCodeInput confirm-type="done" type="digit" placeholder="请输入邀请码" key="verify"></verifyCodeInput>
+			<verifyCodeInput confirm-type="done" type="digit" placeholder="请输入验证码" key="verify"></verifyCodeInput>
 		</view>
 
 		<!--完成按钮-->
@@ -161,7 +161,7 @@
 			this.$apply()
 		}
 		state4 () {
-			// 4: 点击获取邀请码
+			// 4: 点击获取验证码
 			this.state = 4
 			let num = 60
 			countFn(60, 1000, () => {
@@ -175,7 +175,7 @@
 			})
 		}
 		state5 () {
-			// 5: 获取了邀请码但没有输入正确的格式
+			// 5: 获取了验证码但没有输入正确的格式
 			this.state = 5
 			this.finishBtnColor = 'pink'
 			this.$apply()
