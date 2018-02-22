@@ -64,6 +64,10 @@
 //				method: 'get'
 //			})
 //				.then(data => (console.log(data)))
+
+			wx.setTopBarText({
+				text: 'hello, world!'
+			})
 		}
 
 		data = {
