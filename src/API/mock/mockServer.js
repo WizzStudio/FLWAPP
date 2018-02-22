@@ -7,5 +7,7 @@ import mockRouter from './mockRoute'
  * @example '/test'
  */
 export default function (rurl) {
-	return Mock.mock(mockRouter(rurl))
+	return new Promise(resolve => {
+		resolve(Mock.mock(mockRouter(rurl)))
+	})
 }

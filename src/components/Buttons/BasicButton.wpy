@@ -80,7 +80,7 @@
 			color: {
 				type: String,
 				default: 'red-border'
-			}
+			},
 			radius: {
 				type: String,
 				default: '20'
@@ -92,7 +92,7 @@
 			font: {
 				type: String,
 				default: '40'
-			},
+			}
 		}
 	}
 </script>
