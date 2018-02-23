@@ -1,0 +1,27 @@
+<style lang="scss" type="text/scss">
+</style>
+
+<template>
+  <li @tap="click">{{item.value}}</li>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class MenuItem extends wepy.component {
+    component = {}
+    data = {}
+    computed = {}
+
+    customFunction () {}
+
+    methods = {
+      click (event) {
+        console.log(this.key)
+      }
+    }
+    events = {}
+    props = {
+      key: String
+    }
+  }
+</script>

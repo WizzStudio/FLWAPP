@@ -1,0 +1,102 @@
+<style lang="scss" type="text/scss">
+  .top {
+    
+  }
+  .checking {
+    color: green;
+  }
+
+  .avatar {
+    width: 100rpx;
+    height: 100rpx;
+  }
+
+  .module-1 {
+    margin-bottom: 240rpx;
+  
+    .name {
+      font-size: 45rpx;
+    }
+  }
+  
+  .module-2 {
+    
+  }
+
+  .module-3 {
+    
+  }
+  
+</style>
+
+<template>
+  <view class="main">
+    <image src="{{avatarUrl}}" class="avatar">
+    <div>
+      <div class="module-1">
+        <span class="name">{{name}}</span>
+        <span class="basic-state {{stateClass}}">{{stateTitle}}</span>
+      </div>
+      <div class="module-2">
+        <span>{{university}}</span>
+        <span>{{major}}</span>
+      </div>
+      <div class="module-3">
+        <span @tap="click" class="">点击</span>
+      </div>
+    </div>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class GeneralIntroduction extends wepy.component {
+    components = {}
+    data = {
+      state: ['checking', 'success', 'failed']
+    }
+    computed = {}
+    customFunction () {}
+    methods = {
+      click (event) {
+        console.log('查看详细信息')
+      }
+    }
+    events = {}
+    props = {
+      avatarUrl: {
+        type: String,
+        default: 'null'
+      },
+      name: {
+        type: String,
+        default: '杨航'
+      },
+      university: {
+        type: String,
+        dafault: '西安电子科技大学'
+      },
+      major: {
+        type: String,
+        default: '软件工程'
+      },
+      company: {
+        type: String,
+        default: 'Tecent'
+      },
+      position: {
+        type: String,
+        default: 'CEO'
+      },
+      stateClass: {
+        type: String,
+        default: 'checking'
+      },
+      stateTitle: {
+        type: String,
+        default: '已审核'
+      }
+    }
+  }
+</script>

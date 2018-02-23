@@ -33,7 +33,7 @@
 
 <template>
 	<div class="basic-btn  {{color}}"
-			 style="height:{{height}}rpx;width:{{width}}rpx;border-radius:{{radius}}rpx;"
+			 style="height: {{height}}rpx; width: {{width}}rpx; border-radius: {{radius}}rpx;"
 			 @tap="click">
 		<p style="font-size: {{font}}rpx;">{{title}}</p>
 	</div>
@@ -80,7 +80,7 @@
 			color: {
 				type: String,
 				default: 'red-border'
-			}
+			},
 			radius: {
 				type: String,
 				default: '20'
@@ -92,7 +92,7 @@
 			font: {
 				type: String,
 				default: '40'
-			},
+			}
 		}
 	}
 </script>
