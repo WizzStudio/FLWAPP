@@ -40,6 +40,17 @@
 			@include allMidBox();
 			margin-top: 145rpx;
 		}
+		.container-link__forget{
+			position: relative;
+			display: block;
+			margin-top: 30rpx;
+			a{
+				float: right;
+				font-size: 30rpx;
+				color: $fontClr_2nd;
+				font-weight: 300;
+			}
+		}
 	}
 
 	/*手机号相关*/
@@ -76,6 +87,10 @@
 			<inviteCodeInput confirm-type="done" type="text" placeholder="请输入邀请码" key="invite"></inviteCodeInput>
 		</view>
 
+		<view class="container-link__forget">
+			<a href="">未获得/忘记邀请码</a>
+		</view>
+
 		<!--下一步按钮-->
 		<view class="container-btn__next">
 			<nextBtn width="500" height="80" title="下一步" radius="40" :color.sync="nextBtnColor" key="next"></nextBtn>
@@ -88,7 +103,7 @@
 		<view class="container-verify">
 			<phoneInput width="445" confirm-type="next" type="digit" placeholder="请输入手机号" key="phone"></phoneInput>
 			<view class="container-verify__btn">
-				<verifyBtn  width="182" height="55" :title.sync="verifyNum" radius="40" :color.sync="verifyBtnColor" key="verify" font="20"></verifyBtn>
+				<verifyBtn  width="182" height="55" :title.sync="verifyNum" radius="40" :color.sync="verifyBtnColor" key="verify" font="26"></verifyBtn>
 			</view>
 		</view>
 
@@ -99,7 +114,7 @@
 
 		<!--完成按钮-->
 		<view class="container-btn__done">
-			<finishBtn width="500" height="80" title="完成" radius="40" :color.sync="finishBtnColor" key="done"></finishBtn>
+			<finishBtn width="500" height="80" title="登录" radius="40" :color.sync="finishBtnColor" key="done"></finishBtn>
 		</view>
 	</view>
 </template>

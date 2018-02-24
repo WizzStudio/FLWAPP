@@ -1,6 +1,6 @@
 <style lang="scss" type="text/scss">
 	.container {
-		margin-top: 200 rpx;
+		margin-top: 200rpx;
 		display: flex;
 		justify-content: center;
 		.icon {
@@ -15,7 +15,7 @@
 	}
 
 	.intro {
-		font-size: 36 rpx;
+		font-size: 36rpx;
 		color: #b3b3b3;
 	}
 
@@ -34,7 +34,7 @@
 <script>
 	import wepy from 'wepy'
 	import { test } from '../API/index'
-	import { jumpTo, ajax } from '../common/scripts/wxUtil'
+	import { jumpTo } from '../common/scripts/wxUtil'
 
 	export default class Index extends wepy.page {
 		config = {
@@ -54,20 +54,8 @@
 		}
 
 		onShow () {
-//			wx.navigateTo({
-//				url: 'account/login'
-//			})
-//			jumpTo('account/login')
-//				.then(data => (console.log(data)))
-//			ajax({
-//				url: 'http://www.hello.com',
-//				method: 'get'
-//			})
-//				.then(data => (console.log(data)))
-
-			wx.setTopBarText({
-				text: 'hello, world!'
-			})
+			jumpTo('account/login')
+				.then(data => (console.log(data)))
 		}
 
 		data = {
