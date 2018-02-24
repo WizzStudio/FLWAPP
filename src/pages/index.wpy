@@ -44,25 +44,30 @@
 		components = {}
 
 		onLoad () {
-			test().catch((err) => {
-				console.log(err.errMsg)
-			})
-//			console.log('onLoad')
-
-			// TODO：常用工具函数封装+任务分工和架构图
+			test()
+				.then(
+					data => (console.log(data))
+				)
+				.catch((err) => {
+					console.log(err.errMsg)
+				})
 		}
 
 		onShow () {
 //			wx.navigateTo({
 //				url: 'account/login'
 //			})
-			jumpTo('account/login')
-				.then(data => (console.log(data)))
-			ajax({
-				url: 'http://www.hello.com',
-				method: 'get'
+//			jumpTo('account/login')
+//				.then(data => (console.log(data)))
+//			ajax({
+//				url: 'http://www.hello.com',
+//				method: 'get'
+//			})
+//				.then(data => (console.log(data)))
+
+			wx.setTopBarText({
+				text: 'hello, world!'
 			})
-				.then(data => (console.log(data)))
 		}
 
 		data = {

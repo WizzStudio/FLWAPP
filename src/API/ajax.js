@@ -1,8 +1,9 @@
 import MockServer from './mock/mockServer.js' // mock数据服务
 
 const HOST_URL = 'http://test.com' // 根域名
-const DEBUG = false // debug模式
+const DEBUG = true // debug模式
 const SUPPORT_METHODS = ['GET', 'POST', 'PUT', 'DELETE'] // 支持的http方法
+const DEFAULT_HEADERS = {'Authorization': null}
 
 function argumentsErr () {
 	throw new Error('[arguments missing]: check RURL & METHOD')
@@ -30,6 +31,23 @@ function createURLParamsByObject (dataObject) {
 	return dataStr
 }
 
+/**
+ * 配置请求头
+ * @param headers
+ * @return {Object}
+ * @private 私有方法（依赖了上层作用域的变量）
+ */
+function _configHeader (headers) {
+	let _headers = {}
+	for (let key of Object.keys(DEFAULT_HEADERS)) {
+		_headers[key] = DEFAULT_HEADERS[key]
+	}
+	for (let key of Object.keys(headers)) {
+		_headers[key] = headers[key]
+	}
+	return _headers
+}
+
 export default (rurl = argumentsErr(), method = argumentsErr(), data = null, headers = {'Content-Type': 'application/json'}) => {
 	if (!DEBUG) {
 		let _method = method.toUpperCase()
@@ -45,7 +63,7 @@ export default (rurl = argumentsErr(), method = argumentsErr(), data = null, hea
 				wx.request({
 					url: _url,
 					method: _method,
-					header: headers,
+					header: _configHeader(headers),
 					success: function (res) {
 						resolve(res)
 					},
@@ -59,7 +77,7 @@ export default (rurl = argumentsErr(), method = argumentsErr(), data = null, hea
 				wx.request({
 					url: _url,
 					method: _method,
-					header: headers,
+					header: _configHeader(headers),
 					data: data,
 					success: function (res) {
 						resolve(res)
