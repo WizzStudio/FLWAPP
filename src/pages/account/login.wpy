@@ -2,10 +2,11 @@
 	@import "../../common/styles/variables";
 	@import "../../common/styles/mixins";
 	@import "../../common/styles/animate";
+	@import "../../common/styles/common";
 
 	/*logo*/
 	.container-logo {
-		@include verMidBox();
+		@include allMidBox();
 		margin-top: 120rpx;
 		margin-bottom: 200rpx;
 
@@ -74,6 +75,14 @@
 </style>
 
 <template>
+	<p class="t-c1">test</p>
+	<p class="t1-black">test</p>
+	<p class="t2-white">test</p>
+	<p class="t3-black__bold">test</p>
+	<p class="t4-c3__bold">test</p>
+	<p class="t5-black__normal">test</p>
+	<p class="t4-c2__light">test</p>
+	<p class="t4-c4__light">test</p>
 	<!--logo-->
 	<view class="container-logo">
 		<image src="{{logoURL}}" class="icon anmi-rotate"></image>
