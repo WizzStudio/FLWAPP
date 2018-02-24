@@ -1,7 +1,7 @@
 import MockServer from './mock/mockServer.js' // mock数据服务
 
 const HOST_URL = 'http://test.com' // 根域名
-const DEBUG = true // debug模式
+const DEBUG = false // debug模式
 const SUPPORT_METHODS = ['GET', 'POST', 'PUT', 'DELETE'] // 支持的http方法
 const DEFAULT_HEADERS = {'Authorization': null}
 
@@ -65,6 +65,7 @@ export default (rurl = argumentsErr(), method = argumentsErr(), data = null, hea
 					method: _method,
 					header: _configHeader(headers),
 					success: function (res) {
+						/* TODO：对code做filter code为1返回msg */
 						resolve(res)
 					},
 					fail: function (err) {
@@ -80,6 +81,7 @@ export default (rurl = argumentsErr(), method = argumentsErr(), data = null, hea
 					header: _configHeader(headers),
 					data: data,
 					success: function (res) {
+						/* TODO：对code做filter */
 						resolve(res)
 					},
 					fail: function (err) {
