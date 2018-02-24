@@ -1,13 +1,29 @@
 <style lang="scss" type="text/scss">
+  .item {
+    display: inline-block;
+    padding-top: 8px;
+    padding-left: 40rpx;
+    width: 100vw;
+    font-size: 40rpx;
+    font-weight: 300;
+    text-align: left;
+    background-color: rgb(190, 190, 189);
+  }
 </style>
 
 <template>
-  <li @tap="click">{{item.value}}</li>
+  <ul>
+    <repeat for="{{menuList}}" item="item">
+      <li class="item" @tap="click" id="{{item.unique}}">
+        {{item.value}}
+      </li>
+    </repeat>
+  </ul> 
 </template>
 
 <script>
   import wepy from 'wepy'
-  export default class MenuItem extends wepy.component {
+  export default class MenuItems extends wepy.component {
     component = {}
     data = {}
     computed = {}
@@ -16,12 +32,14 @@
 
     methods = {
       click (event) {
-        console.log(this.key)
+        this.key = event.target.id
+        this.$emit('menu-click', this.key)
       }
     }
+    onLoad () {}
     events = {}
     props = {
-      key: String
+      menuList: Array
     }
   }
 </script>

@@ -54,16 +54,16 @@
 		}
 
 		onShow () {
-//			wx.navigateTo({
-//				url: 'account/login'
-//			})
-//			jumpTo('account/login')
-//				.then(data => (console.log(data)))
-//			ajax({
-//				url: 'http://www.hello.com',
-//				method: 'get'
-//			})
-//				.then(data => (console.log(data)))
+			wx.navigateTo({
+				url: 'account/login'
+			})
+			jumpTo('account/login')
+				.then(data => (console.log(data)))
+			ajax({
+				url: 'http://www.hello.com',
+				method: 'get'
+			})
+				.then(data => (console.log(data)))
 
 			wx.setTopBarText({
 				text: 'hello, world!'

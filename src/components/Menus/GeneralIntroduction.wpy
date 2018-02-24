@@ -1,48 +1,62 @@
 <style lang="scss" type="text/scss">
-  .top {
-    
+  .introduce {
+    background-color: rgb(190, 190, 189);
+    height: 180rpx;
+    padding: 30rpx;
+    margin-bottom: 30rpx;
   }
-  .checking {
-    color: green;
-  }
-
   .avatar {
-    width: 100rpx;
-    height: 100rpx;
+    width: 150rpx;
+    height: 150rpx;
+    border-radius:50%;
+    background-color: rgb(175, 220, 241);
   }
-
-  .module-1 {
-    margin-bottom: 240rpx;
-  
-    .name {
-      font-size: 45rpx;
+  .leftModule {
+    float: left;
+    .success {
+      color: green;
     }
   }
-  
+  .rightModle {
+    display: block;
+    float: right;
+  }
+  .module-1 {
+    display: block;
+    margin-left: 50rpx;
+    padding: 20rpx;
+    .name {
+      font-size: 40rpx;
+    }
+  }
   .module-2 {
-    
+    margin-top: 70rpx;
+    display: block;
+    font-size: 28rpx;
+    font-weight: 200;
   }
-
-  .module-3 {
-    
+  .basic-state {
+    border-radius: 2px;
   }
-  
+  .more-info {
+    font-size: 20rpx;
+  }
 </style>
 
 <template>
-  <view class="main">
-    <image src="{{avatarUrl}}" class="avatar">
-    <div>
+  <view class="introduce">
+    <div class="leftModule">
+      <img src="{{infoDatas.avatarUrl}}" class="avatar"/>
+    </div>
+    <div class="rightModule">
       <div class="module-1">
-        <span class="name">{{name}}</span>
-        <span class="basic-state {{stateClass}}">{{stateTitle}}</span>
+        <span class="name">{{infoDatas.name}}</span>
+        <span class="basic-state {{infoDatas.stateClass}}">{{infoDatas.stateTitle}}</span>
+        <span class="more-info" @tap="click">修改个人信息</span>
       </div>
       <div class="module-2">
-        <span>{{university}}</span>
-        <span>{{major}}</span>
-      </div>
-      <div class="module-3">
-        <span @tap="click" class="">点击</span>
+        <span>{{infoDatas.university}}</span>
+        <span>{{infoDatas.major}}</span>
       </div>
     </div>
   </view>
@@ -60,42 +74,14 @@
     customFunction () {}
     methods = {
       click (event) {
-        console.log('查看详细信息')
+        this.$emit('change-information', event)
       }
     }
+    onLoad () {}
     events = {}
     props = {
-      avatarUrl: {
-        type: String,
-        default: 'null'
-      },
-      name: {
-        type: String,
-        default: '杨航'
-      },
-      university: {
-        type: String,
-        dafault: '西安电子科技大学'
-      },
-      major: {
-        type: String,
-        default: '软件工程'
-      },
-      company: {
-        type: String,
-        default: 'Tecent'
-      },
-      position: {
-        type: String,
-        default: 'CEO'
-      },
-      stateClass: {
-        type: String,
-        default: 'checking'
-      },
-      stateTitle: {
-        type: String,
-        default: '已审核'
+      infoDatas: {
+        type: Object
       }
     }
   }

@@ -1,33 +1,34 @@
 <style lang="scss" type="text/scss">
+  .main {
+    margin-top: 30rpx;
+  }
 </style>
 
 <template>
-  <view>
-    <moduleAvatar></moduleAvatar>
-    <ul>
-      <repeat for="{{MenuList}}" item="item">
-        <MenuItem :item="item" :key="unique"></MenuItem>
-      </repeat>
-    </ul>  
+  <view class="main">
+    <Info :infoDatas="infoDatas"></Info>
+    <!--<Show></Show>-->
+    <Menu :menuList="menuList"></Menu>
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
-  import Parent from '../../components/child'
   import GeneralIntroduction from '../../components/Menus/GeneralIntroduction'
-  import MenuItem from '../../components/Menus/MenuItem'
-  import debounce from '../../common/scripts/utils'
+  import MenuItems from '../../components/Menus/MenuItem'
+  //  import Exhibits from '../../components/Menus/Exhibits'
+  import { debounce } from '../../common/scripts/utils'
+  import { jumpTo } from '../../common/scripts/wxUtil'
 
   export default class Home extends wepy.page {
     config = {}
     components = {
-      moduleAvatar: GeneralIntroduction,
-      MenuItem: MenuItem,
-      Parent: Parent
+      Info: GeneralIntroduction,
+      //  Show: Exhibits,
+      Menu: MenuItems
     }
     data = {
-      MenuList: [
+      menuList: [
         {
           unique: 'record',
           value: '花迹'
@@ -44,33 +45,49 @@
           unique: 'problem',
           value: '问题反馈'
         }
-      ]
+      ],
+      infoDatas: {
+        avatarUrl: '../../static/images/logo.png',
+        name: 'XXX',
+        university: '西安电子科技大学',
+        major: '软件工程',
+        company: 'Tecent',
+        position: 'CEO',
+        stateClass: 'success',
+        stateTitle: '已审核'
+      }
     }
     computed = {}
 
-    onLoad () {}
+    onLoad () {
+      //  获取数据并绑定
+      //  this.menuList = ...
+      //  this.infoDatas = ...
+    }
 
     onShow () {}
 
     customData = {}
     methods = {}
     events = {
-      /*
       'menu-click': debounce((key, event) => {
         if (key === 'record') {
           console.log('前往花迹')
+          jumpTo('./login')
         }
         if (key === 'application') {
           console.log('前往申请活动')
         }
         if (key === 'message') {
-          console.log('消息通知')
+          console.log('前往消息通知')
         }
         if (key === 'problem') {
-          console.log('问题反馈')
+          console.log('前往问题反馈')
         }
-      })
-      */
+      }, 200),
+      'change-information': debounce((key, event) => {
+        console.log('前往个人信息页')
+      }, 200)
     }
   }
 </script>
