@@ -1,25 +1,32 @@
 <style lang="scss" type="text/scss">
   @import "../../common/styles/mixins";
-	@import "../../common/styles/variables";
+  @import "../../common/styles/variables";
+  @import "../../common/styles/common";
   .container {
     @include rowBox();
   }
-  .item {
+  .c-show-item {
     @include allMidBox();
+    width: 25vw;
+    height: 30vh;
+    //@include fullBorder(2px,white);
   }
-  .img {
-    width: 10vw;
-    height: 10vh;
+  .text-center {
+    text-align: right;
+  }
+  .c-show-img {
+    width: 15vw;
+    height: 15vw;
   }
 </style>
 
 <template>
   <ul class="container">
     <repeat for="{{showDatas}}">
-      <div class="item">
-        <span>{{item.name}}</span>
-        <image src="../../static/images/u153.png" class="img"/>
-        <span>{{item.number}}</span>
+      <div class="c-show-item">
+        <span class="t5 text-center">{{item.name}}</span>
+        <image src="../../static/images/u153.png" class="c-show-img"/>
+        <span class="t5 text-center">{{item.number}}</span>
       </div>
     </repeat>
   </ul>

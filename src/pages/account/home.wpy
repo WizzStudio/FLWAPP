@@ -1,11 +1,8 @@
 <style lang="scss" type="text/scss">
-  .main {
-    margin-top: 30rpx;
-  }
 </style>
 
 <template>
-  <view class="main">
+  <view>
     <Info :infoDatas="infoDatas"></Info>
     <Show :showDatas="showDatas"></Show>
     <Menu :menuList="menuList"></Menu>
@@ -31,7 +28,7 @@
       menuList: [
         {
           unique: 'record',
-          value: '花迹'
+          value: '我的花迹'
         },
         {
           unique: 'application',
@@ -48,30 +45,30 @@
       ],
       infoDatas: {
         avatarUrl: '../../static/images/logo.png',
-        name: 'XXX',
+        name: '高政委',
         university: '西安电子科技大学',
         major: '软件工程',
         company: 'Tecent',
         position: 'CEO',
         stateClass: 'success',
-        stateTitle: '审核中'
+        stateTitle: '已审核'
       },
       showDatas: [
         {
           name: '已获得奖学金',
-          number: 1000
+          number: '1000' + ' 元'
         },
         {
           name: '小红花',
-          number: '0/10'
+          number: '0 / 10' + ' 朵'
         },
         {
           name: '导师',
-          number: '5'
+          number: '5' + ' 人'
         },
         {
           name: '已做义工时间',
-          number: '5小时'
+          number: '5' + ' 小时'
         }
       ]
     }
@@ -104,6 +101,7 @@
         }
       }, 200),
       'change-information': debounce((key, event) => {
+        jumpTo('./info')
         if (key === 'student') {
           console.log('前往学生个人信息修改页')
           //  跳转到修改页

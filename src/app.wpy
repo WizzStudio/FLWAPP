@@ -9,7 +9,8 @@
 			pages: [
 				'pages/index',
 				'pages/account/login',
-				'pages/account/home'
+				'pages/account/home',
+				'pages/account/info'
 			],
 			window: {
 				backgroundTextStyle: 'light',

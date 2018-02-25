@@ -33,7 +33,7 @@
 
 <script>
 	import wepy from 'wepy'
-	import { test } from '../API/index'
+//	import { UserLogin, test } from '../API/index'
 	import { jumpTo } from '../common/scripts/wxUtil'
 
 	export default class Index extends wepy.page {
@@ -44,30 +44,19 @@
 		components = {}
 
 		onLoad () {
-			test()
-				.then(
-					data => (console.log(data))
-				)
-				.catch((err) => {
-					console.log(err.errMsg)
-				})
+//			UserLogin()
+//				.then(
+//					data => (console.log(data))
+//				)
+//				.catch((err) => {
+//					console.log(err.errMsg)
+//				})
+//			wxLogin().then(data => (console.log(data)))
+//			wxGetUserInfo().then(data => (console.log(data)))
 		}
 
 		onShow () {
-			wx.navigateTo({
-				url: 'account/login'
-			})
 			jumpTo('account/login')
-				.then(data => (console.log(data)))
-			ajax({
-				url: 'http://www.hello.com',
-				method: 'get'
-			})
-				.then(data => (console.log(data)))
-
-			wx.setTopBarText({
-				text: 'hello, world!'
-			})
 		}
 
 		data = {
