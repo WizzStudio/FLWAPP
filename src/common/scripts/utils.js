@@ -23,6 +23,9 @@ const debounce = (fn, boomTime) => {
  * @return {boolean}
  */
 const isPhoneNumber = (phoneNumber) => {
+	if (phoneNumber.toString().length > 11) {
+		return false
+	}
 	let reg = /1\d{10}/
 	return reg.test(phoneNumber.toString())
 }

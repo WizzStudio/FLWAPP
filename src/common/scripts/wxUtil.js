@@ -76,6 +76,32 @@ const wxGetUserInfo = () => {
 	return configFn(wx.getUserInfo)
 }
 
+const setStorage = (key, value) => {
+	// return configFn(wx.setStorage, {
+	// 	key,
+	// 	data: value
+	// })
+	return wx.setStorageSync(key, value)
+}
+
+const getStorage = (key) => {
+	// return configFn(wx.getStorage, {
+	// 	key
+	// })
+	return wx.getStorageSync(key)
+}
+
+const removeStorage = (key) => {
+	// return configFn(wx.removeStorage, {
+	// 	key
+	// })
+	return wx.removeStorage(key)
+}
+
+const clearStorage = () => {
+	return wx.clearStorage()
+}
+
 export {
 	ajax, // 发送ajax请求
 	jumpTo, // page跳转
@@ -87,6 +113,10 @@ export {
 	setNavbarTitle, // 设置导航栏标题
 	showNavbarLoading, // 在当前页面显示导航条加载动画
 	hideNavbarLoading, // 隐藏导航条加载动画。
-	wxLogin, // 获取微信用户登录信息
-	wxGetUserInfo
+	wxLogin, // 获取微信用户登录code
+	wxGetUserInfo, // 获取微信用户信息
+	setStorage, // 设置缓存
+	getStorage, // 获取缓存
+	removeStorage, // 删除某条缓存数据
+	clearStorage // 清空缓存数据
 }

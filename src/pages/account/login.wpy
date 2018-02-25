@@ -125,8 +125,8 @@
 	import BasicButton from '../../components/Buttons/BasicButton'
 	import BasicInput from '../../components/Inputs/BasicInput'
 	import {debounce, isInviteCode, isPhoneNumber, countFn, isVerifyCode} from '../../common/scripts/utils'
-	import {UserLogin, UserInviteCodeCheck, UserRegister, UserVerifyCode, UserVerifyCodeCheck} from '../../API/index'
-	import {wxLogin,toast} from '../../common/scripts/wxUtil'
+	import {UserInviteCodeCheck, UserRegister, UserVerifyCode, UserVerifyCodeCheck} from '../../API/index'
+	import {toast} from '../../common/scripts/wxUtil'
 
 	export default class Login extends wepy.page {
 		config = {}
@@ -158,11 +158,6 @@
 
 		onShow () {
 			/* MENTION 测试流程的临时代码 */
-			//	wxLogin()
-			//	.then(data => {
-			//		console.log(data.code)
-			//		UserLogin(data.code)
-			//	})
 		}
 		state0 () {
 			// 0：未输入邀请码或者输入错误
@@ -254,6 +249,9 @@
 			'input-confirm': (key) => {
 			},
 			'btn-click': (key) => {
+				if (key === 'next' && this.state === 0) {
+					return toast('请输入正确邀请码！')
+				}
 				/* 邀请码格式通过 */
 				if (key === 'next' && this.state === 1) {
 //					console.log('该去验证邀请码了')

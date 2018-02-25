@@ -12,6 +12,9 @@ describe('验证是否为电话号码', function () {
 	it('错误电话号码', function () {
 		expect(isPhoneNumber(10086)).to.not.be.ok
 	})
+	it('很长的号码', function () {
+		expect(isPhoneNumber(182920397533)).to.not.be.ok
+	})
 })
 
 /* 邀请码测试 */
