@@ -2,17 +2,10 @@
  * 拆分出来的原因：在组件内部保留抽象，方便日后替换掉wx接口模块，换上其他模块就可以构建为普通的Web应用 */
 
 const configFn = (wxAPI, config = {}) => {
-	let option = {}
-	if (Object.keys(config).length) {
-		for (let key of Object.keys(config)) {
-			option[key] = config[key]
-		}
-	}
-	// console.log(option)
 	return new Promise((resolve, reject) => {
-		option.success = res => (resolve(res))
-		option.fail = err => (reject(err))
-		wxAPI(option)
+		config.success = res => (resolve(res))
+		config.fail = err => (reject(err))
+		wxAPI(config)
 	})
 }
 
@@ -75,6 +68,14 @@ const hideNavbarLoading = () => {
 	wx.hideNavigationBarLoading()
 }
 
+const wxLogin = () => {
+	return configFn(wx.login)
+}
+
+const wxGetUserInfo = () => {
+	return configFn(wx.getUserInfo)
+}
+
 export {
 	ajax, // 发送ajax请求
 	jumpTo, // page跳转
@@ -85,5 +86,7 @@ export {
 	hideLoading, // 关闭加载中弹窗
 	setNavbarTitle, // 设置导航栏标题
 	showNavbarLoading, // 在当前页面显示导航条加载动画
-	hideNavbarLoading // 隐藏导航条加载动画。
+	hideNavbarLoading, // 隐藏导航条加载动画。
+	wxLogin, // 获取微信用户登录信息
+	wxGetUserInfo
 }

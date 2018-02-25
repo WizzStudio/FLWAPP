@@ -1,6 +1,7 @@
 import MockServer from './mock/mockServer.js' // mock数据服务
+import { toast } from '../common/scripts/wxUtil'
 
-const HOST_URL = 'http://test.com' // 根域名
+const HOST_URL = 'http://api.xiaoyaoeden.top' // 根域名
 const DEBUG = false // debug模式
 const SUPPORT_METHODS = ['GET', 'POST', 'PUT', 'DELETE'] // 支持的http方法
 const DEFAULT_HEADERS = {'Authorization': null}
@@ -11,6 +12,21 @@ function argumentsErr () {
 
 function methodErr () {
 	throw new Error('[http method error]: check METHOD params in ajax')
+}
+
+function _configRequest (config = {}) {
+	return new Promise((resolve, reject) => {
+		config.success = res => {
+			if (res.data.code) {
+				toast(res.data.msg)
+			}
+			resolve(res)
+		}
+		config.fail = err => {
+			reject(err)
+		}
+		wx.request(config)
+	})
 }
 
 /**
@@ -59,34 +75,49 @@ export default (rurl = argumentsErr(), method = argumentsErr(), data = null, hea
 			if (data) {
 				_url += createURLParamsByObject(data)
 			}
-			return new Promise((resolve, reject) => {
-				wx.request({
-					url: _url,
-					method: _method,
-					header: _configHeader(headers),
-					success: function (res) {
-						/* TODO：对code做filter code为1返回msg */
-						resolve(res)
-					},
-					fail: function (err) {
-						reject(err)
-					}
-				})
+			// return new Promise((resolve, reject) => {
+			// 	wx.request({
+			// 		url: _url,
+			// 		method: _method,
+			// 		header: _configHeader(headers),
+			// 		success: function (res) {
+			// 			if (res.data.code) {
+			// 				toast(res.data.msg)
+			// 			}
+			// 			resolve(res)
+			// 		},
+			// 		fail: function (err) {
+			// 			reject(err)
+			// 		}
+			// 	})
+			// })
+			return _configRequest({
+				url: _url,
+				method: _method,
+				header: _configHeader(headers)
 			})
 		} else {
 			return new Promise((resolve, reject) => {
-				wx.request({
+				// wx.request({
+				// 	url: _url,
+				// 	method: _method,
+				// 	header: _configHeader(headers),
+				// 	data: data,
+				// 	success: function (res) {
+				// 		if (res.data.code) {
+				// 			toast(res.data.msg)
+				// 		}
+				// 		resolve(res.data)
+				// 	},
+				// 	fail: function (err) {
+				// 		reject(err)
+				// 	}
+				// })
+				return _configRequest({
 					url: _url,
 					method: _method,
 					header: _configHeader(headers),
-					data: data,
-					success: function (res) {
-						/* TODO：对code做filter */
-						resolve(res)
-					},
-					fail: function (err) {
-						reject(err)
-					}
+					data: data
 				})
 			})
 		}
