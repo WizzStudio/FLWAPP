@@ -13,9 +13,9 @@
   }
   .leftModule {
     float: left;
-    .success {
-      color: green;
-    }
+  }
+  .success {
+    color: green;
   }
   .rightModle {
     display: block;
@@ -46,7 +46,7 @@
 <template>
   <view class="introduce">
     <div class="leftModule">
-      <img src="{{infoDatas.avatarUrl}}" class="avatar"/>
+      <image src="../../static/images/logo.png" class="avatar" alt="我的头像"/>
     </div>
     <div class="rightModule">
       <div class="module-1">
@@ -74,7 +74,11 @@
     customFunction () {}
     methods = {
       click (event) {
-        this.$emit('change-information', event)
+        if (this.infoDatas.stateTitle === '审核中') {
+          console.log('您提交的信息正在审核中，暂时无法修改信息，请等待审核结束')
+        } else {
+          this.$emit('change-information', event)
+        }
       }
     }
     onLoad () {}

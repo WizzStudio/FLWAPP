@@ -54,7 +54,6 @@
 		}
 
 		onShow () {
-<<<<<<< HEAD
 			wx.navigateTo({
 				url: 'account/login'
 			})
@@ -69,10 +68,6 @@
 			wx.setTopBarText({
 				text: 'hello, world!'
 			})
-=======
-			jumpTo('account/login')
-				.then(data => (console.log(data)))
->>>>>>> b559254f7102b8ad934a3613e3c551fb72d14112
 		}
 
 		data = {

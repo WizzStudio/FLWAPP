@@ -7,7 +7,7 @@
 <template>
   <view class="main">
     <Info :infoDatas="infoDatas"></Info>
-    <!--<Show></Show>-->
+    <Show :showDatas="showDatas"></Show>
     <Menu :menuList="menuList"></Menu>
   </view>
 </template>
@@ -16,7 +16,7 @@
   import wepy from 'wepy'
   import GeneralIntroduction from '../../components/Menus/GeneralIntroduction'
   import MenuItems from '../../components/Menus/MenuItem'
-  //  import Exhibits from '../../components/Menus/Exhibits'
+  import Exhibits from '../../components/Menus/show'
   import { debounce } from '../../common/scripts/utils'
   import { jumpTo } from '../../common/scripts/wxUtil'
 
@@ -24,7 +24,7 @@
     config = {}
     components = {
       Info: GeneralIntroduction,
-      //  Show: Exhibits,
+      Show: Exhibits,
       Menu: MenuItems
     }
     data = {
@@ -54,8 +54,26 @@
         company: 'Tecent',
         position: 'CEO',
         stateClass: 'success',
-        stateTitle: '已审核'
-      }
+        stateTitle: '审核中'
+      },
+      showDatas: [
+        {
+          name: '已获得奖学金',
+          number: 1000
+        },
+        {
+          name: '小红花',
+          number: '0/10'
+        },
+        {
+          name: '导师',
+          number: '5'
+        },
+        {
+          name: '已做义工时间',
+          number: '5小时'
+        }
+      ]
     }
     computed = {}
 
@@ -86,7 +104,14 @@
         }
       }, 200),
       'change-information': debounce((key, event) => {
-        console.log('前往个人信息页')
+        if (key === 'student') {
+          console.log('前往学生个人信息修改页')
+          //  跳转到修改页
+        }
+        if (key === 'teather') {
+          console.log('前往导师个人信息修改页')
+          //  跳转到修改页
+        }
       }, 200)
     }
   }

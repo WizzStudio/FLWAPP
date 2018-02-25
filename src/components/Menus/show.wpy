@@ -1,0 +1,46 @@
+<style lang="scss" type="text/scss">
+  @import "../../common/styles/mixins";
+	@import "../../common/styles/variables";
+  .container {
+    @include rowBox();
+  }
+  .item {
+    @include allMidBox();
+  }
+  .img {
+    width: 10vw;
+    height: 10vh;
+  }
+</style>
+
+<template>
+  <ul class="container">
+    <repeat for="{{showDatas}}">
+      <div class="item">
+        <span>{{item.name}}</span>
+        <image src="../../static/images/u153.png" class="img"/>
+        <span>{{item.number}}</span>
+      </div>
+    </repeat>
+  </ul>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Exhibits extends wepy.component {
+    components = {}
+    datas = {}
+    computed = {}
+
+    customFunction () {}
+
+    methods = {}
+
+    onLoad () {}
+    events = {}
+    props = {
+      showDatas: Array
+    }
+  }
+</script>
