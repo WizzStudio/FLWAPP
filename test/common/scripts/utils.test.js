@@ -25,11 +25,14 @@ describe('是否为正确的邀请码', function () {
 	it('4位数字和字母的混合', function () {
 		expect(isInviteCode('ab12')).to.be.ok
 	})
-	it('3位数字和字母的混合',function () {
+	it('3位数字和字母的混合', function () {
 		expect(isInviteCode('12a')).to.not.be.ok
 	})
-	it('5位数字和字母的混合',function () {
+	it('5位数字和字母的混合', function () {
 		expect(isInviteCode('12ab2')).to.not.be.ok
+	})
+	it('带大写字母', function () {
+		expect(isInviteCode('12AB')).to.be.ok
 	})
 })
 

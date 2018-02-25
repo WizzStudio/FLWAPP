@@ -31,7 +31,7 @@ const isInviteCode = (inviteCode) => {
 	if (inviteCode.length !== 4) {
 		return false
 	}
-	let reg = /(\d|[a-z]){4}/
+	let reg = /(\d|[a-z]|[A-Z]){4}/
 	return reg.test(inviteCode.toString())
 }
 

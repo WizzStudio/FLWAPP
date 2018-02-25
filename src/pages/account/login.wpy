@@ -125,6 +125,8 @@
 	import BasicButton from '../../components/Buttons/BasicButton'
 	import BasicInput from '../../components/Inputs/BasicInput'
 	import {debounce, isInviteCode, isPhoneNumber, countFn, isVerifyCode} from '../../common/scripts/utils'
+	import {UserLogin, UserInviteCodeCheck, UserRegister, UserVerifyCode, UserVerifyCodeCheck} from '../../API/index'
+	import {wxLogin,toast} from '../../common/scripts/wxUtil'
 
 	export default class Login extends wepy.page {
 		config = {}
@@ -142,7 +144,12 @@
 			verifyBtnColor: 'white',
 			logoURL: '../../static/images/logo.png',
 			state: 0, // 状态机初始状态
-			verifyNum: '获取验证码' // 获取手机验证码按钮上的文字显示
+			verifyNum: '获取验证码', // 获取手机验证码按钮上的文字显示
+			isCounting: false, // 获取验证码是否正在计时
+			/* 下面是数据域 */
+			inviteCode: 0, // 邀请码
+			phoneNumber: 0, // 手机号
+			verifyCode: 0 // 验证码
 		}
 		computed = {}
 
@@ -150,7 +157,12 @@
 		}
 
 		onShow () {
-
+			/* MENTION 测试流程的临时代码 */
+//			wxLogin()
+//				.then(data => {
+//					console.log(data.code)
+//					UserLogin(data.code)
+//				})
 		}
 		state0 () {
 			// 0：未输入邀请码或者输入错误
@@ -158,9 +170,10 @@
 			this.state = 0
 			this.$apply()
 		}
-		state1 () {
+		state1 (inviteCode) {
 			// 1：输入了正确格式的邀请码
 			this.state = 1
+			this.inviteCode = inviteCode
 			this.nextBtnColor = 'red'
 			this.$apply()
 		}
@@ -170,14 +183,20 @@
 			this.state = 2
 			this.$apply()
 		}
-		state3 () {
+		state3 (phoneNumber) {
 			// 3：输入了正确格式的手机号
 			this.state = 3
+			this.phoneNumber = phoneNumber
 			this.verifyBtnColor = 'red-border'
 			this.$apply()
 		}
 		state4 () {
 			// 4: 点击获取验证码
+			if (this.isCounting) {
+				console.log('get')
+				return false
+			}
+			this.isCounting = true
 			this.state = 4
 			let num = 60
 			countFn(60, 1000, () => {
@@ -186,6 +205,7 @@
 				this.$apply()
 			}, () => {
 				this.state3()
+				this.isCounting = false
 				this.verifyNum = '重新发送'
 				this.$apply()
 			})
@@ -196,9 +216,10 @@
 			this.finishBtnColor = 'pink'
 			this.$apply()
 		}
-		state6 () {
+		state6 (verifyCode) {
 			// 6: 获取了验证码且输入正确格式
 			this.state = 6
+			this.verifyCode = verifyCode
 			this.finishBtnColor = 'red'
 			this.$apply()
 		}
@@ -210,22 +231,21 @@
 			'input-typein': debounce((key, event) => {
 				/* 验证邀请码 */
 				if (isInviteCode(event.detail.value) && key === 'invite') {
-					this.state1()
+					this.state1(event.detail.value)
 				}
 				if (!isInviteCode(event.detail.value) && key === 'invite') {
 					this.state0()
 				}
 				/* 验证手机号 */
 				if (isPhoneNumber(event.detail.value) && key === 'phone') {
-					this.state3()
+					this.state3(event.detail.value)
 				}
 				if (!isPhoneNumber(event.detail.value) && key === 'phone') {
 					this.state2()
 				}
 				/* 验证验证码 */
 				if (isVerifyCode(event.detail.value) && key === 'verify') {
-					console.log('get')
-					this.state6()
+					this.state6(event.detail.value)
 				}
 				if (!isVerifyCode(event.detail.value) && key === 'verify') {
 					this.state5()
@@ -236,22 +256,53 @@
 			'btn-click': (key) => {
 				/* 邀请码格式通过 */
 				if (key === 'next' && this.state === 1) {
-					/* TODO 这里以后写验证邀请码的回调 */
-					console.log('该去验证邀请码了')
-					this.state2()
+//					console.log('该去验证邀请码了')
+					UserInviteCodeCheck(this.inviteCode)
+						.then(data => {
+							if (!data.code) {
+								toast(data.msg)
+								this.state2()
+							}
+						})
 				}
 				/* 手机号格式通过 */
 				if (key === 'verify' && this.state >= 3) {
-					console.log('该请求验证码了')
-					this.state4()
+//					console.log('该请求验证码了')
+					if (this.isCounting) {
+						return false
+					}
+					UserVerifyCode(this.phoneNumber)
+						.then(data => {
+							if (!data.code) {
+								toast(data.msg)
+								this.state4()
+							}
+						})
 				}
 
 				/* 验证码格式通过 */
 				if (key === 'done' && this.state === 6) {
-					console.log('该请求验证验证码了')
-					wx.showToast({
-						title: '欢迎使用~'
-					})
+//					console.log('该请求验证验证码了')
+					UserVerifyCodeCheck(this.phoneNumber, this.verifyCode)
+						.then(data => {
+							if (!data.code) {
+								UserRegister(this.phoneNumber, this.inviteCode).then(data => {
+									if (!data.code) {
+										toast('注册成功！', 'success', 3000)
+									}
+								})
+							}
+						})
+				}
+
+				/* 没有请求邀请码 */
+				if (key === 'done' && this.state < 4) {
+					toast('请先获取验证码!')
+				}
+
+				/* 输入了错误格式的验证码 */
+				if (key === 'done' && this.state >= 4 && this.state < 6) {
+					toast('请输入正确格式的验证码！')
 				}
 			}
 		}

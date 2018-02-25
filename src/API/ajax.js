@@ -2,7 +2,7 @@ import MockServer from './mock/mockServer.js' // mock数据服务
 import { toast } from '../common/scripts/wxUtil'
 
 const HOST_URL = 'http://api.xiaoyaoeden.top' // 根域名
-const DEBUG = false // debug模式
+const DEBUG = true // debug模式
 const SUPPORT_METHODS = ['GET', 'POST', 'PUT', 'DELETE'] // 支持的http方法
 const DEFAULT_HEADERS = {'Authorization': null}
 
@@ -17,12 +17,16 @@ function methodErr () {
 function _configRequest (config = {}) {
 	return new Promise((resolve, reject) => {
 		config.success = res => {
+			if (res.statusCode !== 200) {
+				return toast(`请求服务端错误，错误码：${res.statusCode}`, 'none', 3000)
+			}
 			if (res.data.code) {
 				toast(res.data.msg)
 			}
-			resolve(res)
+			resolve(res.data)
 		}
 		config.fail = err => {
+			toast(`请求失败 ${err.errMsg}`, 'none', 3000)
 			reject(err)
 		}
 		wx.request(config)
@@ -54,14 +58,10 @@ function createURLParamsByObject (dataObject) {
  * @private 私有方法（依赖了上层作用域的变量）
  */
 function _configHeader (headers) {
-	let _headers = {}
 	for (let key of Object.keys(DEFAULT_HEADERS)) {
-		_headers[key] = DEFAULT_HEADERS[key]
+		headers[key] = DEFAULT_HEADERS[key]
 	}
-	for (let key of Object.keys(headers)) {
-		_headers[key] = headers[key]
-	}
-	return _headers
+	return headers
 }
 
 export default (rurl = argumentsErr(), method = argumentsErr(), data = null, headers = {'Content-Type': 'application/json'}) => {
