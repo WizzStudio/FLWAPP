@@ -1,6 +1,7 @@
 import { baseURL } from './config'
+import { setStorage } from '../common/scripts/wxUtil'
 
-export default () => {
+export default (lastAPI) => {
 	wx.login({
 		success: (data) => {
 			wx.request({
@@ -9,8 +10,9 @@ export default () => {
 				success: (res) => {
 					if (res.header['Authorization']) {
 						/* 如果header里有token，则更新 */
-						wx.setStorageSync('token', res.header['Authorization'])
+						setStorage('token', res.header['Authorization'])
 					}
+					lastAPI({'Authorization': res.header['Authorization']})
 				}
 			})
 		}

@@ -6,8 +6,9 @@ const notFound = () => {
 	toast('接口丢失了 >_< ', 'none', 3000)
 }
 
-const forbidden = () => {
-	Relogin()
+const forbidden = (lastAPI) => {
+	/* 登录失效后重登录 */
+	Relogin(lastAPI)
 }
 
 const serverError = () => {
@@ -18,16 +19,21 @@ const globalError = (code) => {
 	toast(`请求服务端错误，错误码：${code}`, 'none', 3000)
 }
 
+const badGateWay = () => {
+	toast(`插错了口`, 'none', 3000)
+}
+
 const codes = {
 	'404': notFound,
 	'403': forbidden,
 	'500': serverError,
+	'502': badGateWay,
 	'*': globalError
 }
 
-export default (code) => {
+export default (code, cb) => {
 	if (codes[code.toString()]) {
-		codes[code.toString()]()
+		codes[code.toString()](cb)
 	} else {
 		codes['*']()
 	}
