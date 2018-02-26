@@ -24,11 +24,12 @@ function _configRequest (config = {}) {
 		}
 		config.success = res => {
 			if (res.statusCode !== 200) {
-				return statusCodeFilter(res.statusCode)
+				statusCodeFilter(res.statusCode, (header) => {
+					config.header = _configHeader(header)
+					_configRequest(config)
+				})
+				return false
 			}
-			// if (res.statusCode === 403) {
-			// 	// Relogin() // 403 重登录
-			// }
 			if (res.header['Authorization']) {
 				/* 如果header里有token，则更新 */
 				setStorage('token', res.header['Authorization'])
@@ -36,6 +37,7 @@ function _configRequest (config = {}) {
 			if (res.data.code) {
 				toast(res.data.msg)
 			}
+			/* 在这里进行的返回的，那么在此之前完成重请求就可以 */
 			resolve(res.data)
 		}
 		wx.request(config)
