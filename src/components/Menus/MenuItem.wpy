@@ -2,24 +2,55 @@
   @import "../../common/styles/mixins";
   @import "../../common/styles/variables";
   @import "../../common/styles/common";
-  .item {
+
+  .MenuItem-Container {
+    display: flex;
+    flex-flow: column nowrap;
+    border-top: 20rpx solid #f4f4f4;
+  }
+  .MenuItem-Item {
+    display: inline-flex;
+    height: 80rpx;
     width: 100vw;
-    text-align: left;
-    padding: 10rpx 0 10rpx 40rpx;
-    image {
-      width: 20rpx;
-      height: 40rpx;
-      margin-left: 63vw;
-    }
+  }
+  .MenuItem-Item-name{
+    width: 642rpx;
+    margin-left: 20rpx;
+    padding-top: 25rpx;
+    border-bottom: 1rpx solid #f5f5f5;
+
+    font-size: 32rpx;
+    color: #333333;
+  }
+  .MenuItem-Img {
+    margin-left: 30rpx;
+    padding-top: 20rpx;
+    width: 65rpx;
+    height: 58rpx;;
+  }
+  .MenuItem-Tag {
+    width: 20rpx;
+    height: 40rpx;
+    padding-top: 20rpx;
+    padding-right: 30rpx;
+  }
+  .MenuItem-Tag-borderBottom {
+    border-bottom: 1rpx solid #f5f5f5;
   }
 </style>
 
 <template>
-  <ul class="l-box__verMid">
+  <ul class="MenuItem-Container">
     <repeat for="{{menuList}}" item="item">
-      <li class="item t2" @tap="click" id="{{item.unique}}">
-        {{item.value}}<image src="../../static/images/u125.png" />
-      </li>
+      <div class="MenuItem-Item">
+        <image class="MenuItem-Img" src="{{item.imgUrl}}" />
+        <li class="MenuItem-Item-name">
+          {{item.value}}
+        </li>
+        <div class="MenuItem-Tag-borderBottom">
+          <image class="MenuItem-Tag" src="../../static/images/u125.png" @tap="click" id="{{item.unique}}"/>
+        </div>
+      </div>
     </repeat>
   </ul> 
 </template>

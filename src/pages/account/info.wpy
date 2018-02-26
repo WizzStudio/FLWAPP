@@ -1,17 +1,75 @@
 <style lang="scss" type="text/scss">
+	@import "../../common/styles/variables";
+	@import "../../common/styles/mixins";
+	@import "../../common/styles/animate";
+  @import "../../common/styles/common";
+  .info-container {
+    display: flex;
+    flex-flow: column nowrap;
+    padding-left: 50rpx;
+  }
+  .info-item-container {
+    display: flex;
+    flex-flow: row nowrap;
+  }
+  .info-item-value {
+    margin-left: 50vw;
+  }
 </style>
 
 <template>
-  <div>信息修改页</div>
+  <view>
+    <span class="t1">基本资料</span>
+    <ul class="info-container">
+      <repeat for="{{optionList}}" item="item">
+        <div class="info-item">
+          <view wx:if="{{item.type === 'picker'}}"> 
+            <label>{{item.name}}</label>
+            <span style="float: right;">请选择</span>
+          </view>
+          <view wx:if="{{item.type === 'input'}}" class="info-item-container">
+            <label>{{item.name}}</label>
+            <input placeholder="请填写" >
+          </view>
+        </div>
+      </repeat>
+    </ul>
+  </view>
 </template>
 
 <script>
 import wepy from 'wepy'
-
+import BasicInput from '../../components/Inputs/BasicInput'
 export default class Info extends wepy.page {
   config = {}
   components = {}
-  data = {}
+  data = {
+    optionList: [
+      {
+        name: 'A',
+        type: 'input',
+      },
+      {
+        name: 'B',
+        type: 'input'
+      },
+      {
+        name: 'C',
+        type: 'input'
+      },
+      {
+        name: 'D',
+        type: 'picker',
+        datas: {
+          array: ['男','女']
+        }
+      },
+      {
+        name: 'E',
+        type: 'input'
+      },
+    ]
+  }
   computed = {}
 
   onLoad () {}

@@ -2,31 +2,40 @@
   @import "../../common/styles/mixins";
   @import "../../common/styles/variables";
   @import "../../common/styles/common";
-  .container {
-    @include rowBox();
+  .c-show-main {
+    display: inline-flex;
+    margin-left: 95rpx;
+    margin-right: 95rpx;
+  }
+  .c-show-item-img {
+    width: 60rpx;
+    height: 60rpx;
   }
   .c-show-item {
-    @include allMidBox();
-    width: 25vw;
-    height: 30vh;
-    //@include fullBorder(2px,white);
+    display:flex;
+    flex-flow: column nowrap;
+    justify-content: center; 
+    width: 250rpx;
   }
-  .text-center {
-    text-align: right;
-  }
-  .c-show-img {
-    width: 15vw;
-    height: 15vw;
+  .c-show-item {
+    &-name {
+      font-size: 32rpx;
+      color: #333333;
+    }
+    &-number {
+      font-size: 24rpx;
+      color: #666666;
+    }
   }
 </style>
 
 <template>
-  <ul class="container">
+  <ul class="c-show-main">
     <repeat for="{{showDatas}}">
       <div class="c-show-item">
-        <span class="t5 text-center">{{item.name}}</span>
-        <image src="../../static/images/u153.png" class="c-show-img"/>
-        <span class="t5 text-center">{{item.number}}</span>
+        <image src="{{item.src}}" class="c-show-item-img"/>
+        <div class="c-show-item-name">{{item.name}}</div>
+        <div class="c-show-item-number">{{item.number}}</div>
       </div>
     </repeat>
   </ul>

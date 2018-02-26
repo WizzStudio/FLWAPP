@@ -1,11 +1,31 @@
 <style lang="scss" type="text/scss">
+  .centerInfomation {
+    margin-top: 20rpx;
+    border-bottom: 400rpx solid #f4f4f4;
+  }
+  .centerInfomation-Module {
+    &-1 {
+      height: 240rpx;
+    }
+    &-2 {
+      height: 180rpx;
+    }
+    &-3 {
+      margin-top: 20rpx;
+    }
+  }
+  .centerInfomation-Tag {
+    width: 24rpx;
+    height: 48rpx;
+  }
+
 </style>
 
 <template>
-  <view>
-    <Info :infoDatas="infoDatas"></Info>
-    <Show :showDatas="showDatas"></Show>
-    <Menu :menuList="menuList"></Menu>
+  <view class="centerInfomation">
+    <Info class="centerInfomation-Module-1" :infoDatas="infoDatas"></Info>
+    <Show class="centerInfomation-Module-2" :showDatas="showDatas"></Show>
+    <Menu class="centerInfomation-Module-3" :menuList="menuList"></Menu>
   </view>
 </template>
 
@@ -28,47 +48,50 @@
       menuList: [
         {
           unique: 'record',
-          value: '我的花迹'
+          value: '我的花迹',
+          imgUrl: '../../static/images/我的花迹.png'
         },
         {
           unique: 'application',
-          value: '申请活动'
+          value: '申请活动',
+          imgUrl: '../../static/images/申请活动.png'
         },
         {
           unique: 'message',
-          value: '消息通知'
+          value: '消息通知',
+          imgUrl: '../../static/images/消息通知.png'
         },
         {
           unique: 'problem',
-          value: '问题反馈'
+          value: '问题反馈',
+          imgUrl: '../../static/images/问题反馈.png'
         }
       ],
       infoDatas: {
         avatarUrl: '../../static/images/logo.png',
-        name: '高政委',
+        name: '马化腾',
         university: '西安电子科技大学',
         major: '软件工程',
-        company: 'Tecent',
+        company: '腾讯控股有限公司',
         position: 'CEO',
-        stateClass: 'success',
-        stateTitle: '已审核'
+        stateClass: 'failed',
+        stateTitle: '审核失败'
       },
       showDatas: [
         {
-          name: '已获得奖学金',
-          number: '1000' + ' 元'
-        },
-        {
           name: '小红花',
-          number: '0 / 10' + ' 朵'
+          number: '0/10' + ' 朵',
+          src: '../../static/images/小红花.png'
         },
         {
-          name: '导师',
-          number: '5' + ' 人'
+          name: '捐赠学生',
+          number: '5' + ' 人',
+          src: '../../static/images/捐赠学生.png'
         },
         {
-          name: '已做义工时间',
-          number: '5' + ' 小时'
+          name: '沙漏',
+          number: '5' + ' 小时',
+          src: '../../static/images/沙漏.png'
         }
       ]
     }

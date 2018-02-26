@@ -24,7 +24,8 @@ const ajax = ({url, method, data, headers}) => {
  * @return {Promise}
  */
 const jumpTo = (url) => {
-	return configFn(wx.navigateTo, {url})
+	return configFn(wx.switchTab, {url})
+	//	return configFn(wx.navigateToTab, { url })
 }
 
 /**

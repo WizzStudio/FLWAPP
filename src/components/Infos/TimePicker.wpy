@@ -1,0 +1,53 @@
+<style lang="scss" type="text/scss">
+
+</style>
+
+<template>
+  <picker-view>
+    <repeat for="{{options}}" item="item">
+      <pick-view-colum>
+        <repeat for="{{item}}" date="date">
+          <view>{{date.dateValue}}{{date.dateUnit}}</view>
+        </repeat>
+      </pick-view-colum>
+    </repeat>
+  </picker-view>
+</template>
+
+<script>
+import wepy from 'wepy'
+
+const date = new Date()
+const years = []
+const months = []
+const days = []
+for (let i = 1990; i <= date.getFullYear(); i++) {
+  years.push(i)
+}
+for (let i = 1; i <= 12; i++) {
+  months.push(i)
+}
+for (let i = 1; i <= 31; i++) {
+  days.push(i)
+}
+
+export default class Picker extends wepy.component {
+  components = {}
+  data = {
+    Date: [
+      {
+
+      }
+    ]
+  }
+  computed = {}
+
+  customFunction () {}
+
+  methods = {}
+  events = {}
+  props = {}
+}
+</script>
+
+

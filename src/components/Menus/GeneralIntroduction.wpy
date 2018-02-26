@@ -2,82 +2,79 @@
   @import "../../common/styles/mixins";
   @import "../../common/styles/variables";
   @import "../../common/styles/common";
-
-  .c-info-module {
+  .info-container {
+    display: inline-flex;
+    align-items: center;
+    width: 100vw;
+    border-bottom: 2rpx solid #f4f4f4;
+  }
+  .info-module {
     &-1 {
-      width: 25vw;
-      padding: 20rpx;
-      height: 15vh;
-      .avatar {
-        width: 160rpx;
-        height: 160rpx;
-        border-radius:50%;
-        background-color: rgb(175, 220, 241);
-      }
+      margin-left: 30rpx;
+      margin-right: 25rpx;
+    }
+    &-1-avatar {
+      height: 160rpx;
+      width: 160rpx;
+      border-radius: 50%;
+      background-color: aqua;
     }
     &-2 {
-      width: 50vw;
-      height: 15vh;
-      &-2 {
-        font-size: 30rpx;
-        color: rgb(139, 139, 139);
-        margin-top: 80rpx;
-      }
+      display:flex;
+      flex-flow: column nowrap;
+      width: 300rpx;
+    }
+    &-2-name {
+      font-size: 38rpx;
+      color: #333333;
+    }
+    &-2-basic-state {
+      display: inline-block;
+      font-size: 24rpx;
+      border: 1px solid gray;
+      border-radius: 4px;
+      margin-left: 20rpx;
+    }
+    &-2-state-success {
+      color: #406df0;
+      border-color: #406df0; 
+    }
+    &-2-state-failed {
+      color: #e64949;
+      border-color: #e64949;
+    }
+    &-2-state-checikng {
+      color: #fdfc39;
+      border-color: #fdfc39;
+    }
+    &-2-more {
+      margin-top: 10rpx;
+      font-size: 24rpx;
+      color: #666666;
     }
     &-3 {
-      width: 10vw;
-      height: 15vh;
-      image {
-        width: 50rpx;
-        height: 100rpx;
-        padding-left: 70rpx;
-        padding-top: 40rpx;
-      }
+      margin-right: 30rpx;
+      margin-left: 200rpx;
     }
-  }
-  .c-info-state {
-    &-success{
-      color: coral;
-      border-color: coral;
-    }
-    &-checking {
-      color: green;
-      border-color: green;
-    }
-    &-faild {
-      color: red;
-      border-color: red;
-    }
-  }
-  .c-info-name {
-    @include fontSizeColor(40rpx, rgb(140, 148, 140));
-    margin-right: 30rpx;
-  }
-  .c-info-basic-state {
-    @include fullBorder(1px, green);
-    @include borderRadius(10px);
-    @include fontSizeColor(30rpx, green);
-    padding: 10rpx 20rpx 10rpx 20rpx;
   }
 </style>
 
 <template>
-  <view class="l-box__rowMid">
-    <div class="c-info-module-1">
-      <image src="../../static/images/logo.png" class="avatar" alt="我的头像"/>
+  <view class="info-container">
+    <div class="info-module-1">
+      <image src="../../static/images/logo.png" class="info-module-1-avatar" alt="我的头像"/>
     </div>
-    <div class="c-info-module-2 l-box__verMid">
-      <div class="c-info-module-2-1">
-        <span class="c-info-name">{{infoDatas.name}}</span>
-        <span class="c-info-basic-state c-info-state-{{infoDatas.stateClass}}">{{infoDatas.stateTitle}}</span>
+    <div class="info-module-2">
+      <div>
+        <span class="info-module-2-name">{{infoDatas.name}}</span>
+        <span class="info-module-2-basic-state info-module-2-state-{{infoDatas.stateClass}}">{{infoDatas.stateTitle}}</span>
       </div>
-      <div class="c-info-module-2-2">
-        <span>{{infoDatas.university}}</span>
-        <span>{{infoDatas.major}}</span>
+      <div class="info-module-2-more">
+        <span>{{infoDatas.company}} | {{infoDatas.position}}</span>
       </div>
     </div>
-    <div class="c-info-module-3">
-        <image src="../../static/images/u125.png" @tap="click" />
+    <div class="info-module-3">
+        <image class="centerInfomation-Tag" src="../../static/images/u125.png" @tap="click" />
     </div>
   </view>
 </template>
