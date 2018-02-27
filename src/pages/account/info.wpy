@@ -6,76 +6,169 @@
   .info-container {
     display: flex;
     flex-flow: column nowrap;
-    padding-left: 50rpx;
+    padding-left: 30rpx;
+  }
+  .info-item-container {
+    font-size: 32rpx;
+    color: #333333;
+    height: 88rpx;
+    border-bottom: 2rpx solid #f4f4f4;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
   }
   .info-item-container {
     display: flex;
     flex-flow: row nowrap;
   }
-  .info-item-value {
-    margin-left: 50vw;
+
+  .info-item-name {
+    width: 310rpx;
+  }
+  .info-item-input {
+    text-align:right;
+    color: #666666;
+  }
+  .Info-Tag {
+    width: 20rpx;
+    height: 40rpx;
+    //  padding-bottom:6rpx;
+    padding-right: 10rpx;
+    padding-left: 10rpx;
+    margin-bottom: -5rpx;
+  }
+  .info-tag-value {
+    //position: relative;
+    //top: -20px;
+    label {
+      color: #666666;
+      position: absolute;
+      width: 590rpx;
+      text-align: right;
+      right: 70rpx;
+    }
+    image {
+      position: absolute;
+      right: 30rpx;
+    }
+  }
+  .info-module {
+    padding-top: 10rpx;
+    height: 60rpx;
+    border-top: 20rpx solid #f4f4f4;
+    &-title {
+      font-size: 28rpx;
+      color: #999999;
+    }
+    &-title-son {
+      font-size: 24rpx;
+      color: #999999;
+    }
+    &-title-Icon {
+      height: 40rpx;
+      max-width: 10rpx;
+      margin-right: 20rpx;
+      margin-left: 30rpx;
+      background-color: #e10b1c;
+      color: #e10b1c;
+    }
   }
 </style>
-
 <template>
   <view>
-    <span class="t1">基本资料</span>
+    <view class="info-module">
+      <div class="info-module-title-Icon">1</div>
+      <span class="info-module-title">基本资料</span>
+      <span class="info-module-title-son">（请务必填写）</span>
+    </view>
     <ul class="info-container">
-      <repeat for="{{optionList}}" item="item">
-        <div class="info-item">
-          <view wx:if="{{item.type === 'picker'}}"> 
-            <label>{{item.name}}</label>
-            <span style="float: right;">请选择</span>
+      <repeat for="{{optionList}}" item="item" index="index">
+        <div class="info-item-container">
+          <view wx:if="{{item.type === 'picker'}}">
+            <label class="info-item-name info-item-repair-name">{{item.name}}</label>
+            <div class="info-tag-value">
+              <label class="">{{item.value}}</label>
+              <image class="Info-Tag" src="../../static/images/u125.png" />
+            </div>
           </view>
           <view wx:if="{{item.type === 'input'}}" class="info-item-container">
-            <label>{{item.name}}</label>
-            <input placeholder="请填写" >
+            <label class="info-item-name">{{item.name}}</label>
+            <input placeholder="{{item.value}}" class="info-item-input" />
           </view>
         </div>
       </repeat>
     </ul>
   </view>
+  
 </template>
 
 <script>
 import wepy from 'wepy'
-import BasicInput from '../../components/Inputs/BasicInput'
 export default class Info extends wepy.page {
   config = {}
   components = {}
   data = {
     optionList: [
       {
-        name: 'A',
+        name: '真实姓名',
         type: 'input',
+        value: '马化腾'
       },
       {
-        name: 'B',
-        type: 'input'
-      },
-      {
-        name: 'C',
-        type: 'input'
-      },
-      {
-        name: 'D',
+        name: '出生年月',
         type: 'picker',
-        datas: {
-          array: ['男','女']
-        }
+        value: '2000-1-1'
       },
       {
-        name: 'E',
-        type: 'input'
+        name: '性别',
+        type: 'picker',
+        value: '男'
       },
+      {
+        name: '学校',
+        type: 'picker',
+        value: '西安电子科技大学'
+      },
+      {
+        name: '学历',
+        type: 'picker',
+        value: '博士后'
+      },
+      {
+        name: '学院',
+        type: 'input',
+        value: '软件学院'
+      },
+      {
+        name: '专业',
+        type: 'input',
+        value: '软件工程'
+      },
+      {
+        name: '入学时间',
+        type: 'picker',
+        value: '2012-1-1'
+      },
+      {
+        name: '申请方向',
+        type: 'input',
+        value: '区块链'
+      },
+      {
+        name: '一句话介绍自己',
+        type: 'input',
+        value: '我，秦始皇，打钱'
+      }
     ]
   }
   computed = {}
 
   onLoad () {}
 
-  onShow () {}
-
+  onShow () {
+    console.log(optionList[0].value)
+  }
+  props = {}
   customData = {}
   methods = {}
   events = {}

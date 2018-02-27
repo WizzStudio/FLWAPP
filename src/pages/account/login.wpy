@@ -154,6 +154,8 @@
 		computed = {}
 
 		onLoad () {
+			//	FileUpLoad()
+			//	FileDownLoad()
 		}
 
 		onShow () {

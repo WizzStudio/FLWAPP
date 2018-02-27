@@ -56,7 +56,7 @@
 		}
 
 		onShow () {
-			jumpTo('account/login')
+			jumpTo('account/info')
 		}
 
 		data = {
