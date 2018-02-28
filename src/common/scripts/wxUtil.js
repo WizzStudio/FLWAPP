@@ -27,7 +27,6 @@ const jumpTo = (url) => {
 	return configFn(wx.switchTab, {url})
 	//	return configFn(wx.navigateToTab, { url })
 }
-
 /**
  * 关闭所有页面，打开到应用内的某个页面。
  * @param url
@@ -103,6 +102,21 @@ const clearStorage = () => {
 	return wx.clearStorage()
 }
 
+// 从本地上传头像
+//	avatarUrl：当前页面存储在data里的头像属性名
+const chooseAvatar = (that, avatarUrl) => {
+	wx.chooseImage({
+		count: 1,
+		success: function (res) {
+			that[avatarUrl] = res.tempFilePaths[0]
+			that.$apply()
+		},
+		fail: function (res) {
+			toast('请重新选择图片', 'fail')
+		}
+	})
+}
+
 export {
 	ajax, // 发送ajax请求
 	jumpTo, // page跳转
@@ -119,5 +133,6 @@ export {
 	setStorage, // 设置缓存
 	getStorage, // 获取缓存
 	removeStorage, // 删除某条缓存数据
-	clearStorage // 清空缓存数据
+	clearStorage, // 清空缓存数据
+	chooseAvatar //	上传头像
 }

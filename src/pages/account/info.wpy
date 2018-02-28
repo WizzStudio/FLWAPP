@@ -84,13 +84,18 @@
     }
   }
   .info-textarea {
-    //margin-top: 10rpx;
     height: 340rpx;
     border: 2rpx solid #b7c6cd;
     box-shadow: inset 0 2px 4px 0 hsla(0, 0%, 0%, 0.08);
     border-radius: 12rpx;
     width: 680rpx;
     @include fontSizeColor(32rpx, #666666);
+  }
+  .info-textarea-count {
+    font-size: 20rpx;
+    color: #999;
+    padding:10rpx;
+    margin-left: 620rpx;
   }
   .info-item-avatar-tag {
     position: absolute;
@@ -101,13 +106,39 @@
     color: #999999;
   }
   .info-module-attachment {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
     height: 280rpx;
-    &-image {
+    image {
       height: 80rpx;
       width: 80rpx;
+      padding-bottom: 20rpx;
+    }
+    span {
+      @include fontSizeColor(22rpx, #999999);
+    }
+    div {
+      width: 750rpx;
+      display: inline-flex;
+      margin-top: 20rpx;
+      button {
+        @include fontSizeColor(28rpx, #e01b1c);
+        width: 375rpx;
+        height: 80rpx;
+        padding-left: 70rpx;
+        padding-right: 70rpx;
+        background-color: #fff;
+        &:active {
+          background-color: #bfbfbf;
+        }
+        &::after {
+          border: none;
+        }
+      }
     }
   }
-
 </style>
 <template>
   <view>
@@ -118,8 +149,8 @@
     </view>
     <div class="info-item-container info-item-avatar-container">
         <label class="info-item-name">头像</label>
-        <image src="../../static/images/logo.png" class="info-item-avatar-img" alt="我的头像"/>
-        <image src="../../static/images/u125.png" class="Info-Tag info-item-avatar-tag"/>
+        <image src="{{avatarUrl}}" class="info-item-avatar-img" alt="我的头像" @tap="changeAvatar"/>
+        <image src="../../static/images/u125.png" class="Info-Tag info-item-avatar-tag" @tap="changeAvatar"/>
     </div>
     <ul class="info-container">
       <repeat for="{{optionList}}" item="item" index="index">
@@ -157,7 +188,7 @@
           </view>
           <view wx:if="{{item.type === 'input'}}" class="info-item-container">
             <label class="info-item-name">{{item.name}}</label>
-            <input placeholder="{{item.value}}" class="info-item-input" />
+            <input placeholder="{{item.value}}" class="info-item-input"/>
           </view>
         </div>
       </repeat>
@@ -170,7 +201,7 @@
     </view>
     <div class="info-container">
       <textarea class="info-textarea" value="what the fuck"/>
-      <span style="font-size: 20rpx;color: #999;padding:10rpx;margin-left: 620rpx;">123/600</span>
+      <span class="info-textarea-count">123/600</span>
     </div>
   </view>
   <view>
@@ -180,7 +211,7 @@
     </view>
     <div class="info-container">
       <textarea class="info-textarea" value="what the fuck"/>
-      <span style="font-size: 20rpx;color: #999;padding:10rpx;margin-left: 620rpx;">/200</span>
+      <span class="info-textarea-count">/200</span>
     </div>
   </view>
   <view>
@@ -189,7 +220,12 @@
       <span class="info-module-title">附件</span>
     </view>
     <view class="info-module-attachment">
-      <image src="../../static/images/附件.png" class="info-module-attachment-image" />
+      <image src="../../static/images/附件.png" />
+      <span>上传</span>
+      <div>
+        <button @tap="ButtonClick" id="save" class="add-center-border">保存</button>
+        <button @tap="ButtonClick" id="upload">提交</button>
+      </div>
     </view>
   </view>
   
@@ -197,6 +233,7 @@
 
 <script>
 import wepy from 'wepy'
+import { chooseAvatar } from '../../common/scripts/wxUtil'
 export default class Info extends wepy.page {
   config = {}
   components = {}
@@ -268,7 +305,8 @@ export default class Info extends wepy.page {
         type: 'input',
         value: '202983471290834710'
       }
-    ]
+    ],
+    avatarUrl: '../../static/images/logo.png'
   }
   computed = {}
 
@@ -277,7 +315,27 @@ export default class Info extends wepy.page {
   onShow () {}
   props = {}
   customData = {}
-  methods = {}
+  methods = {
+    ButtonClick (event) {
+      if (event.target.id === 'save') {
+        wx.showToast({
+          title: '已保存',
+          icon: 'success',
+          duration: 2000
+        })
+      }
+      if (event.target.id === 'upload') {
+        wx.showToast({
+          title: '已提交',
+          icon: 'success',
+          duration: 1500
+        })
+      }
+    }
+  }
+  changeAvatar (event) {
+    chooseAvatar(this, 'avatarUrl')
+  }
   events = {}
 }
 </script>
