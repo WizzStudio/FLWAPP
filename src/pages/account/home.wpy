@@ -30,14 +30,14 @@
 </template>
 
 <script>
-  import wepy from 'wepy'
+	import page from '../base/basicPage.wpy'
   import GeneralIntroduction from '../../components/Menus/GeneralIntroduction'
   import MenuItems from '../../components/Menus/MenuItem'
   import Exhibits from '../../components/Menus/show'
-  import { debounce } from '../../common/scripts/utils'
-  import { jumpTo } from '../../common/scripts/wxUtil'
+//  import { debounce } from '../../common/scripts/utils'
+//  import { jumpTo } from '../../common/scripts/wxUtil'
 
-  export default class Home extends wepy.page {
+  export default class Home extends page {
     config = {}
     components = {
       Info: GeneralIntroduction,
@@ -108,10 +108,10 @@
     customData = {}
     methods = {}
     events = {
-      'menu-click': debounce((key, event) => {
+      'menu-click': this.$UTIL.debounce((key, event) => {
         if (key === 'record') {
           console.log('前往花迹')
-          jumpTo('./login')
+          this.$WX.jumpTo('./login')
         }
         if (key === 'application') {
           console.log('前往申请活动')
@@ -123,8 +123,8 @@
           console.log('前往问题反馈')
         }
       }, 200),
-      'change-information': debounce((key, event) => {
-        jumpTo('./info')
+      'change-information': this.$UTIL.debounce((key, event) => {
+        this.$WX.jumpTo('./info')
         if (key === 'student') {
           console.log('前往学生个人信息修改页')
           //  跳转到修改页

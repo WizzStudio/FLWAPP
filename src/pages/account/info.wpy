@@ -3,7 +3,7 @@
 	@import "../../common/styles/mixins";
 	@import "../../common/styles/animate";
   @import "../../common/styles/common";
-  
+
   .info-container {
     display: flex;
     flex-flow: column nowrap;
@@ -228,13 +228,13 @@
       </div>
     </view>
   </view>
-  
+
 </template>
 
 <script>
-import wepy from 'wepy'
-import { chooseAvatar } from '../../common/scripts/wxUtil'
-export default class Info extends wepy.page {
+	import page from '../base/basicPage.wpy'
+	// import { chooseAvatar } from '../../common/scripts/wxUtil'
+export default class Info extends page {
   config = {}
   components = {}
   data = {
@@ -334,7 +334,7 @@ export default class Info extends wepy.page {
     }
   }
   changeAvatar (event) {
-    chooseAvatar(this, 'avatarUrl')
+    this.$WX.chooseAvatar(this, 'avatarUrl')
   }
   events = {}
 }

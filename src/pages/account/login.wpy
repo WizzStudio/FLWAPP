@@ -121,14 +121,14 @@
 </template>
 
 <script>
-	import wepy from 'wepy'
+	import page from '../base/basicPage.wpy'
 	import BasicButton from '../../components/Buttons/BasicButton'
 	import BasicInput from '../../components/Inputs/BasicInput'
-	import {debounce, isInviteCode, isPhoneNumber, countFn, isVerifyCode} from '../../common/scripts/utils'
-	import {UserInviteCodeCheck, UserRegister, UserVerifyCode, UserVerifyCodeCheck} from '../../API/index'
-	import {toast} from '../../common/scripts/wxUtil'
+//	import {debounce, isInviteCode, isPhoneNumber, countFn, isVerifyCode} from '../../common/scripts/utils'
+//	import {UserInviteCodeCheck, UserRegister, UserVerifyCode, UserVerifyCodeCheck} from '../../API/index'
+//	import {toast} from '../../common/scripts/wxUtil'
 
-	export default class Login extends wepy.page {
+	export default class Login extends page {
 		config = {}
 		components = {
 			verifyBtn: BasicButton, // 验证码按钮
@@ -196,7 +196,7 @@
 			this.isCounting = true
 			this.state = 4
 			let num = 60
-			countFn(60, 1000, () => {
+			this.$UTIL.countFn(60, 1000, () => {
 				num--
 				this.verifyNum = num.toString()
 				this.$apply()
@@ -225,26 +225,26 @@
 		methods = {
 		}
 		events = {
-			'input-typein': debounce((key, event) => {
+			'input-typein': this.$UTIL.debounce((key, event) => {
 				/* 验证邀请码 */
-				if (isInviteCode(event.detail.value) && key === 'invite') {
+				if (this.$UTIL.isInviteCode(event.detail.value) && key === 'invite') {
 					this.state1(event.detail.value)
 				}
-				if (!isInviteCode(event.detail.value) && key === 'invite') {
+				if (!this.$UTIL.isInviteCode(event.detail.value) && key === 'invite') {
 					this.state0()
 				}
 				/* 验证手机号 */
-				if (isPhoneNumber(event.detail.value) && key === 'phone') {
+				if (this.$UTIL.isPhoneNumber(event.detail.value) && key === 'phone') {
 					this.state3(event.detail.value)
 				}
-				if (!isPhoneNumber(event.detail.value) && key === 'phone') {
+				if (!this.$UTIL.isPhoneNumber(event.detail.value) && key === 'phone') {
 					this.state2()
 				}
 				/* 验证验证码 */
-				if (isVerifyCode(event.detail.value) && key === 'verify') {
+				if (this.$UTIL.isVerifyCode(event.detail.value) && key === 'verify') {
 					this.state6(event.detail.value)
 				}
-				if (!isVerifyCode(event.detail.value) && key === 'verify') {
+				if (!this.$UTIL.isVerifyCode(event.detail.value) && key === 'verify') {
 					this.state5()
 				}
 			}, 200),
@@ -252,15 +252,15 @@
 			},
 			'btn-click': (key) => {
 				if (key === 'next' && this.state === 0) {
-					return toast('请输入正确邀请码！')
+					return this.$WX.toast('请输入正确邀请码！')
 				}
 				/* 邀请码格式通过 */
 				if (key === 'next' && this.state === 1) {
 //					console.log('该去验证邀请码了')
-					UserInviteCodeCheck(this.inviteCode)
+					this.$API.UserInviteCodeCheck(this.inviteCode)
 						.then(data => {
 							if (!data.code) {
-								toast(data.msg)
+								this.$WX.toast(data.msg)
 								this.state2()
 							}
 						})
@@ -271,10 +271,10 @@
 					if (this.isCounting) {
 						return false
 					}
-					UserVerifyCode(this.phoneNumber)
+					this.$API.UserVerifyCode(this.phoneNumber)
 						.then(data => {
 							if (!data.code) {
-								toast(data.msg)
+								this.$WX.toast(data.msg)
 								this.state4()
 							}
 						})
@@ -283,12 +283,12 @@
 				/* 验证码格式通过 */
 				if (key === 'done' && this.state === 6) {
 //					console.log('该请求验证验证码了')
-					UserVerifyCodeCheck(this.phoneNumber, this.verifyCode)
+					this.$API.UserVerifyCodeCheck(this.phoneNumber, this.verifyCode)
 						.then(data => {
 							if (!data.code) {
-								UserRegister(this.phoneNumber, this.inviteCode).then(data => {
+								this.$API.UserRegister(this.phoneNumber, this.inviteCode).then(data => {
 									if (!data.code) {
-										toast('注册成功！', 'success', 3000)
+										this.$WX.toast('注册成功！', 'success', 3000)
 									}
 								})
 							}
@@ -297,12 +297,12 @@
 
 				/* 没有请求邀请码 */
 				if (key === 'done' && this.state < 4) {
-					toast('请先获取验证码!')
+					this.$WX.toast('请先获取验证码!')
 				}
 
 				/* 输入了错误格式的验证码 */
 				if (key === 'done' && this.state >= 4 && this.state < 6) {
-					toast('请输入正确格式的验证码！')
+					this.$WX.toast('请输入正确格式的验证码！')
 				}
 			}
 		}

@@ -1,0 +1,15 @@
+<style lang="scss" type="text/scss">
+
+</style>
+
+<template>
+
+</template>
+
+<script>
+	/* 组件基类 */
+  import wepy from 'wepy'
+
+  export default class BasicComponent extends wepy.component {
+  }
+</script>

@@ -32,11 +32,11 @@
 </template>
 
 <script>
-	import wepy from 'wepy'
+	import page from './base/basicPage.wpy'
 //	import { UserLogin, test } from '../API/index'
-	import { jumpTo } from '../common/scripts/wxUtil'
+//	import { jumpTo } from '../common/scripts/wxUtil'
 
-	export default class Index extends wepy.page {
+	export default class Index extends page {
 		config = {
 			navigationBarTitleText: '小红花'
 		}
@@ -56,7 +56,7 @@
 		}
 
 		onShow () {
-			jumpTo('account/info')
+			this.$WX.jumpTo('account/info')
 		}
 
 		data = {
