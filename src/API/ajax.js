@@ -1,4 +1,5 @@
 import MockServer from './mock/mockServer.js' // mock数据服务
+import Route from './mock/route' // mock数据服务
 import { toast, getStorage, setStorage } from '../common/scripts/wxUtil'
 import statusCodeFilter from './statusCodeFilter'
 import * as config from './config'
@@ -139,6 +140,7 @@ export default (rurl = argumentsErr(), method = argumentsErr(), data = null, hea
 		}
 	} else {
 		console.log('[HTTP Request]: request interrupted by mockServer')
+		// return Route(rurl)
 		return MockServer(rurl)
 	}
 }

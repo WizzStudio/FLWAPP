@@ -1,7 +1,7 @@
 import ajax from './ajax'
 import { wxLogin } from '../common/scripts/wxUtil'
 
-const test = () => {
+const Test = () => {
 	return ajax('/test', 'get', {a: 1, b: 2})
 }
 
@@ -84,7 +84,7 @@ const Login = () => {
 //		return ajax(DownLoadUrl, 'get')
 //	}
 export {
-	test,
+	Test,
 	UserLogin,
 	UserVerifyCode,
 	UserVerifyCodeCheck,

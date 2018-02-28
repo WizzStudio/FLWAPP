@@ -30,10 +30,17 @@ const UserRegister = {
 	}
 }
 
+const Test = {
+	'list|1-10': [
+		{'id|10': 1}
+	]
+}
+
 export {
 	UserLogin,
 	UserInviteCodeCheck,
 	UserVerifyCode,
 	UserVerifyCodeCheck,
-	UserRegister
+	UserRegister,
+	Test
 }
