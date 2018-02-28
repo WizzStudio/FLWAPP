@@ -1,5 +1,4 @@
 import ajax from './ajax'
-import { wxLogin } from '../common/scripts/wxUtil'
 
 const Test = () => {
 	return ajax('/test', 'get', {a: 1, b: 2})
@@ -52,17 +51,6 @@ const UserRegister = (phone, inviteCode) => {
 	return ajax('/user/register', 'get', {phone, inviteCode})
 }
 
-/**
- * 前端API 登录流程封装
- * @constructor
- */
-const Login = () => {
-	wxLogin()
-		.then(data => {
-			UserLogin(data.code)
-		})
-}
-
 // const = ()=>{
 // 	return ajax('','get',{})
 // }
@@ -89,8 +77,7 @@ export {
 	UserVerifyCode,
 	UserVerifyCodeCheck,
 	UserRegister,
-	UserInviteCodeCheck,
-	Login
+	UserInviteCodeCheck
 	//	FileUpLoad,
 	//	FileDownLoad
 }

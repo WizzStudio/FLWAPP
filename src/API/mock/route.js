@@ -20,10 +20,8 @@ export default function (rurl) {
 	})
 }
 
-// api['key']()
+// this.$api('TEST')
 //
 // mock(route(API['key'].))
 //
 // route['TEST'] -> template
-
-

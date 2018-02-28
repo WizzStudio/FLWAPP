@@ -257,7 +257,9 @@
 				/* 邀请码格式通过 */
 				if (key === 'next' && this.state === 1) {
 //					console.log('该去验证邀请码了')
-					this.$API.UserInviteCodeCheck(this.inviteCode)
+					/* TODO: 重构后的测试接口 */
+					this.$APX('UserInviteCodeCheck', {})
+//					this.$API.UserInviteCodeCheck(this.inviteCode)
 						.then(data => {
 							if (!data.code) {
 								this.$WX.toast(data.msg)
