@@ -49,19 +49,10 @@
     border-radius: 50%;
   }
   .info-tag-value {
-    //position: relative;
-    //top: -20px;
-    label {
-      @include fontSizeColor(32rpx, #666666);
-      position: absolute;
-      width: 590rpx;
-      text-align: right;
-      right: 70rpx;
-    }
-    image {
-      position: absolute;
-      right: 30rpx;
-    }
+    display: inline-flex;
+    position: absolute;
+    right: 30rpx;
+    @include fontSizeColor(32rpx, #666666);
   }
   .info-module {
     height: 60rpx;
@@ -144,7 +135,7 @@
   <view>
     <view class="info-module">
       <div class="info-module-title-Icon">1</div>
-      <span class="info-module-title">基本资料</span>
+      <span class="info-module-title" @tap="checkItemIndex">基本资料</span>
       <span class="info-module-title-son">（请务必填写）</span>
     </view>
     <div class="info-item-container info-item-avatar-container">
@@ -158,7 +149,7 @@
           <view wx:if="{{item.type === 'picker'}}">
             <label class="info-item-name info-item-repair-name">{{item.name}}</label>
             <div class="info-tag-value">
-              <label class="">{{item.value}}</label>
+              <Picker :Datas="item.data" :PickerIsDisabled="item.disabled" :syncNumber.sync="item.index" :PickerId="item.id" :value.sync="item.value"/>
               <image class="Info-Tag" src="../../static/images/u125.png" />
             </div>
           </view>
@@ -180,7 +171,9 @@
       <repeat for="{{identityList}}" item="item" index="index">
         <div class="info-item-container">
           <view wx:if="{{item.type === 'picker'}}">
-            <label class="info-item-name info-item-repair-name">{{item.name}}</label>
+            <label class="info-item-name info-item-repair-name">
+              {{item.name}}
+            </label>
             <div class="info-tag-value">
               <label class="">{{item.value}}</label>
               <image class="Info-Tag" src="../../static/images/u125.png" />
@@ -228,15 +221,16 @@
       </div>
     </view>
   </view>
-
 </template>
 
 <script>
-	import page from '../base/basicPage.wpy'
-	// import { chooseAvatar } from '../../common/scripts/wxUtil'
+  import page from '../base/basicPage.wpy'
+  import Picker from '../../components/Infos/Picker'
 export default class Info extends page {
   config = {}
-  components = {}
+  components = {
+    Picker: Picker
+  }
   data = {
     optionList: [
       {
@@ -245,24 +239,36 @@ export default class Info extends page {
         value: '马化腾'
       },
       {
-        name: '出生年月',
+        name: '出生年',
         type: 'picker',
-        value: '2000-1-1'
+        value: '1998',
+        data: ['1995', '1996', '1997', '1998'],
+        disabled: false,
+        id: 'birth'
       },
       {
         name: '性别',
         type: 'picker',
-        value: '男'
+        value: '男',
+        data: ['男', '女'],
+        disabled: true,
+        id: 'sex'
       },
       {
         name: '学校',
         type: 'picker',
-        value: '西安电子科技大学'
+        value: '西安电子科技大学',
+        data: ['西安电子科技大学', '电子科技大学', '北京邮电大学', '华中科技大学'],
+        disabled: true,
+        id: 'school'
       },
       {
         name: '学历',
         type: 'picker',
-        value: '博士后'
+        value: '本科',
+        data: ['本科', '硕士', '博士', '博士后'],
+        disabled: false,
+        id: 'xuewei'
       },
       {
         name: '学院',
@@ -277,7 +283,10 @@ export default class Info extends page {
       {
         name: '入学时间',
         type: 'picker',
-        value: '2012-1-1'
+        value: '2017',
+        data: ['2017', '2016', '2015', '2013'],
+        disabled: true,
+        id: 'time'
       },
       {
         name: '申请方向',
@@ -310,7 +319,9 @@ export default class Info extends page {
   }
   computed = {}
 
-  onLoad () {}
+  onLoad () {
+
+  }
 
   onShow () {}
   props = {}
@@ -336,6 +347,15 @@ export default class Info extends page {
   changeAvatar (event) {
     this.$WX.chooseAvatar(this, 'avatarUrl')
   }
-  events = {}
+  events = {
+    'changePicker': (key, index) => {
+      this.optionList.forEach((item) => {
+        if (item.id === key) {
+          item.value = item.data[index]
+        }
+      })
+    }
+  }
+  props = {}
 }
 </script>

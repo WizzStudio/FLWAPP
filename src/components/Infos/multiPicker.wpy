@@ -1,0 +1,23 @@
+<style lang="scss" type="text/scss">
+
+</style>
+
+<template>
+  <picker mode="multiSelector"></picker>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Picker extends wepy.component {
+    components = {}
+    data = {}
+    computed = {}
+
+    customFunction () {}
+
+    methods = {}
+    events = {}
+    props = {}
+  }
+</script>
