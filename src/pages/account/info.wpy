@@ -208,7 +208,7 @@
       <span>上传</span>
       <div>
         <button @tap="ButtonClick" id="save" class="add-center-border">保存</button>
-        <button @tap="ButtonClick" id="upload">提交</button>
+        <button @tap="ButtonClick" id="submit">提交</button>
       </div>
     </view>
   </view>
@@ -217,7 +217,6 @@
 <script>
   import page from '../base/basicPage.wpy'
   import Picker from '../../components/Infos/Picker'
-  //  import { isCardNumber, isStudentNumber, isIdentityCard} from '../../'
   export default class Info extends page {
     config = {}
     components = {
@@ -326,7 +325,8 @@
           id: 'cardNumber'
         }
       ],
-      avatarUrl: '../../static/images/logo.png'
+      avatarUrl: '../../static/images/logo.png',
+      identity: 'student'
     }
     computed = {}
 
@@ -338,17 +338,28 @@
     methods = {
       ButtonClick (event) {
         if (event.target.id === 'save') {
-          wx.showToast({
-            title: '已保存',
-            icon: 'success',
-            duration: 2000
-          })
+          this.$WX.toast('已保存', 'success')
         }
-        if (event.target.id === 'upload') {
-          wx.showToast({
-            title: '已提交',
-            icon: 'success',
-            duration: 1500
+        if (event.target.id === 'submit') {
+          if (!this.checkingValue()) {
+            return
+          }
+          const confirm = () => {
+            this.$WX.toast('提交成功')
+          }
+          const cancel = () => {
+            console.log('未提交')
+          }
+          wx.showModal({
+            title: '提示',
+            content: '审核结束前，不可修改个人资料，确认提交吗?',
+            success: function (res) {
+              if (res.confirm) {
+                confirm()
+              } else if (res.cancel) {
+                cancel()
+              }
+            }
           })
         }
       },
@@ -359,7 +370,28 @@
     changeAvatar (event) {
       this.$WX.chooseAvatar(this, 'avatarUrl')
     }
+    checkingValue () {
+      for (let i = 0, len = this.optionList.length; i < len; i++) {
+        if (this.optionList[i].value === '') {
+          if (this.optionList[i].type === 'picker') {
+            this.$WX.toast('请选择' + this.optionList[i].name + '中的选项')
+          } else if (this.optionList[i].type === 'input') {
+            this.$WX.toast('请填写' + this.optionList[i].name)
+          }
+          return false
+        }
+      }
+      if (this.identity === 'student') {
+        for (let i = 0, len = this.identityList.length; i < len; i++) {
+          if (!this.$emit('input-confirm', this.identityList[i].id, this.identityList[i].value)) {
+            return false
+          }
+        }
+      }
+      return true
+    }
     events = {
+      //  下拉框
       'changePicker': (key, index) => {
         this.optionList.forEach((item) => {
           if (item.id === key) {
@@ -368,32 +400,38 @@
         })
       },
       'changeMultiPicker': (key, multiIndex) => {
-        //  console.log(multiIndex)
         this.optionList.forEach((item) => {
           if (item.id === key) {
-            //  console.log(item.data[0][multiIndex[0]])
             item.value = item.data[0][multiIndex[0]] + '-' + item.data[1][multiIndex[1]]
           }
         })
       },
+      //  输入框
       'input-confirm': (key, value) => {
         if (key === 'studentNumer') {
+          wx.showToast({
+            title: value,
+            icon: 'success',
+            duration: 1500
+          })
           if (!this.$UTIL.isStudentNumber(value)) {
             this.$WX.toast('请输入正确的学号')
+            return false
           }
         }
-        if (key === 'identity') {
+        if (key === 'identityCard') {
           if (!this.$UTIL.isIdentityCard(value)) {
             this.$WX.toast('请输入正确的身份证号码')
+            return false
           }
         }
-        if (key === 'account') {
+        if (key === 'cardNumber') {
           if (!this.$UTIL.isCardNumber(value)) {
              this.$WX.toast('请输入正确的银行卡账号')
+             return false
           }
         }
       }
     }
-    props = {}
   }
 </script>

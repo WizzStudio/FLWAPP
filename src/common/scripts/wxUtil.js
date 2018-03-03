@@ -48,6 +48,14 @@ const toast = (title, icon = 'none', duration = 1500, hasMask = false) => {
 	})
 }
 
+const modal = (content, fn) => {
+	return configFn(wx.showModal, {
+		title: '提示',
+		content: content, //	模态框内容
+		success: fn
+	})
+}
+
 const showLoading = (title = 'wait', content = 'loading') => {
 	return configFn(wx.showLoading, {title, content})
 }
@@ -123,6 +131,7 @@ export {
 	redirectTo, // page重定向
 	reLaunch, // page重加载
 	toast, // 显示弹窗
+	modal, //	显示模态弹窗
 	showLoading, // 显示加载中弹窗
 	hideLoading, // 关闭加载中弹窗
 	setNavbarTitle, // 设置导航栏标题

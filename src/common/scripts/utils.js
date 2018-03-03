@@ -55,7 +55,7 @@ const isStudentNumber = (StudentNumber) => {
 }
 
 const isIdentityCard = (IdentityCard) => { 
-	if (IndentityCard.length !== 18) {
+	if (IdentityCard.length !== 18) {
 		return false
 	}
 	let reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
