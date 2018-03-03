@@ -125,6 +125,16 @@ const chooseAvatar = (that, avatarUrl) => {
 	})
 }
 
+const upLoad = (url, filePath, name, formData, fn) => {
+	wx.uploadFile({
+		url: url,
+		filePath: filePath,
+		name: name,
+		formData: formData,
+		success: fn
+	})
+}
+
 export {
 	ajax, // 发送ajax请求
 	jumpTo, // page跳转
@@ -143,5 +153,6 @@ export {
 	getStorage, // 获取缓存
 	removeStorage, // 删除某条缓存数据
 	clearStorage, // 清空缓存数据
-	chooseAvatar //	上传头像
+	chooseAvatar, //	上传头像
+	upLoad //	上传文件
 }

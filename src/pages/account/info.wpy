@@ -113,7 +113,6 @@
     div {
       width: 750rpx;
       display: inline-flex;
-      margin-top: 20rpx;
       button {
         @include fontSizeColor(28rpx, #e01b1c);
         width: 375rpx;
@@ -143,7 +142,7 @@
         <image src="{{avatarUrl}}" class="info-item-avatar-img" alt="我的头像" @tap="changeAvatar"/>
         <image src="../../static/images/u125.png" class="Info-Tag info-item-avatar-tag" @tap="changeAvatar"/>
     </div>
-    <ul class="info-container">
+    <ul wx:if="{{identity === 'student'}}" class="info-container">
       <repeat for="{{optionList}}" item="item" index="index">
         <div class="info-item-container">
           <view wx:if="{{item.type === 'picker'}}">
@@ -155,13 +154,13 @@
           </view>
           <view wx:if="{{item.type === 'input'}}" class="info-item-container">
             <label class="info-item-name">{{item.name}}</label>
-            <input placeholder="{{item.value === '' ? '请填写' : item.value}}" class="info-item-input" maxlength="item.maxLength"/>
+            <input placeholder="{{item.value === '' ? '请填写' : item.value}}" class="info-item-input" bindblur="onBlur" id="{{item.id}}"/>
           </view>
         </div>
       </repeat>
     </ul>
   </view>
-  <view>
+  <view wx:if="{{identity === 'student'}}">
     <view class="info-module">
       <div class="info-module-title-Icon">1</div>
       <span class="info-module-title">身份认证</span>
@@ -172,7 +171,7 @@
         <div class="info-item-container">
           <view wx:if="{{item.type === 'input'}}" class="info-item-container">
             <label class="info-item-name">{{item.name}}</label>
-            <input placeholder="{{item.value === '' ? '请填写' : item.value}}" class="info-item-input" bindconfirm="onConfirm"/>
+            <input placeholder="{{item.value === '' ? '请填写' : item.value}}" class="info-item-input" bindblur="onBlur" id="{{item.id}}"/>
           </view>
         </div>
       </repeat>
@@ -188,30 +187,32 @@
       <span class="info-textarea-count">123/600</span>
     </div>
   </view>
-  <view>
+  <view wx:if="{{identity === 'student'}}">
     <view class="info-module">
       <div class="info-module-title-Icon">1</div>
       <span class="info-module-title">问题：你的梦想是什么？</span>
     </view>
     <div class="info-container">
-      <textarea class="info-textarea" value="what the fuck" maxlength="200"/>
+      <textarea class="info-textarea" value="what the fuck" maxlength='20' />
       <span class="info-textarea-count">/200</span>
     </div>
   </view>
-  <view>
+  <view wx:if="{{identity === 'student'}}">
     <view class="info-module">
       <div class="info-module-title-Icon">1</div>
       <span class="info-module-title">附件</span>
     </view>
     <view class="info-module-attachment">
-      <image src="../../static/images/附件.png" />
+      <image src="../../static/images/附件.png" @tap="upLoad" />
       <span>上传</span>
-      <div>
-        <button @tap="ButtonClick" id="save" class="add-center-border">保存</button>
-        <button @tap="ButtonClick" id="submit">提交</button>
-      </div>
     </view>
   </view>
+  <div class="info-module-attachment">
+    <div>
+      <button @tap="ButtonClick" id="save" class="add-center-border">保存</button>
+      <button @tap="ButtonClick" id="submit">提交</button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -227,13 +228,13 @@
         {
           name: '真实姓名',
           type: 'input',
-          value: '',
+          value: '马化腾',
           id: 'name'
         },
         {
           name: '出生年月',
           type: 'picker',
-          value: '',
+          value: '1995-1',
           data: [['1995', '1996', '1997', '1998'], ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']],
           mode: 'multiSelector',
           //  disabled: false,
@@ -242,7 +243,7 @@
         {
           name: '性别',
           type: 'picker',
-          value: '',
+          value: '男',
           data: ['男', '女'],
           mode: 'selector',
           //  disabled: true,
@@ -251,7 +252,7 @@
         {
           name: '学校',
           type: 'picker',
-          value: '',
+          value: '西安电子科技大学',
           data: ['西安电子科技大学', '电子科技大学', '北京邮电大学', '华中科技大学'],
           mode: 'selector',
           //  disabled: true,
@@ -260,7 +261,7 @@
         {
           name: '学历',
           type: 'picker',
-          value: '',
+          value: '本科',
           data: ['本科', '硕士', '博士'],
           mode: 'selector',
           //  disabled: false,
@@ -269,19 +270,19 @@
         {
           name: '学院',
           type: 'input',
-          value: '',
+          value: '软件学院',
           id: 'faculty'
         },
         {
           name: '专业',
           type: 'input',
-          value: '',
+          value: '软件工程',
           id: 'major'
         },
         {
           name: '入学时间',
           type: 'picker',
-          value: '',
+          value: '2017-1',
           data: [['2018', '2017', '2016', '2015'], ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']],
           mode: 'multiSelector',
           //  disabled: true,
@@ -292,13 +293,13 @@
           type: 'picker',
           mode: 'selector',
           data: ['社会公益', '学术科研', '创新创业'],
-          value: '',
+          value: '社会公益',
           id: 'orientation'
         },
         {
           name: '一句话介绍自己',
           type: 'input',
-          value: '',
+          value: '我，秦始皇，打钱',
           maxLength: 20,
           id: 'intro'
         }
@@ -308,25 +309,26 @@
           name: '学号',
           type: 'input',
           maxLength: 20,
-          value: '',
+          value: '16130120155',
           id: 'studentNumer'
         },
         {
           name: '身份证号',
           type: 'input',
           maxLength: 18,
-          value: '',
+          value: '500221199808124567',
           id: 'identityCard'
         }, {
           name: '银行卡账号',
           type: 'input',
           maxLength: 19,
-          value: '',
+          value: '1234567890098765432',
           id: 'cardNumber'
         }
       ],
       avatarUrl: '../../static/images/logo.png',
-      identity: 'student'
+      identity: 'student',
+      isRight: false
     }
     computed = {}
 
@@ -341,30 +343,33 @@
           this.$WX.toast('已保存', 'success')
         }
         if (event.target.id === 'submit') {
-          if (!this.checkingValue()) {
-            return
-          }
-          const confirm = () => {
-            this.$WX.toast('提交成功')
-          }
-          const cancel = () => {
-            console.log('未提交')
-          }
-          wx.showModal({
-            title: '提示',
-            content: '审核结束前，不可修改个人资料，确认提交吗?',
-            success: function (res) {
-              if (res.confirm) {
-                confirm()
-              } else if (res.cancel) {
-                cancel()
-              }
+          if (this.checkingValue()) {
+            const confirm = () => {
+              this.$WX.toast('提交成功')
             }
-          })
+            const cancel = () => {
+              this.$WX.toast('取消提交')
+            }
+            wx.showModal({
+              title: '提示',
+              content: '审核结束前，不可修改个人资料，确认提交吗?',
+              success: function (res) {
+                if (res.confirm) {
+                  confirm()
+                } else if (res.cancel) {
+                  cancel()
+                }
+              }
+            })
+          }
         }
       },
-      onConfirm (event) {
-        this.$emit('input-confirm', event.target.id, event.detail.value)
+      onBlur (event) {
+        this.$emit('input-blur', event.target.id, event.detail.value)
+      },
+      upLoad () {
+        console.log('上传文件')
+        //  this.$WX.upLoad(url, filePath, name, formData, fn)
       }
     }
     changeAvatar (event) {
@@ -374,7 +379,7 @@
       for (let i = 0, len = this.optionList.length; i < len; i++) {
         if (this.optionList[i].value === '') {
           if (this.optionList[i].type === 'picker') {
-            this.$WX.toast('请选择' + this.optionList[i].name + '中的选项')
+            this.$WX.toast('请选择' + this.optionList[i].name)
           } else if (this.optionList[i].type === 'input') {
             this.$WX.toast('请填写' + this.optionList[i].name)
           }
@@ -383,7 +388,8 @@
       }
       if (this.identity === 'student') {
         for (let i = 0, len = this.identityList.length; i < len; i++) {
-          if (!this.$emit('input-confirm', this.identityList[i].id, this.identityList[i].value)) {
+          this.$emit('input-blur', this.identityList[i].id, this.identityList[i].value)
+          if (!this.isRight) {
             return false
           }
         }
@@ -407,29 +413,35 @@
         })
       },
       //  输入框
-      'input-confirm': (key, value) => {
+      'input-blur': (key, value) => {
+        this.optionList.forEach(item => {
+          if (item.id === key) {
+            item.value = value
+          }
+        })
         if (key === 'studentNumer') {
-          wx.showToast({
-            title: value,
-            icon: 'success',
-            duration: 1500
-          })
           if (!this.$UTIL.isStudentNumber(value)) {
             this.$WX.toast('请输入正确的学号')
-            return false
+            this.isRight = false
           }
+          this.identityList[0].value = value
+          this.isRight = true
         }
         if (key === 'identityCard') {
           if (!this.$UTIL.isIdentityCard(value)) {
             this.$WX.toast('请输入正确的身份证号码')
-            return false
+            this.isRight = false
           }
+          this.identityList[1].value = value
+          this.isRight = true
         }
         if (key === 'cardNumber') {
           if (!this.$UTIL.isCardNumber(value)) {
              this.$WX.toast('请输入正确的银行卡账号')
-             return false
+             this.isRight = false
           }
+          this.identityList[2].value = value
+          this.isRight = true
         }
       }
     }

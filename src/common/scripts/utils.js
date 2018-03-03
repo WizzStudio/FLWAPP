@@ -54,12 +54,12 @@ const isStudentNumber = (StudentNumber) => {
 	return reg.test(StudentNumber.toString())
 }
 
-const isIdentityCard = (IdentityCard) => { 
+const isIdentityCard = (IdentityCard) => {
 	if (IdentityCard.length !== 18) {
 		return false
 	}
 	let reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
-	return reg.test(IndentityCard.toString())
+	return reg.test(IdentityCard.toString())
 }
 
 const isCardNumber = (CardNumber) => {
