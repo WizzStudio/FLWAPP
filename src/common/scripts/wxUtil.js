@@ -23,10 +23,16 @@ const ajax = ({url, method, data, headers}) => {
  * @param url {String} 跳转相对路径
  * @return {Promise}
  */
+const tabBarUrl = ['account/login', 'account/home', './home', './login']
 const jumpTo = (url) => {
-	return configFn(wx.switchTab, {url})
-	//	return configFn(wx.navigateToTab, { url })
+	console.log(url)
+	if (url === tabBarUrl[0] || url === tabBarUrl[1] || url === tabBarUrl[2] || url === tabBarUrl[3]) {
+		return configFn(wx.switchTab, { url })
+	} else {
+		return configFn(wx.navigateTo, { url })
+	}
 }
+
 /**
  * 关闭所有页面，打开到应用内的某个页面。
  * @param url

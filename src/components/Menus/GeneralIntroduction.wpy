@@ -57,6 +57,18 @@
       margin-left: 200rpx;
     }
   }
+  .success {
+    color: green;
+    border-color: green; 
+  }
+  .checking {
+    color: rgb(255, 213, 0);
+    border-color: rgb(255, 213, 0);
+  }
+  .failed {
+    color: red;
+    border-color: red;
+  }
 </style>
 
 <template>
@@ -67,7 +79,7 @@
     <div class="info-module-2">
       <div>
         <span class="info-module-2-name">{{infoDatas.name}}</span>
-        <span class="info-module-2-basic-state info-module-2-state-{{infoDatas.stateClass}}">{{infoDatas.stateTitle}}</span>
+        <span class="info-module-2-basic-state {{infoDatas.stateClass}}">{{infoDatas.stateTitle}}</span>
       </div>
       <div class="info-module-2-more">
         <span>{{infoDatas.company}} | {{infoDatas.position}}</span>
@@ -81,7 +93,7 @@
 
 <script>
   import wepy from 'wepy'
-
+  import {toast} from '../../common/scripts/wxUtil'
   export default class GeneralIntroduction extends wepy.component {
     components = {}
     data = {
@@ -92,13 +104,15 @@
     methods = {
       click (event) {
         if (this.infoDatas.stateTitle === '审核中') {
-          console.log('您提交的信息正在审核中，暂时无法修改信息，请等待审核结束')
+          toast('您提交的信息正在审核中，暂时无法修改信息，请等待审核结束')
         } else {
           this.$emit('change-information', event)
         }
       }
     }
-    onLoad () {}
+    onLoad () {
+      console.log(this.infoDatas)
+    }
     events = {}
     props = {
       infoDatas: {

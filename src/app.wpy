@@ -27,7 +27,7 @@
             'selectedIconPath': 'static/images/tabBar/home_icon_p.png'
           },
           {
-            'pagePath': 'pages/account/info',
+            'pagePath': 'pages/account/login',
             'text': '导学信息',
             'iconPath': 'static/images/tabBar/news_icon.png',
             'selectedIconPath': 'static/images/tabBar/news_icon_p.png'
