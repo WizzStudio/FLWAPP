@@ -58,6 +58,13 @@ const StudentCenter = () => {
 const TutorCenter = () => {
 	return ajax('/tutor/center', get)
 }
+
+const StudentProfile = () => {
+	return ajax('/stu/profile', 'get')
+}
+const TutorProfile = () => {
+	return ajax('/tutor/profile', 'get')
+}
 // const = ()=>{
 // 	return ajax('','get',{})
 // }
@@ -86,7 +93,9 @@ export {
 	UserRegister,
 	UserInviteCodeCheck,
 	StudentCenter,
-	TutorCenter
+	TutorCenter,
+	StudentProfile,
+	TutorProfile
 	//	FileUpLoad,
 	//	FileDownLoad
 }

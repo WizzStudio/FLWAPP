@@ -14,7 +14,43 @@ const StudentCenter = {
 		'workedTime': 0
 	}
 }
-
+const StudentProfile = {
+	'code': 0,
+	'msg': '成功',
+	'data': {
+		'avatar': '/avatar',
+		'name': '郭小纲',
+		'birthday': '2017-5',
+		'sex': 1,
+		'schoolId': 1,
+		'degree': 1,
+		'academy': 'dianzi',
+		'profession': 'dianzi',
+		'admissionDate': '2016',
+		'direction': 1,
+		'simpleIntro': '23333',
+		'idNum': '123456789123456789',
+		'bankNumber': '622262000100010001',
+		'stuNumber': '15050120020',
+		'personalIntro': '2333333',
+		'answer': '222',
+		'resume': '/resume'
+	}
+}
+const TutorProfile = {
+	'code': 0,
+	'msg': '成功',
+	'data': {
+		'avatar': '/avatar',
+		'name': '郭德纲',
+		'sex': 1,
+		'trade': 1,
+		'company': '德云社',
+		'position': 'CEO',
+		'simpleIntro': '23333',
+		'personalIntro': '2333333'
+	}
+}
 const TutorCenter = {
 	'code': 0,
 	'msg': '成功',
@@ -75,5 +111,7 @@ export {
 	UserRegister,
 	StudentCenter,
 	TutorCenter,
+	StudentProfile,
+	TutorProfile,
 	Test
 }

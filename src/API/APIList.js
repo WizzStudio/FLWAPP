@@ -3,5 +3,7 @@ export default {
 	Test: {url: '/test', method: 'get', data: {}, headers: {}},
 	UserInviteCodeCheck: {url: '/user/inviteCode/check', method: 'get', data: {inviteCode: ''}, headers: {}},
 	StudentCenter: {url: '/stu/center', method: 'get', data: {}, headers: {}},
-	TutorCenter: {url: '/tutor/center', method: 'get', data: {}, headers: {}}
+	TutorCenter: {url: '/tutor/center', method: 'get', data: {}, headers: {}},
+	StudentProfile: {url: '/stu/profile', method: 'get', data: {}, headers: {}},
+	TutorProfile: {url: '/tutor/profile', method: 'get', data: {}, headers: {}}
 }
