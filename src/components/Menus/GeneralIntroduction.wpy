@@ -28,24 +28,12 @@
       font-size: 38rpx;
       color: #333333;
     }
-    &-2-basic-state {
+    &-2-basic-statu {
       display: inline-block;
       font-size: 24rpx;
       border: 1px solid gray;
       border-radius: 4px;
       margin-left: 20rpx;
-    }
-    &-2-state-success {
-      color: #406df0;
-      border-color: #406df0; 
-    }
-    &-2-state-failed {
-      color: #e64949;
-      border-color: #e64949;
-    }
-    &-2-state-checikng {
-      color: #fdfc39;
-      border-color: #fdfc39;
     }
     &-2-more {
       margin-top: 10rpx;
@@ -57,17 +45,17 @@
       margin-left: 200rpx;
     }
   }
-  .success {
+  .info-module-2-checking {
+    color: #fdfc39;
+    border-color: #fdfc39;
+  }
+  .info-module-2-success {
     color: green;
     border-color: green; 
   }
-  .checking {
-    color: rgb(255, 213, 0);
-    border-color: rgb(255, 213, 0);
-  }
-  .failed {
-    color: red;
-    border-color: red;
+  .info-module-2-failed {
+    color: #e64949;
+    border-color: #e64949;
   }
 </style>
 
@@ -79,10 +67,10 @@
     <div class="info-module-2">
       <div>
         <span class="info-module-2-name">{{infoDatas.name}}</span>
-        <span class="info-module-2-basic-state {{infoDatas.stateClass}}">{{infoDatas.stateTitle}}</span>
+        <span class="info-module-2-basic-statu {{isStudent? statuClass[infoDatas.status]: tutorClass}}">{{isStudent? statuTitle[infoDatas.status]: tutorTitle[infoDatas.isTutor]}}</span>
       </div>
       <div class="info-module-2-more">
-        <span>{{infoDatas.company}} | {{infoDatas.position}}</span>
+        <span>{{isStudent? schoolList[infoDatas.schoolId]: infoDatas.company}} | {{isStudent? infoDatas.profession: infoDatas.position}}</span>
       </div>
     </div>
     <div class="info-module-3">
@@ -95,29 +83,33 @@
   import wepy from 'wepy'
   import {toast} from '../../common/scripts/wxUtil'
   export default class GeneralIntroduction extends wepy.component {
-    components = {}
     data = {
-      state: ['checking', 'success', 'failed']
+      statuTitle: ['审核中', '已通过审核', '审核失败'],
+      statuClass: ['info-module-2-checking', 'info-module-2-success', 'info-module-2-failed'],
+      schoolList: ['电子科技大学', '西安电子科技大学'],
+      tutorTitle: ['', '导师'],
+      tutorClass: 'info-module-2-success'
     }
+    components = {}
     computed = {}
+
+    onLoad () {}
+
     customFunction () {}
+
     methods = {
       click (event) {
-        if (this.infoDatas.stateTitle === '审核中') {
+        if (this.infoDatas.status === 0) {
           toast('您提交的信息正在审核中，暂时无法修改信息，请等待审核结束')
         } else {
           this.$emit('change-information', event)
         }
       }
     }
-    onLoad () {
-      console.log(this.infoDatas)
-    }
     events = {}
     props = {
-      infoDatas: {
-        type: Object
-      }
+      infoDatas: Object,
+      isStudent: Boolean
     }
   }
 </script>

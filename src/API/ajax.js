@@ -141,7 +141,7 @@ export default (rurl = argumentsErr(), method = argumentsErr(), data = null, hea
 	} else {
 		console.log('[HTTP Request]: request interrupted by mockServer')
 		/* TODO 重构后的测试接口 */
-		// return Route(rurl)
-		return MockServer(rurl)
+		return Route(rurl)
+		//	return MockServer(rurl)
 	}
 }

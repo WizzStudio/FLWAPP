@@ -1,5 +1,5 @@
 import Test from './templates/Test'
-import { UserLogin, UserInviteCodeCheck, UserRegister, UserVerifyCodeCheck, UserVerifyCode } from './templates/User'
+import { UserLogin, UserInviteCodeCheck, UserRegister, UserVerifyCodeCheck, UserVerifyCode, StudentCenter, TutorCenter } from './templates/User'
 
 export default (rurl) => {
 	switch (rurl) {
@@ -15,6 +15,10 @@ export default (rurl) => {
 			return UserVerifyCodeCheck
 		case '/user/verifyCode':
 			return UserVerifyCode
+		case '/stu/center':
+			return StudentCenter
+		case '/tutor/center':
+			return TutorCenter
 		default:
 			return Test
 	}

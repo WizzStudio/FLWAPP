@@ -51,6 +51,13 @@ const UserRegister = (phone, inviteCode) => {
 	return ajax('/user/register', 'get', {phone, inviteCode})
 }
 
+const StudentCenter = () => {
+	return ajax('/stu/center', 'get')
+}
+
+const TutorCenter = () => {
+	return ajax('/tutor/center', get)
+}
 // const = ()=>{
 // 	return ajax('','get',{})
 // }
@@ -77,7 +84,9 @@ export {
 	UserVerifyCode,
 	UserVerifyCodeCheck,
 	UserRegister,
-	UserInviteCodeCheck
+	UserInviteCodeCheck,
+	StudentCenter,
+	TutorCenter
 	//	FileUpLoad,
 	//	FileDownLoad
 }

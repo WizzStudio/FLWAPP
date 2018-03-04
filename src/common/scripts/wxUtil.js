@@ -25,7 +25,7 @@ const ajax = ({url, method, data, headers}) => {
  */
 const tabBarUrl = ['account/login', 'account/home', './home', './login']
 const jumpTo = (url) => {
-	console.log(url)
+	//	console.log(url)
 	if (url === tabBarUrl[0] || url === tabBarUrl[1] || url === tabBarUrl[2] || url === tabBarUrl[3]) {
 		return configFn(wx.switchTab, { url })
 	} else {
