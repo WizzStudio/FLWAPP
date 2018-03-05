@@ -126,7 +126,7 @@ const chooseAvatar = (that, avatarUrl) => {
 			that.$apply()
 		},
 		fail: function (res) {
-			toast('请重新选择图片', 'fail')
+			toast('请重新选择图片', 'none')
 		}
 	})
 }

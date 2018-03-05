@@ -154,7 +154,7 @@
           </view>
           <view wx:if="{{item.type === 'input'}}" class="info-item-container">
             <label class="info-item-name">{{item.name}}</label>
-            <input placeholder="{{item.value === '' ? '请填写' : item.value}}" class="info-item-input" bindblur="onBlur" id="{{item.id}}"/>
+            <input placeholder="请填写" class="info-item-input" bindblur="onBlur" id="{{item.id}}" value="{{item.value}}"/>
           </view>
         </div>
       </repeat>
@@ -171,7 +171,7 @@
         <div class="info-item-container">
           <view wx:if="{{item.type === 'input'}}" class="info-item-container">
             <label class="info-item-name">{{item.name}}</label>
-            <input placeholder="{{item.value === '' ? '请填写' : item.value}}" class="info-item-input" bindblur="onBlur" id="{{item.id}}"/>
+            <input placeholder="请填写" class="info-item-input" bindblur="onBlur" id="{{item.id}}" value="{{item.value}}"/>
           </view>
         </div>
       </repeat>
@@ -183,8 +183,7 @@
       <span class="info-module-title">个人简历</span>
     </view>
     <div class="info-container">
-      <textarea class="info-textarea" maxlength="600" bindinput="onInput" id="resume">
-        {{resume.value}}
+      <textarea class="info-textarea" maxlength="600" bindinput="onInput" id="resume" value="{{resume.value}}">
       </textarea>
       <span class="info-textarea-count">{{resume.length}}/600</span>
     </div>
@@ -195,8 +194,7 @@
       <span class="info-module-title">问题：你的梦想是什么？</span>
     </view>
     <div class="info-container">
-      <textarea class="info-textarea" maxlength="200" bindinput="onInput" id="answer">
-        {{answer.value}}
+      <textarea class="info-textarea" maxlength="200" bindinput="onInput" id="answer" value="{{answer.value}}">
       </textarea>
       <span class="info-textarea-count">{{answer.length}}/200</span>
     </div>
@@ -231,24 +229,37 @@
       optionList: [],
       identityList: [],
       avatarUrl: '',
-      identity: 'student',
+      identity: '',
       answer: {},
       resume: {},
-      isRight: false
+      isRight: false,
+      isFirst: true,
+      isPush: false
     }
     computed = {}
 
     onLoad () {
-      /*
-      this.$APX('StudentProfile')
-        .then(data => {
-          this.treatAjaxDatasStudent(data.data)
+      if (this.$WX.getStorage('isSave')) {
+        this.optionList = this.$WX.getStorage('optionList')
+        this.identityList = this.$WX.getStorage('identityList')
+        this.resume = this.$WX.getStorage('resume')
+        this.answer = this.$WX.getStorage('answer')
+        this.avatar = this.$WX.getStorage('avatar')
+        this.identity = this.$WX.getStorage('identity')
+      } else {
+        this.$APX('StudentProfile')
+          .then(data => {
+            this.treatAjaxDatasStudent(data.data)
+            this.identity = 'student'
         })
-      */
+      }
+      /*
       this.$APX('TutorProfile')
         .then(data => {
           this.treatAjaxDatasTutor(data.data)
+          this.identity = 'tutor'
         })
+      */
     }
     treatAjaxDatasStudent (data) {
       this.optionList = [
@@ -409,33 +420,32 @@
       }
       this.identity = 'tutor'
     }
-    onShow () {}
 
     onUnload () {
-      this.$WX.toast('个人信息已自动保存，请及时提交')
+      if (!this.$WX.getStorage('isPush')) {
+        this.$WX.setStorage('optionList', this.optionList)
+        this.$WX.setStorage('identityList', this.identityList)
+        this.$WX.setStorage('avatar', this.avatar)
+        this.$WX.setStorage('answer', this.answer)
+        this.$WX.setStorage('resume', this.resume)
+        this.$WX.setStorage('isSave', true)
+        this.$WX.setStorage('identity', this.identity)
+        this.$WX.toast('已保存')
+      }
     }
     props = {}
     customData = {}
     methods = {
       ButtonClick (event) {
-        let that = this
+        const that = this
         if (event.target.id === 'save') {
-          this.isSaved = true
           this.$WX.toast('已保存', 'success')
-          console.log(JSON.stringify(this.infoSet))
         }
         if (event.target.id === 'submit') {
           if (this.checkingValue()) {
             const confirm = () => {
               this.$WX.toast('提交成功')
-              wx.setStorage({
-                key: 'stateClass',
-                data: 'checking'
-              })
-              wx.setStorage({
-                key: 'stateTitle',
-                data: '审核中'
-              })
+              this.$WX.setStorage('status', 0)
             }
             const cancel = () => {
               this.$WX.toast('取消提交')
@@ -446,6 +456,7 @@
               success: function (res) {
                 if (res.confirm) {
                   confirm()
+                  that.$WX.setStorage('isPush', true)
                   that.$WX.jumpTo('./home')
                 } else if (res.cancel) {
                   cancel()
@@ -475,11 +486,10 @@
       }
     }
     changeAvatar (event) {
-      this.$WX.chooseAvatar(this, 'avatarUrl')
+      this.$WX.chooseAvatar(this, 'avatar')
     }
     checkingValue () {
       for (let i = 0, len = this.optionList.length; i < len; i++) {
-        console.log(this.optionList[i].value)
         if (this.optionList[i].value === '') {
           if (this.optionList[i].type === 'picker') {
             this.$WX.toast('请选择' + this.optionList[i].name)

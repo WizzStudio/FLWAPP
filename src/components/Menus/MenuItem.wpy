@@ -7,6 +7,9 @@
     display: flex;
     flex-flow: column nowrap;
     border-top: 20rpx solid #f4f4f4;
+    div:active {
+      background-color: #f5f5f5;
+    }
   }
   .MenuItem-Item {
     display: inline-flex;
@@ -17,6 +20,7 @@
     width: 642rpx;
     margin-left: 20rpx;
     padding-top: 25rpx;
+    margin-bottom: 1rpx;
     border-bottom: 1rpx solid #f5f5f5;
 
     font-size: 32rpx;

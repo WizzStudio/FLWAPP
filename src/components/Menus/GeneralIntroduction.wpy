@@ -22,18 +22,18 @@
     &-2 {
       display:flex;
       flex-flow: column nowrap;
-      width: 300rpx;
+      width: 450rpx;
     }
     &-2-name {
       font-size: 38rpx;
       color: #333333;
     }
     &-2-basic-statu {
-      display: inline-block;
-      font-size: 24rpx;
+      font-size: 22rpx;
       border: 1px solid gray;
-      border-radius: 4px;
-      margin-left: 20rpx;
+      padding: 6rpx 3rpx 0rpx 3rpx;
+      border-radius: 20%;
+      margin-left: 50rpx;
     }
     &-2-more {
       margin-top: 10rpx;
@@ -46,8 +46,8 @@
     }
   }
   .info-module-2-checking {
-    color: #fdfc39;
-    border-color: #fdfc39;
+    color: #fde039;
+    border-color: #fde039;
   }
   .info-module-2-success {
     color: green;
@@ -57,6 +57,10 @@
     color: #e64949;
     border-color: #e64949;
   }
+  .div-name {
+    display: inline-flex;
+
+  }
 </style>
 
 <template>
@@ -65,7 +69,7 @@
       <image src="../../static/images/logo.png" class="info-module-1-avatar" alt="我的头像"/>
     </div>
     <div class="info-module-2">
-      <div>
+      <div class="div-name">
         <span class="info-module-2-name">{{infoDatas.name}}</span>
         <span class="info-module-2-basic-statu {{isStudent? statuClass[infoDatas.status]: tutorClass}}">{{isStudent? statuTitle[infoDatas.status]: tutorTitle[infoDatas.isTutor]}}</span>
       </div>
@@ -84,8 +88,8 @@
   import {toast} from '../../common/scripts/wxUtil'
   export default class GeneralIntroduction extends wepy.component {
     data = {
-      statuTitle: ['审核中', '已通过审核', '审核失败'],
-      statuClass: ['info-module-2-checking', 'info-module-2-success', 'info-module-2-failed'],
+      statuTitle: ['审核中', '审核未通过', '已通过审核'],
+      statuClass: ['info-module-2-checking', 'info-module-2-failed', 'info-module-2-success'],
       schoolList: ['电子科技大学', '西安电子科技大学'],
       tutorTitle: ['', '导师'],
       tutorClass: 'info-module-2-success'
@@ -94,7 +98,6 @@
     computed = {}
 
     onLoad () {}
-
     customFunction () {}
 
     methods = {

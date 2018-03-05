@@ -23,7 +23,7 @@
 
 <template>
   <view class="centerInfomation">
-    <Info class="centerInfomation-Module-1" :infoDatas.sync="infoDatas" :stateClass.sync="infoDatas.stateClass" :isStudent.sync="isStudent"></Info>
+    <Info class="centerInfomation-Module-1" :infoDatas.sync="infoDatas" :isStudent.sync="isStudent"></Info>
     <Show class="centerInfomation-Module-2" :showDatas.sync="showDatas"></Show>
     <Menu class="centerInfomation-Module-3" :menuList.sync="menuList"></Menu>
   </view>
@@ -61,7 +61,7 @@
         },
         {
           unique: 'problem',
-          value: '问题反馈',
+          value: '在线客服',
           imgUrl: '../../static/images/问题反馈.png'
         }
       ],
@@ -81,7 +81,7 @@
       }
       this.showDatas = [
         {
-          name: '小红花',
+          name: '可提现小红花',
           src: '../../static/images/小红花.png',
           number: data.redFlowerNum + ' 朵',
           id: 'redFlower'
@@ -132,37 +132,22 @@
       ]
     }
     onLoad () {
-      /*
       this.$APX('StudentCenter')
         .then(data => {
           this.treatAjaxDatasStudent(data.data)
         })
-        */
+      /*
       this.$APX('TutorCenter')
         .then(data => {
           this.treatAjaxDatasTutor(data.data)
         })
-      const that = this
-      wx.getStorage({
-        key: 'stateClass',
-        success: function(res) {
-          if (typeof res.data !== 'undefined') {
-            that.infoDatas.stateClass = res.data
-          }
-        }
-      })
-
-      wx.getStorage({
-        key: 'stateTitle',
-        success: function(res) {
-          if (typeof res.data !== 'undefined') {
-            that.infoDatas.stateTitle = res.data
-          }
-        }
-      })
+      */
     }
-
-    onShow () {}
+    onShow () {
+      if (this.$WX.getStorage('status') !== '') {
+        this.infoDatas.status = this.$WX.getStorage('status')
+      }
+    }
 
     customData = {}
     methods = {}

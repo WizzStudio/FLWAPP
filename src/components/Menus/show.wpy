@@ -4,8 +4,8 @@
   @import "../../common/styles/common";
   .c-show-main {
     display: inline-flex;
-    margin-left: 95rpx;
-    margin-right: 95rpx;
+    margin-left: 75rpx;
+    margin-right: 75rpx;
   }
   .c-show-item-img {
     width: 60rpx;
@@ -14,8 +14,9 @@
   .c-show-item {
     display:flex;
     flex-flow: column nowrap;
-    justify-content: center; 
-    width: 250rpx;
+    justify-content: center;
+    align-items: center; 
+    width: 200rpx;
   }
   .c-show-item {
     &-name {
