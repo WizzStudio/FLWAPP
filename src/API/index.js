@@ -51,6 +51,20 @@ const UserRegister = (phone, inviteCode) => {
 	return ajax('/user/register', 'get', {phone, inviteCode})
 }
 
+const StudentCenter = () => {
+	return ajax('/stu/center', 'get')
+}
+
+const TutorCenter = () => {
+	return ajax('/tutor/center', get)
+}
+
+const StudentProfile = () => {
+	return ajax('/stu/profile', 'get')
+}
+const TutorProfile = () => {
+	return ajax('/tutor/profile', 'get')
+}
 // const = ()=>{
 // 	return ajax('','get',{})
 // }
@@ -77,7 +91,11 @@ export {
 	UserVerifyCode,
 	UserVerifyCodeCheck,
 	UserRegister,
-	UserInviteCodeCheck
+	UserInviteCodeCheck,
+	StudentCenter,
+	TutorCenter,
+	StudentProfile,
+	TutorProfile
 	//	FileUpLoad,
 	//	FileDownLoad
 }

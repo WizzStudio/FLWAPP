@@ -29,11 +29,26 @@ const UserRegister = {
 		'role': 1
 	}
 }
-
+const StudentCenter = {
+	'code': 0,
+	'msg': '成功',
+	'data': {
+		'name': '郭小纲',
+		'avatar': '/avatar',
+		'sex': 1,
+		'schoolId': 1,
+		'profession': '电子信息工程',
+		'status': 1,
+		'redFlowerNum': 0,
+		'tutorNum': 0,
+		'workedTime': 0
+	}
+}
 export {
 	UserLogin,
 	UserInviteCodeCheck,
 	UserVerifyCode,
 	UserVerifyCodeCheck,
-	UserRegister
+	UserRegister,
+	StudentCenter
 }

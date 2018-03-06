@@ -49,19 +49,10 @@
     border-radius: 50%;
   }
   .info-tag-value {
-    //position: relative;
-    //top: -20px;
-    label {
-      @include fontSizeColor(32rpx, #666666);
-      position: absolute;
-      width: 590rpx;
-      text-align: right;
-      right: 70rpx;
-    }
-    image {
-      position: absolute;
-      right: 30rpx;
-    }
+    display: inline-flex;
+    position: absolute;
+    right: 30rpx;
+    @include fontSizeColor(32rpx, #666666);
   }
   .info-module {
     height: 60rpx;
@@ -122,7 +113,6 @@
     div {
       width: 750rpx;
       display: inline-flex;
-      margin-top: 20rpx;
       button {
         @include fontSizeColor(28rpx, #e01b1c);
         width: 375rpx;
@@ -144,7 +134,7 @@
   <view>
     <view class="info-module">
       <div class="info-module-title-Icon">1</div>
-      <span class="info-module-title">基本资料</span>
+      <span class="info-module-title" @tap="checkItemIndex">基本资料</span>
       <span class="info-module-title-son">（请务必填写）</span>
     </view>
     <div class="info-item-container info-item-avatar-container">
@@ -158,19 +148,19 @@
           <view wx:if="{{item.type === 'picker'}}">
             <label class="info-item-name info-item-repair-name">{{item.name}}</label>
             <div class="info-tag-value">
-              <label class="">{{item.value}}</label>
+              <Picker :Datas="item.data" :PickerIsDisabled="item.disabled" :syncNumber.sync="item.index" :PickerId="item.id" :value.sync="item.value" :Mode="item.mode"/>
               <image class="Info-Tag" src="../../static/images/u125.png" />
             </div>
           </view>
           <view wx:if="{{item.type === 'input'}}" class="info-item-container">
             <label class="info-item-name">{{item.name}}</label>
-            <input placeholder="{{item.value}}" class="info-item-input" />
+            <input placeholder="请填写" class="info-item-input" bindblur="onBlur" id="{{item.id}}" value="{{item.value}}"/>
           </view>
         </div>
       </repeat>
     </ul>
   </view>
-  <view>
+  <view wx:if="{{identity === 'student'}}">
     <view class="info-module">
       <div class="info-module-title-Icon">1</div>
       <span class="info-module-title">身份认证</span>
@@ -179,16 +169,9 @@
     <ul class="info-container">
       <repeat for="{{identityList}}" item="item" index="index">
         <div class="info-item-container">
-          <view wx:if="{{item.type === 'picker'}}">
-            <label class="info-item-name info-item-repair-name">{{item.name}}</label>
-            <div class="info-tag-value">
-              <label class="">{{item.value}}</label>
-              <image class="Info-Tag" src="../../static/images/u125.png" />
-            </div>
-          </view>
           <view wx:if="{{item.type === 'input'}}" class="info-item-container">
             <label class="info-item-name">{{item.name}}</label>
-            <input placeholder="{{item.value}}" class="info-item-input"/>
+            <input placeholder="请填写" class="info-item-input" bindblur="onBlur" id="{{item.id}}" value="{{item.value}}"/>
           </view>
         </div>
       </repeat>
@@ -200,142 +183,384 @@
       <span class="info-module-title">个人简历</span>
     </view>
     <div class="info-container">
-      <textarea class="info-textarea" value="what the fuck"/>
-      <span class="info-textarea-count">123/600</span>
+      <textarea class="info-textarea" maxlength="600" bindinput="onInput" id="resume" value="{{resume.value}}">
+      </textarea>
+      <span class="info-textarea-count">{{resume.length}}/600</span>
     </div>
   </view>
-  <view>
+  <view wx:if="{{identity === 'student'}}">
     <view class="info-module">
       <div class="info-module-title-Icon">1</div>
       <span class="info-module-title">问题：你的梦想是什么？</span>
     </view>
     <div class="info-container">
-      <textarea class="info-textarea" value="what the fuck"/>
-      <span class="info-textarea-count">/200</span>
+      <textarea class="info-textarea" maxlength="200" bindinput="onInput" id="answer" value="{{answer.value}}">
+      </textarea>
+      <span class="info-textarea-count">{{answer.length}}/200</span>
     </div>
   </view>
-  <view>
+  <view wx:if="{{identity === 'student'}}">
     <view class="info-module">
       <div class="info-module-title-Icon">1</div>
       <span class="info-module-title">附件</span>
     </view>
     <view class="info-module-attachment">
-      <image src="../../static/images/附件.png" />
+      <image src="../../static/images/附件.png" @tap="upLoad" />
       <span>上传</span>
-      <div>
-        <button @tap="ButtonClick" id="save" class="add-center-border">保存</button>
-        <button @tap="ButtonClick" id="upload">提交</button>
-      </div>
     </view>
   </view>
-
+  <div class="info-module-attachment">
+    <div>
+      <button @tap="ButtonClick" id="save" class="add-center-border">保存</button>
+      <button @tap="ButtonClick" id="submit">提交</button>
+    </div>
+  </div>
 </template>
 
 <script>
-	import page from '../base/basicPage.wpy'
-	// import { chooseAvatar } from '../../common/scripts/wxUtil'
-export default class Info extends page {
-  config = {}
-  components = {}
-  data = {
-    optionList: [
-      {
-        name: '真实姓名',
-        type: 'input',
-        value: '马化腾'
-      },
-      {
-        name: '出生年月',
-        type: 'picker',
-        value: '2000-1-1'
-      },
-      {
-        name: '性别',
-        type: 'picker',
-        value: '男'
-      },
-      {
-        name: '学校',
-        type: 'picker',
-        value: '西安电子科技大学'
-      },
-      {
-        name: '学历',
-        type: 'picker',
-        value: '博士后'
-      },
-      {
-        name: '学院',
-        type: 'input',
-        value: '软件学院'
-      },
-      {
-        name: '专业',
-        type: 'input',
-        value: '软件工程'
-      },
-      {
-        name: '入学时间',
-        type: 'picker',
-        value: '2012-1-1'
-      },
-      {
-        name: '申请方向',
-        type: 'input',
-        value: '区块链'
-      },
-      {
-        name: '一句话介绍自己',
-        type: 'input',
-        value: '我，秦始皇，打钱'
-      }
-    ],
-    identityList: [
-      {
-        name: '学号',
-        type: 'input',
-        value: '12130110001'
-      },
-      {
-        name: '身份证号',
-        type: 'input',
-        value: '611212199503021232'
-      }, {
-        name: '银行卡账号',
-        type: 'input',
-        value: '202983471290834710'
-      }
-    ],
-    avatarUrl: '../../static/images/logo.png'
-  }
-  computed = {}
+  import page from '../base/basicPage.wpy'
+  import Picker from '../../components/Infos/Picker'
+  export default class Info extends page {
+    config = {}
+    components = {
+      Picker: Picker
+    }
+    data = {
+      optionList: [],
+      identityList: [],
+      avatarUrl: '',
+      identity: '',
+      answer: {},
+      resume: {},
+      isRight: false,
+      isFirst: true,
+      isPush: false
+    }
+    computed = {}
 
-  onLoad () {}
-
-  onShow () {}
-  props = {}
-  customData = {}
-  methods = {
-    ButtonClick (event) {
-      if (event.target.id === 'save') {
-        wx.showToast({
-          title: '已保存',
-          icon: 'success',
-          duration: 2000
+    onLoad () {
+      if (this.$WX.getStorage('isSave')) {
+        this.optionList = this.$WX.getStorage('optionList')
+        this.identityList = this.$WX.getStorage('identityList')
+        this.resume = this.$WX.getStorage('resume')
+        this.answer = this.$WX.getStorage('answer')
+        this.avatar = this.$WX.getStorage('avatar')
+        this.identity = this.$WX.getStorage('identity')
+      } else {
+        this.$APX('StudentProfile')
+          .then(data => {
+            this.treatAjaxDatasStudent(data.data)
+            this.identity = 'student'
         })
       }
-      if (event.target.id === 'upload') {
-        wx.showToast({
-          title: '已提交',
-          icon: 'success',
-          duration: 1500
+      /*
+      this.$APX('TutorProfile')
+        .then(data => {
+          this.treatAjaxDatasTutor(data.data)
+          this.identity = 'tutor'
         })
+      */
+    }
+    treatAjaxDatasStudent (data) {
+      this.optionList = [
+        {
+          name: '真实姓名',
+          type: 'input',
+          value: data.name,
+          id: 'name'
+        },
+        {
+          name: '出生年月',
+          type: 'picker',
+          value: data.birthday,
+          data: [['1995', '1996', '1997', '1998'], ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']],
+          mode: 'multiSelector',
+          id: 'birth'
+        },
+        {
+          name: '性别',
+          type: 'picker',
+          value: data.sex,
+          data: ['男', '女'],
+          mode: 'selector',
+          id: 'gender'
+        },
+        {
+          name: '学校',
+          type: 'picker',
+          value: data.schoolId,
+          data: ['西安电子科技大学', '电子科技大学', '北京邮电大学', '华中科技大学'],
+          mode: 'selector',
+          id: 'university'
+        },
+        {
+          name: '学历',
+          type: 'picker',
+          value: data.degree,
+          data: ['本科', '硕士', '博士'],
+          mode: 'selector',
+          id: 'degree'
+        },
+        {
+          name: '学院',
+          type: 'input',
+          value: data.academy,
+          id: 'faculty'
+        },
+        {
+          name: '专业',
+          type: 'input',
+          value: data.profession,
+          id: 'major'
+        },
+        {
+          name: '入学时间',
+          type: 'picker',
+          value: data.admissionDate,
+          data: ['2018', '2017', '2016', '2015', '2014', '2013'],
+          mode: 'selector',
+          id: 'time'
+        },
+        {
+          name: '申请方向',
+          type: 'picker',
+          mode: 'selector',
+          data: ['社会公益', '学术科研', '创新创业'],
+          value: data.direction,
+          id: 'orientation'
+        },
+        {
+          name: '一句话介绍自己',
+          type: 'input',
+          value: data.simpleIntro,
+          maxLength: 20,
+          id: 'intro'
+        }
+      ]
+      this.identityList = [
+        {
+          name: '学号',
+          type: 'input',
+          maxLength: 20,
+          value: data.stuNumber,
+          id: 'studentNumber'
+        },
+        {
+          name: '身份证号',
+          type: 'input',
+          maxLength: 18,
+          value: data.idNum,
+          id: 'identityCard'
+        }, {
+          name: '银行卡账号',
+          type: 'input',
+          maxLength: 19,
+          value: data.bankNumber,
+          id: 'cardNumber'
+        }
+      ]
+      this.avatar = data.avatarUrl
+      this.answer = {
+        value: data.answer,
+        length: data.answer.length
+      }
+      this.resume = {
+        value: data.personalIntro,
+        length: data.personalIntro.length
       }
     }
+    treatAjaxDatasTutor (data) {
+      this.optionList = [
+        {
+          name: '真实姓名',
+          type: 'input',
+          value: data.name,
+          id: 'name'
+        },
+        {
+          name: '性别',
+          type: 'picker',
+          value: data.sex,
+          data: ['男', '女'],
+          mode: 'selector',
+          id: 'gender'
+        },
+        {
+          name: '行业',
+          type: 'picker',
+          mode: 'selector',
+          data: ['社会公益', '学术科研', '创新创业'],
+          value: data.trade,
+          id: 'orientation'
+        },
+        {
+          name: '公司/机构',
+          type: 'input',
+          value: data.company,
+          id: 'company'
+        },
+        {
+          name: '职位',
+          type: 'input',
+          value: data.position,
+          id: 'position'
+        },
+        {
+          name: '一句话介绍自己',
+          type: 'input',
+          value: data.simpleIntro,
+          maxLength: 20,
+          id: 'intro'
+        }
+      ]
+      this.avatar = data.avatarUrl
+      this.resume = {
+        value: data.personalIntro,
+        length: data.personalIntro.length
+      }
+      this.identity = 'tutor'
+    }
+
+    onUnload () {
+      if (!this.$WX.getStorage('isPush')) {
+        this.$WX.setStorage('optionList', this.optionList)
+        this.$WX.setStorage('identityList', this.identityList)
+        this.$WX.setStorage('avatar', this.avatar)
+        this.$WX.setStorage('answer', this.answer)
+        this.$WX.setStorage('resume', this.resume)
+        this.$WX.setStorage('isSave', true)
+        this.$WX.setStorage('identity', this.identity)
+        this.$WX.toast('已保存')
+      }
+    }
+    props = {}
+    customData = {}
+    methods = {
+      ButtonClick (event) {
+        const that = this
+        if (event.target.id === 'save') {
+          this.$WX.toast('已保存', 'success')
+        }
+        if (event.target.id === 'submit') {
+          if (this.checkingValue()) {
+            const confirm = () => {
+              this.$WX.toast('提交成功')
+              this.$WX.setStorage('status', 0)
+            }
+            const cancel = () => {
+              this.$WX.toast('取消提交')
+            }
+            wx.showModal({
+              title: '提示',
+              content: '审核结束前，不可修改个人资料，确认提交吗?',
+              success: function (res) {
+                if (res.confirm) {
+                  confirm()
+                  that.$WX.setStorage('isPush', true)
+                  that.$WX.jumpTo('./home')
+                } else if (res.cancel) {
+                  cancel()
+                }
+              }
+            })
+          }
+        }
+      },
+      onBlur (event) {
+        this.$emit('input-blur', event.target.id, event.detail.value)
+      },
+      //  实时更新多行输入框的长度
+      onInput (event) {
+        if (event.target.id === 'answer') {
+          this.answer.value = event.detail.value
+          this.answer.length = this.answer.value.length
+        }
+        if (event.target.id === 'resume') {
+          this.resume.value = event.detail.value
+          this.resume.length = this.resume.value.length
+        }
+      },
+      upLoad () {
+        console.log('上传文件')
+        //  this.$WX.upLoad(url, filePath, name, formData, fn)
+      }
+    }
+    changeAvatar (event) {
+      this.$WX.chooseAvatar(this, 'avatar')
+    }
+    checkingValue () {
+      for (let i = 0, len = this.optionList.length; i < len; i++) {
+        if (this.optionList[i].value === '') {
+          if (this.optionList[i].type === 'picker') {
+            this.$WX.toast('请选择' + this.optionList[i].name)
+          } else if (this.optionList[i].type === 'input') {
+            this.$WX.toast('请填写' + this.optionList[i].name)
+          }
+          return false
+        }
+      }
+      if (this.identity === 'student') {
+        for (let i = 0, len = this.identityList.length; i < len; i++) {
+          this.$emit('input-blur', this.identityList[i].id, this.identityList[i].value)
+          if (!this.isRight) {
+            return false
+          }
+        }
+      }
+      return true
+    }
+    events = {
+      //  下拉框
+      'changePicker': (key, index) => {
+        this.optionList.forEach((item) => {
+          if (item.id === key) {
+            item.value = item.data[index]
+          }
+        })
+      },
+      'changeMultiPicker': (key, multiIndex) => {
+        this.optionList.forEach((item) => {
+          if (item.id === key) {
+            item.value = item.data[0][multiIndex[0]] + '-' + item.data[1][multiIndex[1]]
+          }
+        })
+      },
+      //  输入框
+      'input-blur': (key, value) => {
+        if (value === '') {
+            return
+        }
+        this.optionList.forEach(item => {
+          if (item.id === key) {
+            item.value = value
+          }
+        })
+        if (key === 'studentNumber') {
+          if (!this.$UTIL.isStudentNumber(value)) {
+            this.$WX.toast('请输入正确的学号')
+            this.isRight = false
+          }
+          this.identityList[0].value = value
+          this.isRight = true
+        }
+        if (key === 'identityCard') {
+          if (!this.$UTIL.isIdentityCard(value)) {
+            this.$WX.toast('请输入正确的身份证号码')
+            this.isRight = false
+          }
+          this.identityList[1].value = value
+          this.isRight = true
+        }
+        if (key === 'cardNumber') {
+          if (!this.$UTIL.isCardNumber(value)) {
+             this.$WX.toast('请输入正确的银行卡账号')
+             this.isRight = false
+          }
+          this.identityList[2].value = value
+          this.isRight = true
+        }
+      }
+    }
+    props = {}
   }
-  changeAvatar (event) {
-    this.$WX.chooseAvatar(this, 'avatarUrl')
-  }
-  events = {}
-}
 </script>

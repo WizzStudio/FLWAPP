@@ -46,6 +46,29 @@ const isVerifyCode = (VerifyCode) => {
 	return reg.test(VerifyCode.toString())
 }
 
+const isStudentNumber = (StudentNumber) => {
+	if (StudentNumber.length >= 20 || StudentNumber.length <= 3) {
+		return false
+	}
+	let reg = /\d{4,20}/
+	return reg.test(StudentNumber.toString())
+}
+
+const isIdentityCard = (IdentityCard) => {
+	if (IdentityCard.length !== 18) {
+		return false
+	}
+	let reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
+	return reg.test(IdentityCard.toString())
+}
+
+const isCardNumber = (CardNumber) => {
+	if (CardNumber.length < 16 || CardNumber.length > 19) {
+		return false
+	}
+	let reg = /\d{16,19}/
+	return reg.test(CardNumber.toString())
+}
 /**
  * 循环计数器
  * @param countTime 计数次数
@@ -97,6 +120,9 @@ export {
 	isPhoneNumber,
 	isInviteCode,
 	isVerifyCode,
+	isIdentityCard,
+	isCardNumber,
+	isStudentNumber,
 	countFn,
 	verifyParams
 }
