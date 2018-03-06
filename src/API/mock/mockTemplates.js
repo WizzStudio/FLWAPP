@@ -36,6 +36,7 @@ const Test = {
 	]
 }
 
+/* 下面的arguments要和APIList里的api-key一一映射 */
 export {
 	UserLogin,
 	UserInviteCodeCheck,

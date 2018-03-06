@@ -160,6 +160,14 @@
 
 		onShow () {
 			/* MENTION 测试流程的临时代码 */
+		setTimeout(() => {
+			this.inviteCode = 213
+			this.$apply()
+			this.$WX.wxLogin().then(data => {
+				this.inviteCode = data.code
+				this.$apply()
+			})
+		}, 2000)
 		}
 		state0 () {
 			// 0：未输入邀请码或者输入错误
@@ -258,8 +266,8 @@
 				if (key === 'next' && this.state === 1) {
 //					console.log('该去验证邀请码了')
 					/* TODO: 重构后的测试接口 */
-					this.$APX('UserInviteCodeCheck', {})
-//					this.$API.UserInviteCodeCheck(this.inviteCode)
+//					this.$APX('UserInviteCodeCheck', {})
+					this.$API.UserInviteCodeCheck(this.inviteCode)
 						.then(data => {
 							if (!data.code) {
 								this.$WX.toast(data.msg)

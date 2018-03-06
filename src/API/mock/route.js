@@ -19,9 +19,3 @@ export default function (rurl) {
 		resolve(Mock.mock(Tempaltes[key]))
 	})
 }
-
-// this.$api('TEST')
-//
-// mock(route(API['key'].))
-//
-// route['TEST'] -> template
