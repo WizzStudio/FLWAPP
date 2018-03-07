@@ -56,7 +56,7 @@ const StudentCenter = () => {
 }
 
 const TutorCenter = () => {
-	return ajax('/tutor/center', get)
+	return ajax('/tutor/center', 'get')
 }
 
 const StudentProfile = () => {
@@ -64,6 +64,12 @@ const StudentProfile = () => {
 }
 const TutorProfile = () => {
 	return ajax('/tutor/profile', 'get')
+}
+const SendTutorProfile = (data) => {
+	return ajax('/tutor/profile', 'put', {data})
+}
+const SendStudentProfile = (data) => {
+	return ajax('/stu/profile', 'put', {data})
 }
 // const = ()=>{
 // 	return ajax('','get',{})
@@ -95,7 +101,9 @@ export {
 	StudentCenter,
 	TutorCenter,
 	StudentProfile,
-	TutorProfile
+	TutorProfile,
+	SendStudentProfile,
+	SendTutorProfile
 	//	FileUpLoad,
 	//	FileDownLoad
 }

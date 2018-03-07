@@ -139,7 +139,7 @@
     </view>
     <div class="info-item-container info-item-avatar-container">
         <label class="info-item-name">头像</label>
-        <image src="{{avatarUrl}}" class="info-item-avatar-img" alt="我的头像" @tap="changeAvatar"/>
+        <image src="{{avatar}}" class="info-item-avatar-img" alt="我的头像" @tap="changeAvatar"/>
         <image src="../../static/images/u125.png" class="Info-Tag info-item-avatar-tag" @tap="changeAvatar"/>
     </div>
     <ul class="info-container">
@@ -228,7 +228,7 @@
     data = {
       optionList: [],
       identityList: [],
-      avatarUrl: '',
+      avatar: '',
       identity: '',
       answer: {},
       resume: {},
@@ -261,7 +261,22 @@
         })
       */
     }
+    transformTime (data) {
+      const date = new Date(parseInt(data))
+      return date.getFullYear() + '-' + date.getMonth() + 1
+    }
+    transformTimeToUnix (data) {
+      const dates = data.split('-')
+      return Date.parse(new Date(dates[0], dates[1] - 1, 2))
+    }
     treatAjaxDatasStudent (data) {
+      const years = []
+      const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+      const currentDate = new Date()
+
+      for (let i = currentDate.getFullYear(), year = 1990; i >= year; i--) {
+        years.push(i)
+      }
       this.optionList = [
         {
           name: '真实姓名',
@@ -272,8 +287,8 @@
         {
           name: '出生年月',
           type: 'picker',
-          value: data.birthday,
-          data: [['1995', '1996', '1997', '1998'], ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']],
+          value: this.transformTime(data.birthday),
+          data: [years, months],
           mode: 'multiSelector',
           id: 'birth'
         },
@@ -316,9 +331,9 @@
         {
           name: '入学时间',
           type: 'picker',
-          value: data.admissionDate,
-          data: ['2018', '2017', '2016', '2015', '2014', '2013'],
-          mode: 'selector',
+          value: this.transformTime(data.admissionDate),
+          data: [years, months],
+          mode: 'multiSelector',
           id: 'time'
         },
         {
@@ -359,7 +374,7 @@
           id: 'cardNumber'
         }
       ]
-      this.avatar = data.avatarUrl
+      this.avatar = data.avatar
       this.answer = {
         value: data.answer,
         length: data.answer.length
@@ -368,6 +383,7 @@
         value: data.personalIntro,
         length: data.personalIntro.length
       }
+      console.log()
     }
     treatAjaxDatasTutor (data) {
       this.optionList = [
@@ -413,14 +429,49 @@
           id: 'intro'
         }
       ]
-      this.avatar = data.avatarUrl
+      this.avatar = data.avatar
       this.resume = {
         value: data.personalIntro,
         length: data.personalIntro.length
       }
       this.identity = 'tutor'
     }
-
+    getDatas () {
+      let datas
+      if (this.identity === 'student') {
+        datas = {
+          avatar: this.avatar,
+          name: this.optionList[0].value,
+          birthday: this.transformTimeToUnix(this.optionList[1].value),
+          sex: this.optionList[2].value,
+          schoolId: this.optionList[3].value,
+          degree: this.optionList[4].value,
+          academy: this.optionList[5].value,
+          profession: this.optionList[6].value,
+          admissionDate: this.optionList[7].value,
+          direction: this.optionList[8].value,
+          simpleIntro: this.optionList[9].value,
+          idNum: this.identityList[1].value,
+          bankNumber: this.optionList[2].value,
+          stuNumber: this.optionList[0].value,
+          answer: this.answer.value,
+          resume: this.resume.value
+        }
+      }
+      if (this.identity === 'tutor') {
+        datas = {
+          avatar: this.avatar,
+          name: this.optionList[0].value,
+          sex: this.optionList[1].value,
+          trade: this.optionList[2].value,
+          company: this.optionList[3].value,
+          position: this.optionList[4].value,
+          simpleIntro: this.optionList[5].value,
+          resume: this.resume.value
+        }
+      }
+      console.log(datas)
+    }
     onUnload () {
       if (!this.$WX.getStorage('isPush')) {
         this.$WX.setStorage('optionList', this.optionList)
@@ -444,6 +495,7 @@
         if (event.target.id === 'submit') {
           if (this.checkingValue()) {
             const confirm = () => {
+              this.getDatas()
               this.$WX.toast('提交成功')
               this.$WX.setStorage('status', 0)
             }

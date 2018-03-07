@@ -17,7 +17,7 @@
       height: 160rpx;
       width: 160rpx;
       border-radius: 50%;
-      background-color: aqua;
+      background-color: #f3f3f3;
     }
     &-2 {
       display:flex;
@@ -66,7 +66,7 @@
 <template>
   <view class="info-container">
     <div class="info-module-1">
-      <image src="../../static/images/logo.png" class="info-module-1-avatar" alt="我的头像"/>
+      <image src="{{infoDatas.avatar}}" class="info-module-1-avatar" alt="我的头像"/>
     </div>
     <div class="info-module-2">
       <div class="div-name">
