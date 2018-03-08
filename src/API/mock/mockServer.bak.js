@@ -1,5 +1,5 @@
 import Mock from 'mockjs'
-import mockRouter from './mockRoute'
+// import mockRouter from './mockRoute'
 
 /**
  * rurl到mock不同数据的映射

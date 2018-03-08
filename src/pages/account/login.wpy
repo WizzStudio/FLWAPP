@@ -266,8 +266,8 @@
 				if (key === 'next' && this.state === 1) {
 //					console.log('该去验证邀请码了')
 					/* TODO: 重构后的测试接口 */
-//					this.$APX('UserInviteCodeCheck', {})
-					this.$API.UserInviteCodeCheck(this.inviteCode)
+					this.$API('UserInviteCodeCheck', {inviteCode: this.inviteCode})
+						//					this.$API.UserInviteCodeCheck(this.inviteCode) :弃用
 						.then(data => {
 							if (!data.code) {
 								this.$WX.toast(data.msg)
@@ -281,7 +281,7 @@
 					if (this.isCounting) {
 						return false
 					}
-					this.$API.UserVerifyCode(this.phoneNumber)
+					this.$API('UserVerifyCode', {phoneNumber: this.phoneNumber})
 						.then(data => {
 							if (!data.code) {
 								this.$WX.toast(data.msg)
@@ -293,7 +293,7 @@
 				/* 验证码格式通过 */
 				if (key === 'done' && this.state === 6) {
 //					console.log('该请求验证验证码了')
-					this.$API.UserVerifyCodeCheck(this.phoneNumber, this.verifyCode)
+					this.$API('UserVerifyCodeCheck', {phoneNumber: this.phoneNumber, verifyCode: this.verifyCode})
 						.then(data => {
 							if (!data.code) {
 								this.$API.UserRegister(this.phoneNumber, this.inviteCode).then(data => {

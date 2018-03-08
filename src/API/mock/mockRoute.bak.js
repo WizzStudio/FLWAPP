@@ -1,5 +1,5 @@
-import Test from './templates/Test'
-import { UserLogin, UserInviteCodeCheck, UserRegister, UserVerifyCodeCheck, UserVerifyCode, StudentCenter, TutorCenter, StudentProfile, TutorProfile } from './templates/User'
+// import Test from './templates/Test'
+// import { UserLogin, UserInviteCodeCheck, UserRegister, UserVerifyCodeCheck, UserVerifyCode, StudentCenter, TutorCenter, StudentProfile, TutorProfile } from './templates/User'
 
 export default (rurl) => {
 	switch (rurl) {

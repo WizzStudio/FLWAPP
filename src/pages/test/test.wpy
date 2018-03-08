@@ -27,6 +27,7 @@
 		onShow () {
 			this.$WX.wxLogin().then(data => {
 				this.code = data.code
+				this.$API('UserLogin',)
 				this.$API.UserLogin(data.code).then(data => {
 					this.token = data.token
 					this.$apply()

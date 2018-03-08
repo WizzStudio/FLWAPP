@@ -247,7 +247,7 @@
         this.avatar = this.$WX.getStorage('avatar')
         this.identity = this.$WX.getStorage('identity')
       } else {
-        this.$APX('StudentProfile')
+        this.$API('StudentProfile')
           .then(data => {
             this.treatAjaxDatasStudent(data.data)
             this.identity = 'student'

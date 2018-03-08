@@ -1,4 +1,4 @@
-import MockServer from './mock/mockServer.js' // mock数据服务
+// import MockServer from './mock/mockServer.js' // mock数据服务：弃用
 import Route from './mock/route' // mock数据服务
 import { toast, getStorage, setStorage } from '../common/scripts/wxUtil'
 import statusCodeFilter from './statusCodeFilter'
@@ -142,8 +142,7 @@ export default (rurl = argumentsErr(), method = argumentsErr(), data = null, hea
 		}
 	} else {
 		console.log('[HTTP Request]: request interrupted by mockServer')
-		/* TODO 重构后的测试接口 */
 		return Route(rurl)
-		//	return MockServer(rurl)
+		//	return MockServer(rurl) // 旧版：已弃用
 	}
 }

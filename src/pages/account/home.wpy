@@ -132,7 +132,7 @@
       ]
     }
     onLoad () {
-      this.$APX('StudentCenter')
+      this.$API('StudentCenter')
         .then(data => {
           this.treatAjaxDatasStudent(data.data)
         })
