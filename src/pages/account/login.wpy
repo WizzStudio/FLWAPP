@@ -296,7 +296,7 @@
 					this.$API('UserVerifyCodeCheck', {phone: this.phoneNumber, captcha: this.verifyCode})
 						.then(data => {
 							if (!data.code) {
-								this.$API('UserRegister', {phone:this.phoneNumber, code:this.inviteCode})
+								this.$API('UserRegister', {phone: this.phoneNumber, code: this.inviteCode})
 								.then(data => {
 									if (!data.code) {
 										this.$WX.toast('注册成功！', 'success', 3000)

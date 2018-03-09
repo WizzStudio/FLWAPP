@@ -1,0 +1,95 @@
+<style lang="scss" type="text/scss">
+	@import "../../common/styles/variables";
+	@import "../../common/styles/mixins";
+
+	.userCard {
+		/* 用户信息 */
+		&-info {
+			/* 头像 */
+			&-avatar {
+			}
+			/* 名字栏独有样式 */
+			&-nameBar {
+			}
+			/* 基础信息样式 */
+			.info-line {
+
+			}
+
+		}
+		/* 介绍 */
+		&-intro {
+		}
+		/* 累计计数板 */
+		&-bar {
+			/* 计数item */
+			.item {
+				/* 数字block独有样式 */
+				&-number {
+				}
+				/* titleblock独有样式 */
+				&-title {
+				}
+			}
+		}
+
+		/* 申请方向的tag */
+		.apply-tag {
+
+		}
+		/* 申请方向的icon */
+		.apply-icon {
+
+		}
+		/* 导师tag */
+		.mentor-tag {
+
+		}
+
+		/* 申请方向 */
+		.direction {
+			/*创新创业*/
+			&-create {
+				&-tag{}
+				&-icon{}
+			}
+			/*社会公益*/
+			&-society {
+				&-tag{}
+				&-icon{}
+			}
+			/*科学研究*/
+			&-research {
+				&-tag{}
+				&-icon{}
+			}
+		}
+
+	}
+
+</style>
+
+<template>
+	<view class="userCard">
+
+	</view>
+</template>
+
+<script>
+	import wepy from 'wepy'
+
+	export default class UserCard extends wepy.component {
+		components = {}
+		data = {}
+		computed = {}
+
+		customFunction () {}
+
+		methods = {}
+		events = {}
+		props = {
+			role: {type: String, default: ''},	// 用户身份
+			info: {type: Object, default: null} // TODO:向后端问用户信息的返回数据
+		}
+	}
+</script>

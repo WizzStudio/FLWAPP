@@ -5,49 +5,58 @@
 	import wepy from 'wepy'
 
 	export default class extends wepy.app {
-    config = {
-      'pages': ['pages/index', 'pages/test/test', 'pages/account/login', 'pages/account/info', 'pages/account/home'],
-      'window': {
-        'backgroundTextStyle': 'light',
-        'navigationBarBackgroundColor': '#fff',
-        'navigationBarTitleText': 'WeChat',
-        'navigationBarTextStyle': 'black'
-      },
-      'tabBar':
-      {
-        'color': '#999999',
-        'selectedColor': '#e64949',
-        'borderStyle': 'white',
-        'backgroundColor': 'white',
-        'list': [
-          {
-            'pagePath': 'pages/account/login',
-            'text': '首页',
-            'iconPath': 'static/images/tabBar/home_icon.png',
-            'selectedIconPath': 'static/images/tabBar/home_icon_p.png'
-          },
-          {
-            'pagePath': 'pages/account/login',
-            'text': '导学信息',
-            'iconPath': 'static/images/tabBar/news_icon.png',
-            'selectedIconPath': 'static/images/tabBar/news_icon_p.png'
-          },
-          {
-            'pagePath': 'pages/account/home',
-            'text': '我的',
-            'iconPath': 'static/images/tabBar/me_icon.png',
-            'selectedIconPath': 'static/images/tabBar/me_icon_p.png'
-          },
-					/* TODO 下面是测试代码 */
-					{
-						'pagePath': 'pages/test/test',
-						'text': '测试',
-						'iconPath': 'static/images/tabBar/me_icon.png',
-						'selectedIconPath': 'static/images/tabBar/me_icon_p.png'
-					}
-        ]
-      }
-    }
+		config = {
+			/* 路由 */
+			'pages': [
+				'pages/index',
+				'pages/test/test',
+				'pages/account/login',
+				'pages/account/info',
+				'pages/account/home'
+			],
+			'window': {
+				'backgroundTextStyle': 'light',
+				'navigationBarBackgroundColor': '#db4d3d', // <----new主题色
+				'navigationBarFrontColor': '#ffffff',
+				'navigationBarTitleText': 'WeChat',
+				'navigationBarTextStyle': 'white',
+				'backgroundColorTop': '#db4d3d'
+			},
+			'tabBar':
+				{
+					'color': '#999999',
+					'selectedColor': '#e64949',
+					'borderStyle': 'white',
+					'backgroundColor': 'white',
+					'list': [
+						{
+							'pagePath': 'pages/account/login',
+							'text': '首页',
+							'iconPath': 'static/images/tabBar/home_icon.png',
+							'selectedIconPath': 'static/images/tabBar/home_icon_p.png'
+						},
+						{
+							'pagePath': 'pages/account/login',
+							'text': '导学信息',
+							'iconPath': 'static/images/tabBar/news_icon.png',
+							'selectedIconPath': 'static/images/tabBar/news_icon_p.png'
+						},
+						{
+							'pagePath': 'pages/account/home',
+							'text': '我的',
+							'iconPath': 'static/images/tabBar/me_icon.png',
+							'selectedIconPath': 'static/images/tabBar/me_icon_p.png'
+						},
+						/* TODO 下面是测试用tabbar */
+						{
+							'pagePath': 'pages/test/test',
+							'text': '测试',
+							'iconPath': 'static/images/tabBar/me_icon.png',
+							'selectedIconPath': 'static/images/tabBar/me_icon_p.png'
+						}
+					]
+				}
+		}
 
 		onLaunch () {
 		}

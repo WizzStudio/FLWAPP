@@ -27,9 +27,9 @@ const tabBarUrl = ['account/login', 'account/home', './home', './login']
 const jumpTo = (url) => {
 	//	console.log(url)
 	if (url === tabBarUrl[0] || url === tabBarUrl[1] || url === tabBarUrl[2] || url === tabBarUrl[3]) {
-		return configFn(wx.switchTab, { url })
+		return configFn(wx.switchTab, {url})
 	} else {
-		return configFn(wx.navigateTo, { url })
+		return configFn(wx.navigateTo, {url})
 	}
 }
 
@@ -141,6 +141,16 @@ const upLoad = (url, filePath, name, formData, fn) => {
 	})
 }
 
+const changeNavBarColor = (frontColor0x = '#ffffff', backgroundColor0x = '#db4d3d', animation = {
+	duration: 400, timingFunc: 'easeIn'
+}) => {
+	wx.setNavigationBarColor({
+		frontColor: frontColor0x,
+		backgroundColor: backgroundColor0x,
+		animation
+	})
+}
+
 export {
 	ajax, // 发送ajax请求
 	jumpTo, // page跳转
@@ -160,5 +170,6 @@ export {
 	removeStorage, // 删除某条缓存数据
 	clearStorage, // 清空缓存数据
 	chooseAvatar, //	上传头像
-	upLoad //	上传文件
+	upLoad, //	上传文件
+	changeNavBarColor // 改变顶部栏的颜色
 }
