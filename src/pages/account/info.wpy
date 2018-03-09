@@ -149,7 +149,7 @@
             <label class="info-item-name info-item-repair-name">{{item.name}}</label>
             <div class="info-tag-value">
               <Picker :Datas="item.data" :PickerIsDisabled="item.disabled" :syncNumber.sync="item.index" :PickerId="item.id" :value.sync="item.value" :Mode="item.mode"/>
-              <image class="Info-Tag" src="../../static/images/u125.png" />
+              <image class="Info-Tag" src="../../static/images/u125.png"/>
             </div>
           </view>
           <view wx:if="{{item.type === 'input'}}" class="info-item-container">
@@ -237,44 +237,36 @@
       isPush: false
     }
     computed = {}
-
-    onLoad () {
-      if (this.$WX.getStorage('isSave')) {
-        this.optionList = this.$WX.getStorage('optionList')
-        this.identityList = this.$WX.getStorage('identityList')
-        this.resume = this.$WX.getStorage('resume')
-        this.answer = this.$WX.getStorage('answer')
-        this.avatar = this.$WX.getStorage('avatar')
-        this.identity = this.$WX.getStorage('identity')
-      } else {
-        this.$API('StudentProfile')
-          .then(data => {
-            console.log(data)
-            this.treatAjaxDatasStudent(data.data)
-            this.identity = 'student'
-        })
-      }
-      /*
-      this.$APX('TutorProfile')
-        .then(data => {
-          this.treatAjaxDatasTutor(data.data)
-          this.identity = 'tutor'
-        })
-      */
-    }
+    // 将UNIX时间戳转换为正常时间
     transformTime (data) {
+      if (typeof data === 'undefined') {
+        return ''
+      }
       const date = new Date(parseInt(data))
       return date.getFullYear() + '-' + date.getMonth() + 1
     }
+    // 将正常时间转换为UNIX时间戳
     transformTimeToUnix (data) {
+      if (data === '') {
+        return ''
+      }
       const dates = data.split('-')
       return (Date.parse(new Date(dates[0], dates[1] - 1, 2)) / 1000)
     }
+    //  若异步获取的数据属性值为空则设置其长度为0
+    setTextLength (data) {
+      if (typeof data === 'undefined') {
+        return 0
+      } else {
+        return data.length
+      }
+    }
+    // 解析获取的学生信息修改页的数据
     treatAjaxDatasStudent (data) {
       const years = []
       const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
       const currentDate = new Date()
-
+      console.log(data)
       for (let i = currentDate.getFullYear(), year = 1990; i >= year; i--) {
         years.push(i)
       }
@@ -282,7 +274,7 @@
         {
           name: '真实姓名',
           type: 'input',
-          value: data.name,
+          value: data.name || '',
           id: 'name'
         },
         {
@@ -296,7 +288,7 @@
         {
           name: '性别',
           type: 'picker',
-          value: data.sex,
+          value: data.sex || '',
           data: ['男', '女'],
           mode: 'selector',
           id: 'gender'
@@ -304,7 +296,7 @@
         {
           name: '学校',
           type: 'picker',
-          value: data.schoolId,
+          value: data.schoolId || '',
           data: ['西安电子科技大学', '电子科技大学', '北京邮电大学', '华中科技大学'],
           mode: 'selector',
           id: 'university'
@@ -312,7 +304,7 @@
         {
           name: '学历',
           type: 'picker',
-          value: data.degree,
+          value: data.degree || '',
           data: ['本科', '硕士', '博士'],
           mode: 'selector',
           id: 'degree'
@@ -320,13 +312,13 @@
         {
           name: '学院',
           type: 'input',
-          value: data.academy,
+          value: data.academy || '',
           id: 'faculty'
         },
         {
           name: '专业',
           type: 'input',
-          value: data.profession,
+          value: data.profession || '',
           id: 'major'
         },
         {
@@ -342,13 +334,13 @@
           type: 'picker',
           mode: 'selector',
           data: ['社会公益', '学术科研', '创新创业'],
-          value: data.direction,
+          value: data.direction || '',
           id: 'orientation'
         },
         {
           name: '一句话介绍自己',
           type: 'input',
-          value: data.simpleIntro,
+          value: data.simpleIntro || '',
           maxLength: 20,
           id: 'intro'
         }
@@ -358,46 +350,46 @@
           name: '学号',
           type: 'input',
           maxLength: 20,
-          value: data.stuNumber,
+          value: data.stuNumber || '',
           id: 'studentNumber'
         },
         {
           name: '身份证号',
           type: 'input',
           maxLength: 18,
-          value: data.idNum,
+          value: data.idNum || '',
           id: 'identityCard'
         }, {
           name: '银行卡账号',
           type: 'input',
           maxLength: 19,
-          value: data.bankNumber,
+          value: data.bankNumber|| '',
           id: 'cardNumber'
         }
       ]
-      this.avatar = data.avatar
+      this.avatar = data.avatar || '../../static/images/logo.png'
       this.answer = {
-        value: data.answer,
-        length: 0
+        value: data.answer || '',
+        length: this.setTextLength(data.answer)
       }
       this.resume = {
-        value: data.personalIntro,
-        length: 0
+        value: data.personalIntro || '',
+        length: this.setTextLength(data.answer)
       }
-      console.log()
     }
+    // 解析获取的导师信息修改页的数据
     treatAjaxDatasTutor (data) {
       this.optionList = [
         {
           name: '真实姓名',
           type: 'input',
-          value: data.name || '未填写',
+          value: data.name || '',
           id: 'name'
         },
         {
           name: '性别',
           type: 'picker',
-          value: data.sex,
+          value: data.sex || '',
           data: ['男', '女'],
           mode: 'selector',
           id: 'gender'
@@ -407,33 +399,33 @@
           type: 'picker',
           mode: 'selector',
           data: ['社会公益', '学术科研', '创新创业'],
-          value: data.trade,
+          value: data.trade || '',
           id: 'orientation'
         },
         {
           name: '公司/机构',
           type: 'input',
-          value: data.company || '未填写',
+          value: data.company || '',
           id: 'company'
         },
         {
           name: '职位',
           type: 'input',
-          value: data.position || '未填写',
+          value: data.position || '',
           id: 'position'
         },
         {
           name: '一句话介绍自己',
           type: 'input',
-          value: data.simpleIntro,
+          value: data.simpleIntro || '',
           maxLength: 20,
           id: 'intro'
         }
       ]
-      this.avatar = data.avatar
+      this.avatar = data.avatar || '../../static/images/logo.png'
       this.resume = {
-        value: data.personalIntro,
-        length: data.personalIntro.length
+        value: data.personalIntro || '',
+        length: this.setTextLength(data.personalIntro)
       }
       this.identity = 'tutor'
     }
@@ -458,6 +450,7 @@
           answer: this.answer.value,
           resume: this.resume.value
         }
+        this.$API('SendStudentProfile', JSON.stringify(datas))
       }
       if (this.identity === 'tutor') {
         datas = {
@@ -470,21 +463,45 @@
           simpleIntro: this.optionList[5].value,
           resume: this.resume.value
         }
+        this.$API('TutorProfile', JSON.stringify(datas))
       }
-      console.log(datas)
-      this.$API('SendStudentProfile', JSON.stringify(datas))
+    }
+    onLoad () {
+      if (this.$WX.getStorage('isSave') === true) {
+        this.optionList = this.$WX.getStorage('optionList')
+        this.identityList = this.$WX.getStorage('identityList')
+        this.resume = this.$WX.getStorage('resume')
+        this.answer = this.$WX.getStorage('answer')
+        this.avatar = this.$WX.getStorage('avatar')
+        this.identity = this.$WX.getStorage('identity')
+      } else {
+        if (this.$WX.getStorage('role') === 1) {
+          this.$API('StudentProfile')
+            .then(data => {
+              console.log(data)
+              this.treatAjaxDatasStudent(data.data)
+              this.identity = 'student'
+          })
+        } else if (this.$WX.getStorage('role') === 0) {
+          this.$API('TutorProfile')
+            .then(data => {
+              console.log(data)
+              this.treatAjaxDatasTutor(data.data)
+              this.identity = 'tutor'
+          })
+        }
+      }
     }
     onUnload () {
-      if (!this.$WX.getStorage('isPush')) {
-        this.$WX.setStorage('optionList', this.optionList)
-        this.$WX.setStorage('identityList', this.identityList)
-        this.$WX.setStorage('avatar', this.avatar)
-        this.$WX.setStorage('answer', this.answer)
-        this.$WX.setStorage('resume', this.resume)
-        this.$WX.setStorage('isSave', true)
-        this.$WX.setStorage('identity', this.identity)
-        this.$WX.toast('已保存')
-      }
+      this.$WX.setStorage('optionList', this.optionList)
+      this.$WX.setStorage('identityList', this.identityList)
+      this.$WX.setStorage('avatar', this.avatar)
+      this.$WX.setStorage('answer', this.answer)
+      this.$WX.setStorage('resume', this.resume)
+      this.$WX.setStorage('isSave', true)
+      this.$WX.setStorage('identity', this.identity)
+      this.$WX.setStorage('isChange', true)
+      this.$WX.toast('已保存')
     }
     props = {}
     customData = {}
@@ -510,7 +527,6 @@
               success: function (res) {
                 if (res.confirm) {
                   confirm()
-                  that.$WX.setStorage('isPush', true)
                   that.$WX.jumpTo('./home')
                 } else if (res.cancel) {
                   cancel()

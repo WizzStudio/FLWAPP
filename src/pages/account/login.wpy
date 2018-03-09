@@ -156,6 +156,7 @@
 		onLoad () {
 			//	FileUpLoad()
 			//	FileDownLoad()
+			wx.hideTabBar()
 		}
 
 		onShow () {
@@ -299,7 +300,8 @@
 								.then(data => {
 									if (!data.code) {
 										this.$WX.toast('注册成功！', 'success', 3000)
-										this.$WX.jumpTo('/info')
+										this.$WX.setStorage('role', data.data.role)
+										this.$WX.jumpTo('./home')
 									}
 								})
 							}

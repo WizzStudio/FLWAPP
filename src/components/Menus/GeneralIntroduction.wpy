@@ -25,14 +25,14 @@
       width: 450rpx;
     }
     &-2-name {
-      font-size: 38rpx;
+      font-size: 34rpx;
       color: #333333;
     }
     &-2-basic-statu {
       font-size: 22rpx;
       border: 1px solid gray;
-      padding: 6rpx 3rpx 0rpx 3rpx;
-      border-radius: 20%;
+      padding: 4rpx 8rpx 0rpx 8rpx;
+      border-radius: 10rpx;
       margin-left: 50rpx;
     }
     &-2-more {
@@ -41,8 +41,8 @@
       color: #666666;
     }
     &-3 {
-      margin-right: 30rpx;
-      margin-left: 200rpx;
+      padding-right: 30rpx;
+      padding-left: 200rpx;
     }
   }
   .info-module-2-checking {
@@ -71,14 +71,14 @@
     <div class="info-module-2">
       <div class="div-name">
         <span class="info-module-2-name">{{infoDatas.name?infoDatas.name:'请填写'}}</span>
-        <span class="info-module-2-basic-statu {{isStudent? statuClass[infoDatas.status]: tutorClass}}">{{isStudent? statuTitle[infoDatas.status]: tutorTitle[infoDatas.isTutor]}}</span>
+        <span class="info-module-2-basic-statu {{isStudent? statuClass[infoDatas.status]: tutorClass[infoDatas.isTutor]}}">{{isStudent? statuTitle[infoDatas.status]: tutorTitle[infoDatas.isTutor]}}</span>
       </div>
       <div class="info-module-2-more">
         <span>{{isStudent? schoolList[infoDatas.schoolId]: infoDatas.company}} | {{isStudent? infoDatas.profession: infoDatas.position}}</span>
       </div>
     </div>
-    <div class="info-module-3">
-        <image class="centerInfomation-Tag" src="../../static/images/u125.png" @tap="click" />
+    <div class="info-module-3"  @tap="click">
+        <image class="centerInfomation-Tag" src="../../static/images/u125.png"/>
     </div>
   </view>
 </template>
@@ -90,9 +90,9 @@
     data = {
       statuTitle: ['审核中', '审核未通过', '已通过审核'],
       statuClass: ['info-module-2-checking', 'info-module-2-failed', 'info-module-2-success'],
-      schoolList: ['电子科技大学', '西安电子科技大学'],
-      tutorTitle: ['', '导师'],
-      tutorClass: 'info-module-2-success'
+      schoolList: ['请填写','电子科技大学', '西安电子科技大学'],
+      tutorTitle: ['审核未通过', '导师'],
+      tutorClass: ['info-module-2-failed','info-module-2-success']
     }
     components = {}
     computed = {}

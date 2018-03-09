@@ -3,68 +3,23 @@ const StudentCenter = {
 	'code': 0,
 	'msg': '成功',
 	'data': {
-		'name': '郭小纲',
-		'avatar': '/avatar',
-		'sex': 1,
-		'schoolId': 1,
-		'profession': '电子信息工程',
-		'status': 1,
-		'redFlowerNum': 0,
-		'tutorNum': 0,
-		'workedTime': 0
+		'status': 1
 	}
 }
 const StudentProfile = {
 	'code': 0,
 	'msg': '成功',
-	'data': {
-		'avatar': '/avatar',
-		'name': '郭小纲',
-		'birthday': '825436800',
-		'sex': 1,
-		'schoolId': 1,
-		'degree': 1,
-		'academy': 'dianzi',
-		'profession': 'dianzi',
-		'admissionDate': '825436800',
-		'direction': 1,
-		'simpleIntro': '23333',
-		'idNum': '123456789123456789',
-		'bankNumber': '622262000100010001',
-		'stuNumber': '15050120020',
-		'personalIntro': '2333333',
-		'answer': '222',
-		'resume': '/resume'
-	}
+	'data': {}
 }
 const TutorProfile = {
 	'code': 0,
 	'msg': '成功',
-	'data': {
-		'avatar': '/avatar',
-		'name': '郭德纲',
-		'sex': 1,
-		'trade': 1,
-		'company': '德云社',
-		'position': 'CEO',
-		'simpleIntro': '23333',
-		'personalIntro': '2333333'
-	}
+	'data': {}
 }
 const TutorCenter = {
 	'code': 0,
 	'msg': '成功',
-	'data': {
-		'name': '郭德纲',
-		'avatar': '/avatar',
-		'isTutor': 1,
-		'trade': 1,
-		'company': '德云科技有限公司',
-		'position': 'CEO',
-		'redFlowerNum': 2,
-		'stuNum': 2,
-		'clockNum': 2
-	}
+	'data': {}
 }
 
 const UserLogin = {

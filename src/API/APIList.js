@@ -9,7 +9,5 @@ export default {
 	UserLogin: {url: '/user/login', method: 'post', data: {code: ''}, headers: {}},
 	UserVerifyCode: {url: '/verify/captcha', method: 'get', data: {phone: 0}, headers: {}},
 	UserVerifyCodeCheck: {url: '/verify/captcha', method: 'post', data: {phone: 0, captcha: 0}, headers: {}},
-	UserRegister: {url: '/user/register', method: 'post', data: {phone: 0, code: 0}, headers: {}},
-	SendTutorProfile: {url: '/tutor/profile', method: 'put', data: {}, headers: {}},
-	SendStudentProfile: {url: '/stu/profile', method: 'put', data: {}, headers: {}}
+	UserRegister: {url: '/user/register', method: 'post', data: {phone: 0, code: 0}, headers: {}}
 }

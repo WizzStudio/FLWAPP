@@ -33,9 +33,9 @@
 <template>
   <ul class="c-show-main">
     <repeat for="{{showDatas}}">
-      <div class="c-show-item">
+      <div class="c-show-item" id="{{item.id}}" @tap="itemClick">
         <image src="{{item.src}}" class="c-show-item-img"/>
-        <div class="c-show-item-name" id="{{item.id}}" @tap="itemClick">{{item.name}}</div>
+        <div class="c-show-item-name">{{item.name}}</div>
         <div class="c-show-item-number"> {{item.number}}</div>
       </div>
     </repeat>
@@ -54,7 +54,7 @@
 
     methods = {
       itemClick (event) {
-        this.$emit('show-click', event.target.id)
+        this.$emit('show-click', event.currentTarget.id)
       }
     }
 
