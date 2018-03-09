@@ -363,7 +363,7 @@
           name: '银行卡账号',
           type: 'input',
           maxLength: 19,
-          value: data.bankNumber|| '',
+          value: data.bankNumber || '',
           id: 'cardNumber'
         }
       ]

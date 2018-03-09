@@ -90,9 +90,9 @@
     data = {
       statuTitle: ['审核中', '审核未通过', '已通过审核'],
       statuClass: ['info-module-2-checking', 'info-module-2-failed', 'info-module-2-success'],
-      schoolList: ['请填写','电子科技大学', '西安电子科技大学'],
+      schoolList: ['请填写', '电子科技大学', '西安电子科技大学'],
       tutorTitle: ['审核未通过', '导师'],
-      tutorClass: ['info-module-2-failed','info-module-2-success']
+      tutorClass: ['info-module-2-failed', 'info-module-2-success']
     }
     components = {}
     computed = {}

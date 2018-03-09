@@ -47,22 +47,22 @@
         {
           unique: 'record',
           value: '我的花迹',
-          imgUrl: '../../static/images/我的花迹.png'
+          imgUrl: '../../static/images/personalCenter/我的花迹.png'
         },
         {
           unique: 'application',
           value: '申请活动',
-          imgUrl: '../../static/images/申请活动.png'
+          imgUrl: '../../static/images/personalCenter/申请活动.png'
         },
         {
           unique: 'message',
           value: '消息通知',
-          imgUrl: '../../static/images/消息通知.png'
+          imgUrl: '../../static/images/personalCenter/消息通知.png'
         },
         {
           unique: 'problem',
           value: '在线客服',
-          imgUrl: '../../static/images/问题反馈.png'
+          imgUrl: '../../static/images/personalCenter/问题反馈.png'
         }
       ],
       infoDatas: {},
@@ -91,19 +91,19 @@
       this.showDatas = [
         {
           name: '可提现小红花',
-          src: '../../static/images/小红花.png',
+          src: '../../static/images/personalCenter/小红花.png',
           number: data.redFlowerNum || 0 + ' 朵',
           id: 'redFlower'
         },
         {
           name: '导师',
-          src: '../../static/images/导师.png',
+          src: '../../static/images/personalCenter/导师.png',
           number: data.tutorNum || 0 + ' 人',
           id: 'tutor'
         },
         {
           name: '义工',
-          src: '../../static/images/义工.png',
+          src: '../../static/images/personalCenter/义工.png',
           number: data.workedTime || 0 + ' 小时',
           id: 'workedTime'
         }
@@ -122,19 +122,19 @@
       this.showDatas = [
         {
           name: '小红花',
-          src: '../../static/images/小红花.png',
+          src: '../../static/images/personalCenter/小红花.png',
           number: data.redFlowerNum || 0 + ' 朵',
           id: 'redFlower'
         },
         {
           name: '捐赠学生',
-          src: '../../static/images/捐赠学生.png',
+          src: '../../static/images/personalCenter/捐赠学生.png',
           number: data.stuNum || 0 + ' 人',
           id: 'stu'
         },
         {
           name: '沙漏',
-          src: '../../static/images/沙漏.png',
+          src: '../../static/images/personalCenter/沙漏.png',
           number: data.clockNum || 0 + ' 小时',
           id: 'clock'
         }
