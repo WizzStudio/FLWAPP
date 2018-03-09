@@ -1,6 +1,6 @@
 <style lang="scss" type="text/scss">
 
-	.code, .token{
+	.code, .token {
 		width: 200px;
 		word-wrap: break-word;
 		display: block;
@@ -24,15 +24,17 @@
 			code: '',
 			token: ''
 		}
+
 		onShow () {
 			this.$WX.wxLogin().then(data => {
 				this.code = data.code
-				this.$API('UserLogin',)
-				this.$API.UserLogin(data.code).then(data => {
-					this.token = data.token
-					this.$apply()
-				})
+				this.$API('UserLogin', {code: data.code})
+					.then(data => {
+						this.token = data.token
+						this.$apply()
+					})
 			})
+			this.$WX.changeNavBarColor()
 		}
 	}
 </script>
