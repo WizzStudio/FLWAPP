@@ -249,6 +249,7 @@
       } else {
         this.$API('StudentProfile')
           .then(data => {
+            console.log(data)
             this.treatAjaxDatasStudent(data.data)
             this.identity = 'student'
         })
@@ -267,7 +268,7 @@
     }
     transformTimeToUnix (data) {
       const dates = data.split('-')
-      return Date.parse(new Date(dates[0], dates[1] - 1, 2))
+      return (Date.parse(new Date(dates[0], dates[1] - 1, 2)) / 1000)
     }
     treatAjaxDatasStudent (data) {
       const years = []
@@ -377,11 +378,11 @@
       this.avatar = data.avatar
       this.answer = {
         value: data.answer,
-        length: data.answer.length
+        length: 0
       }
       this.resume = {
         value: data.personalIntro,
-        length: data.personalIntro.length
+        length: 0
       }
       console.log()
     }
@@ -390,7 +391,7 @@
         {
           name: '真实姓名',
           type: 'input',
-          value: data.name,
+          value: data.name || '未填写',
           id: 'name'
         },
         {
@@ -412,13 +413,13 @@
         {
           name: '公司/机构',
           type: 'input',
-          value: data.company,
+          value: data.company || '未填写',
           id: 'company'
         },
         {
           name: '职位',
           type: 'input',
-          value: data.position,
+          value: data.position || '未填写',
           id: 'position'
         },
         {
@@ -448,7 +449,7 @@
           degree: this.optionList[4].value,
           academy: this.optionList[5].value,
           profession: this.optionList[6].value,
-          admissionDate: this.optionList[7].value,
+          admissionDate: this.transformTimeToUnix(this.optionList[7].value),
           direction: this.optionList[8].value,
           simpleIntro: this.optionList[9].value,
           idNum: this.identityList[1].value,
@@ -471,6 +472,7 @@
         }
       }
       console.log(datas)
+      this.$API('SendStudentProfile', JSON.stringify(datas))
     }
     onUnload () {
       if (!this.$WX.getStorage('isPush')) {

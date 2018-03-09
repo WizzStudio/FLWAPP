@@ -10,7 +10,7 @@ const Test = () => {
  * @return {Promise}
  */
 const UserLogin = (code) => {
-	return ajax('/user/login', 'get', {code})
+	return ajax('/user/login', 'post', {code})
 }
 
 /**
@@ -19,7 +19,7 @@ const UserLogin = (code) => {
  * @return {Promise}
  */
 const UserInviteCodeCheck = (inviteCode) => {
-	return ajax('/user/inviteCode/check', 'get', {inviteCode})
+	return ajax('/verify/invite', 'post', {code: inviteCode})
 }
 
 /**
@@ -28,7 +28,7 @@ const UserInviteCodeCheck = (inviteCode) => {
  * @constructor
  */
 const UserVerifyCode = (phoneNumber) => {
-	return ajax('/user/verifyCode', 'get', {phone: phoneNumber})
+	return ajax('/verify/captcha', 'get', {phone: phoneNumber})
 }
 
 /**
@@ -37,8 +37,8 @@ const UserVerifyCode = (phoneNumber) => {
  * @param verifyCode {number} 验证码
  * @constructor
  */
-const UserVerifyCodeCheck = (phone, verifyCode) => {
-	return ajax('/user/verifyCode/check', 'get', {phone, verifyCode})
+const UserVerifyCodeCheck = (phone, captcha) => {
+	return ajax('/verify/captcha', 'post', {phone, captcha})
 }
 
 /**
@@ -47,8 +47,8 @@ const UserVerifyCodeCheck = (phone, verifyCode) => {
  * @param inviteCode {String} 邀请码
  * @constructor
  */
-const UserRegister = (phone, inviteCode) => {
-	return ajax('/user/register', 'get', {phone, inviteCode})
+const UserRegister = (phone, code) => {
+	return ajax('/user/register', 'post', {phone, code})
 }
 
 const StudentCenter = () => {

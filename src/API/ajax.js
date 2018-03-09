@@ -25,6 +25,7 @@ function _configRequest (config = {}) {
 		}
 		config.success = res => {
 			if (res.statusCode !== 200) {
+				console.log(res)
 				statusCodeFilter(res.statusCode, (header) => {
 					config.header = _configHeader(header)
 					_configRequest(config)
@@ -39,7 +40,7 @@ function _configRequest (config = {}) {
 				toast(res.data.msg)
 			}
 			/* TEST放出header里面的token为了做测试 */
-			res.data.token = res.header['Authorization']
+			//	res.data.token = res.header['Authorization']
 			/* 在这里进行的返回的，那么在此之前完成重请求就可以 */
 			resolve(res.data)
 		}

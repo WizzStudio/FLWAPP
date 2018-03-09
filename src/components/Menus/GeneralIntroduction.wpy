@@ -70,7 +70,7 @@
     </div>
     <div class="info-module-2">
       <div class="div-name">
-        <span class="info-module-2-name">{{infoDatas.name}}</span>
+        <span class="info-module-2-name">{{infoDatas.name?infoDatas.name:'请填写'}}</span>
         <span class="info-module-2-basic-statu {{isStudent? statuClass[infoDatas.status]: tutorClass}}">{{isStudent? statuTitle[infoDatas.status]: tutorTitle[infoDatas.isTutor]}}</span>
       </div>
       <div class="info-module-2-more">

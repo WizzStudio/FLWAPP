@@ -51,7 +51,7 @@
 //				.catch((err) => {
 //					console.log(err.errMsg)
 //				})
-//			wxLogin().then(data => (console.log(data)))
+//			this.$WX.wxLogin().then(data => (console.log(data)))
 //			wxGetUserInfo().then(data => (console.log(data)))
 		}
 

@@ -161,7 +161,6 @@
 		onShow () {
 			/* MENTION 测试流程的临时代码 */
 		setTimeout(() => {
-			this.inviteCode = 213
 			this.$apply()
 			this.$WX.wxLogin().then(data => {
 				this.inviteCode = data.code
@@ -266,7 +265,7 @@
 				if (key === 'next' && this.state === 1) {
 //					console.log('该去验证邀请码了')
 					/* TODO: 重构后的测试接口 */
-					this.$API('UserInviteCodeCheck', {inviteCode: this.inviteCode})
+					this.$API('UserInviteCodeCheck', {code: this.inviteCode})
 						//					this.$API.UserInviteCodeCheck(this.inviteCode) :弃用
 						.then(data => {
 							if (!data.code) {
@@ -281,7 +280,7 @@
 					if (this.isCounting) {
 						return false
 					}
-					this.$API('UserVerifyCode', {phoneNumber: this.phoneNumber})
+					this.$API('UserVerifyCode', {phone: this.phoneNumber})
 						.then(data => {
 							if (!data.code) {
 								this.$WX.toast(data.msg)
@@ -293,12 +292,14 @@
 				/* 验证码格式通过 */
 				if (key === 'done' && this.state === 6) {
 //					console.log('该请求验证验证码了')
-					this.$API('UserVerifyCodeCheck', {phoneNumber: this.phoneNumber, verifyCode: this.verifyCode})
+					this.$API('UserVerifyCodeCheck', {phone: this.phoneNumber, captcha: this.verifyCode})
 						.then(data => {
 							if (!data.code) {
-								this.$API.UserRegister(this.phoneNumber, this.inviteCode).then(data => {
+								this.$API('UserRegister', {phone:this.phoneNumber, code:this.inviteCode})
+								.then(data => {
 									if (!data.code) {
 										this.$WX.toast('注册成功！', 'success', 3000)
+										this.$WX.jumpTo('/info')
 									}
 								})
 							}
