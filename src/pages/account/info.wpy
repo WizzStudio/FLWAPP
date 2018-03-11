@@ -140,7 +140,7 @@
     <div class="info-item-container info-item-avatar-container">
         <label class="info-item-name">头像</label>
         <image src="{{avatar}}" class="info-item-avatar-img" alt="我的头像" @tap="changeAvatar"/>
-        <image src="../../static/images/u125.png" class="Info-Tag info-item-avatar-tag" @tap="changeAvatar"/>
+        <image src="../../static/images/personalCenter/u125.png" class="Info-Tag info-item-avatar-tag" @tap="changeAvatar"/>
     </div>
     <ul class="info-container">
       <repeat for="{{optionList}}" item="item" index="index">
@@ -149,7 +149,7 @@
             <label class="info-item-name info-item-repair-name">{{item.name}}</label>
             <div class="info-tag-value">
               <Picker :Datas="item.data" :PickerIsDisabled="item.disabled" :syncNumber.sync="item.index" :PickerId="item.id" :value.sync="item.value" :Mode="item.mode"/>
-              <image class="Info-Tag" src="../../static/images/u125.png"/>
+              <image class="Info-Tag" src="../../static/images/personalCenter/u125.png"/>
             </div>
           </view>
           <view wx:if="{{item.type === 'input'}}" class="info-item-container">
@@ -171,7 +171,7 @@
         <div class="info-item-container">
           <view wx:if="{{item.type === 'input'}}" class="info-item-container">
             <label class="info-item-name">{{item.name}}</label>
-            <input placeholder="请填写" class="info-item-input" bindblur="onBlur" id="{{item.id}}" value="{{item.value}}"/>
+            <input placeholder="请填写" class="info-item-input" bindblur="onBlur" id="{{item.id}}" value="{{item.value}}" maxlength="{{item.maxLength}}"/>
           </view>
         </div>
       </repeat>
@@ -183,9 +183,9 @@
       <span class="info-module-title">个人简历</span>
     </view>
     <div class="info-container">
-      <textarea class="info-textarea" maxlength="600" bindinput="onInput" id="resume" value="{{resume.value}}">
+      <textarea class="info-textarea" maxlength="600" bindinput="onInput" id="resume" value="{{personalIntro.value}}">
       </textarea>
-      <span class="info-textarea-count">{{resume.length}}/600</span>
+      <span class="info-textarea-count">{{personalIntro.length}}/600</span>
     </div>
   </view>
   <view wx:if="{{identity === 'student'}}">
@@ -205,7 +205,7 @@
       <span class="info-module-title">附件</span>
     </view>
     <view class="info-module-attachment">
-      <image src="../../static/images/附件.png" @tap="upLoad" />
+      <image src="../../static/images/personalCenter/附件.png" @tap="upLoad" />
       <span>上传</span>
     </view>
   </view>
@@ -231,10 +231,11 @@
       avatar: '',
       identity: '',
       answer: {},
-      resume: {},
+      personalIntro: {},
       isRight: false,
       isFirst: true,
-      isPush: false
+      isPush: false,
+      sexDatas: ['请选择', '男', '女']
     }
     computed = {}
     // 将UNIX时间戳转换为正常时间
@@ -289,7 +290,7 @@
           name: '性别',
           type: 'picker',
           value: data.sex || '',
-          data: ['男', '女'],
+          data: ['请选择', '男', '女'],
           mode: 'selector',
           id: 'gender'
         },
@@ -372,9 +373,9 @@
         value: data.answer || '',
         length: this.setTextLength(data.answer)
       }
-      this.resume = {
+      this.personalIntro = {
         value: data.personalIntro || '',
-        length: this.setTextLength(data.answer)
+        length: this.setTextLength(data.personalIntro)
       }
     }
     // 解析获取的导师信息修改页的数据
@@ -423,11 +424,10 @@
         }
       ]
       this.avatar = data.avatar || '../../static/images/logo.png'
-      this.resume = {
+      this.personalIntro = {
         value: data.personalIntro || '',
-        length: this.setTextLength(data.personalIntro)
+        length: 1 || this.setTextLength(data.personalIntro)
       }
-      this.identity = 'tutor'
     }
     getDatas () {
       let datas
@@ -436,58 +436,76 @@
           avatar: this.avatar,
           name: this.optionList[0].value,
           birthday: this.transformTimeToUnix(this.optionList[1].value),
-          sex: this.optionList[2].value,
-          schoolId: this.optionList[3].value,
-          degree: this.optionList[4].value,
+          sex: 1 || this.optionList[2].value,
+          schoolId: 1 || this.optionList[3].value,
+          degree: 1 || this.optionList[4].value,
           academy: this.optionList[5].value,
           profession: this.optionList[6].value,
           admissionDate: this.transformTimeToUnix(this.optionList[7].value),
-          direction: this.optionList[8].value,
+          direction: 1 || this.optionList[8].value,
           simpleIntro: this.optionList[9].value,
           idNum: this.identityList[1].value,
-          bankNumber: this.optionList[2].value,
-          stuNumber: this.optionList[0].value,
+          bankNumber: this.identityList[2].value,
+          stuNumber: this.identityList[0].value,
           answer: this.answer.value,
-          resume: this.resume.value
+          personalIntro: this.personalIntro.value
         }
         this.$API('SendStudentProfile', JSON.stringify(datas))
+          .then(data => {
+            if (data.data.code === 0) {
+              this.$WX.setStorage('status', 0)
+              this.$WX.toast('提交成功')
+              this.$WX.jumpTo('home')
+            } else {
+              this.$WX.toast('提交失败')
+            }
+          })
       }
       if (this.identity === 'tutor') {
         datas = {
           avatar: this.avatar,
           name: this.optionList[0].value,
-          sex: this.optionList[1].value,
-          trade: this.optionList[2].value,
+          sex: 1 || this.optionList[1].value,
+          trade: 1 || this.optionList[2].value,
           company: this.optionList[3].value,
           position: this.optionList[4].value,
           simpleIntro: this.optionList[5].value,
-          resume: this.resume.value
+          personalIntro: this.personalIntro.value
         }
-        this.$API('TutorProfile', JSON.stringify(datas))
+        this.$API('SendTutorProfile', JSON.stringify(datas))
+          .then(data => {
+            if (data.data.code === 0) {
+              this.$WX.setStorage('status', 0)
+              this.$WX.toast('提交成功')
+            } else {
+              this.$WX.toast('提交失败')
+            }
+          })
       }
     }
     onLoad () {
       if (this.$WX.getStorage('isSave') === true) {
+        console.log('从本地缓存获取数据')
         this.optionList = this.$WX.getStorage('optionList')
         this.identityList = this.$WX.getStorage('identityList')
-        this.resume = this.$WX.getStorage('resume')
+        this.personalIntro = this.$WX.getStorage('personalIntro')
         this.answer = this.$WX.getStorage('answer')
         this.avatar = this.$WX.getStorage('avatar')
         this.identity = this.$WX.getStorage('identity')
       } else {
         if (this.$WX.getStorage('role') === 1) {
+          this.identity = 'student'
           this.$API('StudentProfile')
             .then(data => {
-              console.log(data)
               this.treatAjaxDatasStudent(data.data)
-              this.identity = 'student'
+              this.$apply()
           })
-        } else if (this.$WX.getStorage('role') === 0) {
+        } else if (this.$WX.getStorage('role') === 2) {
+          this.identity = 'tutor'
           this.$API('TutorProfile')
             .then(data => {
-              console.log(data)
               this.treatAjaxDatasTutor(data.data)
-              this.identity = 'tutor'
+              this.$apply()
           })
         }
       }
@@ -497,11 +515,8 @@
       this.$WX.setStorage('identityList', this.identityList)
       this.$WX.setStorage('avatar', this.avatar)
       this.$WX.setStorage('answer', this.answer)
-      this.$WX.setStorage('resume', this.resume)
-      this.$WX.setStorage('isSave', true)
+      this.$WX.setStorage('personalIntro', this.personalIntro)
       this.$WX.setStorage('identity', this.identity)
-      this.$WX.setStorage('isChange', true)
-      this.$WX.toast('已保存')
     }
     props = {}
     customData = {}
@@ -510,13 +525,13 @@
         const that = this
         if (event.target.id === 'save') {
           this.$WX.toast('已保存', 'success')
+          this.$WX.setStorage('isSave', true)
         }
         if (event.target.id === 'submit') {
           if (this.checkingValue()) {
             const confirm = () => {
               this.getDatas()
-              this.$WX.toast('提交成功')
-              this.$WX.setStorage('status', 0)
+              this.$WX.setStorage('isSave', false)
             }
             const cancel = () => {
               this.$WX.toast('取消提交')
@@ -546,8 +561,8 @@
           this.answer.length = this.answer.value.length
         }
         if (event.target.id === 'resume') {
-          this.resume.value = event.detail.value
-          this.resume.length = this.resume.value.length
+          this.personalIntro.value = event.detail.value
+          this.personalIntro.length = this.personalIntro.value.length
         }
       },
       upLoad () {
@@ -556,7 +571,8 @@
       }
     }
     changeAvatar (event) {
-      this.$WX.chooseAvatar(this, 'avatar')
+      let that = this
+      this.$WX.chooseAvatar(that, 'avatar')
     }
     checkingValue () {
       for (let i = 0, len = this.optionList.length; i < len; i++) {

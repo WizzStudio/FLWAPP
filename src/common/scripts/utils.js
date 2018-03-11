@@ -47,7 +47,7 @@ const isVerifyCode = (VerifyCode) => {
 }
 
 const isStudentNumber = (StudentNumber) => {
-	if (StudentNumber.length >= 20 || StudentNumber.length <= 3) {
+	if (StudentNumber.length > 20 || StudentNumber.length <= 3) {
 		return false
 	}
 	let reg = /\d{4,20}/

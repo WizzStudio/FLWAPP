@@ -19,18 +19,18 @@
   .MenuItem-Item-name{
     width: 642rpx;
     margin-left: 20rpx;
-    padding-top: 25rpx;
+    padding-top: 16rpx;
     margin-bottom: 1rpx;
     border-bottom: 1rpx solid #f5f5f5;
 
-    font-size: 32rpx;
+    font-size: 28rpx;
     color: #333333;
   }
   .MenuItem-Img {
     margin-left: 30rpx;
     padding-top: 20rpx;
-    width: 65rpx;
-    height: 58rpx;;
+    width: 52rpx;
+    height: 47rpx;;
   }
   .MenuItem-Tag {
     width: 20rpx;
@@ -52,7 +52,7 @@
           {{item.value}}
         </li>
         <div class="MenuItem-Tag-borderBottom">
-          <image class="MenuItem-Tag" src="../../static/images/u125.png"/>
+          <image class="MenuItem-Tag" src="../../static/images/personalCenter/u125.png"/>
         </div>
       </div>
     </repeat>

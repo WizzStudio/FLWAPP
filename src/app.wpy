@@ -12,7 +12,8 @@
 				'pages/test/test',
 				'pages/account/login',
 				'pages/account/info',
-				'pages/account/home'
+				'pages/account/home',
+				'pages/account/record'
 			],
 			'window': {
 				'backgroundTextStyle': 'light',

@@ -71,6 +71,9 @@ const SendTutorProfile = (data) => {
 const SendStudentProfile = (data) => {
 	return ajax('/stu/profile', 'put', {data})
 }
+const UpLoad = () => {
+	return ajax('oss/up', 'get')
+}
 // const = ()=>{
 // 	return ajax('','get',{})
 // }
@@ -103,7 +106,7 @@ export {
 	StudentProfile,
 	TutorProfile,
 	SendStudentProfile,
-	SendTutorProfile
-	//	FileUpLoad,
+	SendTutorProfile,
+	UpLoad
 	//	FileDownLoad
 }

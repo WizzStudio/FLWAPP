@@ -4,8 +4,11 @@
   @import "../../common/styles/common";
   .c-show-main {
     display: inline-flex;
-    margin-left: 75rpx;
-    margin-right: 75rpx;
+    margin-left: 40rpx;
+    margin-right: 60rpx;
+    &:nth-child(3) {
+      margin-right: 40rpx;
+    }
   }
   .c-show-item-img {
     width: 60rpx;
@@ -16,15 +19,15 @@
     flex-flow: column nowrap;
     justify-content: center;
     align-items: center; 
-    width: 200rpx;
+    width: 220rpx;
   }
   .c-show-item {
     &-name {
-      font-size: 32rpx;
+      font-size: 24rpx;
       color: #333333;
     }
     &-number {
-      font-size: 24rpx;
+      font-size: 18rpx;
       color: #666666;
     }
   }

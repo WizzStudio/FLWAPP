@@ -24,8 +24,8 @@
 <template>
   <view class="centerInfomation">
     <Info class="centerInfomation-Module-1" :infoDatas.sync="infoDatas" :isStudent.sync="isStudent"></Info>
-    <Show class="centerInfomation-Module-2" :showDatas.sync="showDatas"></Show>
-    <Menu class="centerInfomation-Module-3" :menuList.sync="menuList"></Menu>
+    <Show class="centerInfomation-Module-2" :showDatas.sync="showDatas" :isStudent.sync="isStudent"></Show>
+    <Menu class="centerInfomation-Module-3" :menuList.sync="menuList" :isStudent.sync="isStudent"></Menu>
   </view>
 </template>
 
@@ -36,7 +36,9 @@
   import Exhibits from '../../components/Menus/show'
 
   export default class Home extends page {
-    config = {}
+    config = {
+      navigationBarTitleText: '个人中心'
+    }
     components = {
       Info: GeneralIntroduction,
       Show: Exhibits,
@@ -67,25 +69,23 @@
       ],
       infoDatas: {},
       showDatas: [],
-      isStudent: ''
+      isStudent: false
     }
     computed = {}
     treatAjaxDatasStudent (data) {
       let status = 1
-      console.log(data)
       if (this.$WX.getStorage('status') === 0 && data.status === 1) {
         status = 0
+        return
       } else if (data.status === 2) {
         this.$WX.setStorage('status', 2)
         status = 2
       }
-
-      this.isStudent = true
       this.infoDatas = {
-        name: data.name,
+        name: data.name || '',
         avatar: data.avatar || '../../static/images/logo.png',
         schoolId: data.schoolId || '0',
-        profession: data.profession || '请选择',
+        profession: data.profession || '请填写',
         status: status
       }
       this.showDatas = [
@@ -110,7 +110,17 @@
       ]
     }
     treatAjaxDatasTutor (data) {
-      this.isStudent = false
+      let status
+      if (this.$WX.getStorage('status') === 0 && data.status === 1) {
+        status = 0
+        return
+      } else if (data.status === 2) {
+        this.$WX.setStorage('status', 2)
+        status = 2
+      } else {
+        status = 1
+      }
+      status = parseInt(status)
       this.infoDatas = {
         name: data.name || '请填写',
         avatar: data.avatar || '../../static/images/logo.png',
@@ -139,14 +149,18 @@
           id: 'clock'
         }
       ]
+      this.$apply()
     }
     onLoad () {
       if (this.$WX.getStorage('role') === 1) {
+        this.isStudent = true
         this.$API('StudentCenter')
           .then(data => {
             this.treatAjaxDatasStudent(data.data)
+            this.$apply()
           })
-      } else if (this.$WX.getStorage('role') === 0) {
+      } else if (this.$WX.getStorage('role') === 2) {
+        this.isStudent = false
         this.$API('TutorCenter')
           .then(data => {
             this.treatAjaxDatasTutor(data.data)
@@ -154,12 +168,16 @@
       } else {
         this.$WX.toast('获取身份失败')
       }
+      //  this.$WX.downLoadImg()
     }
 
     onShow () {
       if (this.$WX.getStorage('status') !== '') {
         this.infoDatas.status = this.$WX.getStorage('status')
       }
+      wx.setNavigationBarTitle({
+        title: 'fuck'
+      })
     }
 
     customData = {}
@@ -167,7 +185,7 @@
     events = {
       'show-click': this.$UTIL.debounce((key, event) => {
         if (key === 'redFlower') {
-          this.$WX.toast('前往小红花页')
+          this.$WX.jumpTo('./record')
         }
         if (key === 'stu') {
           this.$WX.toast('前往捐赠学生页')
@@ -184,7 +202,7 @@
       }, 200),
       'menu-click': this.$UTIL.debounce((key, event) => {
         if (key === 'record') {
-          this.$WX.toast('前往花迹')
+          this.$WX.jumpTo('./record')
         }
         if (key === 'application') {
           this.$WX.toast('前往申请活动')

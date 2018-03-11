@@ -1,6 +1,5 @@
 /* 微信接口
  * 拆分出来的原因：在组件内部保留抽象，方便日后替换掉wx接口模块，换上其他模块就可以构建为普通的Web应用 */
-
 const configFn = (wxAPI, config = {}) => {
 	return new Promise((resolve, reject) => {
 		config.success = res => (resolve(res))
@@ -123,7 +122,35 @@ const chooseAvatar = (that, avatarUrl) => {
 		count: 1,
 		success: function (res) {
 			that[avatarUrl] = res.tempFilePaths[0]
+			let avatar = res.tempFilePaths[0]
 			that.$apply()
+			wx.request({
+				url: 'http://api.xiaoyaoeden.top/oss/up',
+				header: {Authorization: wx.getStorageSync('token')},
+				success (res) {
+					console.log(res.data)
+					let token = res.data.data
+					wx.uploadFile({
+						url: 'http://upload.qiniu.com',
+						filePath: avatar,
+						name: 'file',
+						formData: {
+							'key': 'eeee.jpg',
+							token: token
+						//	file: avatar
+						},
+						success (res) {
+							console.log(res)
+						},
+						fail (res) {
+							console.log('fuck')
+						},
+						complete (res) {
+							console.log(res)
+						}
+					})
+				}
+			})
 		},
 		fail: function (res) {
 			toast('请重新选择图片', 'none')
@@ -131,7 +158,18 @@ const chooseAvatar = (that, avatarUrl) => {
 	})
 }
 
-const upLoad = (url, filePath, name, formData, fn) => {
+const downLoadImg = () => {
+	let url
+	wx.request({
+		url: 'http://api.xiaoyaoeden.top/oss/down/eeee.jpg',
+		header: { Authorization: wx.getStorageSync('token') },
+		success (res) {
+			url = res.data.data
+			console.log(url)
+		}
+	})
+}
+const upLoad = (url, filePath, name, header, formData, fn) => {
 	wx.uploadFile({
 		url: url,
 		filePath: filePath,
@@ -171,5 +209,6 @@ export {
 	clearStorage, // 清空缓存数据
 	chooseAvatar, //	上传头像
 	upLoad, //	上传文件
+	downLoadImg,	//	下载图片
 	changeNavBarColor // 改变顶部栏的颜色
 }

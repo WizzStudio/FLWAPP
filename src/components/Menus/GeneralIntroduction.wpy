@@ -25,7 +25,7 @@
       width: 450rpx;
     }
     &-2-name {
-      font-size: 34rpx;
+      font-size: 32rpx;
       color: #333333;
     }
     &-2-basic-statu {
@@ -74,11 +74,11 @@
         <span class="info-module-2-basic-statu {{isStudent? statuClass[infoDatas.status]: tutorClass[infoDatas.isTutor]}}">{{isStudent? statuTitle[infoDatas.status]: tutorTitle[infoDatas.isTutor]}}</span>
       </div>
       <div class="info-module-2-more">
-        <span>{{isStudent? schoolList[infoDatas.schoolId]: infoDatas.company}} | {{isStudent? infoDatas.profession: infoDatas.position}}</span>
+        <span>{{isStudent? schoolList[infoDatas.schoolId]: infoDatas.company}} | {{isStudent? infoDatas.profession: infoDatas.position }}</span>
       </div>
     </div>
     <div class="info-module-3"  @tap="click">
-        <image class="centerInfomation-Tag" src="../../static/images/u125.png"/>
+        <image class="centerInfomation-Tag" src="../../static/images/personalCenter/u125.png"/>
     </div>
   </view>
 </template>
@@ -96,7 +96,7 @@
     }
     components = {}
     computed = {}
-
+  
     onLoad () {}
     customFunction () {}
 

@@ -3,13 +3,16 @@ const StudentCenter = {
 	'code': 0,
 	'msg': '成功',
 	'data': {
+		'name': 'Van',
 		'status': 1
 	}
 }
 const StudentProfile = {
 	'code': 0,
 	'msg': '成功',
-	'data': {}
+	'data': {
+		'name': 'Van'
+	}
 }
 const TutorProfile = {
 	'code': 0,

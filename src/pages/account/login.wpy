@@ -157,6 +157,7 @@
 			//	FileUpLoad()
 			//	FileDownLoad()
 			wx.hideTabBar()
+			//	wx.clearStorageSync()
 		}
 
 		onShow () {

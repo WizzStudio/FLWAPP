@@ -1,0 +1,61 @@
+<style lang="scss" type="text/scss">
+  .record-ul {
+    display: flex;
+    flex-flow: column nowrap;
+    &-item {
+      display: inline-flex;
+      span {
+        width: 350rpx;
+      }
+      span:nth-child(3){
+        width: 50rpx;
+      }
+    }
+  }
+</style>
+
+<template>
+  <view>剩余小红花: {{restFlower}}</view>
+  <ul class="record-ul">
+    <repeat for="{{infoList}}" item="item">
+    <li class="record-ul-item">
+      <span>{{item.time}}</span><span>赠送小红花{{item.number}}朵</span><span>{{item.number}}</span>
+    </li>
+  </repeat>
+  </ul>
+</template>
+
+<script>
+  import page from '../base/basicPage.wpy'
+  
+  export default class record extends page {
+    config = {}
+    components = {}
+    data = {
+      restFlower: 17,
+      infoList: [
+        {
+          name: '李白',
+          time: '2018-1-11',
+          number: 11
+        },
+        {
+          name: '杜甫',
+          time: '2018-1-19',
+          number: 2
+        },
+        {
+          name: '郭德纲',
+          time: '2018-2-2',
+          number: 4
+        }
+      ]
+    }
+    computed = {}
+    onLoad () {}
+
+    methods = {}
+    events = {}
+    props = {}
+  }
+</script>
