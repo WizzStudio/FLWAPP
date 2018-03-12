@@ -13,7 +13,8 @@
 				'pages/account/login',
 				'pages/account/info',
 				'pages/account/home',
-				'pages/account/record'
+				'pages/account/record',
+				'pages/user/personalPage'
 			],
 			'window': {
 				'backgroundTextStyle': 'light',

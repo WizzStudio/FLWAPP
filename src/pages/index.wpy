@@ -53,7 +53,8 @@
 		}
 
 		onShow () {
-			this.$WX.jumpTo('account/home')
+//			this.$WX.jumpTo('account/home')
+			this.$WX.jumpTo('user/personalPage')
 		}
 		data = {
 			logoURL: '../static/images/logo.png'
