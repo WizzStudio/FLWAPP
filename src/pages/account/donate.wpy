@@ -1,0 +1,110 @@
+<style lang="scss" type="text/scss">
+ .donate-ul {
+   display: flex;
+   flex-flow: column nowrap;
+   li {
+     border-bottom: solid;
+     border-color: #f4f4f4;
+     border-width: 1rpx;
+     height: 190rpx;
+     display: inline-flex;
+     align-items: center;
+     image:nth-child(1) {
+       margin-left: 30rpx;
+       margin-right: 30rpx;
+       width: 128rpx;
+       height: 128rpx;
+       border-radius: 50%;
+       background-color: aqua;
+     }
+     .avatar {
+       width: 20rpx;
+       height: 40rpx;
+       position: absolute;
+       right: 30rpx;
+     }
+     .name {
+       font-size: 34rpx;
+       color: #333333;
+     }
+     .other {
+       margin-left: 30rpx;
+       font-size: 26rpx;
+       color: #999999;
+     }
+     .info {
+       display: block;
+       margin-top: 20rpx;
+       font-size: 26rpx;
+       color: #999999;
+     }
+   }
+ }
+</style>
+
+<template>
+  <ul wx:if="{{isTutor}}" class="donate-ul">
+    <repeat for="{{TutorList}}" item="item">
+      <li>
+        <image src="{{item.avatar}}" />
+        <div>
+          <span class="name">{{item.name}}</span>
+          <span class="other">{{item.company}}</span>
+          <span class="info">捐赠小红花{{item.number}}朵</span>
+        </div>
+        <image src="../../static/images/personalCenter/u125.png" class="avatar" id="{{item.userId}}" @tap="getMoreInfo"/>
+      </li>
+    </repeat>
+  </ul>
+</template>
+
+<script>
+  import page from '../base/basicPage.wpy'
+  export default class Donate extends page {
+    config = {
+      navigationBarTitleText: this.isTutor?'我的导师':'我的学生'
+    }
+    component = {}
+    data = {
+      isTutor: true,
+      TutorList: [
+        {
+          name: 'Van',
+          company: 'GayHub',
+          position: 'CEO',
+          avatar: '../../static/images/logo.png',
+          number: 19,
+          userId: 1
+        },
+        {
+          name: '比利',
+          company: 'GayHub',
+          position: 'CTO',
+          avatar: '../../static/images/logo.png',
+          number: 18,
+          userId: 2
+        }
+      ]
+    }
+    computed = {}
+
+    onLoad () {
+      /*
+      if (this.$WX.getStorage('role') === 2) {
+        this.isTutor = true
+      } else {
+        this.isTutor = false
+      }
+      */
+    }
+    onShow () {}
+
+    methods = {
+      getMoreInfo (event) {
+        this.$WX.toast(event.target.id)
+      }
+    }
+    events = {}
+    propos = {}
+  }
+</script>

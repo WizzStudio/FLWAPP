@@ -44,12 +44,12 @@
 		components = {}
 
 		onLoad () {
-			this.$WX.setStorage('role', 2)
-			/*
-			this.$WX.wxLogin().then(data => (console.log(data))).then(
-				this.$WX.wxGetUserInfo().then(data => (console.log(data)))
+			this.$WX.setStorage('role', 1)
+			this.$WX.wxLogin()
+				.then(data => (console.log(data)))
+					.then(this.$WX.wxGetUserInfo()
+						.then(data => (console.log(data)))
 			)
-			*/
 		}
 
 		onShow () {

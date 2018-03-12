@@ -13,7 +13,8 @@
 				'pages/account/login',
 				'pages/account/info',
 				'pages/account/home',
-				'pages/account/record'
+				'pages/account/record',
+				'pages/account/donate'
 			],
 			'window': {
 				'backgroundTextStyle': 'light',
@@ -21,7 +22,8 @@
 				'navigationBarFrontColor': '#ffffff',
 				'navigationBarTitleText': 'WeChat',
 				'navigationBarTextStyle': 'white',
-				'backgroundColorTop': '#db4d3d'
+				'backgroundColorTop': '#db4d3d',
+				'enablePullDownRefresh': true
 			},
 			'tabBar':
 				{

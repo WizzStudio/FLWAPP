@@ -19,7 +19,7 @@
   <ul class="record-ul">
     <repeat for="{{infoList}}" item="item">
     <li class="record-ul-item">
-      <span>{{item.time}}</span><span>赠送小红花{{item.number}}朵</span><span>{{item.number}}</span>
+      <span>{{item.time}}</span>{{item.name}}<span>赠送小红花{{item.mount}}朵</span><span>{{item.type}}</span>
     </li>
   </repeat>
   </ul>
@@ -29,31 +29,95 @@
   import page from '../base/basicPage.wpy'
   
   export default class record extends page {
-    config = {}
+    config = {
+      navigationBarTitleText: '我的花迹'
+    }
     components = {}
-    data = {
-      restFlower: 17,
-      infoList: [
-        {
-          name: '李白',
-          time: '2018-1-11',
-          number: 11
-        },
-        {
-          name: '杜甫',
-          time: '2018-1-19',
-          number: 2
-        },
-        {
-          name: '郭德纲',
-          time: '2018-2-2',
-          number: 4
+    getDatas (data) {
+      data.forEach(item => {
+        let data = {
+          time: this.$UTIL.transformTime(itrm.createTime),
+          name: item.name,
+          amount: item.amount,
+          type: item.type
         }
-      ]
+        infoList.push(data)
+      })
+    }
+    data = {
+      restFlower: this.$WX.getStorage('redFlowerNum'),
+      page: 0,
+      totalPage: 0,
+      infoList: []
     }
     computed = {}
-    onLoad () {}
 
+    onLoad () {
+      if (true) {
+        this.$API('GetStudentRecord',page)
+          .then(res => {
+            console.log(res)
+            this.totalPage = 10
+            this.getDatas(res.data)
+            this.page++
+          })
+        } else {
+          this.$API('GetTutorRecord',page)
+            .then(res => {
+              console.log(res)
+              //  this.totalPage = res.msg
+              this.getDatas(res.data)
+              this.page++
+            })
+        }
+    }
+    onReady () {
+      /*
+      if (false) {
+        wx.startPullDownRefresh({
+          success (){
+            console.log(124)
+            if (this.page <= this.totalPage) {
+              this.$API('GetTutorRecord',page)
+                .then(data => {
+                  //  this.totalPage = data.msg
+                  this.getDatas(res.data)
+                  this.page++
+                  wx.stopPullDownRefresh()
+                })
+            }
+          },
+          fail () {
+            console.log('fuck')
+          },
+          complete () {
+            console.log('c')
+          }
+        })
+      } else {
+         wx.startPullDownRefresh({
+          success (){
+            if (this.page <= this.totalPage) {
+              this.$API('GetStudentRecord',page)
+                .then(data => {
+                  //  this.totalPage = data.msg
+                  this.getDatas(res.data)
+                  this.page++
+                })
+            }
+          },
+          fail () {
+            console.log('fuck')
+          },
+          complete () {
+            console.log('c')
+            wx.stopPullDownRefresh()
+          }
+          
+        })
+      }
+      */
+    }
     methods = {}
     events = {}
     props = {}

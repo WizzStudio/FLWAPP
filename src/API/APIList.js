@@ -9,10 +9,10 @@ export default {
 	UserLogin: {url: '/user/login', method: 'post', data: {code: ''}, headers: {}},
 	UserVerifyCode: {url: '/verify/captcha', method: 'get', data: {phone: 0}, headers: {}},
 	UserVerifyCodeCheck: {url: '/verify/captcha', method: 'post', data: {phone: 0, captcha: 0}, headers: {}},
-	UserRegister: {url: '/user/register', method: 'post', data: {phone: 0, code: 0}, headers: {}}
-	/*
+	UserRegister: {url: '/user/register', method: 'post', data: {phone: 0, code: 0}, headers: {}},
 	SendStudentProfile: { url: '/stu/profile', method: 'put', data: {}, headers: {} },
 	SendTutorProfile: { url: '/tutor/profile', method: 'put', data: {}, headers: {} },
-	UpLoad: {url: '/oss/up', method: 'get', data: {}, headers: {}}
-	*/
+	UpLoad: {url: '/oss/up', method: 'get', data: {}, headers: {}},
+	GetStudentRecord: { url: '/stu/trace?page', method: 'get', data: {}, headers: {} },
+	GetTutorRecord: { url: '/tutor/trace?page', method: 'get', data: {}, headers: {} }
 }

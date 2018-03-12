@@ -90,7 +90,7 @@
       }
       this.showDatas = [
         {
-          name: '可提现小红花',
+          name: '小红花',
           src: '../../static/images/personalCenter/小红花.png',
           number: data.redFlowerNum || 0 + ' 朵',
           id: 'redFlower'
@@ -108,10 +108,15 @@
           id: 'workedTime'
         }
       ]
+      this.$WX.setStorage('redFlowerNum', data.redFlowerNum)
+      this.$apply()
     }
     treatAjaxDatasTutor (data) {
       let status
       if (this.$WX.getStorage('status') === 0 && data.status === 1) {
+        this.showDatas = data.showDatas
+        this.$WX.setStorage('flowerNum', data.redFlowerNum)
+        this.$apply()
         status = 0
         return
       } else if (data.status === 2) {
@@ -149,6 +154,7 @@
           id: 'clock'
         }
       ]
+      this.$WX.setStorage('flowerNum', data.redFlowerNum)
       this.$apply()
     }
     onLoad () {
@@ -156,6 +162,7 @@
         this.isStudent = true
         this.$API('StudentCenter')
           .then(data => {
+            console.log(123)
             this.treatAjaxDatasStudent(data.data)
             this.$apply()
           })
@@ -175,11 +182,13 @@
       if (this.$WX.getStorage('status') !== '') {
         this.infoDatas.status = this.$WX.getStorage('status')
       }
-      wx.setNavigationBarTitle({
-        title: 'fuck'
-      })
     }
-
+    onPageScroll () {
+      this.$UTIL.debounce(() => {
+        console.log('Van')
+        wx.stopPullDownRefresh()
+      }, 300)
+    }
     customData = {}
     methods = {}
     events = {
@@ -191,7 +200,7 @@
           this.$WX.toast('前往捐赠学生页')
         }
         if (key === 'tutor') {
-          this.$WX.toast('前往导师页')
+          this.$WX.jumpTo('./donate')
         }
         if (key === 'clock') {
           this.$WX.toast('前往沙漏页')

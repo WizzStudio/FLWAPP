@@ -101,7 +101,7 @@
     flex-flow: column nowrap;
     justify-content: center;
     align-items: center;
-    height: 280rpx;
+    height: 200rpx;
     image {
       height: 80rpx;
       width: 80rpx;
@@ -116,7 +116,7 @@
       button {
         @include fontSizeColor(28rpx, #e01b1c);
         width: 375rpx;
-        height: 80rpx;
+        height: 60rpx;
         padding-left: 70rpx;
         padding-right: 70rpx;
         background-color: #fff;
@@ -221,7 +221,9 @@
   import page from '../base/basicPage.wpy'
   import Picker from '../../components/Infos/Picker'
   export default class Info extends page {
-    config = {}
+    config = {
+      navigationBarTitleText: '修改信息'
+    }
     components = {
       Picker: Picker
     }
@@ -238,22 +240,7 @@
       sexDatas: ['请选择', '男', '女']
     }
     computed = {}
-    // 将UNIX时间戳转换为正常时间
-    transformTime (data) {
-      if (typeof data === 'undefined') {
-        return ''
-      }
-      const date = new Date(parseInt(data))
-      return date.getFullYear() + '-' + date.getMonth() + 1
-    }
-    // 将正常时间转换为UNIX时间戳
-    transformTimeToUnix (data) {
-      if (data === '') {
-        return ''
-      }
-      const dates = data.split('-')
-      return (Date.parse(new Date(dates[0], dates[1] - 1, 2)) / 1000)
-    }
+
     //  若异步获取的数据属性值为空则设置其长度为0
     setTextLength (data) {
       if (typeof data === 'undefined') {
@@ -281,7 +268,7 @@
         {
           name: '出生年月',
           type: 'picker',
-          value: this.transformTime(data.birthday),
+          value: this.$UTIL.transformTime(data.birthday),
           data: [years, months],
           mode: 'multiSelector',
           id: 'birth'
@@ -325,7 +312,7 @@
         {
           name: '入学时间',
           type: 'picker',
-          value: this.transformTime(data.admissionDate),
+          value: this.$UTIL.transformTime(data.admissionDate),
           data: [years, months],
           mode: 'multiSelector',
           id: 'time'
@@ -435,13 +422,13 @@
         datas = {
           avatar: this.avatar,
           name: this.optionList[0].value,
-          birthday: this.transformTimeToUnix(this.optionList[1].value),
+          birthday: this.$UTIL.transformTimeToUnix(this.optionList[1].value),
           sex: 1 || this.optionList[2].value,
           schoolId: 1 || this.optionList[3].value,
           degree: 1 || this.optionList[4].value,
           academy: this.optionList[5].value,
           profession: this.optionList[6].value,
-          admissionDate: this.transformTimeToUnix(this.optionList[7].value),
+          admissionDate: this.$UTIL.transformTimeToUnix(this.optionList[7].value),
           direction: 1 || this.optionList[8].value,
           simpleIntro: this.optionList[9].value,
           idNum: this.identityList[1].value,
@@ -572,6 +559,7 @@
     }
     changeAvatar (event) {
       let that = this
+      //upLoadImage(that, 'avatar')
       this.$WX.chooseAvatar(that, 'avatar')
     }
     checkingValue () {

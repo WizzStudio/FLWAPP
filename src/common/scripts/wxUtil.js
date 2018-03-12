@@ -135,18 +135,8 @@ const chooseAvatar = (that, avatarUrl) => {
 						filePath: avatar,
 						name: 'file',
 						formData: {
-							'key': 'eeee.jpg',
+							'key': 'avatar' + that.$WX.getStorage('userId') + '.jpg',
 							token: token
-						//	file: avatar
-						},
-						success (res) {
-							console.log(res)
-						},
-						fail (res) {
-							console.log('fuck')
-						},
-						complete (res) {
-							console.log(res)
 						}
 					})
 				}
@@ -154,6 +144,7 @@ const chooseAvatar = (that, avatarUrl) => {
 		},
 		fail: function (res) {
 			toast('请重新选择图片', 'none')
+			that.$WX.toast('fuck')
 		}
 	})
 }

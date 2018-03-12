@@ -17,6 +17,13 @@ const debounce = (fn, boomTime) => {
 	}
 }
 
+const parseJwt = (token) => {
+	let base64Url = token.split('.')[1]
+	let base64 = base64Url.replace('-', '+').replace('_', '/')
+	console.log(Base64)
+	//	return JSON.parse(window.atob(base64))
+}
+
 /**
  * 验证是否为电话号码
  * @param {String|Number} phoneNumber - 电话号码
@@ -94,6 +101,21 @@ const countFn = (countTime, basicMs, progressFn, callBackFn) => {
 	}
 }
 
+const transformTime = (data) => {
+	if (typeof data === 'undefined') {
+		return ''
+	}
+	const date = new Date(parseInt(data))
+	return date.getFullYear() + '-' + date.getMonth() + 1
+}
+// 将正常时间转换为UNIX时间戳
+const transformTimeToUnix = (data) => {
+	if (data === '') {
+		return ''
+	}
+	const dates = data.split('-')
+	return (Date.parse(new Date(dates[0], dates[1] - 1, 2)) / 1000)
+}
 /* TODO 需要写测试用例 */
 /**
  * 检验exampleObj的key是否都在ruleObj
@@ -124,5 +146,8 @@ export {
 	isCardNumber,
 	isStudentNumber,
 	countFn,
-	verifyParams
+	verifyParams,
+	parseJwt,
+	transformTime,
+	transformTimeToUnix
 }
