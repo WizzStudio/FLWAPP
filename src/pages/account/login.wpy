@@ -255,7 +255,7 @@
 						//					this.$API.UserInviteCodeCheck(this.inviteCode) :弃用
 						.then(data => {
 							if (!data.code) {
-								this.$WX.toast(data.msg)
+								this.$WX.toast('验证成功！')
 								this.state2()
 							}
 						})

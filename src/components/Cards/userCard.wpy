@@ -12,6 +12,7 @@
 		/*box-shadow:0rpx 10rpx 40rpx #d3d3d3;*/
 
 		.white-cont{
+			position: relative;
 			height: $white-cont-height;
 		}
 
@@ -27,6 +28,7 @@
 				@include rowBox();
 				position: absolute;
 				top: -$white-cont-height;
+				z-index: 1;
 				/*width: 100%;*/
 				padding: 60rpx 30rpx 0rpx;
 				box-sizing: border-box;
@@ -45,7 +47,7 @@
 						@include rowMidBox();
 						p{
 							margin-right: 20rpx;
-							@include fontSizeColor(38rpx,$fontClr_1st);
+							@include fontSizeColor(34rpx,$fontClr_1st);
 						}
 					}
 					.item{
@@ -53,7 +55,6 @@
 						@include fontSizeColor(28rpx,$fontClr_2nd);
 						font-weight: 300;
 					}
-
 					/* icon */
 					.icon{
 						@include wh(32rpx,32rpx)
@@ -63,6 +64,7 @@
 			.intro{
 				@include p_overflow_eli();
 				@include fontSizeColor(28rpx,darken($fontClr_2nd,10%));
+				margin-top: 20rpx;
 				font-weight: 300;
 			}
 			/* 累计计数板 */
@@ -81,13 +83,13 @@
 						@include rowBox();
 						/*align-items: flex-end;*/
 						p{
-							@include fontSizeColor(60rpx,$fontClr_1st);
-							font-weight: 600;
+							@include fontSizeColor(60rpx,lighten($fontClr_1st,10%));
+							font-weight: 500;
 						}
 						span{
 							margin-left: 6rpx;
 							display: block;
-							margin-top: 25rpx;
+							margin-top: 23rpx;
 							@include fontSizeColor(36rpx,$fontClr_2nd);
 							font-weight: 300;
 						}
@@ -105,36 +107,46 @@
 
 		/* 申请方向的tag */
 		.apply-tag {
-
+			position: absolute;
+			right: 0;
+			top:60rpx;
+			z-index: 2;
+			@include wh(120rpx,40rpx);
+			object-fit: contain;
+			&-txt {
+				position: absolute;
+				z-index: 3;
+				right: 0;
+				top:60rpx;
+				@include fontSizeColor(24rpx,$white);
+			}
 		}
 		/* 申请方向的icon */
 		.apply-icon {
-
+			position: absolute;
+			right: 0;
+			bottom:-138rpx;
+			z-index: 0;
+			@include wh(260rpx,130rpx);
+			opacity: .2;
 		}
 		/* 导师tag */
 		.mentor-tag {
-
-		}
-
-		/* 申请方向 */
-		.direction {
-			/*创新创业*/
-			&-create {
-				&-tag{}
-				&-icon{
-				}
-			}
-			/*社会公益*/
-			&-society {
-				&-tag{}
-				&-icon{}
-			}
-			/*科学研究*/
-			&-research {
-				&-tag{}
-				&-icon{}
+			position: absolute;
+			right: 30rpx;
+			top: 0rpx;
+			z-index: 1;
+			@include wh(50rpx,80rpx);
+			object-fit: contain;
+			&-txt{
+				z-index: 2;
+				position: absolute;
+				right: 30rpx;
+				top: 20rpx;
+				@include fontSizeColor(24rpx,$white);
 			}
 		}
+
 
 	}
 
@@ -142,7 +154,22 @@
 
 <template>
 	<view class="userCard">
-		<view class="white-cont"></view>
+		<!--上半部分无阴影处-->
+		<view class="white-cont">
+			<!-- 导师tag -->
+			<image class="mentor-tag" src="{{tag_mentor}}"></image>
+			<p class="mentor-tag-txt">导师</p>
+
+			<!--方向(限学生)tag-->
+			<image class="apply-tag" src="{{tag_creative}}"></image>
+			<p class="apply-tag-txt">创新创业</p>
+
+			<!--方向（限学生）icon-->
+			<image class="apply-icon" src="{{icon_research}}"></image>
+			<!--<p class="apply-icon-txt"></p>-->
+		</view>
+
+		<!--用户信息-->
 		<view class="userCard-info">
 			<view class="mainInfo">
 				<!-- 头像 -->
@@ -155,6 +182,7 @@
 					<view class="name">
 						<!--props-->
 						<p>郭德纲</p>
+						<!--TODO 下面用wx-if-->
 						<image src="{{icon_mentor_male}}" class="icon"></image>
 						<image src="{{icon_mentor_female}}" class="icon"></image>
 						<image src="{{icon_stu_male}}" class="icon"></image>
@@ -196,10 +224,10 @@
 						<!--<p>27</p>-->
 						<!--<span>位</span>-->
 					<!--</view>-->
-					<!--<view class="item-title">他欣赏的学生</view>-->
+					<!--<view class="item-title"></view>-->
 				<!--</view>-->
 
-
+				<!--导师学生共有部分-->
 				<view class="item">
 					<view class="item-number">
 						<p>27</p>
@@ -229,7 +257,7 @@
 			icon_research: '../../static/images/personalPage/icon-research.png',
 			tag_commonLove: '../../static/images/personalPage/tag-commonLove.png',
 			tag_creative: '../../static/images/personalPage/tag-creative.png',
-			tag_mentor: '../../static/images/personalPage/tag-research.png'
+			tag_mentor: '../../static/images/personalPage/tag-mentor.png'
 		}
 		computed = {}
 		methods = {}

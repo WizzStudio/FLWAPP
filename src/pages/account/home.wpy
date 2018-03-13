@@ -163,8 +163,7 @@
           console.log('no token')
         }
         this.isStudent = true
-        this.$API('StudentCenter')
-          .then(data => {
+        this.$API('StudentCenter').then(data => {
             this.treatAjaxDatasStudent(data.data)
             this.$apply()
           })
@@ -172,6 +171,7 @@
         this.isStudent = false
         this.$API('TutorCenter')
           .then(data => {
+						console.log(data)
             this.treatAjaxDatasTutor(data.data)
           })
       } else {

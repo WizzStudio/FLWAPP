@@ -49,14 +49,14 @@
 			this.$WX.wxLogin().then((res) => {
 				wx.getUserInfo({
 					success: function() {
-						that.$WX.jumpTo('account/home')
+						that.$WX.jumpTo('account/login')
 					}
 				})
 			})
 		}
 
 		onReady () {
-		//	
+		//
 //			this.$WX.jumpTo('user/personalPage')
 		}
 		data = {
