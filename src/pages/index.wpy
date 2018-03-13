@@ -49,8 +49,6 @@
 			this.$WX.wxLogin().then((res) => {
 				wx.getUserInfo({
 					success: function() {
-						console.log(123)
-						console.log(wx.getStorageSync('token'))
 						that.$WX.jumpTo('account/home')
 					}
 				})

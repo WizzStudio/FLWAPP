@@ -108,8 +108,6 @@
           id: 'workedTime'
         }
       ]
-      console.log(this.infoDatas)
-      console.log(123)
       //  this.$WX.setStorage('redFlowerNum', data.redFlowerNum)
       this.$apply()
     }
@@ -162,16 +160,13 @@
     onLoad () {
       if (this.$WX.getStorage('role') === 1) {
         if (this.$WX.getStorage('token') === '') {
-          console.log('fuckkkkkkk')
+          console.log('no token')
         }
         this.isStudent = true
         this.$API('StudentCenter')
           .then(data => {
             this.treatAjaxDatasStudent(data.data)
             this.$apply()
-          })
-          .catch(data => {
-            console.log('fuckkkkkkkk')
           })
       } else if (this.$WX.getStorage('role') === 2) {
         this.isStudent = false
@@ -190,17 +185,9 @@
         this.infoDatas.status = this.$WX.getStorage('status')
       }
     }
-    onReady () {
-      console.log(this)
-      setTimeout(() => {
-        console.log(this.infoDatas)
-        this.infoDatas.name = 'Van'
-        this.$apply()
-      }, 2000)
-    }
+    onReady () {}
     onPageScroll () {
       this.$UTIL.debounce(() => {
-        console.log('Van')
         wx.stopPullDownRefresh()
       }, 300)
     }
