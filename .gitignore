@@ -1,9 +1,13 @@
 node_modules
 dist/npm
 dist/pages
+dist/common
+dist/API
+dist/components
 dist/*.js
 dist/*.json
 dist/*.wxss
+test
 .DB_store
 .vscode
 .idea
