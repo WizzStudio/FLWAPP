@@ -126,7 +126,9 @@
 	import BasicInput from '../../components/Inputs/BasicInput'
 
 	export default class Login extends page {
-		config = {}
+		config = {
+			enablePullDownRefresh: false
+		}
 		components = {
 			verifyBtn: BasicButton, // 验证码按钮
 			nextBtn: BasicButton, // 下一步按钮
@@ -255,7 +257,7 @@
 						//					this.$API.UserInviteCodeCheck(this.inviteCode) :弃用
 						.then(data => {
 							if (!data.code) {
-								this.$WX.toast(data.msg)
+								this.$WX.toast('验证成功！')
 								this.state2()
 							}
 						})

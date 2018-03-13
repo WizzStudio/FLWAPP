@@ -10,9 +10,6 @@
     &-2 {
       height: 180rpx;
     }
-    &-3 {
-      margin-top: 20rpx;
-    }
   }
   .centerInfomation-Tag {
     width: 24rpx;
@@ -49,22 +46,22 @@
         {
           unique: 'record',
           value: '我的花迹',
-          imgUrl: '../../static/images/personalCenter/我的花迹.png'
+          imgUrl: '../../static/images/personalCenter/trace.svg'
         },
         {
           unique: 'application',
           value: '申请活动',
-          imgUrl: '../../static/images/personalCenter/申请活动.png'
+          imgUrl: '../../static/images/personalCenter/apply.svg'
         },
         {
           unique: 'message',
           value: '消息通知',
-          imgUrl: '../../static/images/personalCenter/消息通知.png'
+          imgUrl: '../../static/images/personalCenter/message.svg'
         },
         {
           unique: 'problem',
           value: '在线客服',
-          imgUrl: '../../static/images/personalCenter/问题反馈.png'
+          imgUrl: '../../static/images/personalCenter/service.svg'
         }
       ],
       infoDatas: {},
@@ -162,8 +159,7 @@
         if (this.$WX.getStorage('token') === '') {
         }
         this.isStudent = true
-        this.$API('StudentCenter')
-          .then(data => {
+        this.$API('StudentCenter').then(data => {
             this.treatAjaxDatasStudent(data.data)
             this.$apply()
           })
@@ -171,6 +167,7 @@
         this.isStudent = false
         this.$API('TutorCenter')
           .then(data => {
+						console.log(data)
             this.treatAjaxDatasTutor(data.data)
           })
       } else {

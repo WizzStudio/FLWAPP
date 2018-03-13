@@ -140,7 +140,7 @@
     <div class="info-item-container info-item-avatar-container">
         <label class="info-item-name">头像</label>
         <image src="{{avatar}}" class="info-item-avatar-img" alt="我的头像" @tap="changeAvatar"/>
-        <image src="../../static/images/personalCenter/u125.png" class="Info-Tag info-item-avatar-tag" @tap="changeAvatar"/>
+        <image src="../../static/images/personalCenter/arrow-right.svg" class="Info-Tag info-item-avatar-tag" @tap="changeAvatar"/>
     </div>
     <ul class="info-container">
       <repeat for="{{optionList}}" item="item" index="index">
@@ -149,7 +149,7 @@
             <label class="info-item-name info-item-repair-name">{{item.name}}</label>
             <div class="info-tag-value">
               <Picker :Datas="item.data" :PickerIsDisabled="item.disabled" :syncNumber.sync="item.index" :PickerId="item.id" :value.sync="item.value" :Mode="item.mode"/>
-              <image class="Info-Tag" src="../../static/images/personalCenter/u125.png"/>
+              <image class="Info-Tag" src="../../static/images/personalCenter/arrow-right.svg"/>
             </div>
           </view>
           <view wx:if="{{item.type === 'input'}}" class="info-item-container">
@@ -560,7 +560,7 @@
     }
     changeAvatar (event) {
       let that = this
-      //upLoadImage(that, 'avatar')
+      //  upLoadImage(that, 'avatar')
       this.$WX.chooseAvatar(that, 'avatar')
     }
     checkingValue () {

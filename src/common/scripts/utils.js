@@ -19,6 +19,16 @@ const debounce = (fn, boomTime) => {
 	}
 }
 
+const throttle = (func, limit) => {
+	let lastRan = Date.now()
+	return function () {
+		if (Date.now() - lastRan >= limit) {
+			func.apply(this, arguments)
+			lastRan = Date.now()
+		}
+	}
+}
+
 const parseJwt = (token) => {
 	let base64Url = token.split('.')[1]
 	let base64 = base64Url.replace('-', '+').replace('_', '/')
@@ -150,6 +160,7 @@ const parseToken = (token) => {
 
 export {
 	debounce,
+	throttle,
 	isPhoneNumber,
 	isInviteCode,
 	isVerifyCode,

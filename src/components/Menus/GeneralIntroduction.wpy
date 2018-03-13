@@ -78,7 +78,7 @@
       </div>
     </div>
     <div class="info-module-3"  @tap="click">
-        <image class="centerInfomation-Tag" src="../../static/images/personalCenter/u125.png"/>
+        <image class="centerInfomation-Tag" src="../../static/images/personalCenter/arrow-right.svg"/>
     </div>
   </view>
 </template>

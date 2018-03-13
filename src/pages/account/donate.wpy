@@ -52,7 +52,7 @@
           <span class="other">{{item.company}}</span>
           <span class="info">捐赠小红花{{item.number}}朵</span>
         </div>
-        <image src="../../static/images/personalCenter/u125.png" class="avatar" id="{{item.userId}}" @tap="getMoreInfo"/>
+        <image src="../../static/images/personalCenter/arrow-right.svg" class="avatar" id="{{item.userId}}" @tap="getMoreInfo"/>
       </li>
     </repeat>
   </ul>
@@ -62,7 +62,7 @@
   import page from '../base/basicPage.wpy'
   export default class Donate extends page {
     config = {
-      navigationBarTitleText: this.isTutor?'我的导师':'我的学生'
+      navigationBarTitleText: this.isTutor ? '我的导师' : '我的学生'
     }
     component = {}
     data = {
