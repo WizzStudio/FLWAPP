@@ -49,7 +49,7 @@
 			this.$WX.wxLogin().then((res) => {
 				wx.getUserInfo({
 					success: function() {
-						that.$WX.jumpTo('account/home')
+						that.$WX.downLoadImg()
 					}
 				})
 			})
@@ -57,7 +57,7 @@
 
 		onReady () {
 		//	
-//			this.$WX.jumpTo('user/personalPage')
+			this.$WX.jumpTo('account/home')
 		}
 		data = {
 			logoURL: '../static/images/logo.png'

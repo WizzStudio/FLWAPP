@@ -25,7 +25,7 @@ const badGateWay = () => {
 
 const codes = {
 	'404': notFound,
-	'403': forbidden,
+	'401': forbidden,
 	'500': serverError,
 	'502': badGateWay,
 	'*': globalError

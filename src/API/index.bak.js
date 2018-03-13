@@ -81,6 +81,15 @@ const GetStudentRecord = (page) => {
 const GetTutorRecord = (page) => {
 	return ajax('/tutor/trace?page=' + page, 'get')
 }
+const GetSudentTutors = () => {
+	return ajax('/stu/tutors', 'get')
+}
+const GetTutorStudents = () => {
+	return ajax('/tutor/students', 'get')
+}
+const PostUserImagesName = (data) => {
+	return ajax('/oss/down', 'post', data)
+}
 // const = ()=>{
 // 	return ajax('','get',{})
 // }
@@ -116,6 +125,9 @@ export {
 	SendTutorProfile,
 	UpLoad,
 	GetStudentRecord,
-	GetTutorRecord
+	GetTutorRecord,
+	GetSudentTutors,
+	GetTutorStudents,
+	PostUserImagesName
 	//	FileDownLoad
 }

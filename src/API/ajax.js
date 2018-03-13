@@ -1,9 +1,11 @@
 // import MockServer from './mock/mockServer.js' // mock数据服务：弃用
 import Route from './mock/route' // mock数据服务
 import { toast, getStorage, setStorage } from '../common/scripts/wxUtil'
+import { parseToken } from '../common/scripts/utils'
 import statusCodeFilter from './statusCodeFilter'
 import * as config from './config'
 
+import 'jsrsasign'
 const HOST_URL = config.baseURL || '' // 根域名
 const DEBUG = config.debug // debug模式
 const SUPPORT_METHODS = config.surpportMethods || ['GET'] // 支持的http方法
@@ -25,7 +27,6 @@ function _configRequest (config = {}) {
 		}
 		config.success = res => {
 			if (res.statusCode !== 200) {
-				console.log(res)
 				statusCodeFilter(res.statusCode, (header) => {
 					config.header = _configHeader(header)
 					_configRequest(config)
@@ -35,12 +36,13 @@ function _configRequest (config = {}) {
 			if (res.header['Authorization']) {
 				/* 如果header里有token，则更新 */
 				setStorage('token', res.header['Authorization'])
+				parseToken(res.header['Authorization'])
 			}
 			if (res.data.code) {
 				toast(res.data.msg)
 			}
 			/* TEST放出header里面的token为了做测试 */
-			//	res.data.token = res.header['Authorization']
+			res.data.token = res.header['Authorization']
 			/* 在这里进行的返回的，那么在此之前完成重请求就可以 */
 			resolve(res.data)
 		}

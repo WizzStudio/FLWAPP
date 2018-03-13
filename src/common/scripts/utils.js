@@ -1,3 +1,5 @@
+import { setStorage } from "./wxUtil";
+
 /* 工具函数 */
 /**
  * 函数防抖
@@ -137,6 +139,15 @@ const verifyParams = (ruleObj, exampleObj) => {
 	return false
 }
 
+// 解析token,获取userID， role， openID, exp
+const parseToken = (token) => {
+	let info = JSON.parse(atob(token.split('.')[1]))
+	setStorage('role', info.role)
+	setStorage('userId', info.userid)
+	setStorage('openId', info.openid)
+	//	setStorage('token', info.exp)
+}
+
 export {
 	debounce,
 	isPhoneNumber,
@@ -149,5 +160,6 @@ export {
 	verifyParams,
 	parseJwt,
 	transformTime,
-	transformTimeToUnix
+	transformTimeToUnix,
+	parseToken
 }

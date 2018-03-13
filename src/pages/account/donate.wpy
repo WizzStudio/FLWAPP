@@ -89,6 +89,19 @@
     computed = {}
 
     onLoad () {
+      this.$API('GetStudentTutors')
+        .then(res => {
+          let imageArray = []
+          res.data.forEach(item => {
+            imageArray.push(String(item.userId))
+          })
+          imageArray = imageArray.map(item => item + '-avatar.jpg')
+          console.log(imageArray)
+          this.$API('PostUserImagesName', imageArray)
+            .then(res => {
+                //
+            })
+        })
       /*
       if (this.$WX.getStorage('role') === 2) {
         this.isTutor = true

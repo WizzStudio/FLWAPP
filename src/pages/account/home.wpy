@@ -23,7 +23,7 @@
 
 <template>
   <view class="centerInfomation">
-    <Info class="centerInfomation-Module-1" :infoDatas.sync="infoDatas" :isStudent.sync="isStudent"></Info>
+    <Info class="centerInfomation-Module-1" :infoDatas.sync="infoDatas" :isStudent.sync="isStudent" :avatar.sync="avatar"></Info>
     <Show class="centerInfomation-Module-2" :showDatas.sync="showDatas" :isStudent.sync="isStudent"></Show>
     <Menu class="centerInfomation-Module-3" :menuList.sync="menuList" :isStudent.sync="isStudent"></Menu>
   </view>
@@ -69,7 +69,8 @@
       ],
       infoDatas: {},
       showDatas: [],
-      isStudent: false
+      isStudent: false,
+      avatar: this.$WX.getStorage('avatar')
     }
     computed = {}
     treatAjaxDatasStudent (data) {
@@ -83,7 +84,6 @@
       }
       this.infoDatas = {
         name: data.name || '',
-        avatar: data.avatar || '../../static/images/logo.png',
         schoolId: data.schoolId || '0',
         profession: data.profession || '请填写',
         status: status
@@ -160,7 +160,6 @@
     onLoad () {
       if (this.$WX.getStorage('role') === 1) {
         if (this.$WX.getStorage('token') === '') {
-          console.log('no token')
         }
         this.isStudent = true
         this.$API('StudentCenter')
@@ -177,7 +176,6 @@
       } else {
         this.$WX.toast('获取身份失败')
       }
-      //  this.$WX.downLoadImg()
     }
 
     onShow () {

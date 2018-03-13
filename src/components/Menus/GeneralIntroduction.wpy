@@ -66,7 +66,7 @@
 <template>
   <view class="info-container">
     <div class="info-module-1">
-      <image src="{{infoDatas.avatar}}" class="info-module-1-avatar" alt="我的头像"/>
+      <image src="{{avatar}}" class="info-module-1-avatar" alt="我的头像"/>
     </div>
     <div class="info-module-2">
       <div class="div-name">
@@ -112,7 +112,8 @@
     events = {}
     props = {
       infoDatas: Object,
-      isStudent: Boolean
+      isStudent: Boolean,
+      avatar: String
     }
   }
 </script>

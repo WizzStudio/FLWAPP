@@ -120,6 +120,7 @@ const clearStorage = () => {
 const chooseAvatar = (that, avatarUrl) => {
 	wx.chooseImage({
 		count: 1,
+		sizeType: ['compressed'],
 		success: function (res) {
 			that[avatarUrl] = res.tempFilePaths[0]
 			let avatar = res.tempFilePaths[0]
@@ -130,13 +131,17 @@ const chooseAvatar = (that, avatarUrl) => {
 				success (res) {
 					console.log(res.data)
 					let token = res.data.data
+					let key = that.$WX.getStorage('userId') + '-avatar.jpg'
 					wx.uploadFile({
 						url: 'http://upload.qiniu.com',
 						filePath: avatar,
 						name: 'file',
 						formData: {
-							'key': 'avatar' + that.$WX.getStorage('userId') + '.jpg',
+							'key': key,
 							token: token
+						},
+						success: function() {
+							console.log(key)
 						}
 					})
 				}
@@ -144,19 +149,19 @@ const chooseAvatar = (that, avatarUrl) => {
 		},
 		fail: function (res) {
 			toast('请重新选择图片', 'none')
-			that.$WX.toast('fuck')
 		}
 	})
 }
 
-const downLoadImg = () => {
-	let url
+const downLoadImg = (callback) => {
+	let userId = getStorage('userId')
 	wx.request({
-		url: 'http://api.xiaoyaoeden.top/oss/down/eeee.jpg',
+		url: 'http://api.xiaoyaoeden.top/oss/down/' + userId + '-avatar.jpg',
 		header: { Authorization: wx.getStorageSync('token') },
 		success (res) {
-			url = res.data.data
-			console.log(url)
+			if (callback) {
+				callback(res.data.data)
+			}
 		}
 	})
 }
