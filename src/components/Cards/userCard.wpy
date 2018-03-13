@@ -2,33 +2,103 @@
 	@import "../../common/styles/variables";
 	@import "../../common/styles/mixins";
 
+	$white-cont-height:172rpx;
+
 	.userCard {
-		/* 用户信息 */
+		width: 690rpx;
+		/*height: 420rpx;*/
+		background: $white;
+		border-radius: 20rpx;
+		/*box-shadow:0rpx 10rpx 40rpx #d3d3d3;*/
+
+		.white-cont{
+			height: $white-cont-height;
+		}
+
 		&-info {
-			/* 头像 */
-			&-avatar {
-			}
-			/* 名字栏独有样式 */
-			&-nameBar {
-			}
-			/* 基础信息样式 */
-			.info-line {
-
-			}
-
-		}
-		/* 介绍 */
-		&-intro {
-		}
-		/* 累计计数板 */
-		&-bar {
-			/* 计数item */
-			.item {
-				/* 数字block独有样式 */
-				&-number {
+			position: relative;
+			/*height: 274rpx;*/
+			height: 330rpx;
+			border-radius: 0 0 20rpx 20rpx;
+			box-shadow:0rpx 10rpx 10rpx #e7e7e7;
+			padding:55rpx 30rpx 30rpx 30rpx;
+			box-sizing:border-box;
+			.mainInfo{
+				@include rowBox();
+				position: absolute;
+				top: -$white-cont-height;
+				/*width: 100%;*/
+				padding: 60rpx 30rpx 0rpx;
+				box-sizing: border-box;
+				&-avatar{
+					@include wh(160rpx,160rpx);
+					margin-right: 30rpx;
+					overflow: hidden;
+					border-radius: 100%;
+					image{
+						@include wh(100%,100%);
+					}
 				}
-				/* titleblock独有样式 */
-				&-title {
+				&-basic {
+					@include colBox();
+					.name{
+						@include rowMidBox();
+						p{
+							margin-right: 20rpx;
+							@include fontSizeColor(38rpx,$fontClr_1st);
+						}
+					}
+					.item{
+						margin-top: 6rpx;
+						@include fontSizeColor(28rpx,$fontClr_2nd);
+						font-weight: 300;
+					}
+
+					/* icon */
+					.icon{
+						@include wh(32rpx,32rpx)
+					}
+				}
+			}
+			.intro{
+				@include p_overflow_eli();
+				@include fontSizeColor(28rpx,darken($fontClr_2nd,10%));
+				font-weight: 300;
+			}
+			/* 累计计数板 */
+			&-bar {
+				@include rowBox();
+				margin-top: 30rpx;
+				padding-top: 30rpx;
+				border-top: 1px solid $borderClr;
+				box-sizing: border-box;
+				/* 计数item */
+				.item {
+					flex: 0 0 33.3%;
+					@include colMidBox();
+					/* 数字block独有样式 */
+					&-number {
+						@include rowBox();
+						/*align-items: flex-end;*/
+						p{
+							@include fontSizeColor(60rpx,$fontClr_1st);
+							font-weight: 600;
+						}
+						span{
+							margin-left: 6rpx;
+							display: block;
+							margin-top: 25rpx;
+							@include fontSizeColor(36rpx,$fontClr_2nd);
+							font-weight: 300;
+						}
+					}
+					/* titleblock独有样式 */
+					&-title {
+						margin-top: 24rpx;
+						text-align: center;
+						@include fontSizeColor(28rpx,$fontClr_2nd);
+						font-weight: 300;
+					}
 				}
 			}
 		}
@@ -51,7 +121,8 @@
 			/*创新创业*/
 			&-create {
 				&-tag{}
-				&-icon{}
+				&-icon{
+				}
 			}
 			/*社会公益*/
 			&-society {
@@ -71,6 +142,73 @@
 
 <template>
 	<view class="userCard">
+		<view class="white-cont"></view>
+		<view class="userCard-info">
+			<view class="mainInfo">
+				<!-- 头像 -->
+				<view class="mainInfo-avatar">
+					<image src="{{logoURL}}" ></image>
+				</view>
+
+				<!-- 基础信息 -->
+				<view class="mainInfo-basic">
+					<view class="name">
+						<!--props-->
+						<p>郭德纲</p>
+						<image src="{{icon_mentor_male}}" class="icon"></image>
+						<image src="{{icon_mentor_female}}" class="icon"></image>
+						<image src="{{icon_stu_male}}" class="icon"></image>
+						<image src="{{icon_stu_female}}" class="icon"></image>
+					</view>
+					<p class="item">IT 互联网</p>
+					<p class="item">德云科技有限公司 CEO</p>
+				</view>
+			</view>
+			<p class="intro">这是25个字这是25个字这是25个字所得到的顶顶顶顶</p>
+			<view class="userCard-info-bar">
+
+				<!--导师-->
+				<view class="item">
+					<view class="item-number">
+						<p>27</p>
+						<span>朵</span>
+					</view>
+					<view class="item-title">他赠送小红花</view>
+				</view>
+				<view class="item">
+					<view class="item-number">
+						<p>27</p>
+						<span>位</span>
+					</view>
+					<view class="item-title">他欣赏的学生</view>
+				</view>
+
+				<!--学生-->
+				<!--<view class="item">-->
+					<!--<view class="item-number">-->
+						<!--<p>27</p>-->
+						<!--<span>朵</span>-->
+					<!--</view>-->
+					<!--<view class="item-title">获赠小红花</view>-->
+				<!--</view>-->
+				<!--<view class="item">-->
+					<!--<view class="item-number">-->
+						<!--<p>27</p>-->
+						<!--<span>位</span>-->
+					<!--</view>-->
+					<!--<view class="item-title">他欣赏的学生</view>-->
+				<!--</view>-->
+
+
+				<view class="item">
+					<view class="item-number">
+						<p>27</p>
+						<span>篇</span>
+					</view>
+					<view class="item-title">他的文章</view>
+				</view>
+			</view>
+		</view>
 
 	</view>
 </template>
@@ -80,11 +218,20 @@
 
 	export default class UserCard extends wepy.component {
 		components = {}
-		data = {}
+		data = {
+			logoURL: '../../static/images/avatar.png',
+			icon_mentor_male: '../../static/images/personalPage/icon-mentor-male.png',
+			icon_mentor_female: '../../static/images/personalPage/icon-mentor-female.png',
+			icon_stu_male: '../../static/images/personalPage/icon-student-male.png',
+			icon_stu_female: '../../static/images/personalPage/icon-student-female.png',
+			icon_commonLove: '../../static/images/personalPage/icon-commonLove.png',
+			icon_creative: '../../static/images/personalPage/icon-creative.png',
+			icon_research: '../../static/images/personalPage/icon-research.png',
+			tag_commonLove: '../../static/images/personalPage/tag-commonLove.png',
+			tag_creative: '../../static/images/personalPage/tag-creative.png',
+			tag_mentor: '../../static/images/personalPage/tag-research.png'
+		}
 		computed = {}
-
-		customFunction () {}
-
 		methods = {}
 		events = {}
 		props = {

@@ -86,3 +86,11 @@
 	box-sizing: border-box;
 	padding: $verPadding $horPadding;
 }
+
+/* p标签不换行且自带省略号 */
+@mixin p_overflow_eli () {
+	display: block;
+	white-space:nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}

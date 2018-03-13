@@ -124,9 +124,6 @@
 	import page from '../base/basicPage.wpy'
 	import BasicButton from '../../components/Buttons/BasicButton'
 	import BasicInput from '../../components/Inputs/BasicInput'
-//	import {debounce, isInviteCode, isPhoneNumber, countFn, isVerifyCode} from '../../common/scripts/utils'
-//	import {UserInviteCodeCheck, UserRegister, UserVerifyCode, UserVerifyCodeCheck} from '../../API/index'
-//	import {toast} from '../../common/scripts/wxUtil'
 
 	export default class Login extends page {
 		config = {}
@@ -154,21 +151,10 @@
 		computed = {}
 
 		onLoad () {
-			//	FileUpLoad()
-			//	FileDownLoad()
-			wx.hideTabBar()
-			//	wx.clearStorageSync()
 		}
 
 		onShow () {
 			/* MENTION 测试流程的临时代码 */
-		setTimeout(() => {
-			this.$apply()
-			this.$WX.wxLogin().then(data => {
-				this.inviteCode = data.code
-				this.$apply()
-			})
-		}, 2000)
 		}
 		state0 () {
 			// 0：未输入邀请码或者输入错误
@@ -229,8 +215,6 @@
 			this.finishBtnColor = 'red'
 			this.$apply()
 		}
-
-		customData = {}
 		methods = {
 		}
 		events = {

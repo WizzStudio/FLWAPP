@@ -44,16 +44,22 @@
 		components = {}
 
 		onLoad () {
+			const that = this
 			this.$WX.setStorage('role', 1)
-			this.$WX.wxLogin()
-				.then(data => (console.log(data)))
-					.then(this.$WX.wxGetUserInfo()
-						.then(data => (console.log(data)))
-			)
+			this.$WX.wxLogin().then((res) => {
+				wx.getUserInfo({
+					success: function() {
+						console.log(123)
+						console.log(wx.getStorageSync('token'))
+						that.$WX.jumpTo('account/home')
+					}
+				})
+			})
 		}
 
-		onShow () {
-			this.$WX.jumpTo('account/home')
+		onReady () {
+		//	
+//			this.$WX.jumpTo('user/personalPage')
 		}
 		data = {
 			logoURL: '../static/images/logo.png'

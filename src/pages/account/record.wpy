@@ -19,7 +19,7 @@
   <ul class="record-ul">
     <repeat for="{{infoList}}" item="item">
     <li class="record-ul-item">
-      <span>{{item.time}}</span>{{item.name}}<span>赠送小红花{{item.mount}}朵</span><span>{{item.type}}</span>
+      <span>{{item.time}}</span>{{item.name}}<span>赠送小红花{{item.amount}}朵</span><span>{{item.type}}</span>
     </li>
   </repeat>
   </ul>
@@ -48,11 +48,25 @@
       restFlower: this.$WX.getStorage('redFlowerNum'),
       page: 0,
       totalPage: 0,
-      infoList: []
+      datas: [{
+        time: '2017',
+          name: 'genius',
+          amount: 19,
+          type: '+'
+      }],
+      infoList: [
+        {
+          time: '2017',
+          name: 'genius',
+          amount: 19,
+          type: '-'
+        }
+      ]
     }
     computed = {}
 
     onLoad () {
+      /*
       if (true) {
         this.$API('GetStudentRecord',page)
           .then(res => {
@@ -70,8 +84,13 @@
               this.page++
             })
         }
+        */
     }
     onReady () {
+       setTimeout(() => {
+          this.infoList = this.datas
+          this.$apply()
+        }, 2000)
       /*
       if (false) {
         wx.startPullDownRefresh({

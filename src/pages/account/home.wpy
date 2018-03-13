@@ -108,14 +108,16 @@
           id: 'workedTime'
         }
       ]
-      this.$WX.setStorage('redFlowerNum', data.redFlowerNum)
+      console.log(this.infoDatas)
+      console.log(123)
+      //  this.$WX.setStorage('redFlowerNum', data.redFlowerNum)
       this.$apply()
     }
     treatAjaxDatasTutor (data) {
       let status
       if (this.$WX.getStorage('status') === 0 && data.status === 1) {
         this.showDatas = data.showDatas
-        this.$WX.setStorage('flowerNum', data.redFlowerNum)
+        this.$WX.setStorage('redFlowerNum', data.redFlowerNum)
         this.$apply()
         status = 0
         return
@@ -125,7 +127,7 @@
       } else {
         status = 1
       }
-      status = parseInt(status)
+      console.log(status)
       this.infoDatas = {
         name: data.name || '请填写',
         avatar: data.avatar || '../../static/images/logo.png',
@@ -154,17 +156,22 @@
           id: 'clock'
         }
       ]
-      this.$WX.setStorage('flowerNum', data.redFlowerNum)
+      //  this.$WX.setStorage('redflowerNum', data.redFlowerNum)
       this.$apply()
     }
     onLoad () {
       if (this.$WX.getStorage('role') === 1) {
+        if (this.$WX.getStorage('token') === '') {
+          console.log('fuckkkkkkk')
+        }
         this.isStudent = true
         this.$API('StudentCenter')
           .then(data => {
-            console.log(123)
             this.treatAjaxDatasStudent(data.data)
             this.$apply()
+          })
+          .catch(data => {
+            console.log('fuckkkkkkkk')
           })
       } else if (this.$WX.getStorage('role') === 2) {
         this.isStudent = false
@@ -182,6 +189,14 @@
       if (this.$WX.getStorage('status') !== '') {
         this.infoDatas.status = this.$WX.getStorage('status')
       }
+    }
+    onReady () {
+      console.log(this)
+      setTimeout(() => {
+        console.log(this.infoDatas)
+        this.infoDatas.name = 'Van'
+        this.$apply()
+      }, 2000)
     }
     onPageScroll () {
       this.$UTIL.debounce(() => {

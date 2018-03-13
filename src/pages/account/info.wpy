@@ -484,6 +484,7 @@
           this.identity = 'student'
           this.$API('StudentProfile')
             .then(data => {
+              console.log(data.data)
               this.treatAjaxDatasStudent(data.data)
               this.$apply()
           })
