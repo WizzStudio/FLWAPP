@@ -1,0 +1,133 @@
+<style lang="scss" type="text/scss">
+	.background-image {
+		width: 750rpx;
+		height: 1206rpx;
+		z-index: -10;
+	}
+	.redFlower-content {
+		position: absolute;
+		top: 0;
+		font-size: 24rpx;
+		color: #333333;
+		padding-left: 50rpx;
+		padding-right: 50rpx;
+		line-height: 40rpx;
+		&-modal-1 {
+			margin-top: 50rpx;
+		}
+		&-modal-2 {
+			margin-top: 56rpx;
+		}
+		&-modal-3 {
+			margin-top: 56rpx;
+			line-height: 60rpx;
+			view span {
+				font-size: 36rpx;
+				color: #ed4d3d;
+			}
+		}
+		&-modal-4 {
+			margin-top: 72rpx;
+			line-height: 50rpx;
+			view span {
+				font-size: 36rpx;
+				color: #ed4d3d;
+			}
+		}
+		&-modal-5 {
+			margin-top: 92rpx;
+			button {
+				text-align: center;
+				font-size: 28rpx;
+				color: white;
+				width: 386rpx;
+				height: 60rpx;
+				background-color: #e01b1c;
+				border-radius: 60rpx;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				span {
+					margin-top: 5rpx;
+				}
+			}
+		}
+		&-modal-6 {
+			padding-top: 12rpx;
+			padding-bottom: 12rpx;
+			text-align: center;
+			font-size: 24rpx;
+			color: #999999;
+		}
+	}
+</style>
+
+<template>
+	<image src="../../static/images/personalCenter/background.png" class="background-image"/>
+  <view class="redFlower-content">
+		<view class="redFlower-content-modal-1">在这里，小红花是导师与学生连接的纽带，导师可以通过赠送小红花发现并激励人才，学生可以发布简历、文章，展示自己的与众不同。</view>
+		<view class="redFlower-content-modal-2">深圳市海鲸教育基金会将会根据学生获得的小红花况，向学生颁发所在高校的海鲸奖学金，共同创建美好未来。</view>
+		<view class="redFlower-content-modal-3" wx:if="{{isStudent}}">
+			<view>本年度</view><br/>
+			<view><span>{{tutorsYear}}</span>位导师很欣赏你</view><br/>
+			<view>并给你赠送了<span>{{amountYear}}</span>小红花朵</view><br/>
+			<view>你已经申请奖学金<span>{{moneyYear}}</span>元</view><br/>
+			<view>剩余小红花<span>{{restAmount}}</span>朵</view><br/>
+		</view>
+		<view class="redFlower-content-modal-3" wx:if="{{!isStudent}}">
+			<view>本年度</view><br/>
+			<view>您给海鲸教育基金会捐赠善款
+				<span>9300</span>元</view><br/>
+			<view><span>31</span>位学生深得你的赏识</view><br/>
+			<view>送出小红花<span>63</span>朵</view><br/>
+			<view>还有<span>30</span>朵小红花尚未送出</view><br/>
+		</view>
+		<view class="redFlower-content-modal-4" wx:if="{{isStudent}}">
+			<view>从注册以来</view>
+			<view>你总计获得小红花<span>{{amountAll}}</span>朵</view>
+			<view>受到<span>{{tutorsAll}}</span>位导师的欣赏</view>
+			<view>共获得奖学金<span>{{moneyAll}}</span>元</view>
+		</view>
+		<view class="redFlower-content-modal-5" wx:if="{{isStudent}}">
+			<button><span>申请奖学金</span></button>
+		</view>
+		<view class="redFlower-content-modal-6" wx:if="{{isStudent}}">
+			申请奖学金的最低额度是10朵小红花
+		</view>
+	</view>
+</template>
+
+<script>
+	import page from '../base/basicPage.wpy'
+	export default class redFlower extends page {
+		config = {
+			enablePullDownRefresh: false,
+			navigationBarTitleText: '小红花'
+		}
+		components = {}
+		data = {
+			isStudent: true,
+			tutorsYear: 10,
+			amountYear: 10,
+			moneyYear: 2000,
+			restAmount: 15,
+			amountAll: 39,
+			tutorsAll: 27,
+			moneyAll: 10000
+		}
+		computed = {}
+		onLoad () {
+			if (this.$WX.getStorage('role') === 1) {
+				this.isStudent = true
+			} else if (this.$WX.getStorage('role') === 2) {
+				this.isStudent = false
+			} else {
+				this.$WX.toast('无权访问')
+				this.$WX.jumpTo('./login')
+			}
+		}
+		methods = {}
+		events = {}
+		props = {}
+	}
+</script>

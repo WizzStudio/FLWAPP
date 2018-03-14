@@ -191,7 +191,7 @@
     events = {
       'show-click': this.$UTIL.debounce((key, event) => {
         if (key === 'redFlower') {
-          this.$WX.jumpTo('./record')
+          this.$WX.jumpTo('./redFlower')
         }
         if (key === 'stu') {
           this.$WX.toast('前往捐赠学生页')
@@ -203,7 +203,7 @@
           this.$WX.toast('前往沙漏页')
         }
         if (key === 'workedTime') {
-          this.$WX.toast('前往义工')
+        	this.$WX.jumpTo('./time')
         }
       }, 200),
       'menu-click': this.$UTIL.debounce((key, event) => {
