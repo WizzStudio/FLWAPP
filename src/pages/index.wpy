@@ -49,8 +49,7 @@
 			this.$WX.wxLogin().then((res) => {
 				wx.getUserInfo({
 					success: function() {
-						//	that.$WX.downLoadImg()
-						that.$WX.jumpTo('account/home')
+						that.$WX.jumpTo('account/time')
 					}
 				})
 			})

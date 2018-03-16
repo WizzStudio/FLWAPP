@@ -1,0 +1,30 @@
+<style lang="scss" type="text/scss">
+
+</style>
+
+<template>
+	<swiper />
+	<news />
+</template>
+
+<script>
+	import page from './base/basicPage'
+	import News from '../components/home/News'
+	import Swiper from '../components/home/Swiper'
+
+	export default class home extends page {
+		config = {}
+		components = {
+			swiper: Swiper,
+			news: News
+		}
+		data = {}
+		computed = {}
+
+		onLoad () {}
+		onReady () {}
+		methods = {}
+		events = {}
+		props = {}
+	}
+</script>

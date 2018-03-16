@@ -29,13 +29,6 @@ const throttle = (func, limit) => {
 	}
 }
 
-const parseJwt = (token) => {
-	let base64Url = token.split('.')[1]
-	let base64 = base64Url.replace('-', '+').replace('_', '/')
-	console.log(Base64)
-	//	return JSON.parse(window.atob(base64))
-}
-
 /**
  * 验证是否为电话号码
  * @param {String|Number} phoneNumber - 电话号码
@@ -113,11 +106,14 @@ const countFn = (countTime, basicMs, progressFn, callBackFn) => {
 	}
 }
 
-const transformTime = (data) => {
+const transformTime = (data, option) => {
 	if (typeof data === 'undefined') {
 		return ''
 	}
 	const date = new Date(parseInt(data))
+	if (option && option === 'year_month_day') {
+		return date.getFullYear() + '-' + date.getMonth() + 1 + '-' + (date.getDate() > 9 ? date.getDate() : '0' + date.getDate())
+	}
 	return date.getFullYear() + '-' + date.getMonth() + 1
 }
 // 将正常时间转换为UNIX时间戳
@@ -169,7 +165,6 @@ export {
 	isStudentNumber,
 	countFn,
 	verifyParams,
-	parseJwt,
 	transformTime,
 	transformTimeToUnix,
 	parseToken

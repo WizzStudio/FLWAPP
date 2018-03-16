@@ -75,11 +75,11 @@ const UpLoad = () => {
 	return ajax('/oss/up', 'get')
 }
 
-const GetStudentRecord = (page) => {
-	return ajax('/stu/trace?page=' + page, 'get')
+const GetStudentRecord = (data) => {
+	return ajax('/stu/trace?page=', { data }, 'get')
 }
-const GetTutorRecord = (page) => {
-	return ajax('/tutor/trace?page=' + page, 'get')
+const GetTutorRecord = (data) => {
+	return ajax('/tutor/trace?page=', { data }, 'get')
 }
 const GetSudentTutors = () => {
 	return ajax('/stu/tutors', 'get')
@@ -89,6 +89,18 @@ const GetTutorStudents = () => {
 }
 const PostUserImagesName = (data) => {
 	return ajax('/oss/down', 'post', data)
+}
+const GetStudentTime = () => {
+	return ajax('/stu/', 'get')
+}
+const GetTutorTime = () => {
+	return ajax('/tutor/', 'get')
+}
+const GetStuRedFlower = () => {
+	return ajax('/stu/', 'get')
+}
+const GetTutorRedFlower = () => {
+	return ajax('/tutor/', 'get')
 }
 // const = ()=>{
 // 	return ajax('','get',{})
@@ -128,6 +140,10 @@ export {
 	GetTutorRecord,
 	GetSudentTutors,
 	GetTutorStudents,
-	PostUserImagesName
+	PostUserImagesName,
+	GetStudentTime,
+	GetStuRedFlower,
+	GetTutorRedFlower,
+	GetTutorTime
 	//	FileDownLoad
 }

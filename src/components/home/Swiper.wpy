@@ -1,0 +1,51 @@
+<style lang="scss" type="text/scss">
+	.home-swiper {
+		width: 750rpx;
+		height: 350rpx;
+		&-img {
+			width: 750rpx;
+			height: 350rpx;
+		}
+	}
+</style>
+
+<template>
+	<swiper
+		indicator-dots="ture"
+		indicator-color="#f4f4f4"
+		indicator-active-color="#e01b1c"
+		autoplay="true"
+		interval="1000"
+		duration="500"
+		class="home-swiper-img"
+		circular="true"
+	>
+		<repeat for="{{itemData}}" item="item">
+			<swiper-item>
+				<image src="{{item}}" class="home-swiper-img"/>
+			</swiper-item>
+		</repeat>
+	</swiper>
+</template>
+
+<script>
+	import wepy from 'wepy'
+
+	export default class Swiper extends wepy.component {
+		config = {}
+		components = {}
+		data = {
+			itemData: [
+				'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
+				'http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg',
+				'http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg'
+			]
+		}
+		computed = {}
+
+		onLoad () {}
+		methods = {}
+		events = {}
+		props = {}
+	}
+</script>

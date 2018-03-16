@@ -126,7 +126,7 @@ const chooseAvatar = (that, avatarUrl) => {
 			let avatar = res.tempFilePaths[0]
 			that.$apply()
 			wx.request({
-				url: 'http://api.xiaoyaoeden.top/oss/up',
+				url: 'http://api.xiaoyaoeden.top/oss/up/' + that.$WX.getStorage('userId') + '-avatar.jpg',
 				header: {Authorization: wx.getStorageSync('token')},
 				success (res) {
 					console.log(res.data)
@@ -153,15 +153,54 @@ const chooseAvatar = (that, avatarUrl) => {
 	})
 }
 
-const downLoadImg = (callback) => {
+//	上传附件(最多5张图片)
+const chooseMutiImg = () => {
+	wx.chooseImage({
+		count: 5,
+		sizeType: ['compressed'],
+		success: function (res) {
+			setStorage('imagesList', res.tempFilePaths)
+			res.tempFilePaths.forEach((item, index) => {
+				let avatar = res.tempFilePaths[index]
+				wx.request({
+					url: 'http://api.xiaoyaoeden.top/oss/up/' + getStorage('userId') + '-info-' + index + '.jpg',
+					header: { Authorization: getStorage('token') },
+					success(res) {
+						console.log(res.data)
+						setStorage('attach_num', index + 1)
+						let token = res.data.data
+						let key = getStorage('userId') + '-info-' + index + '.jpg'
+						wx.uploadFile({
+							url: 'http://upload.qiniu.com',
+							filePath: avatar,
+							name: 'file',
+							formData: {
+								'key': key,
+								token: token
+							},
+							success: function () {
+								console.log(key)
+							}
+						})
+					}
+				})
+			})
+		}
+	})
+}
+
+const downLoadImg = (that, avatarUrl) => {
 	let userId = getStorage('userId')
 	wx.request({
 		url: 'http://api.xiaoyaoeden.top/oss/down/' + userId + '-avatar.jpg',
 		header: { Authorization: wx.getStorageSync('token') },
 		success (res) {
-			if (callback) {
-				callback(res.data.data)
-			}
+			console.log(res.data.data)
+			that[avatarUrl] = res.data.data
+			setStorage('avatar', res.data.data)
+		},
+		fail () {
+			this.toast('fuck')
 		}
 	})
 }
@@ -206,5 +245,6 @@ export {
 	chooseAvatar, //	上传头像
 	upLoad, //	上传文件
 	downLoadImg,	//	下载图片
-	changeNavBarColor // 改变顶部栏的颜色
+	changeNavBarColor, // 改变顶部栏的颜色
+	chooseMutiImg	//	上传多张图片
 }
