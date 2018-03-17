@@ -162,13 +162,13 @@
         this.$API('StudentCenter').then(data => {
           this.treatAjaxDatasStudent(data.data)
           wx.request({
-		          url: 'http://api.xiaoyaoeden.top/oss/down/' + userId + '-avatar.jpg',
-		          header: { Authorization: wx.getStorageSync('token') },
-		          success (res) {
-			          console.log(res.data.data)
-                that.avatar = res.data.data
-                that.$apply()
-		          }
+						url: 'http://api.xiaoyaoeden.top/oss/down/' + userId + '-avatar.jpg',
+						header: { Authorization: wx.getStorageSync('token') },
+						success (res) {
+							console.log(res.data.data)
+							that.avatar = res.data.data
+							that.$apply()
+						}
 	          })
           })
       } else if (this.$WX.getStorage('role') === 2) {
@@ -212,9 +212,7 @@
         if (key === 'clock') {
           this.$WX.toast('前往沙漏页')
         }
-        if (key === 'workedTime') {
-        	this.$WX.jumpTo('./time')
-        }
+        if (key === 'workedTime') { this.$WX.jumpTo('./time') }
       }, 200),
       'menu-click': this.$UTIL.debounce((key, event) => {
         if (key === 'record') {
