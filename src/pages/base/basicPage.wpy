@@ -10,7 +10,6 @@
 	/* 页面基类 */
 	import wepy from 'wepy'
 	import API from '../../API/index'
-//	import APX from '../../API/index_rebuild'
 	import * as UTIL from '../../common/scripts/utils'
 	import * as WXUTIL from '../../common/scripts/wxUtil'
 
@@ -18,6 +17,5 @@
 		$API = API // 全局安装API方法（已经更新）
 		$UTIL = UTIL // 全局工具函数
 		$WX = WXUTIL // 全局微信工具函数
-//		$APX = APX // 重构后的API方法
 	}
 </script>

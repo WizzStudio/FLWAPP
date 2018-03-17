@@ -128,6 +128,5 @@ export default (rurl = argumentsErr(), method = argumentsErr(), data = null, hea
 	} else {
 		console.log('[HTTP Request]: request interrupted by mockServer')
 		return Route(rurl)
-		//	return MockServer(rurl) // 旧版：已弃用
 	}
 }
