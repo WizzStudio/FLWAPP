@@ -9,6 +9,7 @@ $red_new:#db4d3d; // 主题红_新
 $red_deep: #94030D; // 主题红_深
 $white: #FFFFFF;
 
+
 $borderClr: #D9D9D9; // 边框色
 $borderClr__hover: #E01B1C; // 边框色__选中态
 
@@ -29,4 +30,19 @@ $borderSiz_main: 2rpx;
 
 /* 圆角 */
 $radious_main: 40rpx;
+
+
+//基础字号
+$f-size-large: 56rpx;
+$f-size-bigger: 36rpx;
+$f-size-big: 32rpx;
+$f-size-base: 28rpx;
+$f-size-small: 24rpx;
+
+//场景化字号
+$f-size-h1: $f-size-large !default;
+$f-size-h2: $f-size-bigger !default;
+$f-size-h3: $f-size-big !default;
+$f-size-content: $f-size-base !default;
+$f-size-tip: $f-size-small !default;
 

@@ -10,112 +10,142 @@
 @import "variables";
 @import "mixins";
 
+/* h1~h6 */
+.h1,.h4 {
+	color: $fontClr_1st;
+}
+
+.h1{
+	font-weight: bold;
+	margin: 2rpx rpx;
+}
+
+.h2 {
+	color: $fontClr_2nd;
+	&:before {
+		content: '';
+		border-left: 3px solid $red;
+		padding-right: $red;
+		display: inline-block;
+		width: 0;
+		height: $f-size-h2;
+		vertical-align: bottom;
+	}
+}
+
+h3 {
+	color: $fontClr_3rd;
+}
+
+
 /* layouts */
-.l-box__allMid{
+.l-box__allMid {
 	@include allMidBox();
 }
 
 // 横向盒子且垂直居中
-.l-box__rowMid{
+.l-box__rowMid {
 	@include rowMidBox();
 }
 
 // 竖向盒子且水平居中
-.l-box__verMid{
+.l-box__verMid {
 	@include colMidBox();
 }
 
-.l-container__normal{
-	@include genContainer(0px,20rpx)
+.l-container__normal {
+	@include genContainer(0px, 20rpx)
 }
 
 /* typefaces 32 24 18 16 14*/
-.t1{
+.t1 {
 	font-size: 64rpx;
 }
 
-.t2{
+.t2 {
 	font-size: 48rpx;
 }
 
-.t3{
+.t3 {
 	font-size: 36rpx;
 }
 
-.t4{
+.t4 {
 	font-size: 32rpx;
 }
 
-.t5{
+.t5 {
 	font-size: 28rpx;
 }
 
-.t_light{
+.t_light {
 	font-weight: 300;
 }
-.t_normal{
+
+.t_normal {
 	font-weight: 400;
 }
-.t_bold{
+
+.t_bold {
 	font-weight: 600;
 }
 
 /* .字体大小(t1~t5)-颜色(c1~c5)__字体粗细(light/normal/bold) 如: .t3-c2__bold*/
 @for $i from 1 through 5 {
-	.t#{$i}{
-		&-white{
+	.t#{$i} {
+		&-white {
 			@extend .t#{$i};
 			color: $white;
-			&__light{
+			&__light {
 				@extend .t_light;
 			}
-			&__normal{
+			&__normal {
 				@extend .t_normal;
 			}
-			&__bold{
+			&__bold {
 				@extend .t_bold;
 			}
 		}
-		&-black{
+		&-black {
 			@extend .t#{$i};
 			color: $fontClr_main;
-			&__light{
+			&__light {
 				@extend .t_light;
 			}
-			&__normal{
+			&__normal {
 				@extend .t_normal;
 			}
-			&__bold{
+			&__bold {
 				@extend .t_bold;
 			}
 		}
-		&-c1{
+		&-c1 {
 			@extend .t#{$i};
 			color: $fontClr_1st
 		}
-		&-c2{
+		&-c2 {
 			@extend .t#{$i};
 			color: $fontClr_2nd;
 		}
-		&-c3{
+		&-c3 {
 			@extend .t#{$i};
 			color: $fontClr_3rd
 		}
-		&-c4{
+		&-c4 {
 			@extend .t#{$i};
 			color: $fontClr_4th;
 		}
 		@for $j from 1 through 4 {
-			&-c#{$j}{
-				&__light{
+			&-c#{$j} {
+				&__light {
 					@extend .t#{$i}-c#{$j};
 					@extend .t_light;
 				}
-				&__normal{
+				&__normal {
 					@extend .t#{$i}-c#{$j};
 					@extend .t_normal;
 				}
-				&__bold{
+				&__bold {
 					@extend .t#{$i}-c#{$j};
 					@extend .t_bold;
 				}
@@ -127,18 +157,26 @@
 /* states */
 
 // bool 状态
-.is{
-	&-focus{}
-	&-blur{}
-	&-active{}
-	&-freeze{}
-	&-wrong{}
-	&-right{}
-	&-success{}
-	&-fail{}
+.is {
+	&-focus {
+	}
+	&-blur {
+	}
+	&-active {
+	}
+	&-freeze {
+	}
+	&-wrong {
+	}
+	&-right {
+	}
+	&-success {
+	}
+	&-fail {
+	}
 }
 
-
 // 多元状态
-.has{}
+.has {
+}
 

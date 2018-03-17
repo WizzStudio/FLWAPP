@@ -1,6 +1,7 @@
 <style lang="scss" type="text/scss">
 	@import "../../common/styles/mixins";
 	@import "../../common/styles/variables";
+	@import "../../common/styles/common";
 
 	.personPage{
 
@@ -28,7 +29,11 @@
 		</view>
 
 		<view>
-
+			<p class="h1">hello</p>
+			<p class="h2">hello</p>
+			<p class="h3">hello</p>
+			<p class="h4">hello</p>
+			<p class="h2">hello</p>
 		</view>
 </template>
 
