@@ -227,8 +227,8 @@
 					<p class="item" wx:if="{{role == 2}}">{{tutorInfo.company}} {{tutorInfo.position}}</p>
 				</view>
 			</view>
-			<p  wx:if="{{ role == 1 }}" class="intro">{{stuInfo.personalIntro}}</p>
-			<p 	wx:if="{{ role == 2 }}" class="intro">{{tutorInfo.personalIntro}}</p>
+			<p  wx:if="{{ role == 1 }}" class="intro">{{stuInfo.simpleIntro}}</p>
+			<p 	wx:if="{{ role == 2 }}" class="intro">{{tutorInfo.simpleIntro}}</p>
 			<view class="userCard-info-bar">
 				<!--学生-->
 					<view class="item" wx:if="{{ role == 1 }}">
@@ -311,42 +311,70 @@
 		props = {
 			/* 用户角色，0：游客；1：学生；2：导师 */
 			/* direction 1：科技创新 2: 社会公益 3: 创新创业 */
-			role: {type: String, default: '1'},	// 用户身份
+			role: {type: Number, default: 1},	// 用户身份
 			stuInfo: {
 				type: Object,
 				default: {
-				'name': '郭小刚',
-				'avatar': '../../static/images/avatar.png',
-				'sex': 1,
-				'schoolId': 1,
-				'profession': '电子信息工程',
-				'direction': 1,
-				'simpleIntro': '西电区块链第十人',
-				'personalIntro': '熟练使用WEB服务器Tomcat',
-				'answer': '写一个新的编程语言',
-				'userId': 1,
-				'age': 20,
-				'grade': '大四',
-				'redFlowerNum': 0,
-				'tutorNum': 0,
-				'articleNum': 0
+//				'name': '郭小刚',
+//				'avatar': '../../static/images/avatar.png',
+//				'sex': 1,
+//				'schoolId': 1,
+//				'profession': '电子信息工程',
+//				'direction': 1,
+//				'simpleIntro': '西电区块链第十人',
+//				'personalIntro': '熟练使用WEB服务器Tomcat',
+//				'answer': '写一个新的编程语言',
+//				'userId': 1,
+//				'age': 20,
+//				'grade': '大四',
+//				'redFlowerNum': 0,
+//				'tutorNum': 0,
+//				'articleNum': 0
+					'name': '',
+					'avatar': '',
+					'sex': 1,
+					'schoolId': 1,
+					'profession': '',
+					'direction': 1,
+					'simpleIntro': '',
+					'personalIntro': '',
+					'answer': '',
+					'userId': 0,
+					'age': 0,
+					'grade': '',
+					'redFlowerNum': 0,
+					'tutorNum': 0,
+					'articleNum': 0
 			}},
 			tutorInfo: {
 				type: Object,
 				default: {
-					'userId': 123,
-					'name': '郭德',
-					'avatar': '/avatar',
-					'sex': 1,
-					'isTutor': 1,
-					'trade': '互联网',
-					'company': '德云科技有限公司',
-					'position': 'CEO',
-					'simpleIntro': '德云科技上市了',
-					'personalIntro': '2010年4月，成立德云工作室',
-					'redFlowerNum': 1,
-					'stuNum': 1,
-					'articleNum': 1
+//					'userId': 123,
+//					'name': '郭德',
+//					'avatar': '/avatar',
+//					'sex': 1,
+//					'isTutor': 1,
+//					'trade': '互联网',
+//					'company': '德云科技有限公司',
+//					'position': 'CEO',
+//					'simpleIntro': '德云科技上市了',
+//					'personalIntro': '2010年4月，成立德云工作室',
+//					'redFlowerNum': 1,
+//					'stuNum': 1,
+//					'articleNum': 1
+						'userId': 1,
+						'name': '',
+						'avatar': '',
+						'sex': 1,
+						'isTutor': 1,
+						'trade': '',
+						'company': '',
+						'position': '',
+						'simpleIntro': '',
+						'personalIntro': '',
+						'redFlowerNum': 1,
+						'stuNum': 1,
+						'articleNum': 1
 				}
 			}
 		}

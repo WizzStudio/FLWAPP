@@ -58,6 +58,7 @@
 		onReady () {
 		//
 			this.$WX.jumpTo('user/personalPage')
+//			this.$WX.jumpTo('account/login')
 		}
 		data = {
 //			logoURL: '../static/images/logo.png'

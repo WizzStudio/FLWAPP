@@ -4,8 +4,11 @@
 	@import "../../common/styles/common";
 
 	.personPage{
-
+		.shadow{
+			box-shadow: 0rpx 6rpx 50rpx lighten($red,20%);
+		}
 	}
+
 
 	.card{
 		&-container{
@@ -20,38 +23,109 @@
 			margin-top: -170rpx;
 		}
 	}
+
+	.donate-btn{
+		position: fixed;
+		bottom: 20rpx;
+		left: 0;
+		z-index: 2;
+		width: 100%;
+	}
+	.musk {
+		position: fixed;
+		z-index: 1;
+		bottom: 0;
+		width: 100%;
+		height: 160rpx;
+		background: linear-gradient(to top, $borderClr, transparent);
+	}
 </style>
 
 <template>
+	<view class="personPage">
 		<view class="card-base"></view>
-		<view class="card-container">
-			<usrCard class="card-main"></usrCard>
+
+		<view class="card-container" wx:if="{{role == 1}}">
+			<usrCard class="card-main" :role.sync="role" :stuInfo.sync="userInfo"></usrCard>
+		</view>
+
+		<view class="card-container" wx:if="{{role == 2}}">
+			<usrCard class="card-main" :role.sync="role" :tutorInfo.sync="userInfo"></usrCard>
 		</view>
 
 		<view>
 			<p class="title-bar">个人简历</p>
-			<!--<p class="h2 ">hello</p>-->
-			<!--<p class="h3 ">hello</p>-->
-			<!--<p class="h4">hello</p>-->
-			<!--<p class="h2">hello</p>-->
+			<view class="mt30 pl20 pr20 t3-c1__light">{{userInfo.personalIntro}}</view>
 		</view>
+
+		<view wx:if="{{role == 1}}">
+			<p class="title-bar">问题</p>
+			<view class="mt30 pl20 pr20 t3-c1__light"></view>
+		</view>
+
+		<view wx:if="{{role == 1}}" class="donate-btn l-box__allMid">
+			<donateBtn title="赠送小红花" width="300" height="88" color="red" key="donate" font="32" radius="60" class="shadow"></donateBtn>
+		</view>
+
+		<!--<view class="musk"></view>-->
+	</view>
 </template>
 
 <script>
 	import page from '../base/basicPage.wpy'
 	import userCard from '../../components/Cards/userCard'
+	import BasicButton from '../../components/Buttons/BasicButton'
 
 	export default class PersonalPage extends page {
 		config = {}
 		components = {
-			usrCard: userCard
+			usrCard: userCard,
+			donateBtn: BasicButton
 		}
-		data = {}
+		data = {
+			role: 1,
+			userInfo: {
+				'name': '郭小刚',
+				'avatar': '../../static/images/avatar.png',
+				'sex': 1,
+				'schoolId': 1,
+				'profession': '电子信息工程',
+				'direction': 1,
+				'simpleIntro': '西电区块链第十人',
+				'personalIntro': '熟练使用WEB服务器Tomcat',
+				'answer': '写一个新的编程语言',
+				'userId': 1,
+				'age': 20,
+				'grade': '大四',
+				'redFlowerNum': 1,
+				'tutorNum': 2,
+				'articleNum': 3
+//					'userId': 123,
+//					'name': '郭德',
+//					'avatar': '/avatar',
+//					'sex': 1,
+//					'isTutor': 1,
+//					'trade': '互联网',
+//					'company': '德云科技有限公司',
+//					'position': 'CEO',
+//					'simpleIntro': '德云科技上市了',
+//					'personalIntro': '2010年4月，成立德云工作室',
+//					'redFlowerNum': 1,
+//					'stuNum': 1,
+//					'articleNum': 1
+			}
+		}
 		computed = {}
 
-		onLoad () {}
+		onLoad () {
+			/* TODO 需要联调 */
+//			this.$API('GetStuHomePage')
+//			this.$API('GetMentorHomePage')
+		}
 
-		onShow () {}
+		onShow () {
+			console.log(this.role)
+		}
 
 		customFunction () {}
 
