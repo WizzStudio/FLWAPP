@@ -122,28 +122,26 @@
 		components = {}
 		data = {
 			isStudent: true,
-			tutorsYear: 10,
-			amountYear: 10,
-			moneyYear: 2000,
-			restAmount: 15,
-			amountAll: 39,
-			tutorsAll: 27,
-			moneyAll: 10000,
-			studentsAll: 35,
-			redFlowerSend: 27,
-			redFlowerRest: 28
+			tutorsYear: 0,
+			amountYear: 0,
+			moneyYear: 0,
+			restAmount: 0,
+			amountAll: 0,
+			tutorsAll: 0,
+			moneyAll: 0,
+			studentsAll: 0,
+			redFlowerSend: 0,
+			redFlowerRest: 0
 		}
 		computed = {}
 		getStudentDatas (data) {
-			/*
-			this.tutorsYear = data.
-			this.amountYear = data.
-			this.moneyYear = data.
-			this.restAmount = data.
-			this.amountAll = data.
-			this.tutorsAll = data.
-			this.moneyAll = data.
-			*/
+			this.tutorsYear = data.yearTutorNum || 0
+			this.amountYear = data.yearFlowerNum || 0
+			this.moneyYear = data.yearWithdrawNum || 0
+			this.restAmount = data.balance || 0
+			this.amountAll = data.totalFlowerNum || 0
+			this.tutorsAll = data.totalTutorNum || 0
+			this.moneyAll = data.totalWithdrawNum || 0
 		}
 		GetTutorDatas (data) {
 			/*
@@ -158,7 +156,7 @@
 				this.isStudent = true
 				this.$API('GetStuRedFlower')
 					.then(res => {
-						this.getStudentDatas()
+						this.getStudentDatas(res.data)
 						this.$apply()
 					})
 			} else if (this.$WX.getStorage('role') === 2) {

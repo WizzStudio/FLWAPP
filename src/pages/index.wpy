@@ -49,7 +49,7 @@
 			this.$WX.wxLogin().then((res) => {
 				wx.getUserInfo({
 					success: function() {
-						that.$WX.jumpTo('account/time')
+						that.$WX.jumpTo('account/home')
 					}
 				})
 			})

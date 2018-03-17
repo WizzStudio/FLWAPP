@@ -19,7 +19,7 @@ export default {
 	GetStudentTutors: { url: '/stu/tutors', method: 'get', data: {}, headers: {} },
 	PostUserImagesName: { url: '/oss/down', method: 'post', data: {}, headers: {} },
 	GetTutorRedFlower: { url: '/tutor/', method: 'get', data: {}, headers: {} },
-	GetStuRedFlower: { url: '/stu/', method: 'get', data: {}, headers: {} },
+	GetStuRedFlower: { url: '/stu/summary', method: 'get', data: {}, headers: {} },
 	GetTutorTime: { url: '/tutor/', method: 'get', data: {}, headers: {} },
 	GetStuTime: { url: '/stu/', method: 'get', data: {}, headers: {} }
 }

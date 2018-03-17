@@ -97,7 +97,7 @@ const GetTutorTime = () => {
 	return ajax('/tutor/', 'get')
 }
 const GetStuRedFlower = () => {
-	return ajax('/stu/', 'get')
+	return ajax('/stu/summary', 'get')
 }
 const GetTutorRedFlower = () => {
 	return ajax('/tutor/', 'get')
