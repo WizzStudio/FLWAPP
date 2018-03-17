@@ -1,4 +1,4 @@
-import { setStorage } from "./wxUtil";
+import { setStorage } from './wxUtil';
 
 /* 工具函数 */
 /**
