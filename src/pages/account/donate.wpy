@@ -15,7 +15,6 @@
        width: 128rpx;
        height: 128rpx;
        border-radius: 50%;
-       background-color: aqua;
      }
      .avatar {
        width: 20rpx;
@@ -50,7 +49,7 @@
         <div>
           <span class="name">{{item.name}}</span>
           <span class="other">{{item.company}}</span>
-          <span class="info">捐赠小红花{{item.number}}朵</span>
+          <span class="info">捐赠小红花{{item.sum}}朵</span>
         </div>
         <image src="../../static/images/personalCenter/arrow-right.svg" class="avatar" id="{{item.userId}}" @tap="getMoreInfo"/>
       </li>
@@ -67,39 +66,33 @@
     component = {}
     data = {
       isTutor: true,
-      TutorList: [
-        {
-          name: 'Van',
-          company: 'GayHub',
-          position: 'CEO',
-          avatar: '../../static/images/logo.png',
-          number: 19,
-          userId: 1
-        },
-        {
-          name: '比利',
-          company: 'GayHub',
-          position: 'CTO',
-          avatar: '../../static/images/logo.png',
-          number: 18,
-          userId: 2
-        }
-      ]
+      TutorList: []
     }
     computed = {}
-
+    getDatas (data) {
+      data.forEach(item => {
+        this.TutorList.push({
+          name: item.name,
+          company: item.company,
+          sum: item.sum
+        })
+      })
+    }
     onLoad () {
       this.$API('GetStudentTutors')
         .then(res => {
           let imageArray = []
+          this.getDatas(res.data)
           res.data.forEach(item => {
             imageArray.push(String(item.userId))
           })
           imageArray = imageArray.map(item => item + '-avatar.jpg')
-          console.log(imageArray)
           this.$API('PostUserImagesName', imageArray)
             .then(res => {
-                //
+                this.TutorList.forEach((item, index) => {
+                  item.avatar = res.data[index]
+                  this.$apply()
+                })
             })
         })
       /*

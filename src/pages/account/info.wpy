@@ -101,7 +101,6 @@
     flex-flow: column nowrap;
     justify-content: center;
     align-items: center;
-    height: 200rpx;
     image {
       height: 80rpx;
       width: 80rpx;
@@ -207,6 +206,9 @@
     <view class="info-module-attachment">
       <image src="../../static/images/personalCenter/附件.png" @tap="upLoad" />
       <span>上传</span>
+      <repeat for="{{imagesList}}" item="item">
+        <image src="{{item}}"/>
+      </repeat>
     </view>
   </view>
   <div class="info-module-attachment">
@@ -230,6 +232,7 @@
     data = {
       optionList: [],
       identityList: [],
+      imagesList: [],
       avatar: '',
       identity: '',
       answer: {},
@@ -355,7 +358,7 @@
           id: 'cardNumber'
         }
       ]
-      this.avatar = data.avatar || '../../static/images/logo.png'
+      this.avatar = this.$WX.getStorage('avatar')
       this.answer = {
         value: data.answer || '',
         length: this.setTextLength(data.answer)
@@ -410,7 +413,6 @@
           id: 'intro'
         }
       ]
-      this.avatar = data.avatar || '../../static/images/logo.png'
       this.personalIntro = {
         value: data.personalIntro || '',
         length: 1 || this.setTextLength(data.personalIntro)
@@ -420,7 +422,6 @@
       let datas
       if (this.identity === 'student') {
         datas = {
-          avatar: this.avatar,
           name: this.optionList[0].value,
           birthday: this.$UTIL.transformTimeToUnix(this.optionList[1].value),
           sex: 1 || this.optionList[2].value,
@@ -435,11 +436,12 @@
           bankNumber: this.identityList[2].value,
           stuNumber: this.identityList[0].value,
           answer: this.answer.value,
-          personalIntro: this.personalIntro.value
+          personalIntro: this.personalIntro.value,
+          attach_num: this.$WX.getStorage('attach_num')
         }
         this.$API('SendStudentProfile', JSON.stringify(datas))
-          .then(data => {
-            if (data.data.code === 0) {
+          .then(res => {
+            if (res.code === 0) {
               this.$WX.setStorage('status', 0)
               this.$WX.toast('提交成功')
               this.$WX.jumpTo('home')
@@ -450,7 +452,6 @@
       }
       if (this.identity === 'tutor') {
         datas = {
-          avatar: this.avatar,
           name: this.optionList[0].value,
           sex: 1 || this.optionList[1].value,
           trade: 1 || this.optionList[2].value,
@@ -471,6 +472,7 @@
       }
     }
     onLoad () {
+      this.avatar = this.$WX.getStorage('avatar')
       if (this.$WX.getStorage('isSave') === true) {
         console.log('从本地缓存获取数据')
         this.optionList = this.$WX.getStorage('optionList')
@@ -555,12 +557,13 @@
       },
       upLoad () {
         console.log('上传文件')
-        //  this.$WX.upLoad(url, filePath, name, formData, fn)
+        this.$WX.chooseMutiImg()
+        this.imagesList = this.$WX.getStorage('imagesList')
+        this.$apply()
       }
     }
     changeAvatar (event) {
       let that = this
-      //  upLoadImage(that, 'avatar')
       this.$WX.chooseAvatar(that, 'avatar')
     }
     checkingValue () {

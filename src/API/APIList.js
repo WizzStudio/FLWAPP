@@ -13,11 +13,15 @@ export default {
 	SendStudentProfile: {url: '/stu/profile', method: 'put', data: {}, headers: {}},
 	SendTutorProfile: {url: '/tutor/profile', method: 'put', data: {}, headers: {}},
 	UpLoad: {url: '/oss/up', method: 'get', data: {}, headers: {}},
-	GetStudentRecord: {url: '/stu/trace?page', method: 'get', data: {}, headers: {}},
-	GetTutorRecord: {url: '/tutor/trace?page', method: 'get', data: {}, headers: {}},
-	GetTutorStudents: {url: '/tutor/students', method: 'get', data: {}, headers: {}},
-	GetStudentTutors: {url: '/stu/tutors', method: 'get', data: {}, headers: {}},
-	PostUserImagesName: {url: '/oss/down', method: 'post', data: {}, headers: {}},
 	GetStuHomePage: {url: '/stu/home', method: 'get', data: {}, headers: {}},
-	GetMentorHomePage: {url: '/tutor/home', method: 'get', headers: {}}
+	GetMentorHomePage: {url: '/tutor/home', method: 'get', headers: {}},
+	GetStudentRecord: { url: '/stu/trace?page', method: 'get', data: {}, headers: {} },
+	GetTutorRecord: { url: '/tutor/trace?page', method: 'get', data: {}, headers: {} },
+	GetTutorStudents: { url: '/tutor/students', method: 'get', data: {}, headers: {} },
+	GetStudentTutors: { url: '/stu/tutors', method: 'get', data: {}, headers: {} },
+	PostUserImagesName: { url: '/oss/down', method: 'post', data: {}, headers: {} },
+	GetTutorRedFlower: { url: '/tutor/', method: 'get', data: {}, headers: {} },
+	GetStuRedFlower: { url: '/stu/', method: 'get', data: {}, headers: {} },
+	GetTutorTime: { url: '/tutor/', method: 'get', data: {}, headers: {} },
+	GetStuTime: { url: '/stu/', method: 'get', data: {}, headers: {} }
 }

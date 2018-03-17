@@ -17,7 +17,8 @@
 				'pages/account/donate',
 				'pages/account/redFlower',
 				'pages/account/time',
-				'pages/user/personalPage'
+				'pages/user/personalPage',
+				'pages/home'
 			],
 			'window': {
 				'backgroundTextStyle': 'light',
@@ -36,7 +37,7 @@
 					'backgroundColor': '#ffffff',
 					'list': [
 						{
-							'pagePath': 'pages/account/login',
+							'pagePath': 'pages/home',
 							'iconPath': 'static/images/tabBar/home.png',
 							'text': '首页',
 							'selectedIconPath': 'static/images/tabBar/home_selected.png'

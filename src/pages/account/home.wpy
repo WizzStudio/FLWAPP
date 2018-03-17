@@ -67,13 +67,13 @@
       infoDatas: {},
       showDatas: [],
       isStudent: false,
-      avatar: this.$WX.getStorage('avatar')
+      avatar: ''
     }
     computed = {}
     treatAjaxDatasStudent (data) {
-      let status = 1
+      let status = data.status
       if (this.$WX.getStorage('status') === 0 && data.status === 1) {
-        status = 0
+        status = 1
         return
       } else if (data.status === 2) {
         this.$WX.setStorage('status', 2)
@@ -105,27 +105,27 @@
           id: 'workedTime'
         }
       ]
-      //  this.$WX.setStorage('redFlowerNum', data.redFlowerNum)
+      this.$WX.setStorage('redFlowerNum', data.redFlowerNum)
+      this.$WX.downLoadImg(this, 'avatar')
       this.$apply()
     }
     treatAjaxDatasTutor (data) {
-      let status
+      let status = data.status
       if (this.$WX.getStorage('status') === 0 && data.status === 1) {
-        this.showDatas = data.showDatas
-        this.$WX.setStorage('redFlowerNum', data.redFlowerNum)
-        this.$apply()
-        status = 0
+        status = 1
         return
       } else if (data.status === 2) {
         this.$WX.setStorage('status', 2)
         status = 2
-      } else {
-        status = 1
       }
-      console.log(status)
+      this.infoDatas = {
+        name: data.name || '',
+        schoolId: data.schoolId || '0',
+        profession: data.profession || '请填写',
+        status: status
+      }
       this.infoDatas = {
         name: data.name || '请填写',
-        avatar: data.avatar || '../../static/images/logo.png',
         isTutor: data.isTutor || 0,
         trade: data.trade || '请填写',
         company: data.company || '请填写',
@@ -151,17 +151,25 @@
           id: 'clock'
         }
       ]
-      //  this.$WX.setStorage('redflowerNum', data.redFlowerNum)
+      this.$WX.setStorage('redflowerNum', data.redFlowerNum)
       this.$apply()
     }
     onLoad () {
       if (this.$WX.getStorage('role') === 1) {
-        if (this.$WX.getStorage('token') === '') {
-        }
         this.isStudent = true
+        let that = this
+        let userId = this.$WX.getStorage('userId')
         this.$API('StudentCenter').then(data => {
-            this.treatAjaxDatasStudent(data.data)
-            this.$apply()
+          this.treatAjaxDatasStudent(data.data)
+          wx.request({
+		          url: 'http://api.xiaoyaoeden.top/oss/down/' + userId + '-avatar.jpg',
+		          header: { Authorization: wx.getStorageSync('token') },
+		          success (res) {
+			          console.log(res.data.data)
+                that.avatar = res.data.data
+                that.$apply()
+		          }
+	          })
           })
       } else if (this.$WX.getStorage('role') === 2) {
         this.isStudent = false
@@ -180,7 +188,9 @@
         this.infoDatas.status = this.$WX.getStorage('status')
       }
     }
-    onReady () {}
+    onReady () {
+      console.log(this.avatar)
+    }
     onPageScroll () {
       this.$UTIL.debounce(() => {
         wx.stopPullDownRefresh()

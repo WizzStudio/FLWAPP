@@ -1,33 +1,63 @@
 <style lang="scss" type="text/scss">
+	.record-rest {
+		display: inline-flex;
+		align-items: center;
+		height: 88rpx;
+		font-size: 28rpx;
+		background-color: #f4f4f4;
+		padding-left: 30rpx;
+		width: 100vw;
+	}
   .record-ul {
     display: flex;
     flex-flow: column nowrap;
+    padding-left: 30rpx;
+    padding-right: 30rpx;
     &-item {
+			font-size: 24rpx;
+			color: #999999;
       display: inline-flex;
-      span {
-        width: 350rpx;
+			align-items: center;
+			height: 88rpx;
+      span:nth-child(1) {
+        width: 250rpx;
+      }
+      span:nth-child(2) {
+        width: 400rpx;
       }
       span:nth-child(3){
         width: 50rpx;
       }
     }
   }
+	.loadMore {
+		width: 100vw;
+		font-size: 26rpx;
+		color: #999999;
+		text-align: center;
+	}
+	.destroy {
+		display: none;
+	}
 </style>
 
 <template>
-  <view>剩余小红花: {{restFlower}}</view>
+  <view class="record-rest">剩余小红花: {{restFlower}}朵</view>
   <ul class="record-ul">
     <repeat for="{{infoList}}" item="item">
     <li class="record-ul-item">
-      <span>{{item.time}}</span>{{item.name}}<span>赠送小红花{{item.amount}}朵</span><span>{{item.type}}</span>
+      <span>{{item.time}}</span>{{item.name}}<span>{{item.reason}}小红花{{item.amount}}朵</span><span>{{item.mark}}{{item.amount}}</span>
     </li>
   </repeat>
   </ul>
+	<view>
+		<view @tap="loadMore" class="loadMore {{isLast?'destroy':''}}"><span>加载更多</span></view>
+	</view>
 </template>
 
 <script>
   import page from '../base/basicPage.wpy'
-  
+
   export default class record extends page {
     config = {
       navigationBarTitleText: '我的花迹'
@@ -36,107 +66,74 @@
     getDatas (data) {
       data.forEach(item => {
         let data = {
-          time: this.$UTIL.transformTime(itrm.createTime),
-          name: item.name,
-          amount: item.amount,
-          type: item.type
+          time: item.createTime.split('T')[0] || '',
+          name: item.name || '',
+          amount: item.amount || 0,
+          type: item.type || 0
         }
-        infoList.push(data)
+        if (item.type === 1) {
+          data.reason = '赠送'
+          if (this.role === 1) {
+						data.mark = '+'
+					}
+					if (this.role === 2) {
+            data.mark = '-'
+					}
+				} else if (item.type === 2) {
+          data.reason = '提现'
+          data.mark = '-'
+				} else if (item.type === 3) {
+          data.reason = '充值'
+          data.mark = '+'
+				}
+        this.infoList.push(data)
       })
     }
     data = {
       restFlower: this.$WX.getStorage('redFlowerNum'),
       page: 0,
       totalPage: 0,
-      datas: [{
-        time: '2017',
-          name: 'genius',
-          amount: 19,
-          type: '+'
-      }],
-      infoList: [
-        {
-          time: '2017',
-          name: 'genius',
-          amount: 19,
-          type: '-'
-        }
-      ]
+			role: 1,
+			isLast: false,
+      infoList: []
     }
     computed = {}
 
     onLoad () {
-      /*
-      if (true) {
-        this.$API('GetStudentRecord',page)
+      let role = this.$WX.getStorage('role')
+			this.role = role
+      if (role === 1) {
+        console.log(this.page)
+        this.$API('GetStudentRecord', {page: this.page})
           .then(res => {
-            console.log(res)
-            this.totalPage = 10
+            this.totalPage = parseInt(res.msg)
             this.getDatas(res.data)
             this.page++
+						if (this.page === this.totalPage) {
+              this.isLast = true
+						}
+						this.$apply()
           })
         } else {
-          this.$API('GetTutorRecord',page)
+          this.$API('GetTutorRecord', {page: this.page})
             .then(res => {
-              console.log(res)
-              //  this.totalPage = res.msg
+              this.totalPage = res.msg
               this.getDatas(res.data)
-              this.page++
+							this.page++
+							if (this.page === this.totalPage) {
+                this.isLast = true
+							}
+              this.$apply()
             })
         }
-        */
-    }
-    onReady () {
-       setTimeout(() => {
-          this.infoList = this.datas
-          this.$apply()
-        }, 2000)
-      /*
-      if (false) {
-        wx.startPullDownRefresh({
-          success (){
-            console.log(124)
-            if (this.page <= this.totalPage) {
-              this.$API('GetTutorRecord',page)
-                .then(data => {
-                  //  this.totalPage = data.msg
-                  this.getDatas(res.data)
-                  this.page++
-                  wx.stopPullDownRefresh()
-                })
-            }
-          },
-          fail () {
-            console.log('fuck')
-          },
-          complete () {
-            console.log('c')
-          }
-        })
-      } else {
-         wx.startPullDownRefresh({
-          success (){
-            if (this.page <= this.totalPage) {
-              this.$API('GetStudentRecord',page)
-                .then(data => {
-                  //  this.totalPage = data.msg
-                  this.getDatas(res.data)
-                  this.page++
-                })
-            }
-          },
-          fail () {
-            console.log('fuck')
-          },
-          complete () {
-            console.log('c')
-            wx.stopPullDownRefresh()
-          }
-        })
       }
-      */
-    }
-    methods = {}
+    methods = {
+    	loadMore () {
+    		if (this.page >= this.totalPage) {
+          this.$WX.toast('fuck')
+				}
+			}
+		}
     events = {}
     props = {}
   }

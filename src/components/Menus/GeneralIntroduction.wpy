@@ -85,7 +85,7 @@
 
 <script>
   import wepy from 'wepy'
-  import {toast} from '../../common/scripts/wxUtil'
+  import {toast, getStorage} from '../../common/scripts/wxUtil'
   export default class GeneralIntroduction extends wepy.component {
     data = {
       statuTitle: ['审核中', '审核未通过', '已通过审核'],
@@ -97,7 +97,9 @@
     components = {}
     computed = {}
   
-    onLoad () {}
+    onLoad () {
+      console.log(getStorage('avatar'))
+    }
     customFunction () {}
 
     methods = {
