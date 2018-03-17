@@ -44,6 +44,10 @@ const redirectTo = (url) => {
 	return configFn(wx.redirectTo, {url})
 }
 
+const goBack = () => {
+	wx.navigateBack()
+}
+
 const toast = (title, icon = 'none', duration = 1500, hasMask = false) => {
 	return configFn(wx.showToast, {
 		title: title, // 提示的内容
@@ -227,6 +231,7 @@ const changeNavBarColor = (frontColor0x = '#ffffff', backgroundColor0x = '#db4d3
 export {
 	ajax, // 发送ajax请求
 	jumpTo, // page跳转
+	goBack, // 回到上一层page
 	redirectTo, // page重定向
 	reLaunch, // page重加载
 	toast, // 显示弹窗

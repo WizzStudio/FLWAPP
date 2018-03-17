@@ -85,46 +85,63 @@
 		data = {
 			role: 1,
 			userInfo: {
-				'name': '郭小刚',
+				'name': '',
 				'avatar': '../../static/images/avatar.png',
 				'sex': 1,
 				'schoolId': 1,
-				'profession': '电子信息工程',
+				'profession': 'default',
 				'direction': 1,
-				'simpleIntro': '西电区块链第十人',
-				'personalIntro': '熟练使用WEB服务器Tomcat',
-				'answer': '写一个新的编程语言',
+				'simpleIntro': '这个人很懒，没有填写个人介绍',
+				'personalIntro': '这个人很懒，没有填写个人简历',
+				'answer': 'default',
 				'userId': 1,
-				'age': 20,
-				'grade': '大四',
-				'redFlowerNum': 1,
-				'tutorNum': 2,
-				'articleNum': 3
-//					'userId': 123,
-//					'name': '郭德',
-//					'avatar': '/avatar',
-//					'sex': 1,
-//					'isTutor': 1,
-//					'trade': '互联网',
-//					'company': '德云科技有限公司',
-//					'position': 'CEO',
-//					'simpleIntro': '德云科技上市了',
-//					'personalIntro': '2010年4月，成立德云工作室',
-//					'redFlowerNum': 1,
-//					'stuNum': 1,
-//					'articleNum': 1
+				'age': 0,
+				'grade': 'default',
+				'redFlowerNum': 0,
+				'tutorNum': 0,
+				'articleNum': 0,
+				'isTutor': 1,
+				'trade': 'default',
+				'company': 'default',
+				'position': 'default',
+				'stuNum': 1
 			}
 		}
 		computed = {}
 
-		onLoad () {
-			/* TODO 需要联调 */
-//			this.$API('GetStuHomePage')
-//			this.$API('GetMentorHomePage')
+		_updateInfo (data) {
+			for (let key of Object.keys(data)) {
+				console.log(key)
+				this.userInfo[key] = data[key]
+			}
+			this.$apply()
 		}
 
+		onLoad () {
+			let visitUserId = this.$WX.getStorage('visit_userId') // 欲访问的用户id
+			if (!visitUserId) {
+				this.$WX.toast('访问错误，回到首页')
+				setTimeout(() => { this.$WX.goBack() }, 1500)
+				return false
+			}
+			/* 测试case stu 11 tutor 13 */
+			if (this.role === 1) {
+				this.$API('GetStuHomePage', { userId: visitUserId }).then(res => {
+					this._updateInfo(res.data)
+				})
+			}
+			if (this.role === 2) {
+				this.$API('GetMentorHomePage', { userId: visitUserId }).then(res => {
+					this._updateInfo(res.data)
+				})
+			}
+		}
 		onShow () {
 			console.log(this.role)
+		}
+
+		onReady () {
+			this.$WX.removeStorage('visit_userId') // 删除欲访问的用户id
 		}
 
 		customFunction () {}
