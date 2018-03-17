@@ -27,6 +27,9 @@
 			<usrCard class="card-main"></usrCard>
 		</view>
 
+		<view>
+
+		</view>
 </template>
 
 <script>
