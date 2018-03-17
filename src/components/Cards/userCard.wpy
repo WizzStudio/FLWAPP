@@ -157,16 +157,43 @@
 		<!--上半部分无阴影处-->
 		<view class="white-cont">
 			<!-- 导师tag -->
-			<image class="mentor-tag" src="{{tag_mentor}}"></image>
-			<p class="mentor-tag-txt">导师</p>
+			<view wx-if="{{role == 2}}">
+				<image class="mentor-tag" src="{{tag_mentor}}"></image>
+				<p class="mentor-tag-txt">导师</p>
+			</view>
 
-			<!--方向(限学生)tag-->
-			<image class="apply-tag" src="{{tag_creative}}"></image>
-			<p class="apply-tag-txt">创新创业</p>
 
-			<!--方向（限学生）icon-->
-			<image class="apply-icon" src="{{icon_research}}"></image>
-			<!--<p class="apply-icon-txt"></p>-->
+			<view wx-if="{{role == 1}}">
+				<!--创新创业-->
+				<view wx-if="{{stuInfo.direction == 1}}">
+					<!--方向(限学生)tag-->
+					<image class="apply-tag" src="{{tag_creative}}"></image>
+					<p class="apply-tag-txt">创新创业</p>
+
+					<!--方向（限学生）icon-->
+					<image class="apply-icon" src="{{icon_creative}}"></image>
+				</view>
+
+				<!--学术科研-->
+				<view wx-if="{{stuInfo.direction == 3}}">
+					<!--方向(限学生)tag-->
+					<image class="apply-tag" src="{{tag_research}}"></image>
+					<p class="apply-tag-txt">学术研究</p>
+
+					<!--方向（限学生）icon-->
+					<image class="apply-icon" src="{{icon_research}}"></image>
+				</view>
+
+				<!--社会贡献-->
+				<view wx-if="{{stuInfo.direction == 2}}">
+					<!--方向(限学生)tag-->
+					<image class="apply-tag" src="{{tag_commonLove}}"></image>
+					<p class="apply-tag-txt">社会实践</p>
+
+					<!--方向（限学生）icon-->
+					<image class="apply-icon" src="{{icon_commonLove}}"></image>
+				</view>
+			</view>
 		</view>
 
 		<!--用户信息-->
@@ -174,67 +201,81 @@
 			<view class="mainInfo">
 				<!-- 头像 -->
 				<view class="mainInfo-avatar">
-					<image src="{{logoURL}}" ></image>
+					<image wx:if="{{role == 1}}" src="{{stuInfo.avatar}}" ></image>
+					<image wx:if="{{role == 2}}" src="{{tutorInfo.avatar}}" ></image>
 				</view>
 
 				<!-- 基础信息 -->
 				<view class="mainInfo-basic">
 					<view class="name">
 						<!--props-->
-						<p>郭德纲</p>
-						<!--TODO 下面用wx-if-->
-						<image src="{{icon_mentor_male}}" class="icon"></image>
-						<image src="{{icon_mentor_female}}" class="icon"></image>
-						<image src="{{icon_stu_male}}" class="icon"></image>
-						<image src="{{icon_stu_female}}" class="icon"></image>
+						<p wx:if="{{role == 1}}">{{stuInfo.name}}</p>
+						<p wx:if="{{role == 2}}">{{tutorInfo.name}}</p>
+						<view wx:if="{{role == 2}}">
+							<image wx:if="{{tutorInfo.sex == 1}}" src="{{icon_mentor_male}}" class="icon"></image>
+							<image wx:if="{{tutorInfo.sex == 2}}" src="{{icon_mentor_female}}" class="icon"></image>
+						</view>
+
+						<view wx:if="{{role == 1}}">
+							<image wx:if="{{ stuInfo.sex == 1 }}" src="{{icon_stu_male}}" class="icon"></image>
+							<image wx:if="{{ stuInfo.sex == 2 }}" src="{{icon_stu_female}}" class="icon"></image>
+						</view>
 					</view>
-					<p class="item">IT 互联网</p>
-					<p class="item">德云科技有限公司 CEO</p>
+					<p class="item" wx:if="{{role == 1}}" >{{school[stuInfo.schoolId]}}</p>
+					<p class="item" wx:if="{{role == 1}}">{{stuInfo.profession}}</p>
+					<p class="item" wx:if="{{role == 2}}" >{{tutorInfo.trade}}</p>
+					<p class="item" wx:if="{{role == 2}}">{{tutorInfo.company}} {{tutorInfo.position}}</p>
 				</view>
 			</view>
-			<p class="intro">这是25个字这是25个字这是25个字所得到的顶顶顶顶</p>
+			<p  wx:if="{{ role == 1 }}" class="intro">{{stuInfo.simpleIntro}}</p>
+			<p 	wx:if="{{ role == 2 }}" class="intro">{{tutorInfo.simpleIntro}}</p>
 			<view class="userCard-info-bar">
+				<!--学生-->
+					<view class="item" wx:if="{{ role == 1 }}">
+						<view class="item-number">
+							<p>{{stuInfo.redFlowerNum}}</p>
+							<span>朵</span>
+						</view>
+						<view class="item-title">获赠小红花</view>
+					</view>
+
+					<view class="item" wx:if="{{ role == 1 }}">
+						<view class="item-number">
+							<p>{{stuInfo.tutorNum}}</p>
+							<span>位</span>
+						</view>
+						<view class="item-title">欣赏他的导师</view>
+					</view>
+
 
 				<!--导师-->
-				<view class="item">
-					<view class="item-number">
-						<p>27</p>
-						<span>朵</span>
+					<view class="item" wx:if="{{ role == 2 }}">
+						<view class="item-number">
+							<p>27</p>
+							<span>朵</span>
+						</view>
+						<view class="item-title">他赠送小红花</view>
 					</view>
-					<view class="item-title">他赠送小红花</view>
-				</view>
-				<view class="item">
-					<view class="item-number">
-						<p>27</p>
-						<span>位</span>
-					</view>
-					<view class="item-title">他欣赏的学生</view>
-				</view>
 
-				<!--学生-->
-				<!--<view class="item">-->
-					<!--<view class="item-number">-->
-						<!--<p>27</p>-->
-						<!--<span>朵</span>-->
-					<!--</view>-->
-					<!--<view class="item-title">获赠小红花</view>-->
-				<!--</view>-->
-				<!--<view class="item">-->
-					<!--<view class="item-number">-->
-						<!--<p>27</p>-->
-						<!--<span>位</span>-->
-					<!--</view>-->
-					<!--<view class="item-title"></view>-->
-				<!--</view>-->
+					<view class="item" wx:if="{{ role == 2 }}">
+						<view class="item-number">
+							<p>27</p>
+							<span>位</span>
+						</view>
+						<view class="item-title">他欣赏的学生</view>
+					</view>
+
 
 				<!--导师学生共有部分-->
 				<view class="item">
 					<view class="item-number">
-						<p>27</p>
+						<p wx:if="{{role == 1}}">{{stuInfo.articleNum}}</p>
+						<p wx:if="{{role == 2}}">{{tutorInfo.articleNum}}</p>
 						<span>篇</span>
 					</view>
 					<view class="item-title">他的文章</view>
 				</view>
+
 			</view>
 		</view>
 
@@ -257,14 +298,85 @@
 			icon_research: '../../static/images/personalPage/icon-research.png',
 			tag_commonLove: '../../static/images/personalPage/tag-commonLove.png',
 			tag_creative: '../../static/images/personalPage/tag-creative.png',
-			tag_mentor: '../../static/images/personalPage/tag-mentor.png'
+			tag_mentor: '../../static/images/personalPage/tag-mentor.png',
+			tag_research: '../../static/images/personalPage/tag-research.png',
+			school: {
+				'1': '西安电子科技大学',
+				'2': '华中科技大学'
+			}
 		}
 		computed = {}
 		methods = {}
 		events = {}
 		props = {
-			role: {type: String, default: ''},	// 用户身份
-			info: {type: Object, default: null} // TODO:向后端问用户信息的返回数据
+			/* 用户角色，0：游客；1：学生；2：导师 */
+			/* direction 1：科技创新 2: 社会公益 3: 创新创业 */
+			role: {type: Number, default: 1},	// 用户身份
+			stuInfo: {
+				type: Object,
+				default: {
+//				'name': '郭小刚',
+//				'avatar': '../../static/images/avatar.png',
+//				'sex': 1,
+//				'schoolId': 1,
+//				'profession': '电子信息工程',
+//				'direction': 1,
+//				'simpleIntro': '西电区块链第十人',
+//				'personalIntro': '熟练使用WEB服务器Tomcat',
+//				'answer': '写一个新的编程语言',
+//				'userId': 1,
+//				'age': 20,
+//				'grade': '大四',
+//				'redFlowerNum': 0,
+//				'tutorNum': 0,
+//				'articleNum': 0
+					'name': '',
+					'avatar': '',
+					'sex': 1,
+					'schoolId': 1,
+					'profession': '',
+					'direction': 1,
+					'simpleIntro': '',
+					'personalIntro': '',
+					'answer': '',
+					'userId': 0,
+					'age': 0,
+					'grade': '',
+					'redFlowerNum': 0,
+					'tutorNum': 0,
+					'articleNum': 0
+			}},
+			tutorInfo: {
+				type: Object,
+				default: {
+//					'userId': 123,
+//					'name': '郭德',
+//					'avatar': '/avatar',
+//					'sex': 1,
+//					'isTutor': 1,
+//					'trade': '互联网',
+//					'company': '德云科技有限公司',
+//					'position': 'CEO',
+//					'simpleIntro': '德云科技上市了',
+//					'personalIntro': '2010年4月，成立德云工作室',
+//					'redFlowerNum': 1,
+//					'stuNum': 1,
+//					'articleNum': 1
+						'userId': 1,
+						'name': '',
+						'avatar': '',
+						'sex': 1,
+						'isTutor': 1,
+						'trade': '',
+						'company': '',
+						'position': '',
+						'simpleIntro': '',
+						'personalIntro': '',
+						'redFlowerNum': 1,
+						'stuNum': 1,
+						'articleNum': 1
+				}
+			}
 		}
 	}
 </script>

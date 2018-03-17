@@ -10,112 +10,119 @@
 @import "variables";
 @import "mixins";
 
+view{
+	box-sizing: border-box;
+}
+
 /* layouts */
-.l-box__allMid{
+.l-box__allMid {
 	@include allMidBox();
 }
 
 // 横向盒子且垂直居中
-.l-box__rowMid{
+.l-box__rowMid {
 	@include rowMidBox();
 }
 
 // 竖向盒子且水平居中
-.l-box__verMid{
+.l-box__verMid {
 	@include colMidBox();
 }
 
+
 .l-container__normal{
-	@include genContainer(0px,20rpx)
+	@include genContainer(0rpx,20rpx);
 }
 
-/* typefaces 32 24 18 16 14*/
-.t1{
-	font-size: 64rpx;
+/* typefaces 28 18 16 14 12*/
+.t1 {
+	font-size: 56rpx;
 }
 
-.t2{
-	font-size: 48rpx;
-}
-
-.t3{
+.t2 {
 	font-size: 36rpx;
 }
 
-.t4{
+.t3 {
 	font-size: 32rpx;
 }
 
-.t5{
+.t4 {
 	font-size: 28rpx;
 }
 
-.t_light{
+.t5 {
+	font-size: 24rpx;
+}
+
+.t_light {
 	font-weight: 300;
 }
-.t_normal{
+
+.t_normal {
 	font-weight: 400;
 }
-.t_bold{
+
+.t_bold {
 	font-weight: 600;
 }
 
 /* .字体大小(t1~t5)-颜色(c1~c5)__字体粗细(light/normal/bold) 如: .t3-c2__bold*/
 @for $i from 1 through 5 {
-	.t#{$i}{
-		&-white{
+	.t#{$i} {
+		&-white {
 			@extend .t#{$i};
 			color: $white;
-			&__light{
+			&__light {
 				@extend .t_light;
 			}
-			&__normal{
+			&__normal {
 				@extend .t_normal;
 			}
-			&__bold{
+			&__bold {
 				@extend .t_bold;
 			}
 		}
-		&-black{
+		&-black {
 			@extend .t#{$i};
 			color: $fontClr_main;
-			&__light{
+			&__light {
 				@extend .t_light;
 			}
-			&__normal{
+			&__normal {
 				@extend .t_normal;
 			}
-			&__bold{
+			&__bold {
 				@extend .t_bold;
 			}
 		}
-		&-c1{
+		&-c1 {
 			@extend .t#{$i};
 			color: $fontClr_1st
 		}
-		&-c2{
+		&-c2 {
 			@extend .t#{$i};
 			color: $fontClr_2nd;
 		}
-		&-c3{
+		&-c3 {
 			@extend .t#{$i};
 			color: $fontClr_3rd
 		}
-		&-c4{
+		&-c4 {
 			@extend .t#{$i};
 			color: $fontClr_4th;
 		}
 		@for $j from 1 through 4 {
-			&-c#{$j}{
-				&__light{
+			&-c#{$j} {
+				&__light {
 					@extend .t#{$i}-c#{$j};
 					@extend .t_light;
 				}
-				&__normal{
+				&__normal {
 					@extend .t#{$i}-c#{$j};
 					@extend .t_normal;
 				}
-				&__bold{
+				&__bold {
 					@extend .t#{$i}-c#{$j};
 					@extend .t_bold;
 				}
@@ -127,18 +134,97 @@
 /* states */
 
 // bool 状态
-.is{
-	&-focus{}
-	&-blur{}
-	&-active{}
-	&-freeze{}
-	&-wrong{}
-	&-right{}
-	&-success{}
-	&-fail{}
+.is {
+	&-focus {
+	}
+	&-blur {
+	}
+	&-active {
+	}
+	&-freeze {
+	}
+	&-wrong {
+	}
+	&-right {
+	}
+	&-success {
+	}
+	&-fail {
+	}
+}
+
+// 多元状态
+.has {
 }
 
 
-// 多元状态
-.has{}
+/*栅格结构 pl15 等同于padding-left 15rpx，依次类推*/
+.pl15{padding-left: 15rpx;}
+.pl20{padding-left: 20rpx;}
+.pl30{padding-left: 30rpx;}
 
+.pr40{padding-right: 40rpx;}
+.pr30{padding-right: 30rpx;}
+.pr20{padding-right: 20rpx;}
+.pr15{padding-right: 15rpx;}
+
+.pt5{padding-top: 5rpx;}
+.pt20{padding-top: 20rpx;}
+.pt30{padding-top: 30rpx;}
+
+.pb20{padding-bottom: 20rpx;}
+.pb30{padding-bottom: 30rpx;}
+
+.ml5{margin-left: 5rpx;}
+.ml20{margin-left: 20rpx;}
+.ml10{margin-left: 10rpx;}
+.ml14{margin-left: 14rpx;}
+.ml15{margin-left: 15rpx;}
+.ml20{margin-left: 20rpx;}
+.ml30{margin-left: 30rpx;}
+.ml40{margin-left: 40rpx;}
+.ml60{margin-left: 60rpx;}
+
+.mr5{margin-right: 5rpx;}
+.mr10{margin-right: 10rpx;}
+.mr30{margin-right: 30rpx;}
+
+.mt5{margin-top: 5rpx;}
+.mt10{margin-top: 10rpx;}
+.mt20{margin-top:20rpx;}
+.mt30{margin-top: 30rpx;}
+.mt40{margin-top: 40rpx;}
+.mt14{margin-top: 14rpx;}
+.mt15{margin-top: 15rpx;}
+.mt50{margin-top: 50rpx;}
+.mt60{margin-top: 60rpx;}
+
+.mb15{margin-bottom: 15rpx;}
+.mb14{margin-bottom: 14rpx;}
+.mb20{margin-bottom: 20rpx;}
+.mb30{margin-bottom: 30rpx;}
+.mb60{margin-bottom: 60rpx;}
+.mb150{margin-bottom: 150rpx;}
+.w90{width: 90rpx;}
+
+
+/* 场景化字体 */
+p.title-bar{
+	display: block;
+	font-size: 28rpx;
+	line-height: 32rpx;
+	// margin: $s-base 0;
+	// padding: $s-base 0;
+	margin-top: 50rpx;
+	margin-bottom: 20rpx;
+	&:before {
+		content: '';
+		padding-top: -10rpx;
+		border-left: 8rpx solid $red;
+		padding-right: 28rpx;
+		display: inline-block;
+		width: 0;
+		height: 36rpx;
+		vertical-align: bottom;
+	}
+}
