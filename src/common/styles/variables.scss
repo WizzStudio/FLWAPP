@@ -31,18 +31,3 @@ $borderSiz_main: 2rpx;
 /* 圆角 */
 $radious_main: 40rpx;
 
-
-//基础字号
-$f-size-large: 56rpx;
-$f-size-bigger: 36rpx;
-$f-size-big: 32rpx;
-$f-size-base: 28rpx;
-$f-size-small: 24rpx;
-
-//场景化字号
-$f-size-h1: $f-size-large !default;
-$f-size-h2: $f-size-bigger !default;
-$f-size-h3: $f-size-big !default;
-$f-size-content: $f-size-base !default;
-$f-size-tip: $f-size-small !default;
-

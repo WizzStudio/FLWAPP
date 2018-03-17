@@ -29,11 +29,11 @@
 		</view>
 
 		<view>
-			<p class="h1">hello</p>
-			<p class="h2">hello</p>
-			<p class="h3">hello</p>
-			<p class="h4">hello</p>
-			<p class="h2">hello</p>
+			<p class="title-bar">个人简历</p>
+			<!--<p class="h2 ">hello</p>-->
+			<!--<p class="h3 ">hello</p>-->
+			<!--<p class="h4">hello</p>-->
+			<!--<p class="h2">hello</p>-->
 		</view>
 </template>
 
