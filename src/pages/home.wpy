@@ -4,7 +4,7 @@
 
 <template>
 	<swiper />
-	<news />
+	<news :NewsDatas.sync="NewsDatas"/>
 </template>
 
 <script>
@@ -18,13 +18,51 @@
 			swiper: Swiper,
 			news: News
 		}
-		data = {}
+		data = {
+			NewsDatas: []
+		}
 		computed = {}
-
-		onLoad () {}
-		onReady () {}
+		GetNewsDatas (data) {
+			data.map(item => {
+				this.NewsDatas.push(
+					{
+						id: item.id,
+						title: item.title,
+						userName: item.userId,
+						time: item.createTime.split('T')[0] || ''
+					}
+				)
+			})
+			this.$apply()
+		}
+		onLoad () {
+			this.$API('GetNewsList')
+				.then(res => {
+					this.GetNewsDatas(res.data)
+					this.page++
+				})
+		}
+		onReachBottom () {
+			this.$API('GetNewsList')
+				.then(res => {
+					this.GetNewsDatas(res.data)
+					this.page++
+				})
+		}
 		methods = {}
-		events = {}
+		events = {
+			'jumpToArticle': () => {
+				this.$WX.toast('fuck')
+				this.$WX.jumpTo('./article')
+			},
+			'LoadMoreInfo': () => {
+				this.$API('GetNewsList', {page: this.page})
+					.then(res => {
+						this.GetNewsDatas(res.data)
+						this.page++
+					})
+			}
+		}
 		props = {}
 	}
 </script>

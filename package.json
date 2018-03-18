@@ -13,6 +13,7 @@
   "dependencies": {
     "jsrsasign": "^8.0.6",
     "qiniu-js": "^2.1.2",
+    "react-lazyload": "^2.3.0",
     "wepy": "^1.6.0"
   },
   "devDependencies": {

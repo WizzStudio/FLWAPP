@@ -33,25 +33,34 @@
 		font-size: 28rpx;
 	}
 	.News-Content {
+		margin-left: 30rpx;
+		font-size: 28rpx;
 		display: flex;
-		margin-top: 30rpx;
 		flex-flow: column nowrap;
-		align-items: center;
 	}
 	.News-Item {
 		display: inline-flex;
 		flex-flow: row nowrap;
 		height: 214rpx;
 		&-info {
+			width: 400rpx;
+			margin-right: 40rpx;
 			display: flex;
 			flex-flow: column;
 			padding-top: 74rpx;
+			&-time {
+				font-size: 24rpx;
+				color: #666666;
+				margin-top: 20rpx;
+				span {
+					margin-left: 30rpx;
+				}
+			}
 		}
 		&-image {
 			width: 250rpx;
 			height: 150rpx;
 			border-radius: 10rpx;
-			margin-right: 30rpx;
 			margin-top: 52rpx;
 		}
 	}
@@ -62,7 +71,7 @@
 		&-item {
 			height: 128rpx;
 			padding-right: 60rpx;
-			padding-left: 60rpx;
+			padding-left: 30rpx;
 			display: inline-flex;
 			align-items: center;
 			&-icon {
@@ -99,18 +108,18 @@
 		<view class="news-nav-item-2 item-{{isNews?'':'active'}}" id="top" @tap="ItemClick">红花榜</view>
 	</view>
 	<view class="News-Content">
-		<view wx:if="{{isNews}}">
-			<repeat>
-				<view class="News-Item">
+		<scroll-view wx:if="{{isNews}}" bindscrolltolower="LoadMoreInfo" scroll-y="true" style="height: 100vh">
+			<repeat for="{{NewsDatas}}" item="item">
+				<view class="News-Item" @tap="infoClick" id="{{item.id}}">
 					<view class="News-Item-info">
-						<view>标题标题标题</view>
-						<view>2018-2-20</view>
+						<view class="News-Item-info-title">{{item.title}}</view>
+						<view class="News-Item-info-time">{{item.time}}<span>{{item.group}}</span></view>
 					</view>
 					<image class="News-Item-image" src="http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg"/>
 				</view>
 			</repeat>
-		</view>
-		<view wx:if="{{!isNews}}" class="Top-List">
+		</scroll-view>
+		<scroll-view wx:if="{{!isNews}}" class="Top-List" bindscrolltolower="LoadMoreInfo" scroll-y="true" style="height: 100vh">
 			<view class="Top-List-item">
 				<image class="Top-List-item-icon" src="../../static/images/home/1.png"/>
 				<image class="Top-List-item-avatar" src="../../static/images/logo.png" />
@@ -129,10 +138,7 @@
 				<view class="Top-List-item-name">Van</view>
 				<view class="Top-List-item-amout">999朵</view>
 			</view>
-			<view class="Top-List-more">
-				<span>查看更多</span>
-			</view>
-		</view>
+		</scroll-view>
 	</view>
 </template>
 
@@ -146,8 +152,6 @@
 		}
 		computed = {}
 
-		onLoad () {}
-
 		methods = {
 			ItemClick (event) {
 				if (event.target.id === 'news') {
@@ -155,9 +159,22 @@
 				} else {
 					this.isNews = false
 				}
+			},
+			InfoClick (event) {
+				this.$emit('jumpToArticle', event.target.id)
+			},
+			LoadMoreInfo () {
+				//	this.$emit('LoadMoreInfos')
+				console.log('fuck')
+			},
+			Fuck () {
+				console.log('fuck')
 			}
 		}
 		events = {}
-		props = {}
+
+		props = {
+			NewsDatas: Array
+		}
 	}
 </script>

@@ -133,7 +133,6 @@ const chooseAvatar = (that, avatarUrl) => {
 				url: 'http://api.xiaoyaoeden.top/oss/up/' + that.$WX.getStorage('userId') + '-avatar.jpg',
 				header: {Authorization: wx.getStorageSync('token')},
 				success (res) {
-					console.log(res.data)
 					let token = res.data.data
 					let key = that.$WX.getStorage('userId') + '-avatar.jpg'
 					wx.uploadFile({
@@ -145,7 +144,7 @@ const chooseAvatar = (that, avatarUrl) => {
 							token: token
 						},
 						success: function() {
-							console.log(key)
+							//	console.log(key)
 						}
 					})
 				}
@@ -170,7 +169,6 @@ const chooseMutiImg = () => {
 					url: 'http://api.xiaoyaoeden.top/oss/up/' + getStorage('userId') + '-info-' + index + '.jpg',
 					header: { Authorization: getStorage('token') },
 					success(res) {
-						console.log(res.data)
 						setStorage('attach_num', index + 1)
 						let token = res.data.data
 						let key = getStorage('userId') + '-info-' + index + '.jpg'
@@ -183,7 +181,7 @@ const chooseMutiImg = () => {
 								token: token
 							},
 							success: function () {
-								console.log(key)
+								//	console.log(key)
 							}
 						})
 					}
@@ -199,7 +197,6 @@ const downLoadImg = (that, avatarUrl) => {
 		url: 'http://api.xiaoyaoeden.top/oss/down/' + userId + '-avatar.jpg',
 		header: { Authorization: wx.getStorageSync('token') },
 		success (res) {
-			console.log(res.data.data)
 			that[avatarUrl] = res.data.data
 			setStorage('avatar', res.data.data)
 		},

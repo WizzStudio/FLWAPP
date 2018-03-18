@@ -44,24 +44,20 @@
 		components = {}
 
 		onLoad () {
-			// TODO 为了测试注释掉了代码
-//			const that = this
-//			this.$WX.setStorage('role', 1)
-//			this.$WX.wxLogin().then((res) => {
-//				wx.getUserInfo({
-//					success: function() {
-//						that.$WX.jumpTo('account/time')
-//					}
-//				})
-//			})
-			this.$WX.wxLogin().then((res) => {
-				console.log(res)
+			const that = this
+			this.$WX.setStorage('role', 1)
+			this.$WX.wxLogin().then(() => {
+				wx.getUserInfo({
+					success: function() {
+						that.$WX.jumpTo('./home')
+					}
+				})
 			})
 		}
 
 		onReady () {
-//			this.$WX.jumpTo('user/personalPage')
-			this.$WX.jumpTo('account/login')
+			//	this.$WX.jumpTo('user/personalPage')
+			//	this.$WX.jumpTo('./home')
 		}
 		data = {
 			logoURL: '../static/images/logo.png'

@@ -89,11 +89,10 @@
 					慷慨生慷慨，是深圳市海鲸教育基金会的初衷之一。作为未来的鲸鱼，你每次通过深圳市海鲸鱼教育基金会，为这个社会作出贡献，我们将会记录在此处，愿你能将这份公益之心，与人们分享。
 				</view>
 				<view class="time-content-body-2" wx:if="{{isStudent}}">
-					<view style="margin-bottom: 60rpx">本年度，你已做义工
-						<span> {{hoursYear}} </span>
+					<view style="margin-bottom: 60rpx">从注册以来，你已做义工
+						<span> {{hoursAll}} </span>
 						小时
 					</view>
-					<view>从注册以来，你已做义工<span> {{hoursAll}} </span>小时</view>
 				</view>
 			</view>
 			<view wx:if="{{!isStudent}}" class="time-content-body">
@@ -127,24 +126,24 @@
 		computed = {}
 		data = {
 			isStudent: true,
-			hoursYear: 5,
-			hoursAll: 5,
-			clocksRest: 9
+			hoursAll: 0,
+			clocksRest: 0
+		}
+		getStudentDatas (data) {
+			this.hourseAll = data.workedTime
 		}
 		/*
-		getStudentDatas (data) {
-			this.hoursYear = data.
-			this.hourseAll = data.
-		}
 		getTutorDatas (data) {
-			this.clocksRest = data.
+			this.clocksRest = data.workedTime
 		}
+		*/
 		onLoad () {
 			let role = this.$WX.getStorage('role')
 			if (role === 1) {
 				this.isStudent = true
-				this.$API('GetStuTime')
+				this.$API('GetStudentTime')
 					.then(res => {
+						console.log(res)
 						this.getStudentDatas(res.data)
 						this.$apply()
 					})
@@ -156,9 +155,7 @@
 						this.$apply()
 					})
 			}
-			console.log(this.isStudent)
 		}
-		*/
 		methods = {
 			buttonClick () {
 				//	this.$WX.jumpTo('./')

@@ -51,7 +51,7 @@
   }
   .info-module-2-success {
     color: green;
-    border-color: green; 
+    border-color: green;
   }
   .info-module-2-failed {
     color: #e64949;
@@ -96,10 +96,8 @@
     }
     components = {}
     computed = {}
-  
-    onLoad () {
-      console.log(getStorage('avatar'))
-    }
+
+    onLoad () {}
     customFunction () {}
 
     methods = {

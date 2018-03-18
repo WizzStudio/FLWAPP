@@ -165,7 +165,6 @@
 						url: 'http://api.xiaoyaoeden.top/oss/down/' + userId + '-avatar.jpg',
 						header: { Authorization: wx.getStorageSync('token') },
 						success (res) {
-							console.log(res.data.data)
 							that.avatar = res.data.data
 							that.$apply()
 						}
@@ -175,7 +174,6 @@
         this.isStudent = false
         this.$API('TutorCenter')
           .then(data => {
-						console.log(data)
             this.treatAjaxDatasTutor(data.data)
           })
       } else {
@@ -187,9 +185,6 @@
       if (this.$WX.getStorage('status') !== '') {
         this.infoDatas.status = this.$WX.getStorage('status')
       }
-    }
-    onReady () {
-      console.log(this.avatar)
     }
     onPageScroll () {
       this.$UTIL.debounce(() => {

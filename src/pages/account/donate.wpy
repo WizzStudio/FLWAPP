@@ -17,8 +17,8 @@
        border-radius: 50%;
      }
      .avatar {
-       width: 20rpx;
-       height: 40rpx;
+       width: 40rpx;
+       height: 80rpx;
        position: absolute;
        right: 30rpx;
      }
@@ -42,19 +42,19 @@
 </style>
 
 <template>
-  <ul wx:if="{{isTutor}}" class="donate-ul">
-    <repeat for="{{TutorList}}" item="item">
-      <li>
-        <image src="{{item.avatar}}" />
-        <div>
-          <span class="name">{{item.name}}</span>
-          <span class="other">{{item.company}}</span>
-          <span class="info">捐赠小红花{{item.sum}}朵</span>
-        </div>
-        <image src="../../static/images/personalCenter/arrow-right.svg" class="avatar" id="{{item.userId}}" @tap="getMoreInfo"/>
-      </li>
-    </repeat>
-  </ul>
+		<scroll-view style="height: 110vh" wx:if="{{isTutor}}" class="donate-ul" scroll-y="true" bindscrolltoupper="loadMoreInfo">
+			<repeat for="{{TutorList}}" item="item">
+				<li>
+					<image src="{{item.avatar}}" />
+					<div>
+						<span class="name">{{item.name}}</span>
+						<span class="other">{{item.company}}</span>
+						<span class="info">捐赠小红花{{item.sum}}朵</span>
+					</div>
+					<image src="../../static/images/personalCenter/arrow-right.svg" class="avatar" id="{{item.userId}}" @tap="getMoreInfo"/>
+				</li>
+			</repeat>
+		</scroll-view>
 </template>
 
 <script>
@@ -103,12 +103,32 @@
       }
       */
     }
-    onShow () {}
+    onReachBottom () {
+			this.$API('GetStudentTutors')
+				.then(res => {
+					let imageArray = []
+					this.getDatas(res.data)
+					res.data.forEach(item => {
+						imageArray.push(String(item.userId))
+					})
+					imageArray = imageArray.map(item => item + '-avatar.jpg')
+					this.$API('PfostUserImagesName', imageArray)
+						.then(res => {
+							this.TutorList.forEach((item, index) => {
+								item.avatar = res.data[index]
+								this.$apply()
+							})
+						})
+				})
+		}
 
     methods = {
       getMoreInfo (event) {
         this.$WX.toast(event.target.id)
-      }
+      },
+			LoadMoreInfo () {
+				this.$WX.toast('fuck')
+			}
     }
     events = {}
     propos = {}

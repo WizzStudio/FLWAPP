@@ -15,13 +15,17 @@ export default {
 	UpLoad: {url: '/oss/up', method: 'get', data: {}, headers: {}},
 	GetStuHomePage: {url: '/stu/home', method: 'get', data: {}, headers: {}},
 	GetMentorHomePage: {url: '/tutor/home', method: 'get', data: {}, headers: {}},
-	GetStudentRecord: { url: '/stu/trace?page', method: 'get', data: {}, headers: {} },
-	GetTutorRecord: { url: '/tutor/trace?page', method: 'get', data: {}, headers: {} },
+	GetStudentRecord: { url: '/stu/trace', method: 'get', data: {}, headers: {} },
+	GetTutorRecord: { url: '/tutor/trace', method: 'get', data: {}, headers: {} },
 	GetTutorStudents: { url: '/tutor/students', method: 'get', data: {}, headers: {} },
 	GetStudentTutors: { url: '/stu/tutors', method: 'get', data: {}, headers: {} },
 	PostUserImagesName: { url: '/oss/down', method: 'post', data: {}, headers: {} },
-	GetTutorRedFlower: { url: '/tutor/', method: 'get', data: {}, headers: {} },
-	GetStuRedFlower: { url: '/stu/', method: 'get', data: {}, headers: {} },
-	GetTutorTime: { url: '/tutor/', method: 'get', data: {}, headers: {} },
-	GetStuTime: { url: '/stu/', method: 'get', data: {}, headers: {} }
+	GetTutorRedFlower: { url: '/tutor/summary', method: 'get', data: {}, headers: {} },
+	GetStuRedFlower: { url: '/stu/summary', method: 'get', data: {}, headers: {} },
+	GetTutorTime: { url: '/tutor/voluntary', method: 'get', data: {}, headers: {} },
+	GetStudentTime: { url: '/stu/voluntary', method: 'get', data: {}, headers: {} },
+	GetSchoolList: { url: '/conf/school', method: 'get', data: {}, headers: {} },
+	GetDirection: { url: '/conf/direction', method: 'get', data: {}, headers: {} },
+	GetNewsInfo: { url: '/article', method: 'get', data: {}, headers: {} },
+	GetNewsList: { url: '/article/list', method: 'get', data: {}, headers: {} }
 }
