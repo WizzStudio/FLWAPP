@@ -1,0 +1,44 @@
+<style lang="scss" type="text/scss">
+	.home-swiper {
+		height: 350rpx;
+		width: 750rpx;
+	}
+	.home-swiper-title-background {
+		background-color: black;
+		opacity: 0.5;
+		font-size: 28rpx;
+		height: 50rpx;
+		margin-top: -60rpx;
+	}
+	.home-swiper-title {
+		padding-left: 30rpx;
+		color: white;
+		font-size: 28rpx;
+		margin-top: -45rpx;
+		opacity: 1;
+	}
+</style>
+
+<template>
+	<view>
+		<repeat>
+			<image src='http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg' class="home-swiper"/>
+			<view class="home-swiper-title-background" />
+			<view class="home-swiper-title">未来奖学金即将开放</view>
+		</repeat>
+	</view>
+</template>
+
+<script>
+	import wepy from 'wepy'
+	export default class SwiperNew extends wepy.component {
+		config = {}
+		components = {}
+		data = {}
+		computed = {}
+		onLoad () {}
+		methods = {}
+		events = {}
+		props = {}
+	}
+</script>

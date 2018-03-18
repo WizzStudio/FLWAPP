@@ -11,11 +11,12 @@
 	import page from './base/basicPage'
 	import News from '../components/home/News'
 	import Swiper from '../components/home/Swiper'
+	import SwiperNew from '../components/home/Swiper_New'
 
 	export default class home extends page {
 		config = {}
 		components = {
-			swiper: Swiper,
+			swiper: SwiperNew,
 			news: News
 		}
 		data = {
