@@ -56,7 +56,6 @@
 		}
 
 		onReady () {
-		//
 			//	this.$WX.jumpTo('user/personalPage')
 			//	this.$WX.jumpTo('./home')
 		}

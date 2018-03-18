@@ -137,7 +137,6 @@
 			}
 		}
 		onShow () {
-			console.log(this.role)
 		}
 
 		onReady () {
