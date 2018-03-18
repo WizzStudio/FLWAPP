@@ -137,11 +137,11 @@
 		getStudentDatas (data) {
 			this.tutorsYear = data.yearTutorNum || 0
 			this.amountYear = data.yearFlowerNum || 0
-			this.moneyYear = data.yearWithdrawNum || 0
+			this.moneyYear = data.yearWithdrawMoney || 0
 			this.restAmount = data.balance || 0
 			this.amountAll = data.totalFlowerNum || 0
 			this.tutorsAll = data.totalTutorNum || 0
-			this.moneyAll = data.totalWithdrawNum || 0
+			this.moneyAll = data.totalWithdrawMoney || 0
 		}
 		GetTutorDatas (data) {
 			/*

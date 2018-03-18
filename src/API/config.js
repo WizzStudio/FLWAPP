@@ -1,5 +1,14 @@
-const isLocalDev = false // 是否为局域网开发环境
-const baseURL = isLocalDev ? 'http://api.xiaoyaoeden.top' : 'http://api.xiaoyaoeden.top' // 根域名
+/* local本地局域网-->dev线下开发环境-->test线下测试环境-->prod线上环境 */
+const env = 'dev'
+
+// URL's hash table
+const URLS = {
+	'local': 'http://api.xiaoyaoeden.top',
+	'dev': 'http://api.xiaoyaoeden.top',
+	'test': 'http://api.xiaoyaoeden.top',
+	'prod': 'http://api.xiaoyaoeden.top'
+}
+const baseURL = URLS[env] // 根域名
 const debug = false // debug模式
 const surpportMethods = ['GET', 'POST', 'PUT', 'DELETE'] // 支持的http方法
 const defaultHeaders = {'Authorization': ''}
