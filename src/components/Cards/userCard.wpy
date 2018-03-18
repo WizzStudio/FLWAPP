@@ -89,14 +89,14 @@
 						span{
 							margin-left: 6rpx;
 							display: block;
-							margin-top: 23rpx;
-							@include fontSizeColor(36rpx,$fontClr_2nd);
+							margin-top: 32rpx;
+							@include fontSizeColor(26rpx,$fontClr_2nd);
 							font-weight: 300;
 						}
 					}
 					/* titleblock独有样式 */
 					&-title {
-						margin-top: 24rpx;
+						margin-top: 10rpx;
 						text-align: center;
 						@include fontSizeColor(28rpx,$fontClr_2nd);
 						font-weight: 300;

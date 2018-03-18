@@ -44,6 +44,10 @@ const redirectTo = (url) => {
 	return configFn(wx.redirectTo, {url})
 }
 
+const goBack = () => {
+	wx.navigateBack()
+}
+
 const toast = (title, icon = 'none', duration = 1500, hasMask = false) => {
 	return configFn(wx.showToast, {
 		title: title, // 提示的内容
@@ -129,7 +133,6 @@ const chooseAvatar = (that, avatarUrl) => {
 				url: 'http://api.xiaoyaoeden.top/oss/up/' + that.$WX.getStorage('userId') + '-avatar.jpg',
 				header: {Authorization: wx.getStorageSync('token')},
 				success (res) {
-					console.log(res.data)
 					let token = res.data.data
 					let key = that.$WX.getStorage('userId') + '-avatar.jpg'
 					wx.uploadFile({
@@ -141,7 +144,7 @@ const chooseAvatar = (that, avatarUrl) => {
 							token: token
 						},
 						success: function() {
-							console.log(key)
+							//	console.log(key)
 						}
 					})
 				}
@@ -166,7 +169,6 @@ const chooseMutiImg = () => {
 					url: 'http://api.xiaoyaoeden.top/oss/up/' + getStorage('userId') + '-info-' + index + '.jpg',
 					header: { Authorization: getStorage('token') },
 					success(res) {
-						console.log(res.data)
 						setStorage('attach_num', index + 1)
 						let token = res.data.data
 						let key = getStorage('userId') + '-info-' + index + '.jpg'
@@ -179,7 +181,7 @@ const chooseMutiImg = () => {
 								token: token
 							},
 							success: function () {
-								console.log(key)
+								//	console.log(key)
 							}
 						})
 					}
@@ -195,7 +197,6 @@ const downLoadImg = (that, avatarUrl) => {
 		url: 'http://api.xiaoyaoeden.top/oss/down/' + userId + '-avatar.jpg',
 		header: { Authorization: wx.getStorageSync('token') },
 		success (res) {
-			console.log(res.data.data)
 			that[avatarUrl] = res.data.data
 			setStorage('avatar', res.data.data)
 		},
@@ -227,6 +228,7 @@ const changeNavBarColor = (frontColor0x = '#ffffff', backgroundColor0x = '#db4d3
 export {
 	ajax, // 发送ajax请求
 	jumpTo, // page跳转
+	goBack, // 回到上一层page
 	redirectTo, // page重定向
 	reLaunch, // page重加载
 	toast, // 显示弹窗

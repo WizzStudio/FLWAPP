@@ -106,7 +106,13 @@ const GetSchoolList = () => {
 	return ajax('/conf/school', 'get')
 }
 const GetDirectionList = () => {
-	return ajax('/conf/direction')
+	return ajax('/conf/direction', 'get')
+}
+const GetHomeNewsList = () => {
+	return ajax('/article/list', 'get')
+}
+const GetNewsInfo = () => {
+	return ajax('/article/', 'get')
 }
 // const = ()=>{
 // 	return ajax('','get',{})
@@ -152,6 +158,8 @@ export {
 	GetTutorRedFlower,
 	GetTutorTime,
 	GetSchoolList,
-	GetDirectionList
+	GetDirectionList,
+	GetHomeNewsList,
+	GetNewsInfo
 	//	FileDownLoad
 }
