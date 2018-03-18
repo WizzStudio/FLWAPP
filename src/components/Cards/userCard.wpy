@@ -236,7 +236,7 @@
 							<p>{{stuInfo.redFlowerNum}}</p>
 							<span>朵</span>
 						</view>
-						<view class="item-title">获赠小红花</view>
+						<view class="item-title">小红花</view>
 					</view>
 
 					<view class="item" wx:if="{{ role == 1 }}">
@@ -244,7 +244,7 @@
 							<p>{{stuInfo.tutorNum}}</p>
 							<span>位</span>
 						</view>
-						<view class="item-title">欣赏他的导师</view>
+						<view class="item-title">导师</view>
 					</view>
 
 
@@ -254,7 +254,7 @@
 							<p>27</p>
 							<span>朵</span>
 						</view>
-						<view class="item-title">他赠送小红花</view>
+						<view class="item-title">小红花</view>
 					</view>
 
 					<view class="item" wx:if="{{ role == 2 }}">
@@ -262,7 +262,7 @@
 							<p>27</p>
 							<span>位</span>
 						</view>
-						<view class="item-title">他欣赏的学生</view>
+						<view class="item-title">学生</view>
 					</view>
 
 
@@ -273,7 +273,7 @@
 						<p wx:if="{{role == 2}}">{{tutorInfo.articleNum}}</p>
 						<span>篇</span>
 					</view>
-					<view class="item-title">他的文章</view>
+					<view class="item-title">文章</view>
 				</view>
 
 			</view>

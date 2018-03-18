@@ -54,12 +54,14 @@
 //					}
 //				})
 //			})
+			this.$WX.wxLogin().then((res) => {
+				console.log(res)
+			})
 		}
 
 		onReady () {
-		//
-			this.$WX.jumpTo('user/personalPage')
-//			this.$WX.jumpTo('account/login')
+//			this.$WX.jumpTo('user/personalPage')
+			this.$WX.jumpTo('account/login')
 		}
 		data = {
 			logoURL: '../static/images/logo.png'

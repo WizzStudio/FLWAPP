@@ -29,6 +29,12 @@ view{
 	@include colMidBox();
 }
 
+<<<<<<< Updated upstream
+=======
+.l-container__normal{
+	@include genContainer(0rpx,20rpx)
+}
+>>>>>>> Stashed changes
 
 .l-container__normal{
 	@include genContainer(0rpx,20rpx);
@@ -157,7 +163,6 @@ view{
 .has {
 }
 
-
 /*栅格结构 pl15 等同于padding-left 15rpx，依次类推*/
 .pl15{padding-left: 15rpx;}
 .pl20{padding-left: 20rpx;}
@@ -207,6 +212,7 @@ view{
 .mb150{margin-bottom: 150rpx;}
 .w90{width: 90rpx;}
 
+<<<<<<< Updated upstream
 
 /* 场景化字体 */
 p.title-bar{
@@ -228,3 +234,5 @@ p.title-bar{
 		vertical-align: bottom;
 	}
 }
+=======
+>>>>>>> Stashed changes
