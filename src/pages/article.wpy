@@ -1,0 +1,23 @@
+<style lang="scss" type="text/scss">
+
+</style>
+
+<template>
+
+</template>
+
+<script>
+	import basicPage from './base/basicPage'
+	export default class Article extends basicPage {
+		config = {
+			navigationBarTitleText: '查看文章',
+			enablePullDownRefresh: false
+		}
+		components = {}
+		data = {}
+		onLoad () {}
+		methods = {}
+		events = {}
+		props = {}
+	}
+</script>

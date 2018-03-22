@@ -112,7 +112,7 @@
 						imageArray.push(String(item.userId))
 					})
 					imageArray = imageArray.map(item => item + '-avatar.jpg')
-					this.$API('PfostUserImagesName', imageArray)
+					this.$API('PostUserImagesName', imageArray)
 						.then(res => {
 							this.TutorList.forEach((item, index) => {
 								item.avatar = res.data[index]

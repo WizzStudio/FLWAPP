@@ -509,7 +509,6 @@
       this.$WX.setStorage('identity', this.identity)
     }
     props = {}
-    customData = {}
     methods = {
       ButtonClick (event) {
         const that = this

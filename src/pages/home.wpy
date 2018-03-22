@@ -4,23 +4,27 @@
 
 <template>
 	<swiper />
-	<news :NewsDatas.sync="NewsDatas"/>
+	<news :NewsDatas.sync="NewsDatas" :FlowerRankDatas.sync="FlowerRankDatas"/>
+	<bar />
 </template>
 
 <script>
 	import page from './base/basicPage'
 	import News from '../components/home/News'
 	import Swiper from '../components/home/Swiper'
-	import SwiperNew from '../components/home/Swiper_New'
+	import Bar from '../components/home/bar'
 
 	export default class home extends page {
 		config = {}
 		components = {
-			swiper: SwiperNew,
-			news: News
+			swiper: Swiper,
+			news: News,
+			bar: Bar
 		}
 		data = {
-			NewsDatas: []
+			NewsDatas: [],
+			FlowerRankDatas: [],
+			BannerDatas: []
 		}
 		computed = {}
 		GetNewsDatas (data) {
@@ -36,11 +40,31 @@
 			})
 			this.$apply()
 		}
+		GetBannerDatas (data) {
+			data.map(item => {
+				this.BannerDatas.push({
+					imgSrc: item.src,
+					title: item.title,
+					id: item.id
+				})
+			})
+		}
+		GetFlowerRankDatas (data) {
+			const avatarList = []
+			data.map(item => {
+				avatarList.push(item.userId)
+				this.FlowerRankDatas.push(item)
+			})
+		}
 		onLoad () {
 			this.$API('GetNewsList')
 				.then(res => {
 					this.GetNewsDatas(res.data)
 					this.page++
+				})
+			this.$API('GetFlowerRank')
+				.then(res => {
+					this.GetFlowerRankDatas(res.data)
 				})
 		}
 		onReachBottom () {
@@ -53,7 +77,6 @@
 		methods = {}
 		events = {
 			'jumpToArticle': () => {
-				this.$WX.toast('fuck')
 				this.$WX.jumpTo('./article')
 			},
 			'LoadMoreInfo': () => {
@@ -62,6 +85,14 @@
 						this.GetNewsDatas(res.data)
 						this.page++
 					})
+			},
+			'BarClick': (key) => {
+				if (key === 'student') {
+					this.$WX.jumpTo('./writeArticle')
+				} else if (key === 'tutor') {
+					this.$WX.toast('tutor')
+					//	this.$WX.jumpTo('')
+				}
 			}
 		}
 		props = {}

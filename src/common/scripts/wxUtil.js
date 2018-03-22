@@ -157,7 +157,7 @@ const chooseAvatar = (that, avatarUrl) => {
 }
 
 //	上传附件(最多5张图片)
-const chooseMutiImg = () => {
+const chooseMutiImg = (str) => {
 	wx.chooseImage({
 		count: 5,
 		sizeType: ['compressed'],

@@ -130,7 +130,7 @@
 			clocksRest: 0
 		}
 		getStudentDatas (data) {
-			this.hourseAll = data.workedTime
+			this.hoursAll = data.workedTime
 		}
 		/*
 		getTutorDatas (data) {
@@ -143,7 +143,6 @@
 				this.isStudent = true
 				this.$API('GetStudentTime')
 					.then(res => {
-						console.log(res)
 						this.getStudentDatas(res.data)
 						this.$apply()
 					})

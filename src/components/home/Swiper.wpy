@@ -6,23 +6,38 @@
 			width: 750rpx;
 			height: 350rpx;
 		}
+		&-title {
+			position: absolute;
+			z-index: 25;
+			margin-top: -65rpx;
+			font-size: 32rpx;
+			color: white;
+			padding-left: 50rpx;
+		}
+		&-title-background {
+			width: 750rpx;
+			height: 100rpx;
+			filter: opacity(40%);
+			background-color: black;
+			margin-top: -80rpx;
+			z-index: 22;
+		}
 	}
 </style>
 
 <template>
 	<swiper
-		indicator-dots="ture"
-		indicator-color="#f4f4f4"
-		indicator-active-color="#e01b1c"
 		autoplay="true"
-		interval="1000"
+		interval="5000"
 		duration="500"
 		class="home-swiper-img"
 		circular="true"
 	>
 		<repeat for="{{itemData}}" item="item">
 			<swiper-item>
-				<image src="{{item}}" class="home-swiper-img"/>
+				<image src="{{item.src}}" class="home-swiper-img"/>
+				<view class="home-swiper-title">{{item.title}}</view>
+				<view class="home-swiper-title-background"></view>
 			</swiper-item>
 		</repeat>
 	</swiper>
@@ -36,9 +51,14 @@
 		components = {}
 		data = {
 			itemData: [
-				'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
-				'http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg',
-				'http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg'
+				{
+					src: 'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
+					title: 'Van'
+				},
+				{
+					src: 'http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg',
+					title: 'Billy'
+				}
 			]
 		}
 		computed = {}

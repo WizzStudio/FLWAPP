@@ -1,0 +1,51 @@
+<style lang="scss" type="text/scss">
+	.home-bar {
+		background-color: #e01b1c;
+		border-radius: 50%;
+		width: 120rpx;
+		height: 120rpx;
+		position: fixed;
+		bottom: 20rpx;
+		right: 40rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		span {
+			color: white;
+			font-size: 28rpx;
+		}
+	}
+</style>
+
+<template>
+	<view class="home-bar">
+		<span wx:if="{{!isStudent}}" id="tutor" @tap="BarClick">捐赠</span>
+		<span wx:if="{{isStudent}}" id="student" @tap="BarClick">发布</span>
+	</view>
+</template>
+
+<script>
+	import wepy from 'wepy'
+
+	export default class Bar extends wepy.component {
+		config = {}
+		components = {}
+		data = {
+			isStudent: true
+		}
+		onLoad () {
+			if (wx.getStorageSync('role') === 1) {
+				this.isStudent = true
+			} else if (wx.getStorageSync('role') === 2) {
+				this.isStudent = false
+			}
+		}
+		methods = {
+			BarClick (event) {
+				this.$emit('BarClick', event.target.id)
+			}
+		}
+		events = {}
+		props = {}
+	}
+</script>

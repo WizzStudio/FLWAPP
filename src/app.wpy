@@ -18,7 +18,9 @@
 				'pages/account/redFlower',
 				'pages/account/time',
 				'pages/user/personalPage',
-				'pages/home'
+				'pages/article',
+				'pages/home',
+				'pages/writeArticle'
 			],
 			'window': {
 				'backgroundTextStyle': 'light',

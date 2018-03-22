@@ -26,6 +26,7 @@ export default {
 	GetStudentTime: { url: '/stu/voluntary', method: 'get', data: {}, headers: {} },
 	GetSchoolList: { url: '/conf/school', method: 'get', data: {}, headers: {} },
 	GetDirection: { url: '/conf/direction', method: 'get', data: {}, headers: {} },
-	GetNewsInfo: { url: '/article', method: 'get', data: {}, headers: {} },
-	GetNewsList: { url: '/article/list', method: 'get', data: {}, headers: {} }
+	GetNewsList: { url: '/article/list', method: 'get', data: {}, headers: {} },
+	GetFlowerRank: { url: '/rank', method: 'get', data: {}, headers: {} },
+	GetArticle: { url: '/article', method: 'get_restful', data: {}, headers: {} }
 }

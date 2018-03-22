@@ -1,0 +1,96 @@
+<style lang="scss" type="text/scss">
+	.article {
+		background-color: #f4f4f4;
+		width: 750rpx;
+		height: 1200rpx;
+		padding-top: 64rpx;
+		font-size: 28rpx;
+		color: #999999;
+		&-title {
+			background-color: white;
+			width: 615rpx;
+			margin-left: 40rpx;
+			padding-right: 30rpx;
+			padding-left: 30rpx;
+			height: 80rpx;
+			margin-bottom: 64rpx;
+		}
+		&-body {
+			height: 876rpx;
+			width: 615rpx;
+			padding-top: 20rpx;
+			padding-right: 30rpx;
+			margin-left: 40rpx;
+			padding-left: 30rpx;
+			background-color: white;
+
+		}
+		&-buttons {
+			margin-top: 30rpx;
+			display: inline-flex;
+			margin-left: 60rpx;
+			align-content: center;
+			justify-content: center;
+			button {
+				display: inline-flex;
+				justify-content: center;
+				align-items: center;
+				height: 64rpx;
+				text-align: center;
+				margin-right: 30rpx;
+				border: 2rpx solid #666666;
+				width: 300rpx;
+				span {
+					font-size: 28rpx;
+				}
+			}
+			button:active {
+				background-color: #ed4d3d;
+				display: inline-flex;
+				justify-content: center;
+				align-items: center;
+				color: white;
+				height: 64rpx;
+				text-align: center;
+				margin-right: 30rpx;
+				border: 2rpx solid #f4f4f4;
+				width: 300rpx;
+				span {
+					font-size: 28rpx;
+				}
+			}
+		}
+	}
+
+</style>
+
+<template>
+	<view class="article">
+		<input maxlength="25" placeholder="请输入文章标题" class="article-title"/>
+		<textarea placeholder="请输入文章内容" class="article-body"/>
+		<div class="article-buttons">
+			<button @tap="InsertImage"><span>插入图片</span></button>
+			<button><span>发表文章</span></button>
+		</div>
+	</view>
+</template>
+
+<script>
+	import basicPage from './base/basicPage'
+	export default class WriteArticle extends basicPage {
+		config = {
+			enablePullDownRefresh: false,
+			navigationBarTitleText: '发表文章'
+		}
+		data = {}
+		components = {}
+		onLoad () {}
+		methods = {
+			InsertImage () {
+				this.$WX.chooseMutiImg()
+			}
+		}
+		events = {}
+		props = {}
+	}
+</script>
