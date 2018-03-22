@@ -6,11 +6,12 @@ import statusCodeFilter from './statusCodeFilter'
 import * as config from './config'
 
 import 'jsrsasign'
+
 const HOST_URL = config.baseURL || '' // 根域名
 const DEBUG = config.debug // debug模式
 const SUPPORT_METHODS = config.surpportMethods || ['GET'] // 支持的http方法
 const DEFAULT_HEADERS = config.defaultHeaders || {}
-const CRITICAL_COUNT = 3 // 重复请求的临界阈值 放置无限递归
+const CRITICAL_COUNT = 2 // 重复请求的临界阈值 防止无限递归
 let INIT_COUNT = 0
 let INIT_RESOVLE = null
 
@@ -81,6 +82,18 @@ function createURLParamsByObject (dataObject) {
 }
 
 /**
+ *
+ * @param dataObject {Object}
+ * @example {value:2}
+ * @return '/2'
+ * @example SomeAPI: {url: '/test' , data: {value:2}} ===> '/test/2'
+ */
+function concatURLinRESTful (dataObject) {
+	if (Object.keys(dataObject).length > 1) return new Error('arguments length must <= 1!')
+	return `/${Object.values(dataObject)[0]}`
+}
+
+/**
  * 配置请求头
  * @param headers
  * @return {Object}
@@ -108,6 +121,18 @@ export default (rurl = argumentsErr(), method = argumentsErr(), data = null, hea
 		if (SUPPORT_METHODS.indexOf(_method) === -1) {
 			methodErr()
 		}
+		/* 针对restfulAPI做的补丁 */
+		if (_method === 'GET_RESTFUL') {
+			if (data) {
+				_url += concatURLinRESTful(data)
+			}
+			return _configRequest({
+				url: _url,
+				method: 'GET',
+				header: _configHeader(headers)
+			})
+		}
+		/**/
 		if (_method === 'GET') {
 			if (data) {
 				_url += createURLParamsByObject(data)

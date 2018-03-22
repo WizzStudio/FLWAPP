@@ -1,5 +1,6 @@
 export default {
 	/* data,headers 里面填key用于在ajax.js里面验证是否有该字段 */
+	/* 如果你要用 resetful的风格的api ，请将method改为'get_restful'(大小写不敏感),然后data里面填{value：***} (key一定要是value） */
 	Test: {url: '/test', method: 'get', data: {}, headers: {}},
 	UserInviteCodeCheck: {url: '/verify/invite', method: 'post', data: {code: ''}, headers: {}},
 	StudentCenter: {url: '/stu/center', method: 'get', data: {}, headers: {}},
@@ -28,5 +29,5 @@ export default {
 	GetDirection: { url: '/conf/direction', method: 'get', data: {}, headers: {} },
 	GetNewsList: { url: '/article/list', method: 'get', data: {}, headers: {} },
 	GetFlowerRank: { url: '/rank', method: 'get', data: {}, headers: {} },
-	GetArticle: { url: '/article', method: 'get_restful', data: {}, headers: {} }
+	GetArticle: { url: '/article', method: 'get', data: {}, headers: {} }
 }
