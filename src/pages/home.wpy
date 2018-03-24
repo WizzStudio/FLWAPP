@@ -24,9 +24,12 @@
 		data = {
 			NewsDatas: [],
 			FlowerRankDatas: [],
-			BannerDatas: []
+			BannerDatas: [],
+			page: 0,
+			isLastPage: false
 		}
 		computed = {}
+
 		GetNewsDatas (data) {
 			data.map(item => {
 				this.NewsDatas.push(
@@ -38,8 +41,8 @@
 					}
 				)
 			})
-			this.$apply()
 		}
+
 		GetBannerDatas (data) {
 			data.map(item => {
 				this.BannerDatas.push({
@@ -49,6 +52,7 @@
 				})
 			})
 		}
+
 		GetFlowerRankDatas (data) {
 			const avatarList = []
 			data.map(item => {
@@ -56,35 +60,43 @@
 				this.FlowerRankDatas.push(item)
 			})
 		}
+
 		onLoad () {
-			this.$API('GetNewsList')
+			this.$API('GetNewsList', {page: this.page})
 				.then(res => {
-					this.GetNewsDatas(res.data)
 					this.page++
-				})
-			this.$API('GetFlowerRank')
-				.then(res => {
-					this.GetFlowerRankDatas(res.data)
+					this.GetNewsDatas(res.data)
+					this.$apply()
+					this.$API('GetBanner')
+						.then(res => {
+							this.GetBannerDatas(res.data)
+							this.$apply()
+						})
+					this.$API('GetFlowerRank')
+						.then(res => {
+							this.GetFlowerRankDatas(res.data)
+							this.$apply()
+						})
 				})
 		}
 		onReachBottom () {
-			this.$API('GetNewsList')
-				.then(res => {
-					this.GetNewsDatas(res.data)
-					this.page++
-				})
+			if (!this.isLastPage) {
+				this.$API('GetNewsList', {page: this.page})
+					.then(res => {
+						if (res.data.length !== 0) {
+							this.isLastPage = false
+							this.page++
+							this.GetNewsDatas(res.data)
+						} else if (res.data.length === 1) {
+							this.isLastPage = true
+						}
+					})
+			}
 		}
 		methods = {}
 		events = {
 			'jumpToArticle': () => {
 				this.$WX.jumpTo('./article')
-			},
-			'LoadMoreInfo': () => {
-				this.$API('GetNewsList', {page: this.page})
-					.then(res => {
-						this.GetNewsDatas(res.data)
-						this.page++
-					})
 			},
 			'BarClick': (key) => {
 				if (key === 'student') {

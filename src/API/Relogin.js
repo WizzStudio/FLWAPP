@@ -15,7 +15,8 @@ export default (lastAPI) => {
 						parseToken(res.header['Authorization'])
 						setStorage('token', res.header['Authorization'])
 					}
-					lastAPI({'Authorization': res.header['Authorization']})
+					//	lastAPI({'Authorization': res.header['Authorization']})
+					lastAPI()
 				}
 			})
 		}

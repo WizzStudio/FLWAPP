@@ -148,6 +148,7 @@ const verifyParams = (ruleObj, exampleObj) => {
 // 解析token,获取userID， role， openID, exp
 const parseToken = (token) => {
 	let info = JSON.parse(atob(token.split('.')[1]))
+	setStorage('exp', info.exp * 1000)
 	setStorage('role', info.role)
 	setStorage('userId', info.userid)
 	setStorage('openId', info.openid)

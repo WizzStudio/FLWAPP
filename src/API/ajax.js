@@ -62,7 +62,6 @@ function _configRequest (config = {}) {
 		wx.request(config)
 	})
 }
-
 /**
  * 将map对象转换为URL参数
  * @param dataObject

@@ -103,7 +103,6 @@
       let role = this.$WX.getStorage('role')
 			this.role = role
       if (role === 1) {
-        console.log(this.page)
         this.$API('GetStudentRecord', {page: this.page})
           .then(res => {
             this.totalPage = parseInt(res.msg)

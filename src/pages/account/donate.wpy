@@ -7,6 +7,7 @@
      border-color: #f4f4f4;
      border-width: 1rpx;
      height: 190rpx;
+		 width: 750rpx;
      display: inline-flex;
      align-items: center;
      image:nth-child(1) {
@@ -42,8 +43,8 @@
 </style>
 
 <template>
-		<scroll-view style="height: 110vh" wx:if="{{isTutor}}" class="donate-ul" scroll-y="true" bindscrolltoupper="loadMoreInfo">
-			<repeat for="{{TutorList}}" item="item">
+		<scroll-view style="height: 101vh" class="donate-ul" scroll-y="true" bindscrolltoupper="loadMoreInfo">
+			<repeat for="{{InfoList}}" item="item">
 				<li>
 					<image src="{{item.avatar}}" />
 					<div>
@@ -60,53 +61,28 @@
 <script>
   import page from '../base/basicPage.wpy'
   export default class Donate extends page {
-    config = {
-      navigationBarTitleText: this.isTutor ? '我的导师' : '我的学生'
-    }
+    config = {}
     component = {}
     data = {
-      isTutor: true,
-      TutorList: []
+      InfoList: [],
+			page: 0
     }
     computed = {}
     getDatas (data) {
       data.forEach(item => {
-        this.TutorList.push({
+        this.InfoList.push({
           name: item.name,
           company: item.company,
           sum: item.sum
         })
       })
     }
-    onLoad () {
-      this.$API('GetStudentTutors')
-        .then(res => {
-          let imageArray = []
-          this.getDatas(res.data)
-          res.data.forEach(item => {
-            imageArray.push(String(item.userId))
-          })
-          imageArray = imageArray.map(item => item + '-avatar.jpg')
-          this.$API('PostUserImagesName', imageArray)
-            .then(res => {
-                this.TutorList.forEach((item, index) => {
-                  item.avatar = res.data[index]
-                  this.$apply()
-                })
-            })
-        })
-      /*
-      if (this.$WX.getStorage('role') === 2) {
-        this.isTutor = true
-      } else {
-        this.isTutor = false
-      }
-      */
-    }
-    onReachBottom () {
-			this.$API('GetStudentTutors')
+    LoadDatas (role, count = 2) {
+			this.$API(role, {page: 0})
 				.then(res => {
+					this.page++
 					let imageArray = []
+					const InfoListLength = this.InfoList.length
 					this.getDatas(res.data)
 					res.data.forEach(item => {
 						imageArray.push(String(item.userId))
@@ -114,12 +90,33 @@
 					imageArray = imageArray.map(item => item + '-avatar.jpg')
 					this.$API('PostUserImagesName', imageArray)
 						.then(res => {
-							this.TutorList.forEach((item, index) => {
-								item.avatar = res.data[index]
-								this.$apply()
+							this.InfoList.forEach((item, index) => {
+								if (count === 1) {
+									item.avatar = res.data[index]
+									this.$apply()
+								} else {
+									if (index >= InfoListLength) {
+										item.avatar = res.data[index - InfoListLength]
+										this.$apply()
+									}
+								}
 							})
 						})
 				})
+		}
+    onLoad () {
+      if (this.$WX.getStorage('role') === 2) {
+				this.LoadDatas('GetTutorStudents', 1)
+      } else {
+				this.LoadDatas('GetStudentTutors', 1)
+      }
+    }
+    onReachBottom () {
+			if (this.$WX.getStorage('role') === 2) {
+				this.LoadDatas('GetTutorStudents')
+			} else {
+				this.LoadDatas('GetStudentTutors')
+			}
 		}
 
     methods = {
@@ -130,7 +127,5 @@
 				this.$WX.toast('fuck')
 			}
     }
-    events = {}
-    propos = {}
   }
 </script>

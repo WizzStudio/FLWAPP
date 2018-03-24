@@ -128,7 +128,7 @@
 				<view class="News-Item" @tap="infoClick" id="{{item.id}}">
 					<view class="News-Item-info">
 						<view class="News-Item-info-title">{{item.title}}</view>
-						<view class="News-Item-info-time">{{item.time}}<span>{{item.group}}</span></view>
+						<view class="News-Item-info-time">{{item.time}}<span>{{item.name}}</span></view>
 					</view>
 					<image class="News-Item-image" src="http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg"/>
 				</view>
@@ -157,8 +157,7 @@
 		config = {}
 		components = {}
 		data = {
-			isNews: true,
-			TopDatas: [1, 2, 3, 4, 5]
+			isNews: true
 		}
 		computed = {}
 

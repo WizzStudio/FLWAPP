@@ -23,7 +23,6 @@
 </style>
 
 <template>
-	<child></child>
 	<view class="container">
 		<image src="{{logoURL}}" class="icon"></image>
 	</view>
