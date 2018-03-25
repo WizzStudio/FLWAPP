@@ -5,7 +5,7 @@ import statusCodeFilter from './statusCodeFilter'
 import relogin from './Relogin_v2'
 import * as config from './config'
 
-import 'jsrsasign'
+// import 'jsrsasign'
 
 const HOST_URL = config.baseURL || '' // 根域名
 const DEBUG = config.debug // debug模式
