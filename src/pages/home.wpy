@@ -128,6 +128,11 @@
 				this.$WX.setStorage('articleId', key)
 				this.$WX.jumpTo('./article')
 			},
+			'jumpToTutorPage': (key) => {
+				this.$WX.setStorage('visit_userId', parseInt(key))
+				this.$WX.setStorage('visit_role', this.$WX.getStorage('role'))
+				this.$WX.jumpTo('./user/personalPage')
+			},
 			'BarClick': (key) => {
 				if (key === 'student') {
 					this.$WX.jumpTo('./writeArticle')

@@ -44,7 +44,7 @@
 		}
 		methods = {
 			BarClick (event) {
-				this.$emit('BarClick', event.target.id)
+				this.$emit('BarClick', event.currentTarget.id)
 			}
 		}
 		events = {}
