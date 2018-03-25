@@ -146,7 +146,7 @@
 					<view class="Top-List-item-top" wx:if="{{index + 1 > 3}}">
 						{{index + 1}}
 					</view>
-					<view class="Top-List-item-name">{{item.tutorName}}</view>
+					<view class="Top-List-item-name" @tap="RankClick" id="{{item.userId}}">{{item.tutorName}}</view>
 					<view class="Top-List-item-amount">{{item.giftFlowerNum}}</view>
 				</view>
 			</repeat>
@@ -174,6 +174,9 @@
 			},
 			InfoClick (event) {
 				this.$emit('jumpToArticle', event.currentTarget.id)
+			},
+			RankClick (event) {
+				this.$emit('jumpToTutorPage', event.target.id)
 			},
 			LoadMoreInfo () {
 				this.$emit('LoadMoreInfos')
