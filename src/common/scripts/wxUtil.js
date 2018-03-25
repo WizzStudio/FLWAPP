@@ -112,7 +112,7 @@ const removeStorage = (key) => {
 	// return configFn(wx.removeStorage, {
 	// 	key
 	// })
-	return wx.removeStorage(key)
+	return wx.removeStorage({key})
 }
 
 const clearStorage = () => {
