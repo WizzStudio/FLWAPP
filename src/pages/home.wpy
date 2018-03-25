@@ -17,7 +17,8 @@
 
 	export default class home extends page {
 		config = {
-			enablePullDownRefresh: true
+			enablePullDownRefresh: true,
+			navigationBarTitleText: '首页'
 		}
 		components = {
 			swiper: Swiper,
@@ -130,7 +131,7 @@
 			},
 			'jumpToTutorPage': (key) => {
 				this.$WX.setStorage('visit_userId', parseInt(key))
-				this.$WX.setStorage('visit_role', this.$WX.getStorage('role'))
+				this.$WX.setStorage('visit_role', 2)
 				this.$WX.jumpTo('./user/personalPage')
 			},
 			'BarClick': (key) => {

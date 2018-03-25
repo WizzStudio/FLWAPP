@@ -1,0 +1,160 @@
+<style lang="scss" type="text/scss">
+	.stuTrend {
+		display: flex;
+		flex-flow: column;
+		padding-top: 15rpx;
+		padding-left: 30rpx;
+		padding-right: 30rpx;
+		font-size: 28rpx;
+		&-search {
+			color: #999999;
+			height: 90rpx;
+			display: inline-flex;
+			align-items: center;
+			div {
+				display: inline-flex;
+				align-items: center;
+				padding-bottom: 10rpx;
+				border-bottom: 1px solid #ddd;
+				image {
+					height: 35rpx;
+					width: 35rpx;
+					margin-right: 20rpx;
+				}
+				input {
+					width: 540rpx;
+				}
+				&:hover {
+					border-bottom: 1px solid #e01b1c;
+				}
+			}
+			&-button {
+				color: #333;
+				font-size: 30rpx;
+				margin-left: 20rpx;
+			}
+		}
+		&-option {
+			display: inline-flex;
+			flex-flow: row;
+			align-items: center;
+			height: 90rpx;
+			font-size: 32rpx;
+			color: #333;
+			&-active {
+				color: #e01b1c;
+			}
+			&-item {
+				margin-right: 64rpx;
+				display: inline-flex;
+				flex-flow: row nowrap;
+				image {
+					margin-left: 10rpx;
+					margin-top: 10rpx;
+					width: 30rpx;
+					height: 30rpx;
+				}
+			}
+		}
+		&-infoList {
+			color: #333;
+			&-item {
+				display: inline-flex;
+				flex-flow: row nowrap;
+				height: 230rpx;
+				align-items: center;
+				border-bottom: 2rpx solid #f4f4f4;
+				&-image {
+					width: 128rpx;
+					height: 128rpx;
+					border-radius: 50%;
+					background-color: #03a9f4;
+					margin-right: 40rpx;
+				}
+				&-info {
+					width: 480rpx;
+					&-name {
+						padding-top: 10rpx;
+						padding-bottom: 10rpx;
+					}
+					&-more {
+						color: #999999;
+						font-size: 24rpx;
+						padding-bottom: 12rpx;
+						display: inline-flex;
+						flex-flow: row nowrap;
+						&-1 {
+							margin-right: 15rpx;
+						}
+					}
+					&-introduce {
+						color: #999999;
+						font-size: 24rpx;
+						line-height: 38rpx;
+					}
+				}
+				&-tag {
+					margin-left: 10rpx;
+					width: 40rpx;
+					height: 40rpx;
+				}
+			}
+
+		}
+	}
+</style>
+
+<template>
+	<view class="stuTrend">
+		<view class="stuTrend-search">
+			<div>
+				<image src="../../static/images/stuTrend/search.svg" />
+				<input placeholder="搜索姓名，行业，单位，专业" maxlength="20"/>
+			</div>
+			<view class="stuTrend-search-button">搜索</view>
+		</view>
+		<view class="stuTrend-option">
+			<view class="stuTrend-option-item">
+				<view>导师</view>
+				<image src="../../static/images/stuTrend/arrow-down.svg"/>
+			</view>
+			<view class="stuTrend-option-item">
+				<view>行业</view>
+				<image src="../../static/images/stuTrend/arrow-down.svg"/>
+			</view>
+		</view>
+		<view class="stuTrend-infoList">
+			<repeat for="{{[1, 2, 3]}}">
+				<view class="stuTrend-infoList-item">
+					<image src="../../static/images/logo.png" class="stuTrend-infoList-item-image"/>
+					<view class="stuTrend-infoList-item-info">
+						<view class="stuTrend-infoList-item-info-name">马化腾</view>
+						<view class="stuTrend-infoList-item-info-more">
+							<view class="stuTrend-infoList-item-info-more-1">腾讯控股有限公司</view>
+							<view>CEO</view>
+						</view>
+						<view class="stuTrend-infoList-item-info-introduce">遇到喜欢的东西就买下来，钱不是真正的花掉了，而是换了另一种形式陪在你身边</view>
+					</view>
+					<image class="stuTrend-infoList-item-tag" src="../../static/images/personalCenter/arrow-right.svg"/>
+				</view>
+			</repeat>
+		</view>
+	</view>
+</template>
+
+<script>
+	import basicPage from './base/basicPage.wpy'
+	export default class stuTrend extends basicPage {
+		config = {
+			navigationBarTitleText: '导学信息',
+			enablePullDownRefresh: false
+		}
+		components = {}
+		data = {}
+		computed = {}
+		onLoad () {}
+		methods = {}
+		events = {}
+		props = {}
+	}
+</script>

@@ -22,10 +22,10 @@ const ajax = ({url, method, data, headers}) => {
  * @param url {String} 跳转相对路径
  * @return {Promise}
  */
-const tabBarUrl = ['account/login', 'account/home', './home', './login']
+const tabBarUrl = ['./home', './login', './stuTrend']
 const jumpTo = (url) => {
 	//	console.log(url)
-	if (url === tabBarUrl[0] || url === tabBarUrl[1] || url === tabBarUrl[2] || url === tabBarUrl[3]) {
+	if (url === tabBarUrl[0] || url === tabBarUrl[1] || url === tabBarUrl[2]) {
 		return configFn(wx.switchTab, {url})
 	} else {
 		return configFn(wx.navigateTo, {url})

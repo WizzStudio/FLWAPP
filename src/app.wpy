@@ -20,7 +20,8 @@
 				'pages/user/personalPage',
 				'pages/article',
 				'pages/home',
-				'pages/writeArticle'
+				'pages/writeArticle',
+				'pages/stuTrend'
 			],
 			'window': {
 				'backgroundTextStyle': 'light',
@@ -45,7 +46,7 @@
 							'selectedIconPath': 'static/images/tabBar/home_selected.png'
 						},
 						{
-							'pagePath': 'pages/account/login',
+							'pagePath': 'pages/stuTrend',
 							'iconPath': 'static/images/tabBar/focus.png',
 							'text': '导学',
 							'selectedIconPath': 'static/images/tabBar/focus_selected.png'
