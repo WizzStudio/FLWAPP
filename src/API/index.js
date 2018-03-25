@@ -11,5 +11,5 @@ export default (apiKey, data, headers) => {
 	if (verifyParams(api.data, data) || verifyParams(api.headers, headers)) {
 		return ajax('/missingArguments', 'get')
 	}
-	return request(api.url, api.method, data, headers)
+	return ajax(api.url, api.method, data, headers)
 }
