@@ -12,8 +12,8 @@
     }
   }
   .centerInfomation-Tag {
-    width: 24rpx;
-    height: 48rpx;
+    width: 48rpx;
+    height: 96rpx;
   }
 
 </style>

@@ -1,5 +1,5 @@
 <style lang="scss" type="text/scss">
-	.article {
+	.write-article {
 		background-color: #f4f4f4;
 		width: 750rpx;
 		height: 1200rpx;
@@ -65,12 +65,13 @@
 </style>
 
 <template>
-	<view class="article">
-		<input maxlength="25" placeholder="请输入文章标题" class="article-title"/>
-		<textarea placeholder="请输入文章内容" class="article-body"/>
-		<div class="article-buttons">
+	<view class="write-article">
+		<input maxlength="25" placeholder="请输入文章标题" class="write-article-title"/>
+		<textarea placeholder="请输入文章内容" class="write-article-body" onblur="getTextValue"/>
+		<rich-text nodes="{{nodes}}" />
+		<div class="write-article-buttons">
 			<button @tap="InsertImage"><span>插入图片</span></button>
-			<button><span>发表文章</span></button>
+			<button @tap="SubmitArticle"><span>发表文章</span></button>
 		</div>
 	</view>
 </template>
@@ -82,12 +83,23 @@
 			enablePullDownRefresh: false,
 			navigationBarTitleText: '发表文章'
 		}
-		data = {}
+		data = {
+			nodes: '',
+			sourceText: '',
+			textList: [],
+			imageList: []
+		}
 		components = {}
 		onLoad () {}
 		methods = {
 			InsertImage () {
 				this.$WX.chooseMutiImg()
+			},
+			getTextValue (event) {
+				this.sourceText = event.detail.value
+			},
+			SubmitArticle () {
+
 			}
 		}
 		events = {}

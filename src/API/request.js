@@ -34,20 +34,27 @@ function concatURLinRESTful (dataObject) {
 
 function _configRequest(url, method, data, header, resolve, reject) {
 	// 设置token
-	header['Authorization'] = getStorage('token')
-	/* 针对restfulAPI做的补丁 */
-	if (method === 'GET_RESTFUL') {
+  header['Authorization'] = getStorage('token')
+  let _method = method.toUpperCase()
+  /* 针对restfulAPI做的补丁 */
+	if (_method === 'GET_RESTFUL') {
 		if (data) {
-			url += concatURLinRESTful(data)
+      url += concatURLinRESTful(data)
+      wx.request({
+        url: baseURL + url,
+        method: 'GET',
+        header: header,
+        success: (res) => resolve(res.data),
+        fail: (err) => reject(err)
+      })
 		}
-	}
-	if (method === 'GET') {
+	} else if (_method === 'GET') {
 		if (data) {
 			url += createURLParamsByObject(data)
 		}
 		wx.request({
 			url: baseURL + url,
-			method: method,
+			method: _method,
 			header: header,
 			success: (res) => resolve(res.data),
 			fail: (err) => reject(err)
@@ -56,7 +63,7 @@ function _configRequest(url, method, data, header, resolve, reject) {
 		wx.request({
 			url: baseURL + url,
 			data: data,
-			method: method,
+			method: _method,
 			header: header,
 			success: (res) => resolve(res.data),
 			fail: (err) => reject(err)

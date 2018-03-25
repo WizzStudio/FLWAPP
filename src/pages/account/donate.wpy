@@ -78,7 +78,7 @@
       })
     }
     LoadDatas (role, count = 2) {
-			this.$API(role, {page: 0})
+			this.$API(role, {page: this.page})
 				.then(res => {
 					this.page++
 					let imageArray = []
@@ -111,6 +111,18 @@
 				this.LoadDatas('GetStudentTutors', 1)
       }
     }
+    onPullDownRefresh () {
+			this.InfoList = []
+			this.page = 0
+			if (this.$WX.getStorage('role') === 2) {
+				this.LoadDatas('GetTutorStudents', 1)
+			} else {
+				this.LoadDatas('GetStudentTutors', 1)
+			}
+			setTimeout(() => {
+				wx.stopPullDownRefresh()
+			}, 1000)
+		}
     onReachBottom () {
 			if (this.$WX.getStorage('role') === 2) {
 				this.LoadDatas('GetTutorStudents')

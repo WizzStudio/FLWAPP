@@ -54,14 +54,16 @@
 			margin-right: 40rpx;
 			display: flex;
 			flex-flow: column;
-			padding-top: 74rpx;
+			padding-top: 54rpx;
+			&-title {
+				font-size: 28rpx;
+				font-weight: bold;
+				height: 92rpx;
+			}
 			&-time {
 				font-size: 24rpx;
-				color: #666666;
-				margin-top: 20rpx;
-				span {
-					margin-left: 30rpx;
-				}
+				color: #999999;
+				//	margin-top: 10rpx;
 			}
 		}
 		&-image {
@@ -125,10 +127,11 @@
 	<view class="News-Content">
 		<scroll-view wx:if="{{isNews}}" bindscrolltolower="LoadMoreInfo" scroll-y="true" style="height: 100vh">
 			<repeat for="{{NewsDatas}}" item="item">
-				<view class="News-Item" @tap="infoClick" id="{{item.id}}">
+				<view class="News-Item" @tap="InfoClick" id="{{item.id}}">
 					<view class="News-Item-info">
+						<view style="font-size: 19rpx;color: #999;margin-left: 0rpx;margin-bottom: 0rpx">{{item.tag}}</view>
 						<view class="News-Item-info-title">{{item.title}}</view>
-						<view class="News-Item-info-time">{{item.time}}<span>{{item.name}}</span></view>
+						<view class="News-Item-info-time">{{item.author}} • {{item.time}} • {{item.pageView}}次阅读</view>
 					</view>
 					<image class="News-Item-image" src="http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg"/>
 				</view>
@@ -170,7 +173,7 @@
 				}
 			},
 			InfoClick (event) {
-				this.$emit('jumpToArticle', event.target.id)
+				this.$emit('jumpToArticle', event.currentTarget.id)
 			},
 			LoadMoreInfo () {
 				this.$emit('LoadMoreInfos')

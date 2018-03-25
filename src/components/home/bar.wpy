@@ -1,26 +1,28 @@
 <style lang="scss" type="text/scss">
 	.home-bar {
 		background-color: #e01b1c;
+		box-shadow: 2rpx 2rpx 2rpx 2rpx rgba(120,120,120,0.4);
 		border-radius: 50%;
-		width: 120rpx;
-		height: 120rpx;
+		width: 100rpx;
+		height: 100rpx;
 		position: fixed;
 		bottom: 20rpx;
 		right: 40rpx;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		span {
-			color: white;
-			font-size: 28rpx;
+		image {
+			width: 42rpx;
+			position: relative;
+			top: 5rpx;
 		}
 	}
 </style>
 
 <template>
-	<view class="home-bar">
-		<span wx:if="{{!isStudent}}" id="tutor" @tap="BarClick">捐赠</span>
-		<span wx:if="{{isStudent}}" id="student" @tap="BarClick">发布</span>
+	<view class="home-bar" wx:if="{{role !== 0}}">
+		<span wx:if="{{role === 2}}" id="tutor" @tap="BarClick"><image src="../../static/images/home/money_bag.svg"/></span>
+		<span wx:if="{{role === 1}}" id="student" @tap="BarClick"><image src="../../static/images/home/pencil.svg"/></span>
 	</view>
 </template>
 
@@ -31,13 +33,13 @@
 		config = {}
 		components = {}
 		data = {
-			isStudent: true
+			role: 0
 		}
 		onLoad () {
 			if (wx.getStorageSync('role') === 1) {
-				this.isStudent = true
+				this.role = 1
 			} else if (wx.getStorageSync('role') === 2) {
-				this.isStudent = false
+				this.role = 2
 			}
 		}
 		methods = {

@@ -3,19 +3,22 @@
 </style>
 
 <template>
-	<swiper />
+	<swiper :BannerDatas.sync="BannerDatas"/>
 	<news :NewsDatas.sync="NewsDatas" :FlowerRankDatas.sync="FlowerRankDatas"/>
 	<bar />
 </template>
 
 <script>
+	import moment from 'moment'
 	import page from './base/basicPage'
 	import News from '../components/home/News'
 	import Swiper from '../components/home/Swiper'
 	import Bar from '../components/home/bar'
 
 	export default class home extends page {
-		config = {}
+		config = {
+			enablePullDownRefresh: true
+		}
 		components = {
 			swiper: Swiper,
 			news: News,
@@ -36,19 +39,23 @@
 					{
 						id: item.id,
 						title: item.title,
-						userName: item.userId,
-						time: item.createTime.split('T')[0] || ''
+						author: item.name || '匿名',
+						pageView: item.pageView || 'NaN',
+						time: moment(item.createTime.split('.')[0], 'YYYY-MM-DD hh:mm:ss').fromNow() || '',
+						tag: item.tag
 					}
 				)
 			})
 		}
 
 		GetBannerDatas (data) {
+			const bannerImgList = []
 			data.map(item => {
+				bannerImgList.push(item['a'])
 				this.BannerDatas.push({
-					imgSrc: item.src,
-					title: item.title,
-					id: item.id
+					imgSrc: item['a'],
+					title: item['c'],
+					id: item['b']
 				})
 			})
 		}
@@ -79,6 +86,26 @@
 						})
 				})
 		}
+		onPullDownRefresh () {
+			this.NewsDatas = []
+			this.BannerDatas = []
+			this.FlowerRankDatas = []
+			this.$API('GetNewsList', {page: 0})
+				.then(res => {
+					this.page++
+					this.GetNewsDatas(res.data)
+					this.$API('GetBanner')
+						.then(res => {
+							this.GetBannerDatas(res.data)
+							this.$API('GetFlowerRank')
+								.then(res => {
+									this.GetFlowerRankDatas(res.data)
+									this.$apply()
+									wx.stopPullDownRefresh()
+								})
+						})
+				})
+		}
 		onReachBottom () {
 			if (!this.isLastPage) {
 				this.$API('GetNewsList', {page: this.page})
@@ -87,7 +114,8 @@
 							this.isLastPage = false
 							this.page++
 							this.GetNewsDatas(res.data)
-						} else if (res.data.length === 1) {
+						} else if (res.data.length === 0) {
+							this.$WX.toast('没有更多内容了')
 							this.isLastPage = true
 						}
 					})
@@ -95,7 +123,9 @@
 		}
 		methods = {}
 		events = {
-			'jumpToArticle': () => {
+			'jumpToArticle': (key) => {
+				console.log(key)
+				this.$WX.setStorage('articleId', key)
 				this.$WX.jumpTo('./article')
 			},
 			'BarClick': (key) => {
