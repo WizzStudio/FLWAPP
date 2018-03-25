@@ -38,6 +38,7 @@ function _normalRequest (config = {}) {
 			}
 			if (res.data.code) {
 				toast(res.data.msg)
+				reject(res.data)
 			}
 			/* TODO: TEST放出header里面的token为了做测试 */
 			// res.data.token = res.header['Authorization']

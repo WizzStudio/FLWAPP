@@ -111,29 +111,30 @@
 
 		_updateInfo (data) {
 			for (let key of Object.keys(data)) {
-				console.log(key)
 				this.userInfo[key] = data[key]
 			}
 			this.$apply()
 		}
 
 		onLoad () {
-			let visitUserId = this.$WX.getStorage('visit_userId') // 欲访问的用户id
+			let visitUserId = this.$WX.getStorage('visit_userId') || 1 // 欲访问的用户id
+//			let visitUserId = 14
+			let visitRole = this.$WX.getStorage('visit_role') || 2
 			if (!visitUserId) {
 				this.$WX.toast('访问错误，回到首页')
 				setTimeout(() => { this.$WX.goBack() }, 1500)
 				return false
 			}
 			/* 测试case stu 11 tutor 13 */
-			if (this.role === 1) {
+			if (visitRole === 1) {
 				this.$API('GetStuHomePage', { userId: visitUserId }).then(res => {
 					this._updateInfo(res.data)
-				})
+				}).catch(() => (setTimeout(() => { this.$WX.goBack() }, 1500)))
 			}
-			if (this.role === 2) {
+			if (visitRole === 2) {
 				this.$API('GetMentorHomePage', { userId: visitUserId }).then(res => {
 					this._updateInfo(res.data)
-				})
+				}).catch(() => (setTimeout(() => { this.$WX.goBack() }, 1500)))
 			}
 		}
 		onShow () {
@@ -141,6 +142,7 @@
 
 		onReady () {
 			this.$WX.removeStorage('visit_userId') // 删除欲访问的用户id
+			this.$WX.removeStorage('visit_role') // 删除欲访问的用户role
 		}
 
 		customFunction () {}

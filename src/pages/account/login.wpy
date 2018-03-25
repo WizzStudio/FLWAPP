@@ -290,7 +290,7 @@
 										this.$WX.setStorage('role', data.data.role)
 										this.$WX.jumpTo('./home')
 									}
-								})
+								}).catch(() => (this.$WX.goBack()))
 							}
 						})
 				}
