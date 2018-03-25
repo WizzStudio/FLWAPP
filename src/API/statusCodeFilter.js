@@ -6,9 +6,9 @@ const notFound = () => {
 	toast('接口丢失了 >_< ', 'none', 3000)
 }
 
-const forbidden = (lastAPI) => {
+const forbidden = () => {
 	/* 登录失效后重登录 */
-	Relogin(lastAPI)
+	toast('登录失效，正在重新登录...', 'none', 1500)
 }
 
 const serverError = () => {

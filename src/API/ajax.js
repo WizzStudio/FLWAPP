@@ -1,8 +1,8 @@
-// import MockServer from './mock/mockServer.js' // mock数据服务：弃用
 import Route from './mock/route' // mock数据服务
 import { toast, getStorage, setStorage, showLoading, hideLoading } from '../common/scripts/wxUtil'
 import { parseToken } from '../common/scripts/utils'
 import statusCodeFilter from './statusCodeFilter'
+import relogin from './Relogin_v2'
 import * as config from './config'
 
 import 'jsrsasign'
@@ -11,9 +11,6 @@ const HOST_URL = config.baseURL || '' // 根域名
 const DEBUG = config.debug // debug模式
 const SUPPORT_METHODS = config.surpportMethods || ['GET'] // 支持的http方法
 const DEFAULT_HEADERS = config.defaultHeaders || {}
-const CRITICAL_COUNT = 2 // 重复请求的临界阈值 防止无限递归
-let INIT_COUNT = 0
-let INIT_RESOVLE = null
 
 function argumentsErr () {
 	throw new Error('[arguments missing]: check RURL & METHOD')
@@ -23,12 +20,8 @@ function methodErr () {
 	throw new Error('[http method error]: check METHOD params in ajax')
 }
 
-function _configRequest (config = {}) {
+function _normalRequest (config = {}) {
 	return new Promise((resolve, reject) => {
-		if (INIT_COUNT === 0) {
-			// 第一次进入函数
-			INIT_RESOVLE = resolve
-		}
 		config.fail = err => {
 			hideLoading()
 			toast(`请求失败 ${err.errMsg}`, 'none', 1500)
@@ -36,14 +29,7 @@ function _configRequest (config = {}) {
 		}
 		config.success = res => {
 			if (res.statusCode !== 200) {
-				// console.log(res)
-				statusCodeFilter(res.statusCode, (header) => {
-					config.header = _configHeader(header)
-					if (INIT_COUNT >= CRITICAL_COUNT) return toast(`未注册用户！`, 'none', 3000)
-					INIT_COUNT++
-					_configRequest(config)
-				})
-				return false
+				statusCodeFilter(res.statusCode)
 			}
 			if (res.header['Authorization']) {
 				/* 如果header里有token，则更新 */
@@ -54,14 +40,28 @@ function _configRequest (config = {}) {
 				toast(res.data.msg)
 			}
 			/* TODO: TEST放出header里面的token为了做测试 */
-			res.data.token = res.header['Authorization']
+			// res.data.token = res.header['Authorization']
 			/* 在这里进行的返回的，那么在此之前完成重请求就可以 */
 			hideLoading() // 请求成功后释放
-			INIT_RESOVLE(res.data)
+			resolve(res.data)
 		}
 		wx.request(config)
 	})
 }
+
+function _configRequest (config = {}) {
+	/* 过期的情况 */
+	if (getStorage('exp') < Date.now()) {
+		// Relogin
+		return relogin().then(() => {
+			config.header = _configHeader({})
+			return _normalRequest(config)
+		})
+	} else {
+		return _normalRequest(config)
+	}
+}
+
 /**
  * 将map对象转换为URL参数
  * @param dataObject
