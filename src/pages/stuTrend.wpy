@@ -23,6 +23,7 @@
 				}
 				input {
 					width: 540rpx;
+					font-weight: 200;
 				}
 				&:hover {
 					border-bottom: 1px solid #e01b1c;
@@ -39,7 +40,7 @@
 			flex-flow: row;
 			align-items: center;
 			height: 90rpx;
-			font-size: 32rpx;
+			font-size: 28rpx;
 			color: #333;
 			&-active {
 				color: #e01b1c;
@@ -50,7 +51,7 @@
 				flex-flow: row nowrap;
 				image {
 					margin-left: 10rpx;
-					margin-top: 10rpx;
+					margin-top: 8rpx;
 					width: 30rpx;
 					height: 30rpx;
 				}

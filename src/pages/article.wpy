@@ -41,9 +41,8 @@
 			<span id="{{articleData.userId}}">{{articleData.author}}</span>
 			<span>阅读次数：{{articleData.pageView}}</span>
 		</view>
-		<view class="article-body">
-			{{articleData.content}}
-		</view>
+		<rich-text class="article-body" nodes="{{nodes}}">
+		</rich-text>
 	</view>
 </template>
 
@@ -58,7 +57,8 @@
 		components = {}
 		data = {
 			articleId: 1,
-			articleData: {}
+			articleData: {},
+			nodes: "<p>擦拭擦拭吃市场的菜市场dscsdds sdcscdsc<br> dvsvs svsvd<br> 是大 v 是 v 多少导师<br> sdvsvsd</p>""<img src=\"http://tmp/wx34196784585cbdf5.o6zAJs6DfANu_l0zqfnbON4I416Q.pChWplndHRHr7c083e4f02f286196433e140e62c3583.JPG\"/>"
 		}
 		GetArticleData (data) {
 			this.articleData = {

@@ -77,7 +77,9 @@
 	import BasicButton from '../../components/Buttons/BasicButton'
 
 	export default class PersonalPage extends page {
-		config = { enablePullDownRefresh: false }
+		config = {
+			enablePullDownRefresh: false
+		}
 		components = {
 			usrCard: userCard,
 			donateBtn: BasicButton

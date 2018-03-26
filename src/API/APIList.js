@@ -30,5 +30,6 @@ export default {
 	GetNewsList: { url: '/article/list', method: 'get', data: {}, headers: {} },
 	GetFlowerRank: { url: '/rank', method: 'get', data: {}, headers: {} },
 	GetArticle: { url: '/article', method: 'get_restful', data: {}, headers: {} },
-	GetBanner: { url: '/banner', method: 'get', data: {}, headers: {} }
+	GetBanner: { url: '/banner', method: 'get', data: {}, headers: {} },
+	PostArticle: { url: '/article', method: 'post', data: {title: '', content: ''}, headers: {} }
 }
