@@ -78,7 +78,7 @@
       })
     }
     LoadDatas (role, count = 2) {
-			this.$API(role, {page: })
+			this.$API(role, {page: this.page})
 				.then(res => {
 					this.page++
 					let imageArray = []
