@@ -48,7 +48,7 @@
 			this.$WX.wxLogin().then(() => {
 				wx.getUserInfo({
 					success: function() {
-						that.$WX.jumpTo('./home')
+						that.$WX.jumpTo('./account/info')
 					}
 				})
 			})

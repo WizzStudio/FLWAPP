@@ -30,12 +30,12 @@
     @include fontSizeColor(32rpx, #666666);
   }
   .Info-Tag {
-    width: 20rpx;
-    height: 40rpx;
+    width: 30rpx;
+    height: 50rpx;
     //  padding-bottom:6rpx;
+		margin-bottom: 5rpx;
     padding-right: 10rpx;
     padding-left: 10rpx;
-    margin-bottom: -5rpx;
   }
   .info-item-avatar-container {
     height: 160rpx;
@@ -57,6 +57,7 @@
   .info-module {
     height: 60rpx;
     border-top: 20rpx solid #f4f4f4;
+		margin-bottom: 20rpx;
     &-title {
       font-size: 28rpx;
       color: #999999;
@@ -74,6 +75,35 @@
       color: #e10b1c;
     }
   }
+	.info-upload-images {
+		display: flex;
+		flex-flow: row wrap;
+		margin-left: 30rpx;
+		margin-bottom: 50rpx;
+		&-info {
+			display: flex;
+			flex-flow: column nowrap;
+			justify-content: center;
+			align-items: center;
+			background-color: #f8f8f8;
+			@include fontSizeColor(18rpx, #666666);
+			width: 210rpx;
+			height: 210rpx;
+			margin-right: 30rpx;
+			margin-top: 30rpx;
+			image {
+				width: 80rpx;
+				height: 80rpx;
+				margin-bottom: 15rpx;
+			}
+		}
+		&-list {
+			margin-top: 30rpx;
+			width: 210rpx;
+			height: 210rpx;
+			margin-right: 30rpx;
+		}
+	}
   .info-textarea {
     height: 340rpx;
     border: 2rpx solid #b7c6cd;
@@ -98,7 +128,7 @@
   }
   .info-module-attachment {
     display: flex;
-    flex-flow: column nowrap;
+    flex-flow: column;
     justify-content: center;
     align-items: center;
     image {
@@ -203,13 +233,18 @@
       <div class="info-module-title-Icon">1</div>
       <span class="info-module-title">附件</span>
     </view>
-    <view class="info-module-attachment">
-      <image src="../../static/images/personalCenter/附件.png" @tap="upLoad" />
-      <span>上传</span>
-      <repeat for="{{imagesList}}" item="item">
-        <image src="{{item}}"/>
-      </repeat>
-    </view>
+    <view class="info-upload-images">
+			<view class="info-upload-images-info">
+				<image src="../../static/images/personalCenter/附件.png" @tap="upLoad"/>
+				<view>
+					<view style="text-align: center">点击添加图片(最多5张)</view>
+					<view style="text-align: center">提交相关材料证明你的才华，包括但不限于证书、奖状、各项证明等</view>
+				</view>
+			</view>
+			<repeat for="{{imagesList}}" item="item">
+				<image src="{{item}}" class="info-upload-images-list"/>
+			</repeat>
+		</view>
   </view>
   <div class="info-module-attachment">
     <div>
@@ -233,6 +268,7 @@
       optionList: [],
       identityList: [],
       imagesList: [],
+			previewImageList: [],
       avatar: '',
       identity: '',
       answer: {},
@@ -488,6 +524,13 @@
             .then(data => {
               console.log(data.data)
               this.treatAjaxDatasStudent(data.data)
+							for (let i = 0, attachNum = data.data.attachNum; i <= attachNum; i++) {
+								let attachImgName = this.$WX.getStorage('userId') + '-info-' + i + '.jpg'
+								this.$API('DownLoad', {attachImgName: attachImgName})
+									.then(res => {
+										this.imagesList.push(res.data)
+									})
+							}
               this.$apply()
           })
         } else if (this.$WX.getStorage('role') === 2) {
@@ -519,8 +562,8 @@
         if (event.target.id === 'submit') {
           if (this.checkingValue()) {
             const confirm = () => {
-              this.getDatas()
               this.$WX.setStorage('isSave', false)
+							this.getDatas()
             }
             const cancel = () => {
               this.$WX.toast('取消提交')
@@ -555,15 +598,50 @@
         }
       },
       upLoad () {
-        console.log('上传文件')
-        this.$WX.chooseMutiImg()
-        this.imagesList = this.$WX.getStorage('imagesList')
-        this.$apply()
+				this.$WX.chooseImg(5)
+					.then(res => {
+						this.imagesList = res.tempFilePaths
+						this.$apply()
+						this.imagesList.forEach((item, index) => {
+							let imgPath = this.imagesList[index]
+							let imgName = this.$WX.getStorage('userId') + '-info-' + index + '.jpg'
+							this.$API('UpLoad', {id: imgName})
+								.then(res => {
+									return res
+								})
+								.then(res => {
+									//	console.log(res)
+									this.$WX.setStorage('attach_num', index + 1)
+									let token = res.data
+									this.$WX.UpLoadFile(imgPath, {'key': imgName, token: token})
+										.then(res => {
+											//	console.log(res)
+										})
+								})
+						})
+					})
       }
     }
     changeAvatar (event) {
-      let that = this
-      this.$WX.chooseAvatar(that, 'avatar')
+			this.$WX.chooseImg(1)
+				.then(res => {
+					this.avatar = res.tempFilePaths[0]
+					this.$apply()
+					let imgPath = this.avatar
+					let imgName = this.$WX.getStorage('userId') + '-avatar.jpg'
+					this.$API('UpLoad', {id: imgName})
+						.then(res => {
+							return res
+						})
+						.then(res => {
+							//	console.log(res)
+							let token = res.data
+							this.$WX.UpLoadFile(imgPath, {'key': imgName, token: token})
+								.then(res => {
+									//	console.log(res)
+								})
+						})
+				})
     }
     checkingValue () {
       for (let i = 0, len = this.optionList.length; i < len; i++) {

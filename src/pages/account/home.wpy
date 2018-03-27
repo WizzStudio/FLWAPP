@@ -157,18 +157,14 @@
     onLoad () {
       if (this.$WX.getStorage('role') === 1) {
         this.isStudent = true
-        let that = this
-        let userId = this.$WX.getStorage('userId')
         this.$API('StudentCenter').then(data => {
           this.treatAjaxDatasStudent(data.data)
-          wx.request({
-						url: 'http://api.xiaoyaoeden.top/oss/down/' + userId + '-avatar.jpg',
-						header: { Authorization: wx.getStorageSync('token') },
-						success (res) {
-							that.avatar = res.data.data
-							that.$apply()
-						}
-	          })
+					this.$API('DownLoad', {article: this.$WX.getStorage('userId') + '-avatar.jpg'})
+						.then(res => {
+							this.avatar = res.data
+							this.$WX.setStorage('avatar', res.data)
+							this.$apply()
+						})
           })
       } else if (this.$WX.getStorage('role') === 2) {
         this.isStudent = false
