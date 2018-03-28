@@ -106,7 +106,6 @@
         }
       ]
       this.$WX.setStorage('redFlowerNum', data.redFlowerNum)
-      this.$WX.downLoadImg(this, 'avatar')
       this.$apply()
     }
     treatAjaxDatasTutor (data) {

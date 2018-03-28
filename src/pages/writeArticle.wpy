@@ -129,16 +129,17 @@
 		onLoad () {}
 		methods = {
 			InsertImage () {
-				wx.chooseImage({
-					count: 9,
-					sizeType: ['compressed'],
-					success: res => {
-						res.tempFilePaths.forEach((item, index) => {
-							this.articleImageList.push(item)
+				if (this.articleImageList.length >= 10) {
+					this.$WX.toast('最多选择10张')
+				} else {
+					this.$WX.chooseImg(10 - this.articleImageList.length)
+						.then(res => {
+							res.tempFilePaths.forEach(item => {
+								this.articleImageList.push(item)
+							})
+							this.$apply()
 						})
-						this.$apply()
-					}
-				})
+				}
 			},
 			imageDelete (event) {
 				console.log('删除图片')

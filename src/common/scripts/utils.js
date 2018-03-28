@@ -110,7 +110,7 @@ const transformTime = (data, option) => {
 	if (typeof data === 'undefined') {
 		return ''
 	}
-	const date = new Date(parseInt(data))
+	const date = new Date(parseInt(data) * 1000)
 	if (option && option === 'year_month_day') {
 		return date.getFullYear() + '-' + date.getMonth() + 1 + '-' + (date.getDate() > 9 ? date.getDate() : '0' + date.getDate())
 	}
