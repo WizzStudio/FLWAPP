@@ -1,5 +1,6 @@
 <style lang="scss" type="text/scss">
 	.stuTrend {
+		font-weight: 300rpx;
 		display: flex;
 		flex-flow: column;
 		padding-top: 15rpx;
@@ -38,8 +39,7 @@
 		&-option {
 			display: inline-flex;
 			flex-flow: row;
-			align-items: center;
-			height: 90rpx;
+			height: 60rpx;
 			font-size: 28rpx;
 			color: #333;
 			&-active {
@@ -116,13 +116,13 @@
 		</view>
 		<view class="stuTrend-option">
 			<view class="stuTrend-option-item">
-				<view>导师</view>
-				<image src="../../static/images/stuTrend/arrow-down.svg"/>
+				<DropDown :dropDownData.sync="roleData"/>
 			</view>
-			<view class="stuTrend-option-item">
-				<view>行业</view>
-				<image src="../../static/images/stuTrend/arrow-down.svg"/>
-			</view>
+			<repeat for="{{optionData[roleIndex]}}" item="item">
+				<view class="stuTrend-option-item">
+					<DropDown :dropDownData.sync="item"/>
+				</view>
+			</repeat>
 		</view>
 		<view class="stuTrend-infoList">
 			<repeat for="{{[1, 2, 3]}}">
@@ -144,18 +144,102 @@
 </template>
 
 <script>
+	import dropDown from '../components/Menus/dropDown'
 	import basicPage from './base/basicPage.wpy'
 	export default class stuTrend extends basicPage {
 		config = {
 			navigationBarTitleText: '导学信息',
 			enablePullDownRefresh: false
 		}
-		components = {}
-		data = {}
+		components = {
+			DropDown: dropDown
+		}
+		data = {
+			roleData: {
+				id: 'role',
+				currentData: '学生',
+				data: ['学生', '导师'],
+				isClick: false,
+				isHidden: true
+			},
+			roleIndex: 0,
+			optionData: [
+				[
+					{
+						id: 'school',
+						currentData: '所有学校',
+						data: ['所有学校', '西电', '成电'],
+						isClick: false,
+						isHidden: true
+					},
+					{
+						id: 'degree',
+						currentData: '所有学历',
+						data: ['所有学历', '本科', '硕士', '博士'],
+						isClick: false,
+						isHidden: true
+					}
+				],
+				[
+					{
+						id: 'trade',
+						currentData: '所有行业',
+						data: ['所有行业', '摔跤', '搏击'],
+						isClick: false,
+						isHidden: true
+					}
+				]
+			]
+		}
 		computed = {}
 		onLoad () {}
 		methods = {}
-		events = {}
+		events = {
+			'dropDownMenuClick': (key) => {
+				if (key === 'role') {
+					this.roleData.isClick = !this.roleData.isClick
+					this.roleData.isHidden = !this.roleData.isHidden
+				}
+				if (key === 'school') {
+					console.log(key)
+					console.log(this.optionData[0].isHidden)
+					this.optionData[0][0].isClick = !this.optionData[0][0].isClick
+					this.optionData[0][0].isHidden = !this.optionData[0][0].isHidden
+				}
+				if (key === 'degree') {
+					this.optionData[0][1].isClick = !this.optionData[0][1].isClick
+					this.optionData[0][1].isHidden = !this.optionData[0][1].isHidden
+				}
+				if (key === 'trade') {
+					this.optionData[1][0].isClick = !this.optionData[1][0].isClick
+					this.optionData[1][0].isHidden = !this.optionData[1][0].isHidden
+				}
+				this.$apply()
+			},
+			'dropDownItemClick': (key, index) => {
+				if (key === 'role') {
+					this.roleData.isClick = !this.roleData.isClick
+					this.roleData.isHidden = !this.roleData.isHidden
+					this.roleData.currentData = this.roleData.data[index]
+					this.roleIndex = index
+				}
+				if (key === 'school') {
+					this.optionData[0][0].isClick = !this.optionData[0][0].isClick
+					this.optionData[0][0].isHidden = !this.optionData[0][0].isHidden
+					this.optionData[0][0].currentData = this.optionData[0][0].data[index]
+				}
+				if (key === 'degree') {
+					this.optionData[0][1].isClick = !this.optionData[0][1].isClick
+					this.optionData[0][1].isHidden = !this.optionData[0][1].isHidden
+					this.optionData[0][1].currentData = this.optionData[0][1].data[index]
+				}
+				if (key === 'trade') {
+					this.optionData[1][0].isClick = !this.optionData[1][0].isClick
+					this.optionData[1][0].isHidden = !this.optionData[1][0].isHidden
+					this.optionData[1][0].currentData = this.optionData[1][0].data[index]
+				}
+			}
+		}
 		props = {}
 	}
 </script>
