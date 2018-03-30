@@ -5,7 +5,8 @@
 		&-info {
 			position: relative;
 			display: flex;
-			/*flex-flow: row nowrap;*/
+			width: 100%;
+			flex-flow: row nowrap;
 			image {
 				margin-left: 10rpx;
 				margin-top: 5rpx;

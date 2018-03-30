@@ -8,6 +8,9 @@
 		padding-right: 30rpx;
 		font-size: 28rpx;
 		&-search {
+			&-active {
+				color: black;
+			}
 			color: #999999;
 			height: 90rpx;
 			display: inline-flex;
@@ -110,9 +113,9 @@
 		<view class="stuTrend-search">
 			<div>
 				<image src="../../static/images/stuTrend/search.svg" />
-				<input placeholder="搜索姓名，行业，单位，专业" maxlength="20"/>
+				<input placeholder="搜索姓名，行业，单位，专业" maxlength="20" bindinput="searchItemInput" class="stuTrend-search-active"/>
 			</div>
-			<view class="stuTrend-search-button">搜索</view>
+			<view class="stuTrend-search-button" @tap="searchButtonClick">搜索</view>
 		</view>
 		<view class="stuTrend-option">
 			<view class="stuTrend-option-item">
@@ -125,18 +128,32 @@
 			</repeat>
 		</view>
 		<view class="stuTrend-infoList">
-			<repeat for="{{[1, 2, 3]}}">
+			<repeat for="{{studentCurrentList}}" item="item" wx:if="{{roleData.currentData === '学生'}}">
 				<view class="stuTrend-infoList-item">
-					<image src="../../static/images/logo.png" class="stuTrend-infoList-item-image"/>
+					<image src="{{item.avatar}}" class="stuTrend-infoList-item-image"/>
 					<view class="stuTrend-infoList-item-info">
-						<view class="stuTrend-infoList-item-info-name">马化腾</view>
+						<view class="stuTrend-infoList-item-info-name">{{item.name}}</view>
 						<view class="stuTrend-infoList-item-info-more">
-							<view class="stuTrend-infoList-item-info-more-1">腾讯控股有限公司</view>
-							<view>CEO</view>
+							<view class="stuTrend-infoList-item-info-more-1">{{item.school}}</view>
+						<view>{{item.profession}}</view>
 						</view>
-						<view class="stuTrend-infoList-item-info-introduce">遇到喜欢的东西就买下来，钱不是真正的花掉了，而是换了另一种形式陪在你身边</view>
+						<view class="stuTrend-infoList-item-info-introduce">{{item.intro}}</view>
 					</view>
-					<image class="stuTrend-infoList-item-tag" src="../../static/images/personalCenter/arrow-right.svg"/>
+					<image class="stuTrend-infoList-item-tag" src="../../static/images/personalCenter/arrow-right.svg" id="{{item.userId}}" @tap="jumpToUserPage"/>
+				</view>
+			</repeat>
+			<repeat for="{{tutorCurrentList}}" item="item" wx:if="{{roleData.currentData === '导师'}}">
+				<view class="stuTrend-infoList-item">
+					<image src="{{item.avatar}}" class="stuTrend-infoList-item-image"/>
+					<view class="stuTrend-infoList-item-info">
+						<view class="stuTrend-infoList-item-info-name">{{item.name}}</view>
+						<view class="stuTrend-infoList-item-info-more">
+							<view class="stuTrend-infoList-item-info-more-1">{{item.company}}</view>
+							<view>{{item.field}}</view>
+						</view>
+						<view class="stuTrend-infoList-item-info-introduce">{{item.intro}}</view>
+					</view>
+					<image class="stuTrend-infoList-item-tag" src="../../static/images/personalCenter/arrow-right.svg" id="{{item.userId}}" @tap="jumpToUserPage"/>
 				</view>
 			</repeat>
 		</view>
@@ -155,6 +172,17 @@
 			DropDown: dropDown
 		}
 		data = {
+			searchText: '',
+			studentList: [],
+			tutorList: [],
+			studentAvatarList: [],
+			searchStudentAvatarList: [],
+			searchTutorAvatarList: [],
+			tutorAvatarList: [],
+			studentCurrentList: [],
+			tutorCurrentList: [],
+			studentKeyWord: {},
+			tutorKeyWord: {},
 			roleData: {
 				id: 'role',
 				currentData: '学生',
@@ -168,7 +196,7 @@
 					{
 						id: 'school',
 						currentData: '所有学校',
-						data: ['所有学校', '西电', '成电'],
+						data: ['所有学校'],
 						isClick: false,
 						isHidden: true
 					},
@@ -184,7 +212,7 @@
 					{
 						id: 'trade',
 						currentData: '所有行业',
-						data: ['所有行业', '摔跤', '搏击'],
+						data: ['所有行业'],
 						isClick: false,
 						isHidden: true
 					}
@@ -192,8 +220,110 @@
 			]
 		}
 		computed = {}
-		onLoad () {}
-		methods = {}
+		shortenedInfo (str) {
+			if (str.length >= 6) {
+				return str.slice(0, 6) + '...'
+			} else {
+				return str
+			}
+		}
+		onLoad () {
+			this.$API('GetSearchTutorList')
+				.then(res => {
+					res.data.map(item => {
+						this.tutorAvatarList.push(item.userId + '-avatar.jpg')
+						this.tutorList.push(item)
+					})
+					this.tutorCurrentList = this.tutorList
+					this.$API('PostUserImagesName', this.tutorAvatarList)
+						.then(res => {
+							res.data.map((item, index) => {
+								this.tutorList[index].avatar = item
+							})
+							this.tutorCurrentList = this.tutorList
+							this.$apply()
+						})
+				})
+			this.$API('GetSearchStudentList')
+				.then(res => {
+					res.data.map(item => {
+						this.studentAvatarList.push(item.userId + '-avatar.jpg')
+					})
+					this.studentList = res.data
+					this.studentCurrentList = this.studentList
+					this.$API('PostUserImagesName', this.studentAvatarList)
+						.then(res => {
+							res.data.map((item, index) => {
+								this.studentList[index].avatar = item
+							})
+							this.studentCurrentList = this.studentList
+							this.$apply()
+					})
+				})
+			this.$API('GetDirection')
+				.then(res => {
+					res.data.map(item => {
+						this.optionData[1][0].data.push(item.directionName)
+					})
+					this.$apply()
+				})
+			this.$API('GetSchoolList')
+				.then(res => {
+					res.data.map(item => {
+						this.optionData[0][0].data.push(item.schoolName)
+					})
+					this.$apply()
+				})
+		}
+		methods = {
+			searchButtonClick () {
+				if (this.roleData.currentData === '学生') {
+					this.searchStudentAvatarList = []
+					this.$API('GetSearchStudentList', {word: this.searchText})
+						.then(res => {
+							res.data.map(item => {
+								this.searchStudentAvatarList.push(item.userId + '-avatar.jpg')
+							})
+							this.studentList = res.data
+							this.$apply()
+							this.$API('PostUserImagesName', this.searchStudentAvatarList)
+								.then(res => {
+									res.data.map((item, index) => {
+										this.studentList[index].avatar = item
+									})
+									this.studentCurrentList = this.studentList
+									this.$apply()
+								})
+						})
+				} else {
+					this.searchTutorAvatarList = []
+					this.$API('GetSearchTutorList', {word: this.searchText})
+						.then(res => {
+							res.data.map(item => {
+								this.searchTutorAvatarList.push(item.userId + '-avatar.jpg')
+							})
+							this.tutorList = res.data
+							this.$apply()
+							this.$API('PostUserImagesName', this.searchTutorAvatarList)
+								.then(res => {
+									res.data.map((item, index) => {
+										this.tutorList[index].avatar = item
+									})
+									this.tutorCurrentList = this.tutorList
+									this.$apply()
+								})
+						})
+				}
+			},
+			searchItemInput (event) {
+				this.searchText = event.detail.value
+			},
+			jumpToUserPage (event) {
+				this.$WX.setStorage('visit_userId', parseInt(event.target.id))
+				this.$WX.setStorage('visit_role', this.$WX.getStorage('role'))
+				this.$WX.jumpTo('./user/personalPage')
+			}
+		}
 		events = {
 			'dropDownMenuClick': (key) => {
 				if (key === 'role') {
@@ -201,8 +331,6 @@
 					this.roleData.isHidden = !this.roleData.isHidden
 				}
 				if (key === 'school') {
-					console.log(key)
-					console.log(this.optionData[0].isHidden)
 					this.optionData[0][0].isClick = !this.optionData[0][0].isClick
 					this.optionData[0][0].isHidden = !this.optionData[0][0].isHidden
 				}
@@ -226,17 +354,77 @@
 				if (key === 'school') {
 					this.optionData[0][0].isClick = !this.optionData[0][0].isClick
 					this.optionData[0][0].isHidden = !this.optionData[0][0].isHidden
-					this.optionData[0][0].currentData = this.optionData[0][0].data[index]
+					this.optionData[0][0].currentData = this.shortenedInfo(this.optionData[0][0].data[index])
+					if (this.studentKeyWord['school'] !== undefined) {
+						if (this.studentKeyWord['school'] !== this.optionData[0][0].data[index]) {
+							if (index === 0) {
+								delete this.studentKeyWord['school']
+							} else {
+								this.studentKeyWord['school'] = this.optionData[0][0].data[index]
+							}
+						} else {
+							this.studentKeyWord['school'] = this.optionData[0][0].data[index]
+						}
+						this.studentCurrentList = this.studentList
+					} else {
+						if (index === 0) {
+							delete this.studentKeyWord['school']
+						} else {
+							this.studentKeyWord['school'] = this.optionData[0][0].data[index]
+						}
+					}
+					this.studentCurrentList = this.$UTIL.filtrate(this.studentCurrentList, this.studentKeyWord)
+					this.$apply()
 				}
 				if (key === 'degree') {
 					this.optionData[0][1].isClick = !this.optionData[0][1].isClick
 					this.optionData[0][1].isHidden = !this.optionData[0][1].isHidden
 					this.optionData[0][1].currentData = this.optionData[0][1].data[index]
+					if (this.studentKeyWord['degree'] !== undefined) {
+						if (this.studentKeyWord['degree'] !== index.toString()) {
+							if (index === 0) {
+								delete this.studentKeyWord['degree']
+							} else {
+								this.studentKeyWord['degree'] = index.toString()
+							}
+						} else {
+							this.studentKeyWord['degree'] = index.toString()
+						}
+						this.studentCurrentList = this.studentList
+					} else {
+						if (index === 0) {
+							delete this.studentKeyWord['degree']
+						} else {
+							this.studentKeyWord['degree'] = index.toString()
+						}
+					}
+					this.studentCurrentList = this.$UTIL.filtrate(this.studentCurrentList, this.studentKeyWord)
+					this.$apply()
 				}
 				if (key === 'trade') {
 					this.optionData[1][0].isClick = !this.optionData[1][0].isClick
 					this.optionData[1][0].isHidden = !this.optionData[1][0].isHidden
-					this.optionData[1][0].currentData = this.optionData[1][0].data[index]
+					this.optionData[1][0].currentData = this.shortenedInfo(this.optionData[1][0].data[index])
+					if (this.studentKeyWord['trade'] !== undefined) {
+						if (this.studentKeyWord['trade'] !== index.toString()) {
+							if (index === 0) {
+								delete this.studentKeyWord['trade']
+							} else {
+								this.studentKeyWord['trade'] = index.toString()
+							}
+						} else {
+							this.studentKeyWord['trade'] = index.toString()
+						}
+						this.studentCurrentList = this.studentList
+					} else {
+						if (index === 0) {
+							delete this.studentKeyWord['trade']
+						} else {
+							this.studentKeyWord['trade'] = index.toString()
+						}
+					}
+					this.tutorCurrentList = this.$UTIL.filtrate(this.tutorCurrentList, this.tutorKeyWord)
+					this.$apply()
 				}
 			}
 		}

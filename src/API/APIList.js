@@ -32,5 +32,7 @@ export default {
 	GetFlowerRank: { url: '/rank', method: 'get', data: {}, headers: {} },
 	GetArticle: { url: '/article', method: 'get_restful', data: {}, headers: {} },
 	GetBanner: { url: '/banner', method: 'get', data: {}, headers: {} },
-	PostArticle: { url: '/article', method: 'post', data: {title: '', content: ''}, headers: {} }
+	PostArticle: { url: '/article', method: 'post', data: {title: '', content: ''}, headers: {} },
+	GetSearchStudentList: { url: '/search/student', method: 'get', data: {}, headers: {} },
+	GetSearchTutorList: { url: '/search/tutor', method: 'get', data: {}, headers: {} }
 }

@@ -21,8 +21,7 @@
 				'pages/article',
 				'pages/home',
 				'pages/writeArticle',
-				'pages/stuTrend',
-				'pages/dropDown'
+				'pages/stuTrend'
 			],
 			'window': {
 				'backgroundTextStyle': 'light',
