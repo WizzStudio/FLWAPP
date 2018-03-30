@@ -1,0 +1,51 @@
+<style lang="scss" type="text/scss">
+	@import "../../common/styles/mixins";
+	@import "../../common/styles/variables";
+	@import "../../common/styles/common";
+
+</style>
+
+<template>
+	<div>
+		<sinSelector :list.sync="list" type="single"></sinSelector>
+	</div>
+</template>
+
+<script>
+	import wepy from 'wepy'
+	import basicSelector from '../../components/Selectors/BasicSelector'
+
+	export default class DonateDialog extends wepy.component {
+		config = {}
+		components = {
+			sinSelector: basicSelector
+		}
+		data = {
+			list: [
+				{
+					pick: false,
+					key: '1朵',
+					value: 1
+				},
+				{
+					pick: false,
+					key: '2朵',
+					value: 2
+				},
+				{
+					pick: false,
+					key: '5朵',
+					value: 5
+				}
+			]
+		}
+
+		onLoad () {}  // 在Page和Component共用的生命周期函数
+		onShow () {}  // 只在Page中存在的页面生命周期函数
+		events = {
+			'choose': (key, data) => {
+				console.log(key, data)
+			}
+		}
+	}
+</script>
