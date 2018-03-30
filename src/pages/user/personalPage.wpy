@@ -68,6 +68,9 @@
 		</view>
 
 		<!--<view class="musk"></view>-->
+		<view wx:if="{{isShowDialog}}">
+			<dialog></dialog>
+		</view>
 	</view>
 </template>
 
@@ -75,6 +78,7 @@
 	import page from '../base/basicPage.wpy'
 	import userCard from '../../components/Cards/userCard'
 	import BasicButton from '../../components/Buttons/BasicButton'
+	import donateDialog from '../../components/Dialogs/donateDialog'
 
 	export default class PersonalPage extends page {
 		config = {
@@ -82,7 +86,8 @@
 		}
 		components = {
 			usrCard: userCard,
-			donateBtn: BasicButton
+			donateBtn: BasicButton,
+			dialog: donateDialog
 		}
 		data = {
 			role: 1,
@@ -107,7 +112,8 @@
 				'company': 'default',
 				'position': 'default',
 				'stuNum': 1
-			}
+			},
+			isShowDialog: false // 是否显示捐赠弹框
 		}
 		computed = {}
 
@@ -150,6 +156,10 @@
 		customFunction () {}
 
 		methods = {}
-		events = {}
+		events = {
+			'btn-click': (key) => {
+				this.isShowDialog = true
+			}
+		}
 	}
 </script>
