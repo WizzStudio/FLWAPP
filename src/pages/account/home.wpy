@@ -34,7 +34,8 @@
 
   export default class Home extends page {
     config = {
-      navigationBarTitleText: '个人中心'
+      navigationBarTitleText: '个人中心',
+			enableDropDownRefresh: false
     }
     components = {
       Info: GeneralIntroduction,
@@ -167,6 +168,7 @@
           })
       } else if (this.$WX.getStorage('role') === 2) {
         this.isStudent = false
+				this.menuList[1].value = '发表文章'
         this.$API('TutorCenter')
           .then(data => {
             this.treatAjaxDatasTutor(data.data)
@@ -194,22 +196,28 @@
           this.$WX.jumpTo('./redFlower')
         }
         if (key === 'stu') {
-          this.$WX.toast('前往捐赠学生页')
+					this.$WX.jumpTo('./donate')
         }
         if (key === 'tutor') {
           this.$WX.jumpTo('./donate')
         }
         if (key === 'clock') {
-          this.$WX.toast('前往沙漏页')
+					this.$WX.jumpTo('./time')
         }
-        if (key === 'workedTime') { this.$WX.jumpTo('./time') }
+        if (key === 'workedTime') {
+					this.$WX.jumpTo('./time')
+        }
       }, 200),
       'menu-click': this.$UTIL.debounce((key, event) => {
         if (key === 'record') {
           this.$WX.jumpTo('./record')
         }
         if (key === 'application') {
-          this.$WX.toast('前往申请活动')
+          if (this.isStudent) {
+						this.$WX.jumpTo('./activity')
+					} else {
+						this.$WX.jumpTo('../writeArticle')
+					}
         }
         if (key === 'message') {
           this.$WX.toast('前往消息通知')

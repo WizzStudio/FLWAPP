@@ -185,7 +185,7 @@
 			tutorKeyWord: {},
 			roleData: {
 				id: 'role',
-				currentData: '学生',
+				currentData: '',
 				data: ['学生', '导师'],
 				isClick: false,
 				isHidden: true
@@ -228,6 +228,11 @@
 			}
 		}
 		onLoad () {
+			if (this.$WX.getStorage('role') === 2) {
+				this.roleData.currentData = '导师'
+			} else {
+				this.roleData.currentData = '学生'
+			}
 			this.$API('GetSearchTutorList')
 				.then(res => {
 					res.data.map(item => {
@@ -260,12 +265,11 @@
 							this.$apply()
 					})
 				})
-			this.$API('GetDirection')
+			this.$API('GetTrade')
 				.then(res => {
 					res.data.map(item => {
-						this.optionData[1][0].data.push(item.directionName)
+						this.optionData[1][0].data.push(item.tradeName)
 					})
-					this.$apply()
 				})
 			this.$API('GetSchoolList')
 				.then(res => {

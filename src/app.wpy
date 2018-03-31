@@ -17,6 +17,8 @@
 				'pages/account/donate',
 				'pages/account/redFlower',
 				'pages/account/time',
+				'pages/account/scholarship',
+				'pages/account/activity',
 				'pages/user/personalPage',
 				'pages/article',
 				'pages/home',

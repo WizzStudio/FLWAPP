@@ -1,0 +1,32 @@
+<style lang="scss" type="text/scss">
+
+</style>
+
+<template>
+	<view>
+	</view>
+	<picker />
+</template>
+
+<script>
+	import basicPage from '../base/basicPage.wpy'
+	import Picker from '../../components/Infos/Picker'
+
+	export default class Scholarship extends basicPage {
+		config = {
+			enableDropDownRefresh: false,
+			navigationBarTitleText: '申请奖学金'
+		}
+		components = {
+			Picker: Picker
+		}
+		data = {
+			flowerAmount: 10,
+			flowerOption: []
+		}
+		onLoad () {
+			this.flowerAmount = this.$WX.getStorage('redFlowerNum')
+		}
+		methods = {}
+	}
+</script>

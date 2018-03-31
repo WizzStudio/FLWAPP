@@ -1,0 +1,24 @@
+<style lang="scss" type="text/scss">
+
+</style>
+
+<template>
+
+</template>
+
+<script>
+	import basicPage from '../base/basicPage.wpy'
+
+	export default class Activity extends basicPage {
+		config = {
+			navigationBarTitleText: '申请活动',
+			enablePullDownRefresh: false
+		}
+		components = {}
+		data = {}
+		onLoad () {}
+		methods = {}
+		events = {}
+		props = {}
+	}
+</script>

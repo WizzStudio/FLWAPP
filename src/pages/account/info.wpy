@@ -298,7 +298,8 @@
       sexData: ['请选择', '男', '女'],
 			degreeData: ['请选择', '本科', '硕士', '博士'],
 			schoolList: ['请选择'],
-			directionList: ['请选择']
+			directionList: ['请选择'],
+			tradeList: ['请选择']
     }
     computed = {}
 
@@ -446,8 +447,8 @@
           name: '行业',
           type: 'picker',
           mode: 'selector',
-          data: this.directionList,
-          value: this.directionList[data.trade] || this.directionList[0],
+          data: this.tradeList,
+          value: this.tradeList[data.trade] || this.tradeList[0],
           id: 'orientation'
         },
         {
@@ -539,14 +540,14 @@
         this.avatar = this.$WX.getStorage('avatar')
         this.identity = this.$WX.getStorage('identity')
       } else {
-				this.$API('GetDirection')
-					.then(res => {
-						res.data.forEach(item => {
-							this.directionList.push(item.directionName)
-						})
-					})
         if (this.$WX.getStorage('role') === 1) {
           this.identity = 'student'
+					this.$API('GetDirection')
+						.then(res => {
+							res.data.forEach(item => {
+								this.directionList.push(item.directionName)
+							})
+						})
 					this.$API('GetSchoolList')
 						.then(res => {
 							res.data.forEach(item => {
@@ -567,6 +568,12 @@
           })
         } else if (this.$WX.getStorage('role') === 2) {
           this.identity = 'tutor'
+					this.$API('GetTrade')
+						.then(res => {
+							res.data.forEach(item => {
+								this.TradeList.push(item.tradeName)
+							})
+						})
           this.$API('TutorProfile')
             .then(data => {
               this.treatAjaxDatasTutor(data.data)
