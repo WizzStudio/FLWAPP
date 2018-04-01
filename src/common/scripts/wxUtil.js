@@ -22,10 +22,10 @@ const ajax = ({url, method, data, headers}) => {
  * @param url {String} 跳转相对路径
  * @return {Promise}
  */
-const tabBarUrl = ['./home', './account/home', './stuTrend']
+const tabBarUrl = ['./home', './account/home', './stuTrend', '../home']
 const jumpTo = (url) => {
 	//	console.log(url)
-	if (url === tabBarUrl[0] || url === tabBarUrl[1] || url === tabBarUrl[2]) {
+	if (url === tabBarUrl[0] || url === tabBarUrl[1] || url === tabBarUrl[2] || url === tabBarUrl[3]) {
 		return configFn(wx.switchTab, {url})
 	} else {
 		return configFn(wx.navigateTo, {url})
@@ -57,11 +57,14 @@ const toast = (title, icon = 'none', duration = 1500, hasMask = false) => {
 	})
 }
 
-const modal = (content, fn) => {
-	return configFn(wx.showModal, {
-		title: '提示',
-		content: content, //	模态框内容
-		success: fn
+const modal = (content, title) => {
+	return new Promise((resolve, reject) => {
+		wx.showModal({
+			title: title,
+			content: content,
+			success: res => resolve(res),
+			fail: err => reject(err)
+		})
 	})
 }
 
@@ -150,7 +153,14 @@ const changeNavBarColor = (frontColor0x = '#ffffff', backgroundColor0x = '#db4d3
 		animation
 	})
 }
-
+const getUserInfo = () => {
+	return new Promise((resolve, reject) => {
+		wx.getUserInfo({
+			success: res => resolve(res),
+			fail: err => reject(err)
+		})
+	})
+}
 export {
 	ajax, // 发送ajax请求
 	jumpTo, // page跳转
@@ -172,5 +182,6 @@ export {
 	clearStorage, // 清空缓存数据
 	changeNavBarColor, // 改变顶部栏的颜色
 	chooseImg,	//	选择图片
-	UpLoadFile	//	上传文件
+	UpLoadFile,	//	上传文件
+	getUserInfo
 }

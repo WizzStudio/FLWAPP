@@ -1,4 +1,5 @@
 import { setStorage } from './wxUtil';
+import { b64utoutf8 } from 'jsrsasign';
 
 /* 工具函数 */
 /**
@@ -147,12 +148,34 @@ const verifyParams = (ruleObj, exampleObj) => {
 
 // 解析token,获取userID， role， openID, exp
 const parseToken = (token) => {
-	let info = JSON.parse(atob(token.split('.')[1]))
+	// 小程序不支持atob，所有引入了jsrsasign库的 b64utoutf8
+	// let info = JSON.parse(atob(token.split('.')[1]))
+	let info = JSON.parse(b64utoutf8(token.split('.')[1]))
 	setStorage('exp', info.exp * 1000)
 	setStorage('role', info.role)
 	setStorage('userId', info.userid)
 	setStorage('openId', info.openid)
 	//	setStorage('token', info.exp)
+}
+
+// 	source: 需要筛选的原资源
+//	itemName: 要筛选的属性名
+//	itemValue: 指定的属性值
+const filtrateItem = (source, itemName, itemValue) => {
+	return source.filter((item) => {
+		return item[itemName] === itemValue
+	})
+}
+
+// 	source: 需要筛选的原资源
+//	关键字: {name: value}
+const filtrate = (source, keyWord) => {
+	const keyWordName = Object.keys(keyWord)
+	const keyWordValue = Object.values(keyWord)
+	keyWordName.map((item, index) => {
+		source = filtrateItem(source, item, keyWordValue[index])
+	})
+	return source
 }
 
 export {
@@ -168,5 +191,6 @@ export {
 	verifyParams,
 	transformTime,
 	transformTimeToUnix,
-	parseToken
+	parseToken,
+	filtrate
 }

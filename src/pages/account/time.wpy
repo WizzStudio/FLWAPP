@@ -157,8 +157,7 @@
 		}
 		methods = {
 			buttonClick () {
-				//	this.$WX.jumpTo('./')
-				this.$WX.toast('跳转到申请活动页面')
+				this.$WX.jumpTo('./activity')
 			}
 		}
 		events = {}

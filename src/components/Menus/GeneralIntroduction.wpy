@@ -71,7 +71,7 @@
     <div class="info-module-2">
       <div class="div-name">
         <span class="info-module-2-name">{{infoDatas.name?infoDatas.name:'请填写'}}</span>
-        <span class="info-module-2-basic-statu {{isStudent? statuClass[infoDatas.status]: tutorClass[infoDatas.isTutor]}}">{{isStudent? statuTitle[infoDatas.status]: tutorTitle[infoDatas.isTutor]}}</span>
+        <span class="info-module-2-basic-statu {{isStudent? statuClass[infoDatas.status]: tutorClass[infoDatas.isTutor]}}" wx:if="{{infoDatas.status !== -1}}">{{isStudent? statuTitle[infoDatas.status]: tutorTitle[infoDatas.isTutor]}}</span>
       </div>
       <div class="info-module-2-more">
         <span>{{isStudent? schoolList[infoDatas.schoolId]: infoDatas.company}} | {{isStudent? infoDatas.profession: infoDatas.position }}</span>
@@ -88,17 +88,15 @@
   import {toast} from '../../common/scripts/wxUtil'
   export default class GeneralIntroduction extends wepy.component {
     data = {
-      statuTitle: ['审核中', '审核未通过', '已通过审核'],
+      statuTitle: ['审核中', '审核未通过', '已通过审核', '已停用'],
       statuClass: ['info-module-2-checking', 'info-module-2-failed', 'info-module-2-success'],
       schoolList: ['请填写', '电子科技大学', '西安电子科技大学'],
       tutorTitle: ['审核未通过', '导师'],
       tutorClass: ['info-module-2-failed', 'info-module-2-success']
     }
     components = {}
-    computed = {}
 
     onLoad () {}
-    customFunction () {}
 
     methods = {
       click (event) {

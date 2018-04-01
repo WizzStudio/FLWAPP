@@ -43,21 +43,18 @@
 		components = {}
 
 		onLoad () {
-			const that = this
-			this.$WX.setStorage('role', 1)
-			this.$WX.wxLogin().then(() => {
-				wx.getUserInfo({
-					success: function() {
-						that.$WX.jumpTo('./stuTrend')
-					}
-				})
-			})
+			this.$WX.wxLogin()
+				.then(
+					this.$WX.getUserInfo()
+						.then(res => {
+							this.$WX.setStorage('wxAvatar', res.userInfo.avatarUrl)
+							this.$WX.setStorage('wxName', res.userInfo.nickName)
+							this.$WX.jumpTo('./home')
+						})
+			)
 		}
 
-		onReady () {
-			//	this.$WX.jumpTo('user/personalPage')
-			//	this.$WX.jumpTo('./home')
-		}
+		onReady () {}
 		data = {
 			logoURL: '../static/images/logo.png'
 		}
