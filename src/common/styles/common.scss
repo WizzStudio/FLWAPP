@@ -157,6 +157,7 @@ view{
 .has {
 }
 
+
 /*栅格结构 pl15 等同于padding-left 15rpx，依次类推*/
 .pl15{padding-left: 15rpx;}
 .pl20{padding-left: 20rpx;}
@@ -165,6 +166,7 @@ view{
 .pr40{padding-right: 40rpx;}
 .pr30{padding-right: 30rpx;}
 .pr20{padding-right: 20rpx;}
+.pr30{padding-right: 30rpx;}
 .pr15{padding-right: 15rpx;}
 
 .pt5{padding-top: 5rpx;}
@@ -227,3 +229,4 @@ p.title-bar{
 		vertical-align: bottom;
 	}
 }
+
