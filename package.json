@@ -11,6 +11,7 @@
   "author": "ACERY1 <y841034081@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "js-base64": "^2.4.3",
     "jsrsasign": "^8.0.6",
     "moment": "^2.21.0",
     "qiniu-js": "^2.1.2",

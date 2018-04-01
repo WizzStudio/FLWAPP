@@ -8,6 +8,7 @@
     display: flex;
     flex-flow: column nowrap;
     padding-left: 30rpx;
+		padding-bottom: 50rpx;
   }
   .info-item-container {
     @include fontSizeColor(32rpx, #333333);
@@ -500,7 +501,6 @@
 				this.$API('SendStudentProfile', JSON.stringify(datas))
           .then(res => {
             if (res.code === 0) {
-              this.$WX.setStorage('status', 0)
               this.$WX.toast('提交成功')
               this.$WX.jumpTo('home')
             } else {
@@ -521,7 +521,6 @@
         this.$API('SendTutorProfile', JSON.stringify(datas))
           .then(data => {
             if (data.data.code === 0) {
-              this.$WX.setStorage('status', 0)
               this.$WX.toast('提交成功')
             } else {
               this.$WX.toast('提交失败')
@@ -706,11 +705,11 @@
 							return res
 						})
 						.then(res => {
-							//	console.log(res)
 							let token = res.data
 							this.$WX.UpLoadFile(imgPath, {'key': imgName, token: token})
 								.then(res => {
-									//	console.log(res)
+									this.$WX.setStorage('hasAvatar', true)
+									this.$WX.setStorage('hasChangeAvatar', true)
 								})
 						})
 				})

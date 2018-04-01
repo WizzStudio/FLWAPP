@@ -1,4 +1,5 @@
 import { setStorage } from './wxUtil';
+import { b64utoutf8 } from 'jsrsasign';
 
 /* 工具函数 */
 /**
@@ -147,7 +148,9 @@ const verifyParams = (ruleObj, exampleObj) => {
 
 // 解析token,获取userID， role， openID, exp
 const parseToken = (token) => {
-	let info = JSON.parse(atob(token.split('.')[1]))
+	// 小程序不支持atob，所有引入了jsrsasign库的 b64utoutf8
+	// let info = JSON.parse(atob(token.split('.')[1]))
+	let info = JSON.parse(b64utoutf8(token.split('.')[1]))
 	setStorage('exp', info.exp * 1000)
 	setStorage('role', info.role)
 	setStorage('userId', info.userid)

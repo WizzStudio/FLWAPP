@@ -48,7 +48,7 @@
 			<view><span>{{dropDownData.currentData}}</span></view>
 			<image src="../../static/images/stuTrend/arrow-down.svg"/>
 		</view>
-		<view class="dropDown-info dropDown-info-active" @tap="menuClick" wx:if="{{dropDownData.isClick}}">
+		<view class="dropDown-info dropDown-info-active" @tap="menuClick" wx:if="{{dropDownData.isClick}}" data-name="{{dropDownData.id}}">
 			<view><span>{{dropDownData.currentData}}</span></view>
 			<image src="../../static/images/stuTrend/arrow-down_active.svg"/>
 		</view>
