@@ -138,7 +138,6 @@
     }
     onLoad () {
 			if (this.$WX.getStorage('hasAvatar') !== true) {
-				console.log(123)
 				this.avatar = this.$WX.getStorage('wxAvatar')
 				this.$apply()
 			}
@@ -214,6 +213,7 @@
 						.then(res => {
 							this.avatar = res.data
 							this.$WX.setStorage('avatar', res.data)
+							this.$WX.clearStorage('hasChangeAvatar')
 							this.$apply()
 						})
 				}
