@@ -1,11 +1,101 @@
 <style lang="scss" type="text/scss">
-
+	.scholarship {
+		width: 750rpx;
+		height: 1335rpx;
+		background-color: #f6f6f6;
+		padding-top: 100rpx;
+		display: flex;
+		flex-flow: column wrap;
+		align-items: center;
+		image {
+			width: 200rpx;
+			height: 200rpx;
+			border-radius: 50%;
+			margin-bottom: 70rpx;
+		}
+		&-info {
+			font-size: 32rpx;
+			line-height: 74rpx;
+			color: black;
+			font-weight: 400;
+			display: inline-flex;
+			justify-content: center;
+			align-items: center;
+			&-name {
+				width: 180rpx;
+				margin-left: 100rpx;
+				margin-right: 30rpx;
+			}
+			&-value {
+				width: 400rpx;
+			}
+		}
+	}
+	.activity-button {
+		margin-top: 62rpx;
+		button {
+			text-align: center;
+			font-size: 32rpx;
+			color: white;
+			width: 500rpx;
+			height: 80rpx;
+			background-color: #e01b1c;
+			border-radius: 60rpx;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			span {
+				margin-top: 5rpx;
+			}
+		}
+		button:active {
+			background-color: #a50707;
+		}
+	}
+	.scholarship-message {
+		display: flex;
+		justify-content: center;
+		margin-top: 20rpx;
+		font-size: 26rpx;
+		color: #999;
+	}
 </style>
 
 <template>
-	<view>
+	<view class="scholarship">
+		<image src="{{avatar}}"/>
+		<view class="scholarship-info">
+			<view class="scholarship-info-name">申请人：</view>
+			<view class="scholarship-info-value">{{info.name}}</view>
+		</view>
+		<view class="scholarship-info">
+			<view class="scholarship-info-name">学校：</view>
+			<view class="scholarship-info-value">{{info.school}}</view>
+		</view>
+		<view class="scholarship-info">
+			<view class="scholarship-info-name">手机号：</view>
+			<view class="scholarship-info-value">{{info.phone}}</view>
+		</view>
+		<view class="scholarship-info">
+			<view class="scholarship-info-name">身份证号：</view>
+			<view class="scholarship-info-value">{{info.idNumber}}</view>
+		</view>
+		<view class="scholarship-info">
+			<view class="scholarship-info-name">银行卡号：</view>
+			<view class="scholarship-info-value">{{info.bankNumber}}</view>
+		</view>
+		<view class="scholarship-info">
+			<view class="scholarship-info-name">申请数额：</view>
+			<view class="scholarship-info-value"><input type="number" placeholder="输入要提现的小红花数量" bindinput="onInput"/></view>
+		</view>
+		<view class="scholarship-message" style="text-align: center; padding-left: 50rpx;padding-right: 50rpx;padding-top: 20rpx;">
+			当前您还有{{redFlowerAmount}}朵小红花，最低提现10朵小红花，最高提现100朵小红花。
+		</view>
+		<view class="activity-button">
+			<button @tap="onSubmit"><span>申请</span></button>
+			<view class="scholarship-message">奖学金将直接转到银行卡，请保持手机通畅、银行卡无误</view>
+		</view>
 	</view>
-	<picker />
 </template>
 
 <script>
@@ -21,12 +111,54 @@
 			Picker: Picker
 		}
 		data = {
-			flowerAmount: 10,
-			flowerOption: []
+			redFlowerAmount: 10,
+			avatar: '',
+			info: {},
+			schoolList: [],
+			amount: 10
+		}
+		getAjaxInfo (data) {
+			this.info = {
+				name: data.name,
+				phone: data.phone,
+				idNumber: data.idNum,
+				bankNumber: data.bankNumber,
+				school: this.schoolList[data.schoolId]
+			}
 		}
 		onLoad () {
-			this.flowerAmount = this.$WX.getStorage('redFlowerNum')
+			this.avatar = this.$WX.getStorage('avatar')
+			this.redFlowerAmount = this.$WX.getStorage('redFlowerNum')
+			this.$API('GetSchoolList')
+				.then(res => {
+					res.data.forEach(item => {
+						this.schoolList.push(item.schoolName)
+					})
+					this.$API('GetWithdrawInfo')
+						.then(res => {
+							this.getAjaxInfo(res.data)
+							this.$apply()
+						})
+				})
+			this.$apply()
 		}
-		methods = {}
+		methods = {
+			onSubmit () {
+				if (this.amount < 10) {
+					this.$WX.toast('最低提现10朵小红花哟')
+				} else if (this.amount > this.redFlowerAmount) {
+					this.$WX.toast('不可以透支未来的小红花哟')
+				} else {
+					this.$API('PostWithdrawAmount', {amount: this.amount})
+						.then(res => {
+							this.$WX.toast('申请成功，我们会尽快处理')
+							this.$WX.jumpTo('./redFlower')
+						})
+				}
+			},
+			onInput (event) {
+				this.amount = event.detail.value
+			}
+		}
 	}
 </script>

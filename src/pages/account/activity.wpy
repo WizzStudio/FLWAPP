@@ -1,9 +1,146 @@
 <style lang="scss" type="text/scss">
+	@import "../../common/styles/variables";
+	@import "../../common/styles/mixins";
+	@import "../../common/styles/animate";
+	@import "../../common/styles/common";
+	.info-module {
+		height: 60rpx;
+		border-top: 20rpx solid #f4f4f4;
+		margin-bottom: 40rpx;
+		&-title {
+			font-size: 28rpx;
+			color: #999999;
+		}
+		&-title-son {
+			font-size: 24rpx;
+			color: #999999;
+		}
+		&-title-Icon {
+			height: 40rpx;
+			max-width: 10rpx;
+			margin-right: 20rpx;
+			margin-left: 30rpx;
+			background-color: #e10b1c;
+			color: #e10b1c;
+		}
+	}
+	.info-container {
+		display: flex;
+		flex-flow: column nowrap;
+		padding-left: 30rpx;
+		padding-bottom: 50rpx;
+	}
+	.info-item-container {
+		@include fontSizeColor(32rpx, #333333);
+		height: 88rpx;
+		border-bottom: 2rpx solid #f4f4f4;
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+	}
+	.info-item-input {
+		margin-left: 250rpx;
+		width: 300rpx;
+		text-align:right;
+		@include fontSizeColor(32rpx, #666666);
+	}
+	.Info-Tag {
+		position: absolute;
+		right: 10rpx;
+		width: 40rpx;
+		height: 60rpx;
+	}
+	.pickerValue {
+		position: absolute;
+		right: 50rpx;
+	}
+	.info-textarea {
+		height: 340rpx;
+		border: 2rpx solid #b7c6cd;
+		box-shadow: inset 0 2px 4px 0 hsla(0, 0%, 0%, 0.08);
+		border-radius: 12rpx;
+		width: 680rpx;
+		@include fontSizeColor(30rpx, #666666);
+	}
+	.info-textarea-count {
+		font-size: 20rpx;
+		color: #999;
+		padding: 10rpx;
+		margin-left: 620rpx;
+	}
 
+	.activity-button {
+		margin-top: 62rpx;
+		button {
+			text-align: center;
+			font-size: 32rpx;
+			color: white;
+			width: 500rpx;
+			height: 80rpx;
+			background-color: #e01b1c;
+			border-radius: 60rpx;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			span {
+				margin-top: 5rpx;
+			}
+		}
+		button:active {
+			background-color: #a50707;
+		}
+	}
+	.activity-message {
+		display: flex;
+		justify-content: center;
+		margin-top: 20rpx;
+		font-size: 26rpx;
+		color: #999;
+	}
 </style>
 
 <template>
-
+	<view>
+		<view class="info-module">
+			<div class="info-module-title-Icon">1</div>
+			<span class="info-module-title">基本信息</span>
+			<span class="info-module-title-son">（请务必填写）</span>
+		</view>
+		<div class="info-container">
+			<view class="info-item-container">
+				<label class="info-item-name info-item-repair-name">活动名称</label>
+				<input placeholder="请填写" class="info-item-input" bindinput="onInput" id="title" maxlength="25"/>
+			</view>
+			<view class="info-item-container">
+				<label class="info-item-name info-item-repair-name">理想时间</label>
+				<picker mode="date" start="{{beginDate}}" end="{{endDate}}" value="{{date}}" bindchange="bindDateChange" class="pickerValue">
+					{{date}}
+				</picker>
+				<image class="Info-Tag" src="../../static/images/personalCenter/arrow-right.svg"/>
+			</view>
+			<view class="info-item-container" wx:if="{{!isStudent}}">
+				<label class="info-item-name info-item-repair-name">使用沙漏</label>
+				<picker  value="{{index}}" bindchange="bindClockChange" class="pickerValue" range="{{clockArray}}">
+					{{activity.clock}}
+				</picker>
+				<image class="Info-Tag" src="../../static/images/personalCenter/arrow-right.svg"/>
+			</view>
+		</div>
+		<view class="info-module">
+			<div class="info-module-title-Icon">1</div>
+			<span class="info-module-title">活动详情</span>
+			<span class="info-module-title-son">（请务必填写）</span>
+		</view>
+		<div class="info-container">
+      <textarea class="info-textarea" maxlength="600" bindinput="onInput" id="content" value="{{activity.content}}">
+      </textarea>
+			<span class="info-textarea-count">{{activity.content.length}}/600</span>
+		</div>
+	</view>
+	<view class="activity-button">
+		<button @tap="onSubmit"><span>提交</span></button>
+		<view class="activity-message">申请反馈会以短信的方式通知您</view>
+	</view>
 </template>
 
 <script>
@@ -15,9 +152,89 @@
 			enablePullDownRefresh: false
 		}
 		components = {}
-		data = {}
-		onLoad () {}
-		methods = {}
+		data = {
+			isStudent: false,
+			date: '',
+			beginDate: '',
+			endDate: '',
+			clockArray:[],
+			activity: {
+				title: '',
+				content: '',
+				date: '',
+				clock: 0
+			}
+		}
+		onLoad () {
+			if (this.$WX.getStorage('role') === 2) {
+				this.isStudent = false
+			} else {
+				this.isStudent = true
+			}
+			const date = new Date()
+			const year = date.getFullYear()
+			const month = date.getMonth() + 1
+			const day = date.getDate()
+			this.beginDate = year + '-' + (month > 9 ? month : '0' + month) + '-' + (day > 9 ? day : '0' + day)
+			this.date = this.beginDate
+			this.endDate = year + 1 + this.beginDate.slice(4)
+			if (!this.isStudent) {
+				const clockNum = this.$WX.getStorage('clockNum')
+				for (let i = 0; i <= clockNum; i++) {
+					this.clockArray.push(i)
+				}
+			}
+			this.$apply()
+		}
+		methods = {
+			bindDateChange (event) {
+				if (this.date <= event.detail.value) {
+					this.date = event.detail.value
+				} else {
+					this.$WX.toast('不能回到过去哦')
+				}
+				this.$apply()
+			},
+			onInput (event) {
+				this.activity[event.target.id] = event.detail.value
+			},
+			bindClockChange (event) {
+				this.activity.clock = event.detail.value
+			},
+			onSubmit () {
+				this.activity['date'] = this.date
+				if (this.isStudent) {
+					this.$API('PostStuActivity', {
+						campaignName: this.activity.title,
+						idealTime: this.activity.date,
+						info: this.activity.info
+					})
+						.then(res => {
+							console.log(res)
+							this.$WX.toast('提交成功')
+							this.$WX.jumpTo('./home')
+						})
+						.catch(err => {
+							console.log(err)
+						})
+				} else {
+					this.$API('PostTutorActivity', {
+						campaignName: this.activity.title,
+						idealTime: this.activity.date,
+						info: this.activity.info,
+						clockNum: this.activity.clock
+					})
+						.then(res => {
+							console.log(res)
+							this.$WX.toast('提交成功')
+							this.$WX.jumpTo('./home')
+						})
+						.catch(err => {
+							console.log(err)
+						})
+				}
+			}
+		}
 		events = {}
 		props = {}
 	}

@@ -158,6 +158,7 @@
         this.$API('TutorCenter')
           .then(data => {
             this.treatAjaxDatasTutor(data.data)
+						this.$WX.setStorage('clockNum', data.data.clockNum)
           })
       } else {
 				this.infoDatas = {
