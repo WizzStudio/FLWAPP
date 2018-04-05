@@ -43,16 +43,15 @@
 </style>
 
 <template>
-		<scroll-view style="height: 101vh" class="donate-ul" scroll-y="true" bindscrolltoupper="loadMoreInfo">
+		<scroll-view style="height: 101vh" class="donate-ul" scroll-y="true">
 			<repeat for="{{InfoList}}" item="item">
-				<li>
+				<li id="{{item.userId}}" @tap="jumpToUserPage">
 					<image src="{{item.avatar}}" />
 					<div>
 						<span class="name">{{item.name}}</span>
 						<span class="other">{{item.company}}</span>
 						<span class="info">捐赠小红花{{item.sum}}朵</span>
 					</div>
-					<image src="../../static/images/personalCenter/arrow-right.svg" class="avatar" id="{{item.userId}}" @tap="getMoreInfo"/>
 				</li>
 			</repeat>
 		</scroll-view>
@@ -132,11 +131,17 @@
 		}
 
     methods = {
-      getMoreInfo (event) {
-        this.$WX.toast(event.target.id)
-      },
-			LoadMoreInfo () {
-				this.$WX.toast('fuck')
+			jumpToUserPage (event) {
+        if (this.$WX.getStorage('role') === 2) {
+          this.$WX.setStorage('visit_userId', parseInt(event.target.id))
+          this.$WX.setStorage('visit_role', 1)
+          this.$WX.jumpTo('./user/personalPage')
+        }
+        if (this.$WX.getStorage('role') === 1) {
+          this.$WX.setStorage('visit_userId', parseInt(event.target.id))
+          this.$WX.setStorage('visit_role', 2)
+          this.$WX.jumpTo('./user/personalPage')
+        }
 			}
     }
   }

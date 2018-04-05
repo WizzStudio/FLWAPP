@@ -279,14 +279,6 @@
       }, 200),
       'change-information': this.$UTIL.debounce((key, event) => {
         this.$WX.jumpTo('./info')
-        if (key === 'student') {
-          //  console.log('前往学生个人信息修改页')
-          //  跳转到修改页
-        }
-        if (key === 'teather') {
-          //  console.log('前往导师个人信息修改页')
-          //  跳转到修改页
-        }
       }, 200)
     }
   }
