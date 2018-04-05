@@ -1,0 +1,29 @@
+<style lang="scss" type="text/scss">
+	.confirmDialog{
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 999;
+		height: 100%;
+		width: 100%;
+		background: rgba(0,0,0,.5);
+	}
+</style>
+
+<template>
+	<div class="confirmDialog">
+		<slot name="cont"></slot>
+	</div>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class ConfirmDialog extends wepy.component {
+    onLoad () {}
+
+    data = {}
+    methods = {}
+    props = {}
+  }
+</script>
