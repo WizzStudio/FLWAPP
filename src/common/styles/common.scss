@@ -29,9 +29,26 @@ view{
 	@include colMidBox();
 }
 
+// 横向排列item的盒子
+.l-box__row{
+	@include rowBox();
+}
+
+// 纵向排列item的盒子
+.l-box__ver{
+	@include colBox();
+}
+
 
 .l-container__normal{
 	@include genContainer(0rpx,20rpx);
+}
+
+.relative{
+	position: relative;
+}
+.absolute{
+	position: absolute;
 }
 
 /* typefaces 28 18 16 14 12*/
@@ -73,6 +90,19 @@ view{
 		&-white {
 			@extend .t#{$i};
 			color: $white;
+			&__light {
+				@extend .t_light;
+			}
+			&__normal {
+				@extend .t_normal;
+			}
+			&__bold {
+				@extend .t_bold;
+			}
+		}
+		&-red {
+			@extend .t#{$i};
+			color: $red;
 			&__light {
 				@extend .t_light;
 			}
@@ -199,6 +229,7 @@ view{
 .mt15{margin-top: 15rpx;}
 .mt50{margin-top: 50rpx;}
 .mt60{margin-top: 60rpx;}
+.mt80{margin-top: 80rpx;}
 
 .mb15{margin-bottom: 15rpx;}
 .mb14{margin-bottom: 14rpx;}

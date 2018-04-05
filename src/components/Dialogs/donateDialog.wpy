@@ -3,22 +3,69 @@
 	@import "../../common/styles/variables";
 	@import "../../common/styles/common";
 
+	.donateDialog{
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 999;
+		height: 100%;
+		width: 100%;
+		.dd_musk{
+			width: 100%;
+			height: 60%;
+			background:rgba(0,0,0,.5);
+		}
+		.cont{
+			width: 100%;
+			height: 40%;
+			background: #ffffff;
+			box-sizing: border-box;
+		}
+		.closeBtn{
+			position: absolute;
+			top:40rpx;
+			right: 30rpx;
+			height: 28rpx;
+			width: 28rpx;
+		}
+	}
 </style>
 
 <template>
-	<div>
-		<sinSelector :list.sync="list" type="single"></sinSelector>
+	<div class="donateDialog">
+		<view class="dd_musk"></view>
+		<div class="l-box__ver pl20 pr20 relative cont">
+			<image src="../../static/images/donation/close.png" class="closeBtn" @tap="close"/>
+			<p class="t3-black__light t3 mt80">赠送小红花给{{stuName}},本年度他还能接受<span
+				class="t3-red__light t3-red t3">11{{aceptFlwNumber}}</span>朵小红花</p>
+			<div class="l-box__rowMid mt40">
+				<sinSelector :list.sync="list" type="single" key="follower"></sinSelector>
+			</div>
+			<div class="l-box__rowMid mt20">
+				<flwInput confirm-type="done" type="digit" placeholder="自定义" key="diyflw" width="360"></flwInput>
+				<p class="t3-c2__light ml40"> 剩余<span class="t3-red__light t4-red">12</span>朵小红花</p>
+			</div>
+
+			<view class="mt50 l-box__allMid">
+				<donateBtn :title.sync="btnTitle" width="324" height="80" color="red" key="donate" font="28" radius="60"></donateBtn>
+			</view>
+		</div>
 	</div>
+
 </template>
 
 <script>
 	import wepy from 'wepy'
 	import basicSelector from '../../components/Selectors/BasicSelector'
+	import BasicInput from '../../components/Inputs/BasicInput'
+	import BasicButton from '../../components/Buttons/BasicButton'
 
 	export default class DonateDialog extends wepy.component {
 		config = {}
 		components = {
-			sinSelector: basicSelector
+			sinSelector: basicSelector,
+			flwInput: BasicInput,
+			donateBtn: BasicButton
 		}
 		data = {
 			list: [
@@ -37,13 +84,42 @@
 					key: '5朵',
 					value: 5
 				}
-			]
+			],
+			coutFlwNumber: 12,
+			btnTitle: '赠送小红花'
 		}
-
-		onLoad () {}  // 在Page和Component共用的生命周期函数
-		onShow () {}  // 只在Page中存在的页面生命周期函数
+		props = {
+			stuName: String,
+			aceptFlwNumber: String,
+			leftFlwNumber: String
+		}
+		methods = {
+			close () {
+				console.log('close!')
+			}
+		}
+		_calcMaxFlw () {
+			this.coutFlwNumber = Math.max(parseInt(this.aceptFlwNumber, 10), parseInt(this.leftFlwNumber, 10))
+		}
+		onLoad () {
+			this._calcMaxFlw()
+		}  // 在Page和Component共用的生命周期函数
 		events = {
 			'choose': (key, data) => {
+				console.log(data)
+				this.btnTitle = `赠送${data.key}小红花`
+			},
+			'input-focus': (key, data) => {
+				this.list.map(item => {
+					item.pick = false
+				})
+			},
+			'input-typein': (key, data) => {
+				if (!data.detail.value) {
+					this.btnTitle = `赠送小红花`
+					return false
+				}
+				this.btnTitle = `赠送${data.detail.value}朵小红花`
 				console.log(key, data)
 			}
 		}

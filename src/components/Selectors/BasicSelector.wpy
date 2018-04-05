@@ -10,16 +10,36 @@
 	.red {
 		color: black;
 	}
+
+
+	.selector{
+		&-basic{
+			@include allMidBox();
+			width: 210rpx;
+			height: 60rpx;
+			font-size: 36rpx;
+			font-weight: 300;
+			margin-right: 30rpx;
+			border-radius: 10rpx;
+
+		}
+	}
+	.se_unpick{
+		color: $fontClr_2nd;
+		border:1px solid $borderClr;
+	}
+	.se_picked{
+		color: $red;
+		border:1px solid $red;
+	}
 </style>
 
 <template>
-
 	<repeat for="{{list}}" item="item" index="index" key="index">
-		<div @tap="choose({{index}})" class="{{item.pick ? 'black':'red'}}">
+		<div @tap="choose({{index}})" class="{{item.pick ? 'se_picked':'se_unpick'}} selector-basic">
 			<p>{{item.key}}</p>
 		</div>
 	</repeat>
-
 </template>
 
 <script>
@@ -28,7 +48,9 @@
 	export default class BasicSelector extends wepy.component {
 		onLoad () {}
 
-		data = {}
+		data = {
+			lastClick: null
+		}
 
 		_clearState () {
 			this.list.forEach((item) => {
@@ -39,7 +61,12 @@
 
 		methods = {
 			choose: function (index) {
-				console.log(this.type)
+				if (index === this.lastClick) {
+					this.list[index].pick = !this.list[index].pick
+					this.$emit('choose', this.key, this.list[index]) // 将选择的选项数据发射出去
+					return false
+				}
+				this.lastClick = index
 				if (this.type !== 'single' && this.type !== 'muti') {
 					throw new Error('selector.props.type ERROR: you should choose muti or single!')
 				}
@@ -72,7 +99,8 @@
 						value: 3
 					}
 				]
-			} // 传入选框的各选项
+			}, // 传入选框的各选项
+			$class: String
 		}
 	}
 </script>

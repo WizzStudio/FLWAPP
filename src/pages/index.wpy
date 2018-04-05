@@ -41,6 +41,7 @@
 		components = {}
 
 		onLoad () {
+//			this.$WX.jumpTo('./user/personalPage')
 			this.$WX.wxLogin()
 				.then(
 					this.$WX.getUserInfo()
