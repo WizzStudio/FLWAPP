@@ -63,6 +63,7 @@
 			<view class="mt30 pl20 pr20 t3-c1__light"></view>
 		</view>
 
+		<!--<view wx:if="{{role == 2}}" class="donate-btn l-box__allMid">-->
 		<view wx:if="{{role == 1}}" class="donate-btn l-box__allMid">
 			<!--<donateBtn title="赠送小红花" width="300" height="88" color="red" key="donate" font="32" radius="60" class="shadow"></donateBtn>-->
 			<donateBtn title="赠送小红花" width="300" height="88" color="red" key="donate" font="32" radius="60"></donateBtn>
@@ -70,7 +71,7 @@
 
 		<!--<view class="musk"></view>-->
 		<view wx:if="{{isShowDialog}}">
-			<dialog></dialog>
+			<dialog :aceptFlwNumber.sync="aceptFlwNumber" :leftFlwNumber.sync="leftFlwNumber" :stuName.sync="userInfo"></dialog>
 		</view>
 	</view>
 </template>
@@ -93,7 +94,7 @@
 		data = {
 			role: 1,
 			userInfo: {
-				'name': '',
+				'name': '红花君',
 				'avatar': '../../static/images/logo.png',
 				'sex': 1,
 				'schoolId': 1,
@@ -114,7 +115,9 @@
 				'position': 'default',
 				'stuNum': 1
 			},
-			isShowDialog: false // 是否显示捐赠弹框
+			isShowDialog: false, // 是否显示捐赠弹框
+			aceptFlwNumber: 4,
+			leftFlwNumber: 8
 		}
 		computed = {}
 
@@ -127,8 +130,7 @@
 
 		onLoad () {
 			let visitUserId = this.$WX.getStorage('visit_userId') || 1 // 欲访问的用户id
-//			let visitUserId = 14
-				this.role = this.$WX.getStorage('visit_role') || 1
+			this.role = this.$WX.getStorage('visit_role') || 1
 			if (!visitUserId) {
 				this.$WX.toast('访问错误，回到首页')
 //				setTimeout(() => { this.$WX.goBack() }, 1500)
@@ -160,8 +162,11 @@
 
 		methods = {}
 		events = {
-			'btn-click': (key) => {
+			'btn-click': () => {
 				this.isShowDialog = true
+			},
+			'close': () => {
+				this.isShowDialog = false
 			}
 		}
 	}

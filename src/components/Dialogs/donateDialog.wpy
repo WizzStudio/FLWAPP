@@ -25,8 +25,14 @@
 			position: absolute;
 			top:40rpx;
 			right: 30rpx;
-			height: 28rpx;
-			width: 28rpx;
+			height: 48rpx;
+			width: 48rpx;
+		}
+		.gutter {
+			display: flex;
+			flex-flow: row nowrap;
+			justify-content: space-between;
+			align-items: center;
 		}
 	}
 </style>
@@ -36,14 +42,19 @@
 		<view class="dd_musk"></view>
 		<div class="l-box__ver pl20 pr20 relative cont">
 			<image src="../../static/images/donation/close.png" class="closeBtn" @tap="close"/>
-			<p class="t3-black__light t3 mt80">赠送小红花给{{stuName}},本年度他还能接受<span
-				class="t3-red__light t3-red t3">11{{aceptFlwNumber}}</span>朵小红花</p>
-			<div class="l-box__rowMid mt40">
+			<p class="t3-black__light t4 mt80">赠送小红花给<span class="t3-red__light t3-red t4" >{{stuName.name}}</span>,本年度TA还能接受<span
+				class="t3-red__light t3-red t4">{{aceptFlwNumber}}</span>朵小红花</p>
+			<div class="mt40 gutter">
 				<sinSelector :list.sync="list" type="single" key="follower"></sinSelector>
 			</div>
-			<div class="l-box__rowMid mt20">
-				<flwInput confirm-type="done" type="digit" placeholder="自定义" key="diyflw" width="360"></flwInput>
-				<p class="t3-c2__light ml40"> 剩余<span class="t3-red__light t4-red">12</span>朵小红花</p>
+			<div class="gutter mt20">
+				<view wx:if="{{isChooseDiy}}">
+					<flwInput confirm-type="done" type="digit" placeholder="自定义" key="diyflw" width="360"></flwInput>
+				</view>
+				<view wx:if="{{!isChooseDiy}}" @tap="toggleDiy(true)">
+					<diyBtn title="自定义数量" width="360" height="60" color="white" key="diy" font="28" radius="10"></diyBtn>
+				</view>
+				<p class="t4-c2__light ml40"> 剩余<span class="t3-red__light t4-red">{{leftFlwNumber}}</span>朵小红花</p>
 			</div>
 
 			<view class="mt50 l-box__allMid">
@@ -59,13 +70,15 @@
 	import basicSelector from '../../components/Selectors/BasicSelector'
 	import BasicInput from '../../components/Inputs/BasicInput'
 	import BasicButton from '../../components/Buttons/BasicButton'
+	import { toast } from '../../common/scripts/wxUtil'
 
 	export default class DonateDialog extends wepy.component {
 		config = {}
 		components = {
 			sinSelector: basicSelector,
 			flwInput: BasicInput,
-			donateBtn: BasicButton
+			donateBtn: BasicButton,
+			diyBtn: BasicButton
 		}
 		data = {
 			list: [
@@ -85,42 +98,84 @@
 					value: 5
 				}
 			],
-			coutFlwNumber: 12,
-			btnTitle: '赠送小红花'
+			btnTitle: '赠送小红花',
+			resultNum: 0,
+			maxNum: 0,
+			isChooseDiy: false
 		}
 		props = {
-			stuName: String,
-			aceptFlwNumber: String,
-			leftFlwNumber: String
+			stuName: Object,
+			aceptFlwNumber: Number,
+			leftFlwNumber: Number
+		}
+
+		_toggleDiy (bool) {
+			this.isChooseDiy = bool
 		}
 		methods = {
 			close () {
-				console.log('close!')
+				this.$emit('close')
+			},
+			toggleDiy (bool) {
+				this._clearSelectorState()
+				this.isChooseDiy = bool
 			}
 		}
-		_calcMaxFlw () {
-			this.coutFlwNumber = Math.max(parseInt(this.aceptFlwNumber, 10), parseInt(this.leftFlwNumber, 10))
+		_isDonateNumOk (num) {
+			if (num > this.aceptFlwNumber) {
+				toast('超出该同学可接受小红花数量')
+				this._clearSelectorState()
+				this.btnTitle = `赠送${this.maxNum}朵小红花`
+				this.resultNum = this.maxNum
+				return false
+			}
+			if (num > this.leftFlwNumber) {
+				toast('小红花数量不足！')
+				this._clearSelectorState()
+				this.btnTitle = `赠送${this.maxNum}朵小红花`
+				this.resultNum = this.maxNum
+				return false
+			}
+			return true
+		}
+		_clearSelectorState () {
+			this.list.map(item => {
+				item.pick = false
+			})
 		}
 		onLoad () {
-			this._calcMaxFlw()
+			this.maxNum = Math.min(this.leftFlwNumber, this.aceptFlwNumber)
 		}  // 在Page和Component共用的生命周期函数
 		events = {
 			'choose': (key, data) => {
 				console.log(data)
-				this.btnTitle = `赠送${data.key}小红花`
+				this._toggleDiy(false)
+				if (!this._isDonateNumOk(data.value)) { return false }
+				if (data.pick) {
+					this.btnTitle = `赠送${data.key}小红花`
+					this.resultNum = data.value
+				} else {
+					this.btnTitle = `赠送小红花`
+					this.resultNum = 0
+				}
 			},
-			'input-focus': (key, data) => {
-				this.list.map(item => {
-					item.pick = false
-				})
+			'input-focus': () => {
+				this._clearSelectorState()
 			},
 			'input-typein': (key, data) => {
+				if (!this._isDonateNumOk(data.detail.value)) { return false }
 				if (!data.detail.value) {
 					this.btnTitle = `赠送小红花`
+					this.resultNum = 0
 					return false
 				}
 				this.btnTitle = `赠送${data.detail.value}朵小红花`
-				console.log(key, data)
+				this.resultNum = data.detail.value
+			},
+			'btn-click': (key) => {
+				if (key === 'donate') {
+					console.log(this.resultNum)
+				}
 			}
 		}
 	}

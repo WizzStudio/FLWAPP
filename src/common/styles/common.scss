@@ -34,6 +34,11 @@ view{
 	@include rowBox();
 }
 
+.l-box__rowGutter {
+	@include rowBox();
+	justify-content: space-between;
+	align-items: center;
+}
 // 纵向排列item的盒子
 .l-box__ver{
 	@include colBox();

@@ -87,6 +87,20 @@
 						})
 				})
 		}
+		onShow () {
+			if (this.$WX.getStorage('role') === 0) {
+				this.$WX.modal('您尚未注册，是否前往注册？', '提示')
+					.then(res => {
+							if (res.confirm) {
+								this.$WX.toast('正前往注册页面')
+								this.$WX.jumpTo('./account/login')
+							} else if (res.cancel) {
+								this.$WX.reLaunch('./home')
+							}
+						}
+					)
+			}
+		}
 		onPullDownRefresh () {
 			this.NewsDatas = []
 			this.BannerDatas = []

@@ -17,11 +17,14 @@
 			@include allMidBox();
 			width: 210rpx;
 			height: 60rpx;
-			font-size: 36rpx;
+			font-size: 28rpx;
 			font-weight: 300;
-			margin-right: 30rpx;
+			/*margin-right: 30rpx;*/
 			border-radius: 10rpx;
-
+		}
+		&-basic:first-child {
+		}
+		&-basic:last-child {
 		}
 	}
 	.se_unpick{
