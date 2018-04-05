@@ -1,0 +1,27 @@
+<style lang="scss" type="text/scss">
+
+</style>
+
+<template>
+
+</template>
+
+<script>
+	import page from '../base/basicPage.wpy'
+
+  export default class Toup extends page {
+    config = {}
+    components = {}
+    data = {}
+    computed = {}
+
+    onLoad () {}
+
+    onShow () {}
+
+    customFunction () {}
+
+    methods = {}
+    events = {}
+  }
+</script>

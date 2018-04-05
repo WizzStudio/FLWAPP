@@ -39,5 +39,6 @@ export default {
 	PostWithdrawAmount: { url: '/stu/withdraw', method: 'post', data: {}, headers: {} },
 	GetWithdrawInfo: { url: '/stu/withdraw', method: 'get', data: {}, headers: {} },
 	PostStuActivity: { url: '/stu/campaign', method: 'post', data: {}, headers: {} },
-	PostTutorActivity: { url: '/tutor/campaign', method: 'post', data: {}, headers: {} }
+	PostTutorActivity: { url: '/tutor/campaign', method: 'post', data: {}, headers: {} },
+	GetTutorFlower: { url: '/tutor/balance', method: 'get', data: {}, headers: {} }
 }
