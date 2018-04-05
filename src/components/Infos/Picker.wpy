@@ -40,8 +40,6 @@
         this.$emit('changePicker', event.target.id, event.detail.value)
       },
       bindMultiSelectorChange (event) {
-        //  console.log(event.detail.value)
-        //  console.log(event.target.id)
         this.$emit('changeMultiPicker', event.target.id, event.detail.value)
       }
     }

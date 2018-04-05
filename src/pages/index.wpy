@@ -32,8 +32,6 @@
 
 <script>
 	import page from './base/basicPage.wpy'
-//	import { UserLogin, test } from '../API/index'
-//	import { jumpTo } from '../common/scripts/wxUtil'
 
 	export default class Index extends page {
 		config = {

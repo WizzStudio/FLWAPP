@@ -36,5 +36,8 @@ export default {
 	PostArticle: { url: '/article', method: 'post', data: {title: '', content: ''}, headers: {} },
 	GetSearchStudentList: { url: '/search/student', method: 'get', data: {}, headers: {} },
 	GetSearchTutorList: { url: '/search/tutor', method: 'get', data: {}, headers: {} },
-	PostWithdrawAmount: { url: '/stu/withdraw', method: 'post', data: {}, headers: {} }
+	PostWithdrawAmount: { url: '/stu/withdraw', method: 'post', data: {}, headers: {} },
+	GetWithdrawInfo: { url: '/stu/withdraw', method: 'get', data: {}, headers: {} },
+	PostStuActivity: { url: '/stu/campaign', method: 'post', data: {}, headers: {} },
+	PostTutorActivity: { url: '/tutor/campaign', method: 'post', data: {}, headers: {} }
 }
