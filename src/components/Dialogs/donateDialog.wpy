@@ -174,7 +174,8 @@
 			},
 			'btn-click': (key) => {
 				if (key === 'donate') {
-					console.log(this.resultNum)
+					this.$emit('close')
+					this.$emit('showDonateConfirmDialog', this.resultNum)
 				}
 			}
 		}

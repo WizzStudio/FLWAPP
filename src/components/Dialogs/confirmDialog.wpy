@@ -1,29 +1,73 @@
 <style lang="scss" type="text/scss">
-	.confirmDialog{
-		position: fixed;
-		top: 0;
-		left: 0;
-		z-index: 999;
-		height: 100%;
-		width: 100%;
-		background: rgba(0,0,0,.5);
+	@import "../../common/styles/mixins";
+	@import "../../common/styles/variables";
+	@import "../../common/styles/common";
+
+	.confirmDialog {
+		position: relative;
+		display: block;
+		height: 300rpx;
+		width: 580rpx;
+		margin-top: 400rpx;
+		padding: 0 40rpx;
+		background: #ffffff;
+		border-radius: 10rpx;
+		box-sizing: border-box;
+		overflow: hidden; // 构造FBC
+		&-title {
+			display: block;
+			margin-top: 80rpx;
+			text-align: center;
+		}
+		&-btnGroup {
+			position: absolute;
+			bottom:44rpx;
+			right: 40rpx;
+			span:first-child{
+				margin-right: 40px;
+			}
+		}
 	}
+
 </style>
 
 <template>
-	<div class="confirmDialog">
-		<slot name="cont"></slot>
-	</div>
+
+	<conDialog>
+		<view slot="cont">
+			<div class="confirmDialog">
+					<p class="confirmDialog-title t3-black__light">{{title}}</p>
+					<!--<p class="confirmDialog-title t3-black__light">给阿里巴巴的名字真的超级长啊赠送小红花1朵?</p>-->
+					<div class="confirmDialog-btnGroup">
+						<span class="t2-c2__normal" @tap="cancle">取消</span>
+						<span class="t2-red t2-red__normal" @tap="confirm">确定</span>
+					</div>
+			</div>
+		</view>
+	</conDialog>
+
 </template>
 
 <script>
-  import wepy from 'wepy'
+	import wepy from 'wepy'
+	import Dialog from './DialogSlot'
 
-  export default class ConfirmDialog extends wepy.component {
-    onLoad () {}
-
-    data = {}
-    methods = {}
-    props = {}
-  }
+	export default class BasicSelector extends wepy.component {
+		components = {
+			conDialog: Dialog
+		}
+		data = {}
+		methods = {
+			cancle () {
+				this.$emit('dialog-cancle', this.key)
+			},
+			confirm () {
+				this.$emit('dialog-confirm', this.key)
+			}
+		}
+		props = {
+			key: String,
+			title: String
+		}
+	}
 </script>

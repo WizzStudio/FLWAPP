@@ -66,13 +66,22 @@
 		<!--<view wx:if="{{role == 2}}" class="donate-btn l-box__allMid">-->
 		<view wx:if="{{role == 1}}" class="donate-btn l-box__allMid">
 			<!--<donateBtn title="赠送小红花" width="300" height="88" color="red" key="donate" font="32" radius="60" class="shadow"></donateBtn>-->
-			<donateBtn title="赠送小红花" width="300" height="88" color="red" key="donate" font="32" radius="60"></donateBtn>
+			<donateBtn title="赠送小红花" width="300" height="88" color="red" key="pp-donate" font="32" radius="60"></donateBtn>
 		</view>
 
 		<!--<view class="musk"></view>-->
 		<view wx:if="{{isShowDialog}}">
 			<dialog :aceptFlwNumber.sync="aceptFlwNumber" :leftFlwNumber.sync="leftFlwNumber" :stuName.sync="userInfo"></dialog>
 		</view>
+
+		<view wx:if="{{isShowConfirmDialog}}">
+			<conDialog :title.sync="confirmDialogTitle" key="donate"></conDialog>
+		</view>
+
+		<view wx:if="{{isShowDonateSuccess}}">
+			<successDialog title="赠送成功" key="sd-success"></successDialog>
+		</view>
+
 	</view>
 </template>
 
@@ -81,6 +90,8 @@
 	import userCard from '../../components/Cards/userCard'
 	import BasicButton from '../../components/Buttons/BasicButton'
 	import donateDialog from '../../components/Dialogs/donateDialog'
+	import confirmDialog from '../../components/Dialogs/confirmDialog'
+	import noticeDialog from '../../components/Dialogs/noticeDialog'
 
 	export default class PersonalPage extends page {
 		config = {
@@ -89,7 +100,9 @@
 		components = {
 			usrCard: userCard,
 			donateBtn: BasicButton,
-			dialog: donateDialog
+			dialog: donateDialog,
+			conDialog: confirmDialog,
+			successDialog: noticeDialog
 		}
 		data = {
 			role: 1,
@@ -98,7 +111,7 @@
 				'avatar': '../../static/images/logo.png',
 				'sex': 1,
 				'schoolId': 1,
-				'profession': 'default',
+				'profession': '软件工程',
 				'direction': 1,
 				'simpleIntro': '这个人很懒，没有填写个人介绍',
 				'personalIntro': '这个人很懒，没有填写个人简历',
@@ -116,8 +129,12 @@
 				'stuNum': 1
 			},
 			isShowDialog: false, // 是否显示捐赠弹框
+			isShowConfirmDialog: false,
+			isShowDonateSuccess: false,
+			confirmDialogTitle: '',
 			aceptFlwNumber: 4,
-			leftFlwNumber: 8
+			leftFlwNumber: 8,
+			donateNumber: 0
 		}
 		computed = {}
 
@@ -126,6 +143,13 @@
 				this.userInfo[key] = data[key]
 			}
 			this.$apply()
+		}
+		_showSuccess () {
+			this.isShowDonateSuccess = true
+			setTimeout(() => {
+				this.isShowDonateSuccess = false
+				this.$apply()
+			}, 2000)
 		}
 
 		onLoad () {
@@ -162,11 +186,32 @@
 
 		methods = {}
 		events = {
-			'btn-click': () => {
-				this.isShowDialog = true
+			'btn-click': (key) => {
+				if (key === 'pp-donate') {
+					this.isShowDialog = true
+				}
 			},
 			'close': () => {
 				this.isShowDialog = false
+			},
+			'dialog-cancle': () => {
+				this.isShowConfirmDialog = false
+				this.donateNumber = 0
+			},
+			'dialog-confirm': () => {
+				/* TODO 调用捐赠接口 */
+				this.isShowConfirmDialog = false
+				this.userInfo.redFlowerNum += this.donateNumber
+				this._showSuccess()
+			},
+			'showDonateConfirmDialog': (number) => {
+				if (number === 0) {
+					this.isShowConfirmDialog = false
+					return false
+				}
+				this.donateNumber = number
+				this.isShowConfirmDialog = true
+				this.confirmDialogTitle = `给${this.userInfo.name}赠送小红花${number}朵？`
 			}
 		}
 	}
