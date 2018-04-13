@@ -42,7 +42,6 @@
     }
     &-3 {
       padding-right: 30rpx;
-      padding-left: 200rpx;
     }
   }
   .info-module-2-checking {
