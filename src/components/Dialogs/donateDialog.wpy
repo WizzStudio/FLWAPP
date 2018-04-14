@@ -125,14 +125,14 @@
 			if (num > this.aceptFlwNumber) {
 				toast('超出该同学可接受小红花数量')
 				this._clearSelectorState()
-				this.btnTitle = `赠送${this.maxNum}朵小红花`
+				this.btnTitle = this.maxNum === 0 ? '赠送小红花' : `赠送${this.maxNum}朵小红花`
 				this.resultNum = this.maxNum
 				return false
 			}
 			if (num > this.leftFlwNumber) {
 				toast('小红花数量不足！')
 				this._clearSelectorState()
-				this.btnTitle = `赠送${this.maxNum}朵小红花`
+				this.btnTitle = `赠送小红花`
 				this.resultNum = this.maxNum
 				return false
 			}

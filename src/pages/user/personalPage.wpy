@@ -63,7 +63,6 @@
 			<view class="mt30 pl20 pr20 t3-c1__light"></view>
 		</view>
 
-		<!--<view wx:if="{{role == 2}}" class="donate-btn l-box__allMid">-->
 		<view wx:if="{{role == 1}}" class="donate-btn l-box__allMid">
 			<!--<donateBtn title="赠送小红花" width="300" height="88" color="red" key="donate" font="32" radius="60" class="shadow"></donateBtn>-->
 			<donateBtn title="赠送小红花" width="300" height="88" color="red" key="pp-donate" font="32" radius="60"></donateBtn>
@@ -105,6 +104,8 @@
 			successDialog: noticeDialog
 		}
 		data = {
+			nowUserRole: 0,
+			visitUserId: false,
 			role: 1,
 			userInfo: {
 				'name': '红花君',
@@ -132,8 +133,8 @@
 			isShowConfirmDialog: false,
 			isShowDonateSuccess: false,
 			confirmDialogTitle: '',
-			aceptFlwNumber: 4,
-			leftFlwNumber: 8,
+			aceptFlwNumber: 0,
+			leftFlwNumber: 0,
 			donateNumber: 0
 		}
 		computed = {}
@@ -146,36 +147,62 @@
 		}
 		_showSuccess () {
 			this.isShowDonateSuccess = true
+			this.$apply()
 			setTimeout(() => {
 				this.isShowDonateSuccess = false
 				this.$apply()
 			}, 2000)
 		}
+		_freshFlwData () {
+			this.$API('GetTutorFlower', {}).then(res => {
+				this.leftFlwNumber = res.data
+			})
+			this.$API('GetAcceptableFlw', {value: this.visitUserId}).then(res => {
+				this.aceptFlwNumber = res.data
+			})
+		}
 
 		onLoad () {
-			let visitUserId = this.$WX.getStorage('visit_userId') || 1 // 欲访问的用户id
-			this.role = this.$WX.getStorage('visit_role') || 1
-			if (!visitUserId) {
+			this.visitUserId = this.$WX.getStorage('visit_userId') || false // 欲访问的用户id
+			this.role = this.$WX.getStorage('visit_role') || 1 // 访问用户的角色
+			this.nowUserRole = this.$WX.getStorage('role') || 1
+
+			if (!this.visitUserId) {
 				this.$WX.toast('访问错误，回到首页')
 //				setTimeout(() => { this.$WX.goBack() }, 1500)
 				return false
 			}
-			/* 测试case stu 11 tutor 13 */
+
+			// 欲访问用户是学生
 			if (this.role === 1) {
-				this.$API('GetStuHomePage', { userId: visitUserId }).then(res => {
+				this.$API('GetStuHomePage', { userId: this.visitUserId }).then(res => {
 					this._updateInfo(res.data)
 				})
 //					.catch(() => (setTimeout(() => { this.$WX.goBack() }, 1500)))
+
+				// 当前用户是导师
+				if (this.nowUserRole === 2) {
+					// 获取当前导师的剩余小红花
+					this.$API('GetTutorFlower', {}).then(res => {
+						this.leftFlwNumber = res.data
+					})
+					// 获取当前学生可接受的小红花
+					this.$API('GetAcceptableFlw', {value: this.visitUserId}).then(res => {
+						this.aceptFlwNumber = res.data
+					})
+				}
 			}
+
+			// 欲访问用户是导师
 			if (this.role === 2) {
-				this.$API('GetMentorHomePage', { userId: visitUserId }).then(res => {
+				// 获取导师信息
+				this.$API('GetMentorHomePage', { userId: this.visitUserId }).then(res => {
 					this._updateInfo(res.data)
 				})
 //					.catch(() => (setTimeout(() => { this.$WX.goBack() }, 1500)))
 			}
 		}
-		onShow () {
-		}
+		onShow () {}
 
 		onReady () {
 			this.$WX.removeStorage('visit_userId') // 删除欲访问的用户id
@@ -201,8 +228,16 @@
 			'dialog-confirm': () => {
 				/* TODO 调用捐赠接口 */
 				this.isShowConfirmDialog = false
-				this.userInfo.redFlowerNum += this.donateNumber
-				this._showSuccess()
+				if (this.nowUserRole === 2 && this.role === 1) {
+					this.$API('DonateFlw', { stuId: this.visitUserId, amount: this.donateNumber }).then(() => {
+						this.userInfo.redFlowerNum = parseInt(this.userInfo.redFlowerNum, 10) + parseInt(this.donateNumber, 10)
+						this.$apply()
+						this._freshFlwData()
+						setTimeout(() => { this._showSuccess() }, 0)
+					}).catch(() => {
+						this.$WX.toast('捐赠失败！')
+					})
+				}
 			},
 			'showDonateConfirmDialog': (number) => {
 				if (number === 0) {

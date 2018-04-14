@@ -380,7 +380,7 @@
 				this.searchText = event.detail.value
 			},
 			jumpToUserPage (event) {
-				this.$WX.setStorage('visit_userId', parseInt(event.target.id))
+				this.$WX.setStorage('visit_userId', parseInt(event.currentTarget.id))
 				if (this.roleData.currentData === '学生') {
 					this.$WX.setStorage('visit_role', 1)
 				} else {

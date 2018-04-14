@@ -20,6 +20,7 @@
 				'pages/account/scholarship',
 				'pages/account/activity',
 				'pages/user/personalPage',
+				'pages/user/topUp',
 				'pages/article',
 				'pages/home',
 				'pages/writeArticle',

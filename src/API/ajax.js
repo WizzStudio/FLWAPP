@@ -37,7 +37,7 @@ function _normalRequest (config = {}) {
 				parseToken(res.header['Authorization'])
 			}
 			if (res.data.code) {
-				toast(res.data.msg)
+				toast(`错误：${res.data.msg}`)
 				reject(res.data)
 			}
 			/* TODO: TEST放出header里面的token为了做测试 */

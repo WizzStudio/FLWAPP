@@ -1,27 +1,180 @@
 <style lang="scss" type="text/scss">
+	@import "../../common/styles/mixins";
+	@import "../../common/styles/variables";
+	@import "../../common/styles/common";
+
+	.topUp{
+		.whale{
+			margin-top: 100rpx;
+			@include wh(100%,400rpx);
+			overflow: hidden;
+			&-img{
+				@include wh(400rpx,100%);
+				animation:  kf-rotate 500s  infinite;
+			}
+		}
+		.slogan{
+			display: block;
+			text-align: center;
+		}
+		.main{
+			width: 680rpx;
+			margin: 0 auto;
+		}
+		@keyframes kf-rotate {
+			0% {
+				transform: rotate(-360deg);
+			}
+			100% {
+				transform: rotate(360deg);
+			}
+		}
+		.fixBtn {
+			padding: 10rpx;
+			text-align: center;
+			width: 180rpx;
+			border: 1px solid $borderClr;
+			border-radius: 10rpx;
+		}
+
+		.isDiy {
+			border: 1px solid $red;
+			color: $red;
+		}
+	}
 
 </style>
 
 <template>
-
+	<div class="topUp">
+		<div class="whale l-box__allMid">
+			<image class="whale-img" src="../../static/images/whale.jpg"></image>
+		</div>
+		<p class="slogan mt20 t2-black__light">海鲸宗旨：连接优秀人才，助力青年成长</p>
+		<p class="slogan  mb60 t3-c2__light"> connecting mentor and elite students</p>
+		<div class="main l-box__ver">
+			<p class="t3-black__light mb20">现有小红花：<span class="t2-red t2-red__light">{{leftFlwNumber}}朵</span></p>
+			<p class="t3-black__light mb30">捐赠金额<span class="t2-red t2-red__light">（{{exchangeRate}}元=1朵小红花）</span></p>
+			<div class="l-box__rowGutter mb30">
+				<flwSelector :list.sync="selectorList" type="single" key="follower"></flwSelector>
+			</div>
+			<view wx:if="{{!isDiy}}">
+				<div class="mb60 l-box__rowMid">
+					<p class="t3-c2__light fixBtn {{isMaxDiy ? 'isDiy': '' }}" @tap="toggleDiy(true)">{{isMaxDiy? maxOnceDonate : '自定义' }}</p>
+				</div>
+			</view>
+			<view wx:if="{{isDiy}}">
+				<div class="mb60 l-box__rowMid">
+					<p class="t3-c2__light">自定义金额</p>
+					<flwInput confirm-type="done" type="number" placeholder="" key="diyflw" width="60"></flwInput>
+					<p class="t3-c2__light">*{{exchangeRate}}元</p>
+				</div>
+			</view>
+		</div>
+		<view class="l-box__verMid">
+			<toUpBtn :title.sync="btnTitle" width="524" height="80" :color.sync="btnStatus" key="topUp" font="28" radius="60"></toUpBtn>
+		</view>
+	</div>
 </template>
 
 <script>
 	import page from '../base/basicPage.wpy'
+	import BasicButton from '../../components/Buttons/BasicButton'
+	import basicSelector from '../../components/Selectors/BasicSelector'
+	import BasicInput from '../../components/Inputs/BasicInput'
 
-  export default class Toup extends page {
-    config = {}
-    components = {}
-    data = {}
-    computed = {}
-
-    onLoad () {}
-
-    onShow () {}
-
-    customFunction () {}
-
-    methods = {}
-    events = {}
-  }
+	export default class Toup extends page {
+		config = {
+			'backgroundColorTop': '#ffffff',
+			'navigationBarTitleText': '海鲸与你同行！',
+			enablePullDownRefresh: false
+		}
+		components = {
+			toUpBtn: BasicButton,
+			flwSelector: basicSelector,
+			flwInput: BasicInput
+		}
+		data = {
+			leftFlwNumber: 0, // 现有小红花
+			exchangeRate: 100,
+			maxOnceDonate: 200, // 单次最大限额
+			selectorList: [
+				{
+					pick: true,
+					key: '1朵',
+					value: 1
+				},
+				{
+					pick: false,
+					key: '2朵',
+					value: 2
+				},
+				{
+					pick: false,
+					key: '5朵',
+					value: 5
+				}
+			],
+			btnTitle: '',
+			diyNumber: 0,
+			btnStatus: 'red',
+			isDiy: false,
+			isMaxDiy: false
+		}
+		_toggleDiy (bool) {
+			this.isDiy = bool
+		}
+		methods = {
+			toggleDiy (bool) {
+				this.isDiy = bool
+			}
+		}
+		_changeBtnTitle (flwNumber, status) {
+			this.btnStatus = status
+			if (!flwNumber) {
+				this.btnTitle = '立即捐赠'
+			} else {
+				this.btnTitle = `立即捐赠${this.exchangeRate * flwNumber}元，获得${flwNumber}朵小红花`
+			}
+		}
+		_clearSelectorState () {
+			this.selectorList.map(item => {
+				item.pick = false
+			})
+		}
+		onLoad () {
+			this._changeBtnTitle(1, 'red')
+		}
+		customFunction () {}
+		events = {
+			'choose': (key, data) => {
+				this.isMaxDiy = false
+				this._toggleDiy(false)
+				this._changeBtnTitle(data.value, 'red')
+			},
+			'input-focus': (key, data) => {
+				this._clearSelectorState()
+				if (!data.detail.value.length) {
+					this._changeBtnTitle(null, 'pink')
+				}
+			},
+			'input-typein': (key, data) => {
+				if (data.detail.value.length === 0) {
+					this._changeBtnTitle(null, 'pink')
+					return false
+				}
+				if (data.detail.value >= this.maxOnceDonate) {
+					this._toggleDiy(false)
+					this._changeBtnTitle(this.maxOnceDonate, 'red')
+					this.isMaxDiy = true
+					this.$WX.toast('单次最大充值200朵小红花！')
+					return false
+				}
+				this._changeBtnTitle(data.detail.value, 'red')
+			},
+			'btn-click': (key) => {
+				/* TODO */
+			}
+		}
+	}
 </script>

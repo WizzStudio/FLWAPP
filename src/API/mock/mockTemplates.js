@@ -61,6 +61,16 @@ const Test = {
 	]
 }
 
+const GetTutorFlower = {
+	'code': 0,
+	'data': 14
+}
+
+const GetAcceptableFlw = {
+	'code': 0,
+	'data': 18
+}
+
 /* 下面的arguments要和APIList里的api-key一一映射 */
 export {
 	UserLogin,
@@ -72,5 +82,7 @@ export {
 	TutorCenter,
 	StudentProfile,
 	TutorProfile,
-	Test
+	Test,
+	GetAcceptableFlw,
+	GetTutorFlower
 }
