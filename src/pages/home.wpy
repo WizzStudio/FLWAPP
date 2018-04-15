@@ -159,8 +159,7 @@
 				if (key === 'student') {
 					this.$WX.jumpTo('./writeArticle')
 				} else if (key === 'tutor') {
-					this.$WX.toast('tutor')
-					//	this.$WX.jumpTo('')
+						this.$WX.jumpTo('./user/topUp')
 				}
 			}
 		}
