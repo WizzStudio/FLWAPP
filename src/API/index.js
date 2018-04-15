@@ -14,14 +14,15 @@ export default (apiKey, data, headers) => {
 	if (api.right && ((typeof parseInt(getStorage('role')) === 'number') && !(parseInt(api.right) & parseInt(getStorage('role'))))) {
 		console.error(`此接口没有权限：${apiKey}`)
 		if (parseInt(getStorage('role')) === 0) {
+			goBack()
 			modal('您尚未注册，是否前往注册？', '提示')
 				.then(res => {
 					if (res.confirm) {
 						toast('正前往注册页面')
 						setTimeout(() => { reLaunch('/pages/account/login') }, 1500)
 					} else if (res.cancel) {
-						toast('访问错误，回到首页')
-						setTimeout(() => { goBack() }, 1500)
+						// toast('访问错误，回到首页')
+						// setTimeout(() => { goBack() }, 1500)
 					}
 				})
 		}

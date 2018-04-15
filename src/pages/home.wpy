@@ -5,7 +5,7 @@
 <template>
 	<swiper :BannerDatas.sync="BannerDatas"/>
 	<news :NewsDatas.sync="NewsDatas" :FlowerRankDatas.sync="FlowerRankDatas"/>
-	<bar />
+	<bar :role.sync="role"/>
 </template>
 
 <script>
@@ -30,7 +30,8 @@
 			FlowerRankDatas: [],
 			BannerDatas: [],
 			page: 0,
-			isLastPage: false
+			isLastPage: false,
+			role: 0
 		}
 		computed = {}
 
@@ -72,6 +73,7 @@
 		onLoad () {
 			this.$API('GetNewsList', {page: this.page})
 				.then(res => {
+					this.role = this.$WX.getStorage('role') // 首次获取role
 					this.page++
 					this.GetNewsDatas(res.data)
 					this.$apply()
