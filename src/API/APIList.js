@@ -7,8 +7,8 @@ export default {
 	UserInviteCodeCheck: {url: '/verify/invite', method: 'post', data: {code: ''}, headers: {}, right: 0}, // 用户获取邀请码
 	StudentCenter: {url: '/stu/center', method: 'get', data: {}, headers: {}, right: 1}, // 学生个人中心
 	TutorCenter: {url: '/tutor/center', method: 'get', data: {}, headers: {}, right: 2}, // 导师个人中心
-	StudentProfile: {url: '/stu/profile', method: 'get', data: {}, headers: {}, right: 1},
-	TutorProfile: {url: '/tutor/profile', method: 'get', data: {}, headers: {}, right: 2},
+	StudentProfile: {url: '/stu/profile', method: 'get', data: {}, headers: {}, right: 1}, //	学生信息修改页
+	TutorProfile: {url: '/tutor/profile', method: 'get', data: {}, headers: {}, right: 2},	//	导师信息修改页
 	UserLogin: {url: '/user/login', method: 'post', data: {code: ''}, headers: {}, right: 0}, // 用户登录
 	UserVerifyCode: {url: '/verify/captcha', method: 'get', data: {phone: 0}, headers: {}, right: 0}, // 用户获取验证码
 	UserVerifyCodeCheck: {url: '/verify/captcha', method: 'post', data: {phone: 0, captcha: 0}, headers: {}, right: 0}, // 用户校验验证码
@@ -19,15 +19,15 @@ export default {
 	DownLoad: {url: '/oss/down', method: 'get_restful', data: {}, headers: {}, right: 3},
 	GetStuHomePage: {url: '/stu/home', method: 'get', data: {}, headers: {}, right: 3}, // 学生个人主页
 	GetMentorHomePage: {url: '/tutor/home', method: 'get', data: {}, headers: {}, right: 3}, // 导师个人主页
-	GetStudentRecord: {url: '/stu/trace', method: 'get', data: {}, headers: {}, right: 3},
-	GetTutorRecord: {url: '/tutor/trace', method: 'get', data: {}, headers: {}, right: 0},
-	GetTutorStudents: {url: '/tutor/students', method: 'get', data: {}, headers: {}, right: 0},
-	GetStudentTutors: {url: '/stu/tutors', method: 'get', data: {}, headers: {}, right: 0},
-	PostUserImagesName: {url: '/oss/down', method: 'post', data: {}, headers: {}, right: 0},
-	GetTutorRedFlower: {url: '/tutor/summary', method: 'get', data: {}, headers: {}, right: 0},
-	GetStuRedFlower: {url: '/stu/summary', method: 'get', data: {}, headers: {}, right: 0},
-	GetTutorTime: {url: '/tutor/voluntary', method: 'get', data: {}, headers: {}, right: 0},
-	GetStudentTime: {url: '/stu/voluntary', method: 'get', data: {}, headers: {}, right: 0},
+	GetStudentRecord: {url: '/stu/trace', method: 'get', data: {}, headers: {}, right: 1},
+	GetTutorRecord: {url: '/tutor/trace', method: 'get', data: {}, headers: {}, right: 2},
+	GetTutorStudents: {url: '/tutor/students', method: 'get', data: {}, headers: {}, right: 2},
+	GetStudentTutors: {url: '/stu/tutors', method: 'get', data: {}, headers: {}, right: 1},
+	PostUserImagesName: {url: '/oss/down', method: 'post', data: {}, headers: {}, right: 3},
+	GetTutorRedFlower: {url: '/tutor/summary', method: 'get', data: {}, headers: {}, right: 2},
+	GetStuRedFlower: {url: '/stu/summary', method: 'get', data: {}, headers: {}, right: 1},
+	GetTutorTime: {url: '/tutor/voluntary', method: 'get', data: {}, headers: {}, right: 2},
+	GetStudentTime: {url: '/stu/voluntary', method: 'get', data: {}, headers: {}, right: 1},
 	GetSchoolList: {url: '/conf/school', method: 'get', data: {}, headers: {}, right: 0},
 	GetDirection: {url: '/conf/direction', method: 'get', data: {}, headers: {}, right: 0},
 	GetTrade: {url: '/conf/trade', method: 'get', data: {}, headers: {}, right: 0},
@@ -35,13 +35,13 @@ export default {
 	GetFlowerRank: {url: '/rank', method: 'get', data: {}, headers: {}, right: 0},
 	GetArticle: {url: '/article', method: 'get_restful', data: {}, headers: {}, right: 0},
 	GetBanner: {url: '/banner', method: 'get', data: {}, headers: {}, right: 0},
-	PostArticle: {url: '/article', method: 'post', data: {title: '', content: ''}, headers: {}, right: 0},
+	PostArticle: {url: '/article', method: 'post', data: {title: '', content: ''}, headers: {}, right: 3},
 	GetSearchStudentList: {url: '/search/student', method: 'get', data: {}, headers: {}, right: 0},
 	GetSearchTutorList: {url: '/search/tutor', method: 'get', data: {}, headers: {}, right: 0},
-	PostWithdrawAmount: {url: '/stu/withdraw', method: 'post', data: {}, headers: {}, right: 0},
-	GetWithdrawInfo: {url: '/stu/withdraw', method: 'get', data: {}, headers: {}, right: 0},
-	PostStuActivity: {url: '/stu/campaign', method: 'post', data: {}, headers: {}, right: 0},
-	PostTutorActivity: {url: '/tutor/campaign', method: 'post', data: {}, headers: {}, right: 0},
+	PostWithdrawAmount: {url: '/stu/withdraw', method: 'post', data: {}, headers: {}, right: 1},
+	GetWithdrawInfo: {url: '/stu/withdraw', method: 'get', data: {}, headers: {}, right: 1},
+	PostStuActivity: {url: '/stu/campaign', method: 'post', data: {}, headers: {}, right: 1},
+	PostTutorActivity: {url: '/tutor/campaign', method: 'post', data: {}, headers: {}, right: 2},
 	GetTutorFlower: {url: '/tutor/balance', method: 'get', data: {}, headers: {}, right: 2}, // 导师小红花余额
 	GetStudentFlower: {url: '/stu/balance', method: 'get', data: {}, headers: {}, right: 1},  // 学生小红花余额
 	GetAcceptableFlw: {url: '/stu/home/acceptable', method: 'get_restful', data: {}, headers: {}, right: 2}, // 学生还能接收小红花数量

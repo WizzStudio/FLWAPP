@@ -93,7 +93,7 @@
 <template>
 	<view class="write-article">
 		<input maxlength="25" placeholder="请输入文章标题" class="write-article-title" bindinput="getTitleValue"/>
-		<textarea placeholder="请输入文章内容" class="write-article-body" bindinput="getTextValue"/>
+		<textarea placeholder="请输入文章内容" class="write-article-body" bindinput="getTextValue" maxlength="3000"/>
 		<view class="write-article-image-info">最多选择10张图片</view>
 		<view class="write-article-image">
 			<repeat for="{{[articleImageList]}}" item="item" index="index">
