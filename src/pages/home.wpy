@@ -95,18 +95,25 @@
 					console.log(res)
 				}
 			})
-//			if (this.$WX.getStorage('role') === 0) {
-//				this.$WX.modal('您尚未注册，是否前往注册？', '提示')
-//					.then(res => {
-//							if (res.confirm) {
-//								this.$WX.toast('正前往注册页面')
-//								this.$WX.jumpTo('./account/login')
-//							} else if (res.cancel) {
-//								this.$WX.reLaunch('./home')
-//							}
-//						}
-//					)
-//			}
+			this.NewsDatas = []
+			this.BannerDatas = []
+			this.FlowerRankDatas = []
+			this.$API('GetNewsList', {page: 0})
+				.then(res => {
+					this.page++
+					this.GetNewsDatas(res.data)
+					this.$apply()
+					this.$API('GetBanner')
+						.then(res => {
+							this.GetBannerDatas(res.data)
+							this.$apply()
+						})
+					this.$API('GetFlowerRank')
+						.then(res => {
+							this.GetFlowerRankDatas(res.data)
+							this.$apply()
+						})
+				})
 		}
 		onPullDownRefresh () {
 			this.NewsDatas = []
