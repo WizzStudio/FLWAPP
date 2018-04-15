@@ -80,7 +80,6 @@
         profession: data.profession || '请填写',
         status: data.status
       }
-			this.$apply()
       this.showDatas = [
         {
           name: '小红花',
@@ -137,29 +136,32 @@
       this.$apply()
     }
     onLoad () {
-			if (this.$WX.getStorage('hasAvatar') !== true) {
-				this.avatar = this.$WX.getStorage('wxAvatar')
-				this.$apply()
-			}
       if (this.$WX.getStorage('role') === 1) {
         this.isStudent = true
-        this.$API('StudentCenter').then(data => {
-          this.treatAjaxDatasStudent(data.data)
-					this.$API('DownLoad', {avatar: this.$WX.getStorage('userId') + '-avatar.jpg'})
-						.then(res => {
+        this.$API('StudentCenter')
+          .then(data => {
+            this.treatAjaxDatasStudent(data.data)
+            return this.$API('DownLoad', {avatar: this.$WX.getStorage('userId') + '-avatar.jpg'})
+          })
+          .then(res => {
 							this.avatar = res.data
 							this.$WX.setStorage('avatar', res.data)
 							this.$apply()
-						})
-          })
+					})
       } else if (this.$WX.getStorage('role') === 2) {
         this.isStudent = false
 				this.menuList[1].value = '发表文章'
         this.$API('TutorCenter')
           .then(data => {
             this.treatAjaxDatasTutor(data.data)
-						this.$WX.setStorage('clockNum', data.data.clockNum)
+            this.$WX.setStorage('clockNum', data.data.clockNum)
+            return this.$API('DownLoad', {avatar: this.$WX.getStorage('userId') + '-avatar.jpg'})
           })
+          .then(res => {
+							this.avatar = res.data
+							this.$WX.setStorage('avatar', res.data)
+							this.$apply()
+					})
       } else {
 				this.infoDatas = {
 					name: '香蕉君',
@@ -192,53 +194,35 @@
     }
 
     onShow () {
-			if (this.$WX.getStorage('hasAvatar') !== true) {
-				this.avatar = this.$WX.getStorage('wxAvatar')
-				this.$apply()
-			}
 			// 随便调个接口去触发
 			if (this.$WX.getStorage('role') === 0) {
 				this.$API('Shit')
 				return false
 			}
-//			if (this.$WX.getStorage('role') === 0) {
-//				this.$WX.modal('您尚未注册，是否前往注册？', '提示')
-//					.then(res => {
-//							if (res.confirm) {
-//								this.$WX.toast('正前往注册页面')
-//								this.$WX.jumpTo('./login')
-//							} else if (res.cancel) {
-//								this.$WX.toast('前往首页')
-//								this.$WX.jumpTo('../home')
-//							}
-//						}
-//					)
-//			} else {
-				if (this.$WX.getStorage('hasChangeAvatar') === true) {
-					this.$API('DownLoad', {avatar: this.$WX.getStorage('userId') + '-avatar.jpg'})
-						.then(res => {
-							this.avatar = res.data
-							this.$WX.setStorage('avatar', res.data)
-							this.$WX.clearStorage('hasChangeAvatar')
-							this.$apply()
-						})
-				}
-				if (this.$WX.getStorage('role') === 1) {
-					this.isStudent = true
-					this.$API('StudentCenter')
-						.then(data => {
-							this.treatAjaxDatasStudent(data.data)
+			if (this.$WX.getStorage('hasChangeAvatar') === true) {
+				this.$API('DownLoad', {avatar: this.$WX.getStorage('userId') + '-avatar.jpg'})
+					.then(res => {
+						this.avatar = res.data
+						this.$WX.setStorage('avatar', res.data)
+						this.$WX.clearStorage('hasChangeAvatar')
+						this.$apply()
 					})
-				} else if (this.$WX.getStorage('role') === 2) {
-					this.isStudent = false
-					this.menuList[1].value = '发表文章'
-					this.$API('TutorCenter')
-						.then(data => {
-							this.treatAjaxDatasTutor(data.data)
-						})
-				}
 			}
-//    }
+			if (this.$WX.getStorage('role') === 1) {
+				this.isStudent = true
+				this.$API('StudentCenter')
+					.then(data => {
+						this.treatAjaxDatasStudent(data.data)
+				})
+			} else if (this.$WX.getStorage('role') === 2) {
+				this.isStudent = false
+				this.menuList[1].value = '发表文章'
+				this.$API('TutorCenter')
+					.then(data => {
+						this.treatAjaxDatasTutor(data.data)
+					})
+			}
+		}
     onPageScroll () {
       this.$UTIL.debounce(() => {
         wx.stopPullDownRefresh()

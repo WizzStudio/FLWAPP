@@ -110,7 +110,10 @@
     props = {
       infoDatas: Object,
       isStudent: Boolean,
-      avatar: String
+      avatar: {
+        type: String,
+        default: wx.getStorageSync('wxAvatar')
+      }
     }
   }
 </script>

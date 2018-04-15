@@ -77,31 +77,30 @@
       })
     }
     LoadDatas (role, count = 2) {
+      const InfoListLength = this.InfoList.length
 			this.$API(role, {page: this.page})
 				.then(res => {
 					this.page++
 					let imageArray = []
-					const InfoListLength = this.InfoList.length
 					this.getDatas(res.data)
 					res.data.forEach(item => {
 						imageArray.push(String(item.userId))
 					})
-					imageArray = imageArray.map(item => item + '-avatar.jpg')
-					this.$API('PostUserImagesName', imageArray)
-						.then(res => {
-							this.InfoList.forEach((item, index) => {
-								if (count === 1) {
-									item.avatar = res.data[index]
-									this.$apply()
-								} else {
-									if (index >= InfoListLength) {
-										item.avatar = res.data[index - InfoListLength]
-										this.$apply()
-									}
-								}
-							})
-						})
-				})
+          imageArray = imageArray.map(item => item + '-avatar.jpg')
+          return this.$API('PostUserImagesName', imageArray)
+        })
+				.then(res => {
+					this.InfoList.forEach((item, index) => {
+						if (count === 1) {
+							item.avatar = res.data[index]
+						} else {
+              if (index >= InfoListLength) {
+                item.avatar = res.data[index - InfoListLength]
+              }
+            }
+            this.$apply()
+					})
+			})
 		}
     onLoad () {
       if (this.$WX.getStorage('role') === 2) {
@@ -135,12 +134,12 @@
         if (this.$WX.getStorage('role') === 2) {
           this.$WX.setStorage('visit_userId', parseInt(event.target.id))
           this.$WX.setStorage('visit_role', 1)
-          this.$WX.jumpTo('./user/personalPage')
+          this.$WX.jumpTo('../user/personalPage')
         }
         if (this.$WX.getStorage('role') === 1) {
           this.$WX.setStorage('visit_userId', parseInt(event.target.id))
           this.$WX.setStorage('visit_role', 2)
-          this.$WX.jumpTo('./user/personalPage')
+          this.$WX.jumpTo('../user/personalPage')
         }
 			}
     }

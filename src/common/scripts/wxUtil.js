@@ -135,7 +135,7 @@ const chooseImg = (count) => {
 const UpLoadFile = (filePath, formData) => {
 	return new Promise((resolve, reject) => {
 		wx.uploadFile({
-			url: 'http://upload.qiniu.com',
+			url: 'https://upload.qiniu.com',
 			filePath: filePath,	//	本地路径名
 			name: 'file',
 			formData: formData,
