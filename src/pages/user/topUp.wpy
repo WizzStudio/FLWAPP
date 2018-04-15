@@ -98,6 +98,7 @@
 			leftFlwNumber: 0, // 现有小红花
 			exchangeRate: 100,
 			maxOnceDonate: 200, // 单次最大限额
+			donateFlwNumber: 0,
 			selectorList: [
 				{
 					pick: true,
@@ -133,8 +134,10 @@
 			this.btnStatus = status
 			if (!flwNumber) {
 				this.btnTitle = '立即捐赠'
+				this.donateFlwNumber = 0
 			} else {
 				this.btnTitle = `立即捐赠${this.exchangeRate * flwNumber}元，获得${flwNumber}朵小红花`
+				this.donateFlwNumber = this.exchangeRate * flwNumber
 			}
 		}
 		_clearSelectorState () {
@@ -143,9 +146,18 @@
 			})
 		}
 		onLoad () {
+			if (this.$WX.getStorage('role') !== 2) {
+				this.$WX.toast('当前用户不是导师！')
+				this.$WX.jumpTo('../home')
+				return
+			}
+			// 查询剩余小红花
+			this.$API('GetTutorFlower', {}).then(res => {
+				this.leftFlwNumber = res.data
+				this.$apply()
+			})
 			this._changeBtnTitle(1, 'red')
 		}
-		customFunction () {}
 		events = {
 			'choose': (key, data) => {
 				this.isMaxDiy = false
@@ -173,7 +185,10 @@
 				this._changeBtnTitle(data.detail.value, 'red')
 			},
 			'btn-click': (key) => {
-				/* TODO */
+				if (key === 'topUp' && this.donateFlwNumber) {
+					console.log(this.donateFlwNumber)
+					/* TODO支付模块 */
+				}
 			}
 		}
 	}

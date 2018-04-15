@@ -2,7 +2,7 @@ import ajax from './ajax'
 import request from './request'
 import API from './APIList'
 import { verifyParams } from '../common/scripts/utils' // 检测data里的key是否完整
-import { getStorage, toast, reLaunch, modal, goBack } from '../common/scripts/wxUtil'
+import { getStorage, toast, reLaunch, modal, goBack, jumpTo } from '../common/scripts/wxUtil'
 
 export default (apiKey, data, headers) => {
 	let api = API[apiKey]
@@ -14,7 +14,9 @@ export default (apiKey, data, headers) => {
 	if (api.right && ((typeof parseInt(getStorage('role')) === 'number') && !(parseInt(api.right) & parseInt(getStorage('role'))))) {
 		console.error(`此接口没有权限：${apiKey}`)
 		if (parseInt(getStorage('role')) === 0) {
-			goBack()
+			if (getCurrentPages().length > 1) {
+				goBack()
+			}
 			modal('您尚未注册，是否前往注册？', '提示')
 				.then(res => {
 					if (res.confirm) {

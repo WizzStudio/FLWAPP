@@ -2,18 +2,17 @@
 import { baseURL } from '../config'
 import { getStorage, showLoading, hideLoading, toast } from '../../common/scripts/wxUtil'
 
-export default (bookId, totalFee) => {
+export default (amount) => {
 	showLoading('正在生成订单...')
 	return new Promise((resolve, reject) => {
 		if (getStorage('openId')) {
 			// 已经获取过openId
 			wx.request({
-				url: `${baseURL}/service/getPay`,
+				url: `${baseURL}/pay/preOrder`,
 				method: 'POST',
 				data: {
-					bookingNo: bookId, /* 订单号 */
-					total_fee: totalFee, /* 订单金额 */
-					openid: getStorage('openId')
+					amount: amount, /* 订单号 */
+					openId: getStorage('openId')
 				},
 				header: {
 					'content-type': 'application/json'
