@@ -196,19 +196,24 @@
 				this.avatar = this.$WX.getStorage('wxAvatar')
 				this.$apply()
 			}
+			// 随便调个接口去触发
 			if (this.$WX.getStorage('role') === 0) {
-				this.$WX.modal('您尚未注册，是否前往注册？', '提示')
-					.then(res => {
-							if (res.confirm) {
-								this.$WX.toast('正前往注册页面')
-								this.$WX.jumpTo('./login')
-							} else if (res.cancel) {
-								this.$WX.toast('前往首页')
-								this.$WX.jumpTo('../home')
-							}
-						}
-					)
-			} else {
+				this.$API('Shit')
+				return false
+			}
+//			if (this.$WX.getStorage('role') === 0) {
+//				this.$WX.modal('您尚未注册，是否前往注册？', '提示')
+//					.then(res => {
+//							if (res.confirm) {
+//								this.$WX.toast('正前往注册页面')
+//								this.$WX.jumpTo('./login')
+//							} else if (res.cancel) {
+//								this.$WX.toast('前往首页')
+//								this.$WX.jumpTo('../home')
+//							}
+//						}
+//					)
+//			} else {
 				if (this.$WX.getStorage('hasChangeAvatar') === true) {
 					this.$API('DownLoad', {avatar: this.$WX.getStorage('userId') + '-avatar.jpg'})
 						.then(res => {
@@ -233,7 +238,7 @@
 						})
 				}
 			}
-    }
+//    }
     onPageScroll () {
       this.$UTIL.debounce(() => {
         wx.stopPullDownRefresh()

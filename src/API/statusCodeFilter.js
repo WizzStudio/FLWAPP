@@ -3,7 +3,8 @@ import Relogin from './Relogin'
 import { toast } from '../common/scripts/wxUtil'
 
 const notFound = () => {
-	toast('接口丢失了 >_< ', 'none', 3000)
+	// toast('接口丢失了 >_< ', 'none', 3000)
+	return false
 }
 
 const forbidden = () => {

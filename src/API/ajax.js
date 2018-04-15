@@ -30,6 +30,7 @@ function _normalRequest (config = {}) {
 		config.success = res => {
 			if (res.statusCode !== 200) {
 				statusCodeFilter(res.statusCode)
+				reject(res.statusCode)
 			}
 			if (res.header['Authorization']) {
 				/* 如果header里有token，则更新 */
