@@ -36,18 +36,20 @@
 		computed = {}
 
 		GetNewsDatas (data) {
-			data.map(item => {
-				this.NewsDatas.push(
-					{
-						id: item.id,
-						title: item.title,
-						author: item.name || '匿名',
-						pageView: item.pageView || 'NaN',
-						time: moment(item.createTime.split('.')[0], 'YYYY-MM-DD hh:mm:ss').fromNow() || '',
-						tag: item.tag
-					}
-				)
-			})
+			if (typeof data !== 'undefined' && data.length > 0) {
+				data.map(item => {
+					this.NewsDatas.push(
+						{
+							id: item.id,
+							title: item.title,
+							author: item.name || '匿名',
+							pageView: item.pageView || 'NaN',
+							time: moment(item.createTime.split('.')[0], 'YYYY-MM-DD hh:mm:ss').fromNow() || '',
+							tag: item.tag
+						}
+					)
+				})
+			}
 		}
 
 		GetBannerDatas (data) {
@@ -71,14 +73,15 @@
 		}
 
 		onLoad () {
-			this.$API('GetBanner')
+			this.$API('GetNewsList', {page: this.page})
 				.then(res => {
-					this.GetBannerDatas(res.data)
-					this.$apply()
-					return this.$API('GetFlowerRank')
+					this.role = this.$WX.getStorage('role') // 首次获取role
+					this.page++
+					this.GetNewsDatas(res.data)
+					return this.$API('GetBanner')
 				})
 				.then(res => {
-					this.GetFlowerRankDatas(res.data)
+					this.GetBannerDatas(res.data)
 					this.$apply()
 				})
 		}
@@ -89,45 +92,34 @@
 					console.log(res)
 				}
 			})
-			this.NewsDatas = []
-			this.BannerDatas = []
 			this.FlowerRankDatas = []
-			this.$API('GetNewsList', {page: 0})
+			this.$API('GetFlowerRank')
 				.then(res => {
-					this.page++
-					this.GetNewsDatas(res.data)
-					this.$apply()
-					this.$API('GetBanner')
-						.then(res => {
-							this.GetBannerDatas(res.data)
+					this.GetFlowerRankDatas(res.data)
 							this.$apply()
-						})
-					this.$API('GetFlowerRank')
-						.then(res => {
-							this.GetFlowerRankDatas(res.data)
-							this.$apply()
-						})
 				})
 		}
 		onPullDownRefresh () {
 			this.NewsDatas = []
-			this.BannerDatas = []
 			this.FlowerRankDatas = []
+			this.page = 0
 			this.$API('GetNewsList', {page: 0})
 				.then(res => {
-					this.page++
 					this.GetNewsDatas(res.data)
-					this.$API('GetBanner')
-						.then(res => {
-							this.GetBannerDatas(res.data)
-							this.$API('GetFlowerRank')
-								.then(res => {
-									this.GetFlowerRankDatas(res.data)
-									this.$apply()
-									wx.stopPullDownRefresh()
-								})
-						})
+					return this.$API('GetFlowerRank')
 				})
+				.then(res => {
+					this.GetFlowerRankDatas(res.data)
+					this.$apply()
+					return this.$API('GetBanner')
+				})
+				.then(res => {
+					this.role = this.$WX.getStorage('role') // 首次获取role
+					this.page++
+					this.GetBannerDatas(res.data)
+					this.$apply()
+				})
+				wx.stopPullDownRefresh()
 		}
 		onReachBottom () {
 			if (!this.isLastPage) {
@@ -160,8 +152,7 @@
 				if (key === 'student') {
 					this.$WX.jumpTo('./writeArticle')
 				} else if (key === 'tutor') {
-					this.$WX.toast('tutor')
-					//	this.$WX.jumpTo('./account/activity')
+						this.$WX.jumpTo('./user/topUp')
 				}
 			}
 		}

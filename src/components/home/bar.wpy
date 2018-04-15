@@ -33,7 +33,7 @@
 		config = {}
 		components = {}
 		data = {
-			role: 0
+//			role: 0
 		}
 		onLoad () {
 			if (wx.getStorageSync('role') === 1) {
@@ -48,6 +48,8 @@
 			}
 		}
 		events = {}
-		props = {}
+		props = {
+			role: Number
+		}
 	}
 </script>

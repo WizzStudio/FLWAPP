@@ -3,6 +3,10 @@
 		padding-top: 48rpx;
 		padding-right: 30rpx;
 		padding-left: 30rpx;
+		&-img {
+			width: 500rpx;
+			height: 500rpx;
+		}
 		&-title {
 			margin-bottom: 10rpx;
 			font-size: 34rpx;
@@ -41,9 +45,7 @@
 			<span id="{{articleData.userId}}">{{articleData.author}}</span>
 			<span>阅读次数：{{articleData.pageView}}</span>
 		</view>
-		<view class="article-body">
-			{{articleData.content}}
-		</view>
+		<rich-text class="article-body" nodes="{{articleData.content}}" />
 	</view>
 </template>
 
