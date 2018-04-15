@@ -161,7 +161,6 @@
 				this.articleTitle = event.detail.value
 			},
 			SubmitArticle () {
-				console.log(this.sourceText)
 				if (this.articleTitle.length === 0) {
 					this.$WX.toast('文章名不能为空')
 					return
@@ -176,10 +175,12 @@
 				})
 				this.sourceArticle = JSON.parse(JSON.stringify(this.sourceArticle).replace(/\\n/g, '<br>')) + this.sourceImage
 				this.nodes = this.sourceArticle
-				this.$API('PostArticle', {title: JSON.stringify(this.articleTitle), content: JSON.stringify(this.sourceArticle)})
+				this.$API('PostArticle', {title: this.articleTitle, content: this.sourceArticle})
 					.then(res => {
-						console.log(res)
 						this.$WX.toast('文章已提交审核')
+						setTimeout(() => {
+							this.$WX.jumpTo('./home')
+						}, 500)
 					})
 			}
 		}
