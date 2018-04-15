@@ -54,14 +54,14 @@
 			this.$WX.clearStorage()
 
 			this.$WX.wxLogin()
-				.then(
-					this.$WX.getUserInfo()
-						.then(res => {
-							this.$WX.setStorage('wxAvatar', res.userInfo.avatarUrl)
-							this.$WX.setStorage('wxName', res.userInfo.nickName)
-							this.$WX.jumpTo('./home')
-						})
-				)
+				.then(res => {
+					return this.$WX.getUserInfo()
+				})
+				.then(res => {
+					this.$WX.setStorage('wxAvatar', res.userInfo.avatarUrl)
+					this.$WX.setStorage('wxName', res.userInfo.nickName)
+					this.$WX.jumpTo('./home')
+				})
 		}
 
 		onReady () {}

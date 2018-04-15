@@ -3,9 +3,9 @@
 </style>
 
 <template>
-	<swiper :BannerDatas.sync="BannerDatas"/>
-	<news :NewsDatas.sync="NewsDatas" :FlowerRankDatas.sync="FlowerRankDatas"/>
-	<bar />
+	<Swiper :BannerDatas.sync="BannerDatas"/>
+	<News :NewsDatas.sync="NewsDatas" :FlowerRankDatas.sync="FlowerRankDatas"/>
+	<Bar :role.sync="role"/>
 </template>
 
 <script>
@@ -21,16 +21,17 @@
 			navigationBarTitleText: '首页'
 		}
 		components = {
-			swiper: Swiper,
-			news: News,
-			bar: Bar
+			Swiper: Swiper,
+			News: News,
+			Bar: Bar
 		}
 		data = {
 			NewsDatas: [],
 			FlowerRankDatas: [],
 			BannerDatas: [],
 			page: 0,
-			isLastPage: false
+			isLastPage: false,
+			role: 0
 		}
 		computed = {}
 
@@ -70,24 +71,19 @@
 		}
 
 		onLoad () {
-			this.$API('GetNewsList', {page: this.page})
+			this.$API('GetBanner')
 				.then(res => {
-					this.page++
-					this.GetNewsDatas(res.data)
+					this.GetBannerDatas(res.data)
 					this.$apply()
-					this.$API('GetBanner')
-						.then(res => {
-							this.GetBannerDatas(res.data)
-							this.$apply()
-						})
-					this.$API('GetFlowerRank')
-						.then(res => {
-							this.GetFlowerRankDatas(res.data)
-							this.$apply()
-						})
+					return this.$API('GetFlowerRank')
+				})
+				.then(res => {
+					this.GetFlowerRankDatas(res.data)
+					this.$apply()
 				})
 		}
 		onShow () {
+			this.role = this.$WX.getStorage('role')
 			wx.openBluetoothAdapter({
 				success: function (res) {
 					console.log(res)
@@ -165,7 +161,7 @@
 					this.$WX.jumpTo('./writeArticle')
 				} else if (key === 'tutor') {
 					this.$WX.toast('tutor')
-					//	this.$WX.jumpTo('')
+					//	this.$WX.jumpTo('./account/activity')
 				}
 			}
 		}

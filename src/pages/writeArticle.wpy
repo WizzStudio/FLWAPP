@@ -176,7 +176,7 @@
 				})
 				this.sourceArticle = JSON.parse(JSON.stringify(this.sourceArticle).replace(/\\n/g, '<br>')) + this.sourceImage
 				this.nodes = this.sourceArticle
-				this.$API('PostArticle', {title: JSON.stringify(this.articleTitle), content: JSON.stringify(this.sourceArticle)})
+				this.$API('PostArticle', {title: this.articleTitle, content: this.sourceArticle})
 					.then(res => {
 						console.log(res)
 						this.$WX.toast('文章已提交审核')
