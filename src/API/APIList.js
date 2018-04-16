@@ -45,5 +45,6 @@ export default {
 	GetTutorFlower: {url: '/tutor/balance', method: 'get', data: {}, headers: {}, right: 2}, // 导师小红花余额
 	GetStudentFlower: {url: '/stu/balance', method: 'get', data: {}, headers: {}, right: 1},  // 学生小红花余额
 	GetAcceptableFlw: {url: '/stu/home/acceptable', method: 'get_restful', data: {}, headers: {}, right: 2}, // 学生还能接收小红花数量
-	DonateFlw: {url: '/tutor/gift', method: 'post', data: {stuId: 0, amount: 0}, headers: {}, right: 2} // 捐赠给学生小红花
+	DonateFlw: {url: '/tutor/gift', method: 'post', data: {stuId: 0, amount: 0}, headers: {}, right: 2}, // 捐赠给学生小红花
+	GetQuestionList: {url: '/conf/question', method: 'get', data: {}, headers: {}, right: 0}
 }

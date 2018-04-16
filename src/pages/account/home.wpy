@@ -209,7 +209,7 @@
 					})
 			}
 			if (this.$WX.getStorage('role') === 1) {
-				this.isStudent = true
+        this.isStudent = true
 				this.$API('StudentCenter')
 					.then(data => {
 						this.treatAjaxDatasStudent(data.data)
