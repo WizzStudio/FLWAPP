@@ -234,11 +234,11 @@
       <span class="info-module-title">问题</span>
     </view>
     <repeat for="{{questionList}}" item="item" index="index">
-      <view class="info-module-problem">{{item}}</view>
+      <view class="info-module-problem">{{item.title}}</view>
       <div class="info-container">
-        <textarea class="info-textarea" maxlength="200" bindinput="onInput" id="answer + {{index}}" value="{{answer.value}}">
+        <textarea class="info-textarea" maxlength="200" bindinput="onInputQuestion" data-index="{{index}}" value="{{answerList[index].answerContent}}">
         </textarea>
-        <span class="info-textarea-count">{{answer.length}}/200</span>
+        <span class="info-textarea-count" >{{answerList[index].answerContent.length}}/200</span>
       </div>
     </repeat>
   </view>
@@ -282,6 +282,7 @@
       Picker: Picker
     }
     data = {
+      isFirstSubmitAnswer: false,
       optionList: [],
       identityList: [],
       imagesList: [],
@@ -289,7 +290,8 @@
       questionList: [],
       avatar: '',
       identity: '',
-      answer: {},
+      answerList: [],
+      questionAndAnswer: [],
       personalIntro: {},
       isRight: false,
       isFirst: true,
@@ -416,10 +418,6 @@
         }
       ]
       this.avatar = this.$WX.getStorage('avatar')
-      this.answer = {
-        value: data.answer || '',
-        length: this.setTextLength(data.answer)
-      }
       this.personalIntro = {
         value: data.personalIntro || '',
         length: this.setTextLength(data.personalIntro)
@@ -492,10 +490,10 @@
           idNum: this.identityList[1].value,
           bankNumber: this.identityList[2].value,
           stuNumber: this.identityList[0].value,
-          answer: this.answer.value,
           personalIntro: this.personalIntro.value,
           attachNum: this.$WX.getStorage('attach_num')
         }
+        this.$API('EditAnswer', JSON.stringify(this.answerList))
 				this.$API('SendStudentProfile', JSON.stringify(datas))
           .then(res => {
             if (res.code === 0) {
@@ -533,7 +531,6 @@
         this.optionList = this.$WX.getStorage('optionList')
         this.identityList = this.$WX.getStorage('identityList')
         this.personalIntro = this.$WX.getStorage('personalIntro')
-        this.answer = this.$WX.getStorage('answer')
         this.avatar = this.$WX.getStorage('avatar')
         this.identity = this.$WX.getStorage('identity')
       } else {
@@ -545,11 +542,31 @@
 								this.directionList.push(item.directionName)
 							})
             })
-          this.$API('GetQuestionList')
+            this.$API('GetQuestionList')
             .then(res => {
               res.data.forEach(item => {
-                this.questionList.push(item.title)
+                this.questionList.push(item)
               })
+              return this.$API('GetAnswer', {userId: this.$WX.getStorage('userId')})
+            })
+            .then(res => {
+              res.data.map(item => {
+                  this.answerList.push({
+                    answerContent: item.answerContent,
+                    questionId: item.questionId,
+                    id: item.id
+                  })
+                })
+            })
+            .catch(err => {
+              console.log(err)
+              this.isFirstSubmitAnswer = true
+                this.questionList.map(item => {
+                  this.answerList.push({
+                    questionId: item.id,
+                    answerContent: ''
+                  })
+                })
             })
 					this.$API('GetSchoolList')
 						.then(res => {
@@ -589,7 +606,6 @@
       this.$WX.setStorage('optionList', this.optionList)
       this.$WX.setStorage('identityList', this.identityList)
       this.$WX.setStorage('avatar', this.avatar)
-      this.$WX.setStorage('answer', this.answer)
       this.$WX.setStorage('personalIntro', this.personalIntro)
       this.$WX.setStorage('identity', this.identity)
     }
@@ -630,14 +646,11 @@
       },
       //  实时更新多行输入框的长度
       onInput (event) {
-        if (event.target.id === 'answer') {
-          this.answer.value = event.detail.value
-          this.answer.length = this.answer.value.length
-        }
-        if (event.target.id === 'resume') {
-          this.personalIntro.value = event.detail.value
-          this.personalIntro.length = this.personalIntro.value.length
-        }
+        this.personalIntro.value = event.detail.value
+        this.personalIntro.length = this.personalIntro.value.length
+      },
+      onInputQuestion (event) {
+        this.answerList[event.target.dataset.index].answerContent = event.detail.value
       },
       upLoad () {
         const userId = this.$WX.getStorage('userId')
@@ -734,6 +747,12 @@
             return false
           }
         }
+        this.answerList.map(item => {
+          if (item.answerContent.length === 0) {
+            this.$WX.toast('问题答案不能为空')
+            return false
+          }
+        })
       }
       return true
     }

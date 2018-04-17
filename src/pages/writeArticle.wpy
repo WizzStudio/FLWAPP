@@ -122,8 +122,8 @@
 			sourceText: '',
 			articleTitle: '',
 			articleImageList: [],
-			sourceImage: '',
-			sourceArticle: ''
+			sourceArticle: '',
+			sourceImage: []
 		}
 		components = {}
 		onLoad () {}
@@ -138,6 +138,22 @@
 								this.articleImageList.push(item)
 							})
 							this.$apply()
+							this.articleImageList.map(item => {
+								let imgPath = item
+								let imgName = Date.now() + '.jpg'
+								this.$API('UpLoad', {id: imgName})
+									.then(res => {
+                  	let token = res.data
+										return this.$WX.UpLoadFile(imgPath, {'key': imgName, token: token})
+                	})
+									.then(res => {
+										return this.$API('DownLoad', {imgName: imgName})
+											.then(res => {
+												this.sourceImage.push(res.data)
+												console.log(res)
+											})
+									})
+								})
 						})
 				}
 			},
@@ -170,10 +186,11 @@
 					return
 				}
 				this.sourceArticle = '<p>' + this.sourceText + '</p>'
-				this.articleImageList.map(item => {
-					this.sourceImage += '<img src=' + '"' + item + '"' + '/>'
+				let strImage = ''
+				this.sourceImage.map(item => {
+					strImage += '<img src=' + '"' + item + '"' + 'width="345" height="340" />'
 				})
-				this.sourceArticle = JSON.parse(JSON.stringify(this.sourceArticle).replace(/\\n/g, '<br>')) + this.sourceImage
+				this.sourceArticle = strImage + JSON.parse(JSON.stringify(this.sourceArticle).replace(/\\n/g, '<br>'))
 				this.nodes = this.sourceArticle
 				this.$API('PostArticle', {title: this.articleTitle, content: this.sourceArticle})
 					.then(res => {
