@@ -20,7 +20,7 @@
 
 <template>
   <view class="centerInfomation">
-    <Info class="centerInfomation-Module-1" :infoDatas.sync="infoDatas" :isStudent.sync="isStudent" :avatar.sync="avatar"></Info>
+    <Info class="centerInfomation-Module-1" :infoDatas.sync="infoDatas" :isStudent.sync="isStudent" :avatar.sync="avatar" ></Info>
     <Show class="centerInfomation-Module-2" :showDatas.sync="showDatas" :isStudent.sync="isStudent"></Show>
     <Menu class="centerInfomation-Module-3" :menuList.sync="menuList" :isStudent.sync="isStudent"></Menu>
   </view>
@@ -69,6 +69,7 @@
 				status: -1
 			},
       showDatas: [],
+      schoolList: [],
       isStudent: true,
       avatar: ''
     }
@@ -76,7 +77,7 @@
     treatAjaxDatasStudent (data) {
       this.infoDatas = {
         name: data.name || this.$WX.getStorage('wxName'),
-        schoolId: data.schoolId || '0',
+        school: (data.schoolId !== -1 && this.schoolList.filter((item, index) => item.id === data.schoolId)[0].schoolName) || '请填写',
         profession: data.profession || '请填写',
         status: data.status
       }
@@ -138,6 +139,10 @@
     onLoad () {
       if (this.$WX.getStorage('role') === 1) {
         this.isStudent = true
+        this.$API('GetSchoolList')
+          .then(res => {
+            this.schoolList = res.data
+          })
         this.$API('StudentCenter')
           .then(data => {
             this.treatAjaxDatasStudent(data.data)
@@ -165,7 +170,7 @@
       } else {
 				this.infoDatas = {
 					name: '香蕉君',
-					schoolId: '1',
+					school: '请填写',
 					profession: '香蕉舞',
 					status: -1
 				}

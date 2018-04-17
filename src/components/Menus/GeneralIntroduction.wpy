@@ -73,7 +73,7 @@
         <span class="info-module-2-basic-statu {{isStudent? statuClass[infoDatas.status]: tutorClass[infoDatas.isTutor]}}" wx:if="{{infoDatas.status !== -1}}">{{isStudent? statuTitle[infoDatas.status]: tutorTitle[infoDatas.isTutor]}}</span>
       </div>
       <div class="info-module-2-more">
-        <span>{{isStudent? schoolList[infoDatas.schoolId]: infoDatas.company}} | {{isStudent? infoDatas.profession: infoDatas.position }}</span>
+        <span>{{isStudent? infoDatas.school: infoDatas.company}} | {{isStudent? infoDatas.profession: infoDatas.position }}</span>
       </div>
     </div>
     <div class="info-module-3"  @tap="click">
@@ -89,7 +89,6 @@
     data = {
       statuTitle: ['审核中', '审核未通过', '已通过审核', '已停用'],
       statuClass: ['info-module-2-checking', 'info-module-2-failed', 'info-module-2-success'],
-      schoolList: ['请填写', '电子科技大学', '西安电子科技大学'],
       tutorTitle: ['审核未通过', '导师'],
       tutorClass: ['info-module-2-failed', 'info-module-2-success']
     }

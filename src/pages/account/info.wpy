@@ -303,7 +303,7 @@
 			tradeList: ['请选择']
     }
     computed = {}
-
+    //  获取全局配置接口中id匹配的数据
     //  若异步获取的数据属性值为空则设置其长度为0
     setTextLength (data) {
       if (typeof data === 'undefined') {
@@ -346,8 +346,8 @@
         {
           name: '学校',
           type: 'picker',
-          value: this.schoolList[data.schoolId] || this.schoolList[0],
-          data: this.schoolList,
+          value: (data.schoolId !== -1 && this.schoolList.filter(item => item.id === data.schoolId)[0].schoolName) || '未选择',
+          data: this.schoolList.map(item => item.schoolName),
           mode: 'selector',
           id: 'university'
         },
@@ -480,7 +480,7 @@
           name: this.optionList[0].value,
           birthday: this.$UTIL.transformTimeToUnix(this.optionList[1].value),
           sex: this.sexData.indexOf(this.optionList[2].value) || 0,
-          schoolId: this.schoolList.indexOf(this.optionList[3].value) || 0,
+          schoolId: this.schoolList.filter(item => item.schoolName === this.optionList[3].value)[0].id,
           degree: this.degreeData.indexOf(this.optionList[4].value) || 0,
           academy: this.optionList[5].value,
           profession: this.optionList[6].value,
@@ -558,8 +558,7 @@
                   })
                 })
             })
-            .catch(err => {
-              console.log(err)
+            .catch(() => {
               this.isFirstSubmitAnswer = true
                 this.questionList.map(item => {
                   this.answerList.push({
@@ -570,9 +569,7 @@
             })
 					this.$API('GetSchoolList')
 						.then(res => {
-							res.data.forEach(item => {
-								this.schoolList.push(item.schoolName)
-							})
+              this.schoolList = res.data
 						})
           this.$API('StudentProfile')
             .then(data => {
@@ -673,18 +670,13 @@
                   let token = res.data
 									return this.$WX.UpLoadFile(imgPath, {'key': imgName, token: token})
                 })
-                .then(res => {
-                  console.log(res)
-                })
 						})
 					})
       },
 			imageDelete (event) {
         let index = event.currentTarget.dataset.index
         const userId = this.$WX.getStorage('userId')
-        console.log(this.imagesList)
         this.imagesList.splice(index, 1)
-        console.log(this.imagesList)
 				this.imagesList.forEach((item, index) => {
           let imgPath = item
           let imgName = userId + '-info-' + index + '.jpg'
@@ -692,11 +684,7 @@
 						.then(res => {
 							this.$WX.setStorage('attach_num', index + 1)
               let token = res.data
-              console.log(imgPath, imgName, token)
 							return this.$WX.UpLoadFile(imgPath, {'key': imgName, token: token})
-            })
-            .then(res => {
-              console.log(res)
             })
 				})
 			},
@@ -760,8 +748,10 @@
       //  下拉框
       'changePicker': (key, index) => {
         this.optionList.forEach((item) => {
-          if (item.id === key) {
+          if (item.id === key && key !== 'university') {
             item.value = item.data[index]
+          } else if (item.id === key && key === 'university') {
+            item.value = this.schoolList.filter((schoolItem, arrayIndex) => arrayIndex === parseInt(index))[0].schoolName
           }
         })
       },

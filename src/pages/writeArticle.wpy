@@ -143,14 +143,13 @@
 								let imgName = Date.now() + '.jpg'
 								this.$API('UpLoad', {id: imgName})
 									.then(res => {
-                  	let token = res.data
+										let token = res.data
 										return this.$WX.UpLoadFile(imgPath, {'key': imgName, token: token})
-                	})
+									})
 									.then(res => {
 										return this.$API('DownLoad', {imgName: imgName})
 											.then(res => {
 												this.sourceImage.push(res.data)
-												console.log(res)
 											})
 									})
 								})
