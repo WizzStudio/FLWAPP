@@ -111,7 +111,8 @@
     }
     onPullDownRefresh () {
 			this.InfoList = []
-			this.page = 0
+      this.page = 0
+      this.$apply()
 			if (this.$WX.getStorage('role') === 2) {
 				this.LoadDatas('GetTutorStudents', 1)
 			} else {

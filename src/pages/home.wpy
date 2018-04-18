@@ -3,7 +3,7 @@
 </style>
 
 <template>
-	<view bindscrolltolower="LoadMoreInfo" scroll-y="true" style="height: 100vh">
+	<view scroll-y="true" style="height: 101vh">
 		<Swiper :BannerDatas.sync="BannerDatas"/>
 		<News :NewsDatas.sync="NewsDatas" :FlowerRankDatas.sync="FlowerRankDatas"/>
 		<Bar :role.sync="role"/>
@@ -142,12 +142,7 @@
 					})
 			}
 		}
-		methods = {
-				LoadMoreInfo (e) {
-					console.log(e)
-					this.$emit('LoadMoreInfos')
-			}
-		}
+		methods = {}
 		events = {
 			'jumpToArticle': (key) => {
 				this.$WX.setStorage('articleId', key)

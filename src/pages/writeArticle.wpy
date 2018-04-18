@@ -188,7 +188,7 @@
 				Promise.all(promiseArray)
 					.then(res => {
 						this.sourceArticle = '<p>' + this.sourceText + '</p>'
-						this.sourceArticle = strImage + JSON.parse(JSON.stringify(this.sourceArticle).replace(/\\n/g, '<br>'))
+						this.sourceArticle = strImage + '<br>' + JSON.parse(JSON.stringify(this.sourceArticle).replace(/\\n/g, '<br>')) + '<br><br>'
 						this.nodes = this.sourceArticle
 						this.$API('PostArticle', {title: this.articleTitle, content: this.sourceArticle})
 							.then(res => {
