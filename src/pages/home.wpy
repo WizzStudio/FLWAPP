@@ -118,33 +118,38 @@
 				})
 				.then(res => {
 					this.GetBannerDatas(res.data)
-					wx.stopPullDownRefresh()
+					setTimeout(() => {
+						wx.stopPullDownRefresh()
+					}, 500)
 					this.$apply()
 				})
 		}
 		onReachBottom () {
 			if (!this.isLastPage) {
+				this.$WX.showLoading('加载中')
 				this.$API('GetNewsList', {page: this.page})
 					.then(res => {
 						if (res.data.length !== 0) {
+							this.$WX.hideLoding()
 							this.isLastPage = false
 							this.page++
 							this.GetNewsDatas(res.data)
 						} else if (res.data.length === 0) {
 							this.$WX.toast('没有更多内容了')
+							this.$WX.hideLoding()
 							this.isLastPage = true
 						}
 					})
 			}
 		}
 		methods = {
-				LoadMoreInfo () {
-				this.$emit('LoadMoreInfos')
+				LoadMoreInfo (e) {
+					console.log(e)
+					this.$emit('LoadMoreInfos')
 			}
 		}
 		events = {
 			'jumpToArticle': (key) => {
-				console.log(key)
 				this.$WX.setStorage('articleId', key)
 				this.$WX.jumpTo('./article')
 			},
