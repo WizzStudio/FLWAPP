@@ -50,27 +50,21 @@
 		flex-flow: row nowrap;
 		height: 214rpx;
 		&-info {
-			width: 400rpx;
+			width: 600rpx;
 			margin-right: 40rpx;
 			display: flex;
 			flex-flow: column;
 			padding-top: 54rpx;
 			&-title {
-				font-size: 28rpx;
+				font-size: 29rpx;
 				font-weight: bold;
-				height: 92rpx;
+				padding-top: 15rpx;
+				padding-bottom: 15rpx;
 			}
 			&-time {
 				font-size: 24rpx;
 				color: #999999;
-				//	margin-top: 10rpx;
 			}
-		}
-		&-image {
-			width: 250rpx;
-			height: 150rpx;
-			border-radius: 10rpx;
-			margin-top: 52rpx;
 		}
 	}
 	.Top-List {
@@ -129,11 +123,10 @@
 			<repeat for="{{NewsDatas}}" item="item">
 				<view class="News-Item" @tap="InfoClick" id="{{item.id}}">
 					<view class="News-Item-info">
-						<view style="font-size: 19rpx;color: #999;margin-left: 0rpx;margin-bottom: 0rpx">{{item.tag}}</view>
+						<view style="font-size: 24rpx;color: #999;">{{item.tag}}</view>
 						<view class="News-Item-info-title">{{item.title}}</view>
 						<view class="News-Item-info-time">{{item.author}} • {{item.time}} • {{item.pageView}}次阅读</view>
 					</view>
-					<image class="News-Item-image" src="http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg" mode="aspectFill"/>
 				</view>
 			</repeat>
 		</view>

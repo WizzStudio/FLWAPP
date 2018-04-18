@@ -301,7 +301,7 @@
 			degreeData: ['请选择', '本科', '硕士', '博士'],
 			schoolList: [],
 			directionList: [],
-			tradeList: ['请选择']
+			tradeList: []
     }
     computed = {}
     //  获取全局配置接口中id匹配的数据
@@ -385,7 +385,7 @@
           type: 'picker',
           mode: 'selector',
           data: this.directionList.map(item => item.directionName),
-          value: (data.direction !== 3 && (this.directionList.filter(item => item.id === data.direction))[0].directionName) || '未选择',
+          value: (data.direction !== -1 && (this.directionList.filter(item => item.id === data.direction))[0].directionName) || '未选择',
           id: 'orientation'
         },
         {
@@ -445,9 +445,9 @@
           name: '行业',
           type: 'picker',
           mode: 'selector',
-          data: this.tradeList,
-          value: this.tradeList[data.trade] || this.tradeList[0],
-          id: 'orientation'
+          data: this.tradeList.map(item => item.tradeName),
+          value: (data.trade !== -1 && (this.tradeList.filter(item => item.id === data.trade))[0].tradeName) || '请选择',
+          id: 'trade'
         },
         {
           name: '公司/机构',
@@ -481,7 +481,7 @@
           name: this.optionList[0].value,
           birthday: this.$UTIL.transformTimeToUnix(this.optionList[1].value),
           sex: this.sexData.indexOf(this.optionList[2].value) || 0,
-          schoolId: this.schoolList.filter(item => item.schoolName === this.optionList[3].value)[0].id || -1,
+          schoolId: this.schoolList.filter(item => item.schoolName === this.optionList[3].value)[0].id || '',
           degree: this.degreeData.indexOf(this.optionList[4].value) || 0,
           academy: this.optionList[5].value,
           profession: this.optionList[6].value,
@@ -508,8 +508,8 @@
       if (this.identity === 'tutor') {
         datas = {
           name: this.optionList[0].value,
-          sex: this.optionList[1].value || 0,
-          trade: this.optionList[2].value || 0,
+          sex: this.sexData.indexOf(this.optionList[1].value)  || 0,
+          trade: this.tradeList.filter(item => item.tradeName === this.optionList[2].value)[0].id || -1,
           company: this.optionList[3].value,
           position: this.optionList[4].value,
           simpleIntro: this.optionList[5].value,
@@ -587,10 +587,10 @@
 					this.$API('GetTrade')
 						.then(res => {
 							res.data.forEach(item => {
-								this.TradeList.push(item.tradeName)
-							})
+								this.tradeList = res.data
+              })
+              return this.$API('TutorProfile')
 						})
-          this.$API('TutorProfile')
             .then(data => {
               this.treatAjaxDatasTutor(data.data)
               this.$apply()
@@ -752,9 +752,11 @@
           } else if (item.id === key && key === 'university') {
             item.value = this.schoolList.filter((schoolItem, arrayIndex) => arrayIndex === parseInt(index))[0].schoolName
           } else if (item.id === key && key === 'direction') {
-            item.value = this.directionList.filter((directionItem, arrayIndex) => arrayIndex === parseInt(index))[0].directionList
+            item.value = this.directionList.filter((directionItem, arrayIndex) => arrayIndex === parseInt(index))[0].directionName
+          } else if (item.id === key && key === 'trade') {
+            item.value = this.tradeList.filter((tradeItem, arrayIndex) => arrayIndex === parseInt(index))[0].tradeName
           }
-        })
+        })  
       },
       'changeMultiPicker': (key, multiIndex) => {
         this.optionList.forEach((item) => {

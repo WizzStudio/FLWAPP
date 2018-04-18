@@ -89,7 +89,7 @@
     data = {
       statuTitle: ['审核中', '审核未通过', '已通过审核', '已停用'],
       statuClass: ['info-module-2-checking', 'info-module-2-failed', 'info-module-2-success'],
-      tutorTitle: ['审核未通过', '导师'],
+      tutorTitle: ['未认证', '导师'],
       tutorClass: ['info-module-2-failed', 'info-module-2-success']
     }
     components = {}

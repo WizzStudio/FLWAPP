@@ -107,7 +107,7 @@
     treatAjaxDatasTutor (data) {
       this.infoDatas = {
         name: data.name || '请填写',
-        isTutor: data.isTutor || 0,
+        isTutor: data.isTutor,
         trade: data.trade || '请填写',
         company: data.company || '请填写',
         position: data.position || '请填写',

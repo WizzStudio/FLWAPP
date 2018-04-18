@@ -31,6 +31,7 @@
 			NewsDatas: [],
 			FlowerRankDatas: [],
 			BannerDatas: [],
+			tradeList: [],
 			page: 0,
 			isLastPage: false,
 			role: 0
@@ -40,14 +41,15 @@
 		GetNewsDatas (data) {
 			if (typeof data !== 'undefined' && data.length > 0) {
 				data.map(item => {
+					console.log(this.tradeList)
 					this.NewsDatas.push(
 						{
 							id: item.id,
 							title: item.title,
 							author: item.name || '匿名',
-							pageView: item.pageView || 'NaN',
+							pageView: item.pageView || '1',
 							time: moment(item.createTime.split('.')[0], 'YYYY-MM-DD hh:mm:ss').fromNow() || '',
-							tag: item.tag
+							tag: (item.tag !== '-1' && (this.tradeList.filter(trade => trade.id === parseInt(item.tag))[0]).tradeName) || '导师精选'
 						}
 					)
 				})
@@ -75,7 +77,11 @@
 		}
 
 		onLoad () {
-			this.$API('GetNewsList', {page: this.page})
+			this.$API('GetTrade')
+				.then(res => {
+					this.tradeList = res.data
+					return this.$API('GetNewsList', {page: this.page})
+				})
 				.then(res => {
 					this.role = this.$WX.getStorage('role') // 首次获取role
 					this.page++
@@ -126,17 +132,14 @@
 		}
 		onReachBottom () {
 			if (!this.isLastPage) {
-				this.$WX.showLoading('加载中')
 				this.$API('GetNewsList', {page: this.page})
 					.then(res => {
 						if (res.data.length !== 0) {
-							this.$WX.hideLoding()
 							this.isLastPage = false
 							this.page++
 							this.GetNewsDatas(res.data)
 						} else if (res.data.length === 0) {
 							this.$WX.toast('没有更多内容了')
-							this.$WX.hideLoding()
 							this.isLastPage = true
 						}
 					})
