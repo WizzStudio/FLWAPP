@@ -125,7 +125,7 @@
 		<view class="news-nav-item-2 item-{{isNews?'':'active'}}" id="top" @tap="ItemClick">红花榜</view>
 	</view>
 	<view class="News-Content">
-		<scroll-view wx:if="{{isNews}}" bindscrolltolower="LoadMoreInfo" scroll-y="true" style="height: 100vh">
+		<view wx:if="{{isNews}}">
 			<repeat for="{{NewsDatas}}" item="item">
 				<view class="News-Item" @tap="InfoClick" id="{{item.id}}">
 					<view class="News-Item-info">
@@ -136,7 +136,7 @@
 					<image class="News-Item-image" src="http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg"/>
 				</view>
 			</repeat>
-		</scroll-view>
+		</view>
 		<view wx:if="{{!isNews}}" class="Top-List">
 			<repeat for="{{FlowerRankDatas}}" item="item" index="index">
 				<view class="Top-List-item">
@@ -177,9 +177,6 @@
 			},
 			RankClick (event) {
 				this.$emit('jumpToTutorPage', event.target.id)
-			},
-			LoadMoreInfo () {
-				this.$emit('LoadMoreInfos')
 			}
 		}
 		events = {}

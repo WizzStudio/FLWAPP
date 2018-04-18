@@ -77,7 +77,7 @@
     treatAjaxDatasStudent (data) {
       this.infoDatas = {
         name: data.name || this.$WX.getStorage('wxName'),
-        school: (data.schoolId !== -1 && this.schoolList.filter((item, index) => item.id === data.schoolId)[0].schoolName) || '请填写',
+        school: (data.schoolId !== -1 && (this.schoolList.filter((item, index) => item.id === data.schoolId))[0].schoolName) || '请填写',
         profession: data.profession || '请填写',
         status: data.status
       }
@@ -142,8 +142,8 @@
         this.$API('GetSchoolList')
           .then(res => {
             this.schoolList = res.data
+            return this.$API('StudentCenter')
           })
-        this.$API('StudentCenter')
           .then(data => {
             this.treatAjaxDatasStudent(data.data)
             return this.$API('DownLoad', {avatar: this.$WX.getStorage('userId') + '-avatar.jpg'})

@@ -276,7 +276,8 @@
   import Picker from '../../components/Infos/Picker'
   export default class Info extends page {
     config = {
-      navigationBarTitleText: '修改信息'
+      navigationBarTitleText: '修改信息',
+      enablePullDownRefresh: false
     }
     components = {
       Picker: Picker
@@ -346,7 +347,7 @@
         {
           name: '学校',
           type: 'picker',
-          value: (data.schoolId !== -1 && this.schoolList.filter(item => item.id === data.schoolId)[0].schoolName) || '未选择',
+          value: (data.schoolId !== -1 && (this.schoolList.filter(item => item.id === data.schoolId))[0].schoolName) || '未选择',
           data: this.schoolList.map(item => item.schoolName),
           mode: 'selector',
           id: 'university'
@@ -567,11 +568,11 @@
                   })
                 })
             })
-					this.$API('GetSchoolList')
+            this.$API('GetSchoolList')
 						.then(res => {
               this.schoolList = res.data
+              return this.$API('StudentProfile')
 						})
-          this.$API('StudentProfile')
             .then(data => {
               this.treatAjaxDatasStudent(data.data)
 							for (let i = 0, attachNum = data.data.attachNum; i < attachNum; i++) {
