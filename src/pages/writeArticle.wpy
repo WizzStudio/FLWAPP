@@ -98,7 +98,7 @@
 		<view class="write-article-image">
 			<repeat for="{{articleImageList}}" item="item" index="index">
 				<view>
-					<image class="write-article-image-content" src="{{item}}" data-index="{{index}}" @tap="imagePreview"/>
+					<image class="write-article-image-content" src="{{item}}" data-index="{{index}}" @tap="imagePreview" mode="aspectFill"/>
 					<image class="write-article-image-delete-icon" src="../../static/images/article/delete.svg" wx:if="{{item.length > 0}}" data-index="{{index}}" @tap="imageDelete"/>
 				</view>
 			</repeat>
@@ -182,7 +182,7 @@
 							return this.$API('DownLoad', {imgName: imgName})
 						})
 						.then(res => {
-							strImage += '<img src=' + '"' + res.data + '"' + 'width="345" height="340" />'
+							strImage += '<img src=' + '"' + res.data + '"' + 'style="max-width: 100%" />'
 						}))
 				})
 				Promise.all(promiseArray)

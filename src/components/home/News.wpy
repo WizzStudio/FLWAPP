@@ -133,7 +133,7 @@
 						<view class="News-Item-info-title">{{item.title}}</view>
 						<view class="News-Item-info-time">{{item.author}} • {{item.time}} • {{item.pageView}}次阅读</view>
 					</view>
-					<image class="News-Item-image" src="http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg"/>
+					<image class="News-Item-image" src="http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg" mode="aspectFill"/>
 				</view>
 			</repeat>
 		</view>

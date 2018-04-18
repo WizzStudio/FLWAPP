@@ -46,7 +46,7 @@
 		<scroll-view style="height: 101vh" class="donate-ul" scroll-y="true">
 			<repeat for="{{InfoList}}" item="item">
 				<li id="{{item.userId}}" @tap="jumpToUserPage">
-					<image src="{{item.avatar}}" />
+					<image src="{{item.avatar}}" mode="aspectFill"/>
 					<div>
 						<span class="name">{{item.name}}</span>
 						<span class="other">{{item.company}}</span>

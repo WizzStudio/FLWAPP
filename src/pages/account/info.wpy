@@ -179,7 +179,7 @@
     </view>
     <div class="info-item-container info-item-avatar-container">
         <label class="info-item-name">头像</label>
-        <image src="{{avatar}}" class="info-item-avatar-img" alt="我的头像" @tap="changeAvatar"/>
+        <image src="{{avatar}}" class="info-item-avatar-img" alt="我的头像" @tap="changeAvatar" mode="aspectFill"/>
         <image src="../../static/images/personalCenter/arrow-right.svg" class="Info-Tag info-item-avatar-tag" @tap="changeAvatar"/>
     </div>
     <ul class="info-container">
@@ -257,7 +257,7 @@
 			</view>
 			<repeat for="{{imagesList}}" item="item">
 				<view>
-					<image src="{{item}}" class="info-upload-images-list" data-index="{{index}}" @tap="imagePreview"/>
+					<image src="{{item}}" class="info-upload-images-list" data-index="{{index}}" @tap="imagePreview" mode="aspectFill"/>
 					<image class="info-upload-images-delete" src="../../static/images/article/delete.svg" wx:if="{{item.length > 0}}" data-index="{{index}}" @tap="imageDelete"/>
 				</view>
 			</repeat>
@@ -299,8 +299,8 @@
       isPush: false,
       sexData: ['请选择', '男', '女'],
 			degreeData: ['请选择', '本科', '硕士', '博士'],
-			schoolList: ['请选择'],
-			directionList: ['请选择'],
+			schoolList: [],
+			directionList: [],
 			tradeList: ['请选择']
     }
     computed = {}
@@ -384,8 +384,8 @@
           name: '申请方向',
           type: 'picker',
           mode: 'selector',
-          data: this.directionList,
-          value: this.directionList[data.direction] || this.directionList[0],
+          data: this.directionList.map(item => item.directionName),
+          value: (data.direction !== 3 && (this.directionList.filter(item => item.id === data.direction))[0].directionName) || '未选择',
           id: 'orientation'
         },
         {
@@ -481,12 +481,12 @@
           name: this.optionList[0].value,
           birthday: this.$UTIL.transformTimeToUnix(this.optionList[1].value),
           sex: this.sexData.indexOf(this.optionList[2].value) || 0,
-          schoolId: this.schoolList.filter(item => item.schoolName === this.optionList[3].value)[0].id,
+          schoolId: this.schoolList.filter(item => item.schoolName === this.optionList[3].value)[0].id || -1,
           degree: this.degreeData.indexOf(this.optionList[4].value) || 0,
           academy: this.optionList[5].value,
           profession: this.optionList[6].value,
           admissionDate: this.$UTIL.transformTimeToUnix(this.optionList[7].value),
-          direction: this.directionList.indexOf(this.optionList[8].value) || 0,
+          direction: this.directionList.filter(item => item.directionName === this.optionList[8].value)[0].id || -1,
           simpleIntro: this.optionList[9].value,
           idNum: this.identityList[1].value,
           bankNumber: this.identityList[2].value,
@@ -537,13 +537,7 @@
       } else {
         if (this.$WX.getStorage('role') === 1) {
           this.identity = 'student'
-					this.$API('GetDirection')
-						.then(res => {
-							res.data.forEach(item => {
-								this.directionList.push(item.directionName)
-							})
-            })
-            this.$API('GetQuestionList')
+          this.$API('GetQuestionList')
             .then(res => {
               res.data.forEach(item => {
                 this.questionList.push(item)
@@ -568,7 +562,11 @@
                   })
                 })
             })
-            this.$API('GetSchoolList')
+          this.$API('GetDirection')
+						.then(res => {
+              this.directionList = res.data
+              return this.$API('GetSchoolList')
+            })
 						.then(res => {
               this.schoolList = res.data
               return this.$API('StudentProfile')
@@ -753,6 +751,8 @@
             item.value = item.data[index]
           } else if (item.id === key && key === 'university') {
             item.value = this.schoolList.filter((schoolItem, arrayIndex) => arrayIndex === parseInt(index))[0].schoolName
+          } else if (item.id === key && key === 'direction') {
+            item.value = this.directionList.filter((directionItem, arrayIndex) => arrayIndex === parseInt(index))[0].directionList
           }
         })
       },

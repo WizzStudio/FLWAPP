@@ -130,7 +130,7 @@
 		<view class="stuTrend-infoList">
 			<repeat for="{{studentCurrentList}}" item="item" wx:if="{{roleData.currentData === '学生'}}">
 				<view class="stuTrend-infoList-item" id="{{item.userId}}" @tap="jumpToUserPage">
-					<image src="{{item.avatar}}" class="stuTrend-infoList-item-image"/>
+					<image src="{{item.avatar}}" class="stuTrend-infoList-item-image" mode="aspectFill"/>
 					<view class="stuTrend-infoList-item-info">
 						<view class="stuTrend-infoList-item-info-name">{{item.name}}</view>
 						<view class="stuTrend-infoList-item-info-more">
@@ -143,7 +143,7 @@
 			</repeat>
 			<repeat for="{{tutorCurrentList}}" item="item" wx:if="{{roleData.currentData === '导师'}}">
 				<view class="stuTrend-infoList-item"  id="{{item.userId}}" @tap="jumpToUserPage">
-					<image src="{{item.avatar}}" class="stuTrend-infoList-item-image"/>
+					<image src="{{item.avatar}}" class="stuTrend-infoList-item-image" mode="aspectFill"/>
 					<view class="stuTrend-infoList-item-info">
 						<view class="stuTrend-infoList-item-info-name">{{item.name}}</view>
 						<view class="stuTrend-infoList-item-info-more">

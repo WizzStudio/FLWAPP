@@ -36,7 +36,7 @@
 	>
 		<repeat for="{{BannerDatas}}" item="item">
 			<swiper-item id="{{item.id}}">
-				<image src="{{item.imgSrc}}" class="home-swiper-img"/>
+				<image src="{{item.imgSrc}}" class="home-swiper-img" mode="aspectFill"/>
 				<view class="home-swiper-title">{{item.title}}</view>
 				<view class="home-swiper-title-background"></view>
 			</swiper-item>
