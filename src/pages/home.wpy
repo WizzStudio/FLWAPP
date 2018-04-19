@@ -3,11 +3,11 @@
 </style>
 
 <template>
-	<view scroll-y="true" style="height: 101vh">
+	<scroll-view scroll-y="false" style="height: 101vh" scroll-x="false">
 		<Swiper :BannerDatas.sync="BannerDatas"/>
 		<News :NewsDatas.sync="NewsDatas" :FlowerRankDatas.sync="FlowerRankDatas"/>
 		<Bar :role.sync="role"/>
-	</view>
+	</scroll-view>
 </template>
 
 <script>
@@ -139,7 +139,6 @@
 							this.page++
 							this.GetNewsDatas(res.data)
 						} else if (res.data.length === 0) {
-							this.$WX.toast('没有更多内容了')
 							this.isLastPage = true
 						}
 					})

@@ -19,11 +19,11 @@
 </style>
 
 <template>
-  <view class="centerInfomation">
+  <scroll-view class="centerInfomation">
     <Info class="centerInfomation-Module-1" :infoDatas.sync="infoDatas" :isStudent.sync="isStudent" :avatar.sync="avatar" ></Info>
     <Show class="centerInfomation-Module-2" :showDatas.sync="showDatas" :isStudent.sync="isStudent"></Show>
     <Menu class="centerInfomation-Module-3" :menuList.sync="menuList" :isStudent.sync="isStudent"></Menu>
-  </view>
+  </scroll-view>
 </template>
 
 <script>
@@ -84,19 +84,19 @@
       this.showDatas = [
         {
           name: '小红花',
-          src: '../../static/images/personalCenter/小红花.png',
+          src: '../../static/images/personalCenter/redFlower.png',
           number: data.redFlowerNum || 0 + ' 朵',
           id: 'redFlower'
         },
         {
           name: '导师',
-          src: '../../static/images/personalCenter/导师.png',
+          src: '../../static/images/personalCenter/tutor.png',
           number: data.tutorNum || 0 + ' 人',
           id: 'tutor'
         },
         {
           name: '义工',
-          src: '../../static/images/personalCenter/义工.png',
+          src: '../../static/images/personalCenter/workedTime.png',
           number: data.workedTime || 0 + ' 小时',
           id: 'workedTime'
         }
@@ -116,19 +116,19 @@
       this.showDatas = [
         {
           name: '小红花',
-          src: '../../static/images/personalCenter/小红花.png',
+          src: '../../static/images/personalCenter/redFlower.png',
           number: data.redFlowerNum || 0 + ' 朵',
           id: 'redFlower'
         },
         {
           name: '捐赠学生',
-          src: '../../static/images/personalCenter/捐赠学生.png',
+          src: '../../static/images/personalCenter/student.png',
           number: data.stuNum || 0 + ' 人',
           id: 'stu'
         },
         {
           name: '沙漏',
-          src: '../../static/images/personalCenter/沙漏.png',
+          src: '../../static/images/personalCenter/clock.png',
           number: data.clockNum || 0 + ' 小时',
           id: 'clock'
         }
@@ -177,19 +177,19 @@
 				this.showDatas = [
 					{
 						name: '小红花',
-						src: '../../static/images/personalCenter/小红花.png',
+						src: '../../static/images/personalCenter/redFlower.png',
 						number: 0 + ' 朵',
 						id: 'redFlower'
 					},
 					{
 						name: '导师',
-						src: '../../static/images/personalCenter/导师.png',
+						src: '../../static/images/personalCenter/tutor.png',
 						number: 0 + ' 人',
 						id: 'tutor'
 					},
 					{
 						name: '义工',
-						src: '../../static/images/personalCenter/义工.png',
+						src: '../../static/images/personalCenter/workedTime.png',
 						number: 0 + ' 小时',
 						id: 'workedTime'
 					}
@@ -199,11 +199,6 @@
     }
 
     onShow () {
-			// 随便调个接口去触发
-			if (this.$WX.getStorage('role') === 0) {
-				this.$API('Shit')
-				return false
-			}
 			if (this.$WX.getStorage('hasChangeAvatar') === true) {
 				this.$API('DownLoad', {avatar: this.$WX.getStorage('userId') + '-avatar.jpg'})
 					.then(res => {

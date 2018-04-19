@@ -271,11 +271,12 @@
 			this.$apply()
 		}
 		onLoad () {
-			if (this.$WX.getStorage('role') === 2) {
-				this.roleData.currentData = '导师'
-			} else {
-				this.roleData.currentData = '学生'
-			}
+			// if (this.$WX.getStorage('role') === 1) {
+			// 	this.roleData.currentData = '导师'
+			// } else {
+			// 	this.roleData.currentData = '学生'
+			// }
+			this.roleData.currentData = '学生'
 			this.$API('GetSearchTutorList')
 				.then(res => {
 					res.data.map(item => {
@@ -338,8 +339,10 @@
 		}
 		methods = {
 			searchButtonClick () {
+				console.log('搜索ing')
 				if (this.roleData.currentData === '学生') {
 					this.searchStudentAvatarList = []
+					console.log('搜索学生:', this.searchText)
 					this.$API('GetSearchStudentList', {word: this.searchText})
 						.then(res => {
 							res.data.map(item => {
@@ -358,6 +361,7 @@
 						})
 				} else {
 					this.searchTutorAvatarList = []
+					console.log('搜索导师:', this.searchText)
 					this.$API('GetSearchTutorList', {word: this.searchText})
 						.then(res => {
 							res.data.map(item => {
@@ -407,10 +411,12 @@
 			},
 			'dropDownItemClick': (key, index) => {
 				if (key === 'role') {
+					console.log('切换导师')
 					this.roleData.isClick = !this.roleData.isClick
 					this.roleData.isHidden = !this.roleData.isHidden
 					this.roleData.currentData = this.roleData.data[index]
 					this.roleIndex = index
+					this.searchText = ''
 				}
 				if (key === 'school') {
 					this.optionData[0][0].isClick = !this.optionData[0][0].isClick

@@ -269,6 +269,8 @@
       <button @tap="ButtonClick" id="submit">提交</button>
     </div>
   </div>
+  <br/>
+  <br/>
 </template>
 
 <script>
@@ -294,9 +296,9 @@
       answerList: [],
       questionAndAnswer: [],
       personalIntro: {},
-      isRight: false,
       isFirst: true,
       isPush: false,
+      canSubmit: true,
       sexData: ['请选择', '男', '女'],
 			degreeData: ['请选择', '本科', '硕士', '博士'],
 			schoolList: [],
@@ -508,7 +510,7 @@
       if (this.identity === 'tutor') {
         datas = {
           name: this.optionList[0].value,
-          sex: this.sexData.indexOf(this.optionList[1].value)  || 0,
+          sex: this.sexData.indexOf(this.optionList[1].value) || 0,
           trade: this.tradeList.filter(item => item.tradeName === this.optionList[2].value)[0].id || -1,
           company: this.optionList[3].value,
           position: this.optionList[4].value,
@@ -528,12 +530,47 @@
     onLoad () {
       this.avatar = this.$WX.getStorage('avatar')
       if (this.$WX.getStorage('isSave') === true) {
-        console.log('从本地缓存获取数据')
         this.optionList = this.$WX.getStorage('optionList')
-        this.identityList = this.$WX.getStorage('identityList')
         this.personalIntro = this.$WX.getStorage('personalIntro')
         this.avatar = this.$WX.getStorage('avatar')
         this.identity = this.$WX.getStorage('identity')
+        if (this.$WX.getStorage('role') === 1) {
+          this.identityList = this.$WX.getStorage('identityList')
+          this.attachNum = this.$WX.getStorage('attach_num')
+          for (let i = 0; i < this.attachNum; i++) {
+            let attachImgName = this.$WX.getStorage('userId') + '-info-' + i + '.jpg'
+					  this.$API('DownLoad', {attachImgName: attachImgName})
+						  .then(res => {
+							  this.imagesList.push(res.data)
+                this.$apply()
+              })
+				  }
+          this.$API('GetQuestionList')
+            .then(res => {
+              res.data.forEach(item => {
+                this.questionList.push(item)
+              })
+              return this.$API('GetAnswer', {userId: this.$WX.getStorage('userId')})
+            })
+            .then(res => {
+              res.data.map(item => {
+                  this.answerList.push({
+                    answerContent: item.answerContent,
+                    questionId: item.questionId,
+                    id: item.id
+                  })
+                })
+            })
+            .catch(() => {
+              this.isFirstSubmitAnswer = true
+                this.questionList.map(item => {
+                  this.answerList.push({
+                    questionId: item.id,
+                    answerContent: ''
+                  })
+                })
+            })
+        }
       } else {
         if (this.$WX.getStorage('role') === 1) {
           this.identity = 'student'
@@ -614,7 +651,8 @@
           this.$WX.setStorage('isSave', true)
         }
         if (event.target.id === 'submit') {
-          if (this.checkingValue()) {
+          this.checkingValue()
+          if (this.canSubmit) {
             const confirm = () => {
               this.$WX.setStorage('isSave', false)
 							this.getDatas()
@@ -717,31 +755,23 @@
 				})
     }
     checkingValue () {
-      for (let i = 0, len = this.optionList.length; i < len; i++) {
-        if (this.optionList[i].value === '') {
-          if (this.optionList[i].type === 'picker') {
-            this.$WX.toast('请选择' + this.optionList[i].name)
-          } else if (this.optionList[i].type === 'input') {
-            this.$WX.toast('请填写' + this.optionList[i].name)
-          }
-          return false
+      this.optionList.forEach((item, index, array) => {
+        if (item.value === '' || item.value < 1) {
+          this.$WX.toast('请填写基础信息')
+          this.canSubmit = false
         }
-      }
+      })
       if (this.identity === 'student') {
-        for (let i = 0, len = this.identityList.length; i < len; i++) {
-          this.$emit('input-blur', this.identityList[i].id, this.identityList[i].value)
-          if (!this.isRight) {
-            return false
-          }
-        }
-        this.answerList.map(item => {
+        this.identity.forEach(item => {
+          this.$emit('input-blur', item.id, item.value)
+        })
+        this.answerList.forEach(item => {
           if (item.answerContent.length === 0) {
             this.$WX.toast('问题答案不能为空')
-            return false
+            this.canSubmit = false
           }
         })
       }
-      return true
     }
     events = {
       //  下拉框
@@ -767,9 +797,6 @@
       },
       //  输入框
       'input-blur': (key, value) => {
-        if (value === '') {
-            return
-        }
         this.optionList.forEach(item => {
           if (item.id === key) {
             item.value = value
@@ -778,26 +805,20 @@
         if (key === 'studentNumber') {
           if (!this.$UTIL.isStudentNumber(value)) {
             this.$WX.toast('请输入正确的学号')
-            this.isRight = false
           }
           this.identityList[0].value = value
-          this.isRight = true
         }
         if (key === 'identityCard') {
           if (!this.$UTIL.isIdentityCard(value)) {
             this.$WX.toast('请输入正确的身份证号码')
-            this.isRight = false
           }
           this.identityList[1].value = value
-          this.isRight = true
         }
         if (key === 'cardNumber') {
           if (!this.$UTIL.isCardNumber(value)) {
              this.$WX.toast('请输入正确的银行卡账号')
-             this.isRight = false
           }
           this.identityList[2].value = value
-          this.isRight = true
         }
       }
     }
