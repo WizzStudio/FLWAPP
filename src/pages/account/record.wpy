@@ -51,7 +51,7 @@
   </repeat>
   </ul>
 	<view>
-		<view @tap="loadMore" class="loadMore {{isLast?'destroy':''}}"><span>加载更多</span></view>
+		<view @tap="loadMore" class="loadMore {{isLast?'destroy':''}}"><span wx:if="{{restFlower === '0'}}">加载更多</span></view>
 	</view>
 </template>
 

@@ -63,9 +63,9 @@
 </style>
 
 <template>
-  <view class="info-container">
+  <view class="info-container" @tap="click">
     <div class="info-module-1">
-      <image src="{{avatar}}" class="info-module-1-avatar" alt="我的头像" mode="aspectFill"/>
+      <image src="{{avatar.length > 0? avatar: '../../static/images/logo.png'}}" class="info-module-1-avatar" alt="我的头像" mode="aspectFill"/>
     </div>
     <div class="info-module-2">
       <div class="div-name">
@@ -76,7 +76,7 @@
         <span>{{isStudent? infoDatas.school: infoDatas.company}} | {{isStudent? infoDatas.profession: infoDatas.position }}</span>
       </div>
     </div>
-    <div class="info-module-3"  @tap="click">
+    <div class="info-module-3">
         <image class="centerInfomation-Tag" src="../../static/images/personalCenter/arrow-right.svg"/>
     </div>
   </view>
@@ -109,10 +109,7 @@
     props = {
       infoDatas: Object,
       isStudent: Boolean,
-      avatar: {
-        type: String,
-        default: wx.getStorageSync('wxAvatar')
-      }
+      avatar: String
     }
   }
 </script>

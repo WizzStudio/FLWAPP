@@ -16,7 +16,7 @@ export default {
 	SendStudentProfile: {url: '/stu/profile', method: 'put', data: {}, headers: {}, right: 1},
 	SendTutorProfile: {url: '/tutor/profile', method: 'put', data: {}, headers: {}, right: 2},
 	UpLoad: {url: '/oss/up', method: 'get_restful', data: {}, headers: {}, right: 3},
-	DownLoad: {url: '/oss/down', method: 'get_restful', data: {}, headers: {}, right: 3},
+	DownLoad: {url: '/oss/down', method: 'get_restful', data: {}, headers: {}, right: 0},
 	GetStuHomePage: {url: '/stu/home', method: 'get', data: {}, headers: {}, right: 3}, // 学生个人主页
 	GetMentorHomePage: {url: '/tutor/home', method: 'get', data: {}, headers: {}, right: 3}, // 导师个人主页
 	GetStudentRecord: {url: '/stu/trace', method: 'get', data: {}, headers: {}, right: 1},

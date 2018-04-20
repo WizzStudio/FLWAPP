@@ -1,8 +1,13 @@
 <style lang="scss" type="text/scss">
- .donate-ul {
-   display: flex;
-   flex-flow: column nowrap;
-   li {
+.empty-placeholder {
+  font-size: 28rpx;
+  color: #999999;
+  text-align: center;
+}
+.donate-ul {
+  display: flex;
+  flex-flow: column nowrap;
+  li {
      border-bottom: solid;
      border-color: #f4f4f4;
      border-width: 1rpx;
@@ -44,6 +49,9 @@
 
 <template>
 		<scroll-view style="height: 101vh" class="donate-ul" scroll-y="true">
+      <view class="empty-placeholder" wx:if="{{InfoList.length <= 0}}">
+        {{emptyPlaceholder}}
+      </view>
 			<repeat for="{{InfoList}}" item="item">
 				<li id="{{item.userId}}" @tap="jumpToUserPage">
 					<image src="{{item.avatar}}" mode="aspectFill"/>
@@ -64,7 +72,8 @@
     component = {}
     data = {
       InfoList: [],
-			page: 0
+			page: 0,
+      emptyPlaceholder: '您还没有为学生赠送小红花'
     }
     computed = {}
     getDatas (data) {
@@ -75,6 +84,9 @@
           sum: item.sum
         })
       })
+      if (this.InfoList.length === 0 && this.$WX.getStorage('role') === 1) {
+        this.emptyPlaceholder = '您暂时还没有受到导师的青睐'
+      }
     }
     LoadDatas (role, count = 2) {
       const InfoListLength = this.InfoList.length
@@ -105,7 +117,7 @@
     onLoad () {
       if (this.$WX.getStorage('role') === 2) {
 				this.LoadDatas('GetTutorStudents', 1)
-      } else {
+      } else if (this.$WX.getStorage('role') === 1){
 				this.LoadDatas('GetStudentTutors', 1)
       }
     }

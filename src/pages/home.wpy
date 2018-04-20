@@ -66,6 +66,13 @@
 					id: item['b']
 				})
 			})
+			if (this.BannerDatas.length === 0) {
+				this.BannerDatas.push({
+					title: '深圳海鲸教育基金会',
+					id: 0,
+					imgSrc: 'http://www.ruanyifeng.com/blogimg/asset/2018/bg2018020901.png'
+				})
+			}
 		}
 
 		GetFlowerRankDatas (data) {

@@ -36,7 +36,7 @@
 	>
 		<repeat for="{{BannerDatas}}" item="item">
 			<swiper-item id="{{item.id}}">
-				<image src="{{item.imgSrc}}" class="home-swiper-img" mode="aspectFill"/>
+				<image src="{{item.imgSrc}}" class="home-swiper-img" mode="aspectFill" lazy-load="true"/>
 				<view class="home-swiper-title">{{item.title}}</view>
 				<view class="home-swiper-title-background"></view>
 			</swiper-item>
@@ -50,18 +50,7 @@
 	export default class Swiper extends wepy.component {
 		config = {}
 		components = {}
-		data = {
-			itemData: [
-				{
-					src: 'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
-					title: 'Van'
-				},
-				{
-					src: 'http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg',
-					title: 'Billy'
-				}
-			]
-		}
+		data = {}
 		computed = {}
 
 		onLoad () {}
