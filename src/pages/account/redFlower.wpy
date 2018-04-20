@@ -144,12 +144,10 @@
 			this.moneyAll = data.totalWithdrawMoney || 0
 		}
 		GetTutorDatas (data) {
-			/*
-			this.moneyAll = data.
-			this.studentsAll = data.
-			this.redFlowerSend = data.
-			this.redFlowerRest = data.
-			*/
+			this.moneyAll = data.yearDonateMoney
+			this.studentsAll = data.yearGiftStuNum
+			this.redFlowerSend = data.yearGiftFlowerNum
+			this.redFlowerRest = data.balance
 		}
 		onLoad () {
 			if (this.$WX.getStorage('role') === 1) {
@@ -159,16 +157,13 @@
 						this.getStudentDatas(res.data)
 						this.$apply()
 					})
-			} else if (this.$WX.getStorage('role') === 2) {
+			} else {
 				this.isStudent = false
 				this.$API('GetTutorRedFlower')
 					.then(res => {
 						this.GetTutorDatas()
 						this.$apply()
 					})
-			} else {
-				this.$WX.toast('无权访问')
-				this.$WX.jumpTo('./login')
 			}
 		}
 		methods = {
