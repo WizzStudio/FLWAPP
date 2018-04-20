@@ -15,16 +15,27 @@ export default (amount) => {
 					openId: getStorage('openId')
 				},
 				header: {
-					'content-type': 'application/json'
+					'content-type': 'application/json',
+					'Authorization': getStorage('token')
 				},
 				success: function (res) {
+					res.data = JSON.parse(res.data.data)
+					// console.log(res.data)
+					// console.log(res.data.timeStamp)
+					// console.log(res.data.nonceStr)
+					// console.log(res.data.package)
+					// console.log(res.data.signType)
+					// console.log(res.data.paySign)
 					showLoading('正在调起支付...')
-					wx.requestPayment({
+					
+					let config = {
 						'timeStamp': res.data.timeStamp,
 						'nonceStr': res.data.nonceStr,
-						'package': 'prepay_id=' + res.data.prepay_id,
-						'signType': 'MD5',
-						'paySign': res.data._paySignjs,
+						'package': res.data.package,
+						'signType': res.data.signType,
+						'paySign': res.data.paySign,
+						'appId': res.data.appId,
+						'totalFee': res.data.totalFee,
 						'success': function (res) {
 							hideLoading()
 							resolve(res.data)
@@ -33,7 +44,8 @@ export default (amount) => {
 							hideLoading()
 							reject(err)
 						}
-					})
+					}
+					wx.requestPayment(config)
 				},
 				fail: function (err) {
 					hideLoading()

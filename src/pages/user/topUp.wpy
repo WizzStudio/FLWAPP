@@ -82,6 +82,7 @@
 	import BasicButton from '../../components/Buttons/BasicButton'
 	import basicSelector from '../../components/Selectors/BasicSelector'
 	import BasicInput from '../../components/Inputs/BasicInput'
+	import pay from '../../API/Payment/index'
 
 	export default class Toup extends page {
 		config = {
@@ -186,8 +187,13 @@
 			},
 			'btn-click': (key) => {
 				if (key === 'topUp' && this.donateFlwNumber) {
-					console.log(this.donateFlwNumber)
-					/* TODO支付模块 */
+					pay(this.donateFlwNumber).then(() => {
+						this.$WX.toast('支付成功！海鲸与你同行！')
+						this.$WX.goBack()
+					}).catch(err => {
+						console.error(err)
+						this.$WX.toast('支付失败，请联系运营同学！')
+					})
 				}
 			}
 		}

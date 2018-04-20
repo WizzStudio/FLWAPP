@@ -284,6 +284,7 @@
 
 <script>
 	import wepy from 'wepy'
+	import api from '../../API/index'
 
 	export default class UserCard extends wepy.component {
 		components = {}
@@ -304,6 +305,17 @@
 				'1': '西安电子科技大学',
 				'2': '华中科技大学'
 			}
+		}
+		onLoad () {
+			api('GetSchoolList').then(res => {
+				res.data.forEach((item) => {
+					this.school[item.id] = item.schoolName
+				})
+//				console.log(this.school)
+			})
+//			api('GetDirection').then(res => {
+//				console.log(res)
+//			})
 		}
 		computed = {}
 		methods = {}
