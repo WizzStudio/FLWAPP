@@ -479,6 +479,7 @@
     getDatas () {
       let datas
       if (this.identity === 'student') {
+        console.log(this.schoolList.filter(item => item.schoolName === this.optionList[3].value))
         datas = {
           name: this.optionList[0].value,
           birthday: this.$UTIL.transformTimeToUnix(this.optionList[1].value),
@@ -762,7 +763,7 @@
         }
       })
       if (this.identity === 'student') {
-        this.identity.forEach(item => {
+        this.identityList.forEach(item => {
           this.$emit('input-blur', item.id, item.value)
         })
         this.answerList.forEach(item => {
