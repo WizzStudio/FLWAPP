@@ -197,6 +197,9 @@
 						this.isDataReady = true
 						this.$apply()
 					})
+					this.$API('GetQuestionList').then(res => {})
+					this.$API('GetAnswer', {userId: this.visitUserId}).then(res => {})
+					/* TODO 做一个新map 渲染list到页面上 */
 				}
 			}
 
