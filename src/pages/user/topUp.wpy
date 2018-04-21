@@ -187,9 +187,11 @@
 			},
 			'btn-click': (key) => {
 				if (key === 'topUp' && this.donateFlwNumber) {
-					pay(this.donateFlwNumber * 100).then(() => {
+					pay(this.donateFlwNumber).then(() => {
 						this.$WX.toast('支付成功！海鲸与你同行！')
-						this.$WX.goBack()
+						setTimeout(() => {
+							this.$WX.goBack()
+						}, 2000)
 					}).catch(err => {
 						console.error(err)
 						this.$WX.toast('支付失败，请联系运营同学！')

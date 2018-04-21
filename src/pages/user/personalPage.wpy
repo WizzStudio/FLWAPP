@@ -9,6 +9,10 @@
 		}
 	}
 
+	.question, .answer{
+		display: block;
+	}
+	.answer{}
 
 	.card{
 		&-container{
@@ -60,7 +64,14 @@
 
 		<view wx:if="{{role == 1}}">
 			<p class="title-bar">问题</p>
-			<view class="mt30 pl20 pr20 t3-c1__light"></view>
+			<view class="mt30 pl20 pr20 t3-c1__light">
+				<repeat for="{{QAmap}}" item="item" index="index" key="index">
+					<view>
+						<p class="mt20 mb20 t2-black__normal question">{{item.title}}</p>
+						<p class="t3-c1__light answer pl20">{{item.answerContent}}</p>
+					</view>
+				</repeat>
+			</view>
 		</view>
 
 		<view wx:if="{{role === 1 && isDataReady}}" class="donate-btn l-box__allMid">
@@ -136,7 +147,8 @@
 			aceptFlwNumber: 0,
 			leftFlwNumber: 0,
 			donateNumber: 0,
-			isDataReady: false // 是否所有的数据加载完成
+			isDataReady: false, // 是否所有的数据加载完成
+			QAmap: []
 		}
 		computed = {}
 
@@ -197,9 +209,24 @@
 						this.isDataReady = true
 						this.$apply()
 					})
-					this.$API('GetQuestionList').then(res => {})
-					this.$API('GetAnswer', {userId: this.visitUserId}).then(res => {})
-					/* TODO 做一个新map 渲染list到页面上 */
+
+					this.$API('GetQuestionList').then(response => {
+						if (!response.code) {
+							this.$API('GetAnswer', {userId: this.visitUserId}).then(res => {
+								if (!res.code) {
+									res.data.forEach((item) => {
+										response.data.forEach((it) => {
+											if (it.id === item.questionId) {
+												it['answerContent'] = item.answerContent
+												this.QAmap.push(it)
+												this.$apply()
+											}
+										})
+									})
+								}
+							})
+						}
+					})
 				}
 			}
 
@@ -236,7 +263,6 @@
 				this.donateNumber = 0
 			},
 			'dialog-confirm': () => {
-				/* TODO 调用捐赠接口 */
 				this.isShowConfirmDialog = false
 				if (this.nowUserRole === 2 && this.role === 1) {
 					this.$API('DonateFlw', { stuId: this.visitUserId, amount: this.donateNumber }).then(() => {
