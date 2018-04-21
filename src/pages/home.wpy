@@ -55,9 +55,7 @@
 		}
 
 		GetBannerDatas (data) {
-			const bannerImgList = []
 			data.map(item => {
-				bannerImgList.push(item['a'])
 				this.BannerDatas.push({
 					imgSrc: item['a'],
 					title: item['c'],

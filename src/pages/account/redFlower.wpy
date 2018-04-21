@@ -146,7 +146,7 @@
 		GetTutorDatas (data) {
 			this.moneyAll = data.yearDonateMoney
 			this.studentsAll = data.yearGiftStuNum
-			this.redFlowerSend = data.yearGiftFlowerNum
+			this.redFlowerSend = 0
 			this.redFlowerRest = data.balance
 		}
 		onLoad () {
