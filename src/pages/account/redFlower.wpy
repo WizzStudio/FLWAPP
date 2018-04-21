@@ -161,7 +161,7 @@
 				this.isStudent = false
 				this.$API('GetTutorRedFlower')
 					.then(res => {
-						this.GetTutorDatas()
+						this.GetTutorDatas(res.data)
 						this.$apply()
 					})
 			}
