@@ -50,16 +50,16 @@
 		<view class="card-base"></view>
 
 		<view class="card-container" wx:if="{{role == 1}}">
-			<usrCard class="card-main" :role.sync="role" :stuInfo.sync="userInfo"></usrCard>
+			<usrCard class="card-main  " :role.sync="role" :stuInfo.sync="userInfo"></usrCard>
 		</view>
 
 		<view class="card-container" wx:if="{{role == 2}}">
-			<usrCard class="card-main" :role.sync="role" :tutorInfo.sync="userInfo"></usrCard>
+			<usrCard class="card-main  bounceInDown" :role.sync="role" :tutorInfo.sync="userInfo"></usrCard>
 		</view>
 
 		<view>
 			<p class="title-bar">个人简历</p>
-			<view class="mt30 pl20 pr20 t3-c1__light">{{userInfo.personalIntro}}</view>
+			<view class="mt30 pl20 pr20 t3-c1__light ">{{userInfo.personalIntro}}</view>
 		</view>
 
 		<view wx:if="{{role == 1}}">
@@ -74,7 +74,7 @@
 			</view>
 		</view>
 
-		<view wx:if="{{role === 1 && isDataReady}}" class="donate-btn l-box__allMid">
+		<view wx:if="{{role === 1 && isDataReady}}" class="donate-btn l-box__allMid bounceIn">
 			<!--<donateBtn title="赠送小红花" width="300" height="88" color="red" key="donate" font="32" radius="60" class="shadow"></donateBtn>-->
 			<donateBtn title="赠送小红花" width="300" height="88" color="red" key="pp-donate" font="32" radius="60"></donateBtn>
 		</view>
@@ -119,26 +119,26 @@
 			visitUserId: false,
 			role: 1,
 			userInfo: {
-				'name': '红花君',
+//				'name': '红花君',
 				'avatar': '../../static/images/logo.png',
-				'sex': 1,
-				'schoolId': 1,
-				'profession': '软件工程',
-				'direction': 1,
-				'simpleIntro': '这个人很懒，没有填写个人介绍',
-				'personalIntro': '这个人很懒，没有填写个人简历',
-				'answer': 'default',
-				'userId': 1,
-				'age': 0,
-				'grade': 'default',
-				'redFlowerNum': 0,
-				'tutorNum': 0,
-				'articleNum': 0,
-				'isTutor': 1,
-				'trade': 'default',
-				'company': 'default',
-				'position': 'default',
-				'stuNum': 1
+//				'sex': 1,
+//				'schoolId': 1,
+//				'profession': '软件工程',
+//				'direction': 1,
+//				'simpleIntro': '这个人很懒，没有填写个人介绍',
+//				'personalIntro': '这个人很懒，没有填写个人简历',
+//				'answer': 'default',
+//				'userId': 1,
+//				'age': 0,
+//				'grade': 'default',
+//				'redFlowerNum': 0,
+//				'tutorNum': 0,
+//				'articleNum': 0,
+//				'isTutor': 1,
+//				'trade': 'default',
+//				'company': 'default',
+//				'position': 'default',
+//				'stuNum': 1
 			},
 			isShowDialog: false, // 是否显示捐赠弹框
 			isShowConfirmDialog: false,

@@ -1,5 +1,8 @@
 <style lang="scss" type="text/scss">
+	/* 全局动画 */
+	@import "./common/styles/ani.wxss";
 </style>
+
 
 <script>
 	import wepy from 'wepy'
