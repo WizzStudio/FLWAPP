@@ -81,7 +81,8 @@
         this.InfoList.push({
           name: item.name,
           company: item.company,
-          sum: item.sum
+          sum: item.sum,
+          userId: item.userId
         })
       })
       if (this.InfoList.length === 0 && this.$WX.getStorage('role') === 1) {
@@ -117,7 +118,7 @@
     onLoad () {
       if (this.$WX.getStorage('role') === 2) {
 				this.LoadDatas('GetTutorStudents', 1)
-      } else if (this.$WX.getStorage('role') === 1){
+      } else if (this.$WX.getStorage('role') === 1) {
 				this.LoadDatas('GetStudentTutors', 1)
       }
     }
@@ -145,12 +146,12 @@
     methods = {
 			jumpToUserPage (event) {
         if (this.$WX.getStorage('role') === 2) {
-          this.$WX.setStorage('visit_userId', parseInt(event.target.id))
+          this.$WX.setStorage('visit_userId', parseInt(event.currentTarget.id))
           this.$WX.setStorage('visit_role', 1)
           this.$WX.jumpTo('../user/personalPage')
         }
         if (this.$WX.getStorage('role') === 1) {
-          this.$WX.setStorage('visit_userId', parseInt(event.target.id))
+          this.$WX.setStorage('visit_userId', parseInt(event.currentTarget.id))
           this.$WX.setStorage('visit_role', 2)
           this.$WX.jumpTo('../user/personalPage')
         }

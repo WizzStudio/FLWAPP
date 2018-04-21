@@ -75,7 +75,11 @@
 			const avatarList = []
 			data.map(item => {
 				avatarList.push(item.userId)
-				this.FlowerRankDatas.push(item)
+				this.FlowerRankDatas.push({
+					tutorName: item.tutorName || '神秘导师' + item.userId,
+					giftFlowerNum: item.giftFlowerNum,
+					userId: item.userId
+				})
 			})
 		}
 

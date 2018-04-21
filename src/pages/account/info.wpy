@@ -540,12 +540,12 @@
           this.attachNum = this.$WX.getStorage('attach_num')
           for (let i = 0; i < this.attachNum; i++) {
             let attachImgName = this.$WX.getStorage('userId') + '-info-' + i + '.jpg'
-					  this.$API('DownLoad', {attachImgName: attachImgName})
-						  .then(res => {
-							  this.imagesList.push(res.data)
+            this.$API('DownLoad', {attachImgName: attachImgName})
+              .then(res => {
+                this.imagesList.push(res.data)
                 this.$apply()
               })
-				  }
+          }
           this.$API('GetQuestionList')
             .then(res => {
               res.data.forEach(item => {
