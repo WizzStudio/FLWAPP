@@ -132,11 +132,9 @@
 		getStudentDatas (data) {
 			this.hoursAll = data.workedTime
 		}
-		/*
 		getTutorDatas (data) {
-			this.clocksRest = data.workedTime
+			this.clocksRest = data.clock
 		}
-		*/
 		onLoad () {
 			let role = this.$WX.getStorage('role')
 			if (role === 1) {
