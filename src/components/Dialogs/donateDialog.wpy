@@ -130,10 +130,17 @@
 				return false
 			}
 			if (num > this.leftFlwNumber) {
-				toast('小红花数量不足！')
-				this._clearSelectorState()
-				this.btnTitle = `赠送小红花`
-				this.resultNum = this.maxNum
+				modal('小红花余额不足，是否前往捐赠？', '提示')
+					.then(res => {
+						if (res.confirm) {
+							toast('正前往捐赠系统..')
+							setTimeout(() => { reLaunch('/pages/user/topUp') }, 1500)
+						} else if (res.cancel) {
+							this._clearSelectorState()
+							this.btnTitle = `赠送小红花`
+							this.resultNum = this.maxNum
+						}
+					})
 				return false
 			}
 			return true
@@ -148,7 +155,7 @@
 		}  // 在Page和Component共用的生命周期函数
 		events = {
 			'choose': (key, data) => {
-				console.log(data)
+//				console.log(data)
 				this._toggleDiy(false)
 				if (!this._isDonateNumOk(data.value)) { return false }
 				if (data.pick) {

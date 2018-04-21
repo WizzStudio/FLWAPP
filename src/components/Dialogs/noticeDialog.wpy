@@ -5,7 +5,7 @@
 
 	.noticeDialog {
 		@include rowMidBox();
-		justify-content: space-between;
+		/*justify-content: space-between;*/
 		flex-flow: nowrap;
 		position: relative;
 		height: 300rpx;
@@ -22,7 +22,7 @@
 				object-fit: cover;
 		}
 		&-cont {
-			width: 180rpx;
+			width: 210rpx;
 			height: 260rpx;
 			p{
 				text-align: center;
@@ -40,7 +40,7 @@
 				<image class="noticeDialog-img" src="../../static/images/donation/toast-success.png"></image>
 				<div class="noticeDialog-cont l-box__allMid" >
 					<!--<p class="noticeDialog-title t1-c2__bold">{{title}}</p>-->
-					<p class="noticeDialog-title t2-c1__normal">{{title}}</p>
+					<p class="noticeDialog-title t3-c1__normal">{{title}}</p>
 				</div>
 			</div>
 		</view>

@@ -60,15 +60,6 @@
 							'text': '我的',
 							'selectedIconPath': 'static/images/tabBar/me_selected.png'
 						}
-						/* TODO 下面是测试用tabbar */
-						/*
-						{
-							'pagePath': 'pages/test/test',
-							'iconPath': 'static/images/tabBar/me.png',
-							"text": "Van",
-							'selectedIconPath': 'static/images/tabBar/me_selected.png'
-						}
-						*/
 					]
 				}
 		}

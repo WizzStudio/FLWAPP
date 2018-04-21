@@ -48,5 +48,6 @@ export default {
 	DonateFlw: {url: '/tutor/gift', method: 'post', data: {stuId: 0, amount: 0}, headers: {}, right: 2}, // 捐赠给学生小红花
 	GetQuestionList: {url: '/conf/question', method: 'get', data: {}, headers: {}, right: 0},
 	GetAnswer: {url: '/stu/home/answer', method: 'get', data: {userId: 0}, headers: {}, right: 0},
-	EditAnswer: {url: '/stu/answer', method: 'post', data: {}, headers: {}, right: 1}
+	EditAnswer: {url: '/stu/answer', method: 'post', data: {}, headers: {}, right: 1},
+	GetFlwRate: {url: '/conf/exchangeRate', method: 'get', data: {}, headers: {}, right: 2}
 }

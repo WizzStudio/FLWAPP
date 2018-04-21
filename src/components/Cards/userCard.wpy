@@ -251,7 +251,7 @@
 				<!--导师-->
 					<view class="item" wx:if="{{ role == 2 }}">
 						<view class="item-number">
-							<p>27</p>
+							<p>{{tutorInfo.redFlowerNum}}</p>
 							<span>朵</span>
 						</view>
 						<view class="item-title">小红花</view>
@@ -259,7 +259,7 @@
 
 					<view class="item" wx:if="{{ role == 2 }}">
 						<view class="item-number">
-							<p>27</p>
+							<p>{{tutorInfo.stuNum}}</p>
 							<span>位</span>
 						</view>
 						<view class="item-title">学生</view>

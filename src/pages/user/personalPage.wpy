@@ -195,21 +195,12 @@
 
 				// 当前用户是导师
 				if (this.nowUserRole === 2) {
-//					// 获取当前导师的剩余小红花
-//					this.$API('GetTutorFlower', {}).then(res => {
-//						this.leftFlwNumber = res.data
-//					})
-//					// 获取当前学生可接受的小红花
-//					this.$API('GetAcceptableFlw', {value: this.visitUserId}).then(res => {
-//						this.aceptFlwNumber = res.data
-//					})
 					Promise.all([this.$API('GetTutorFlower', {}), this.$API('GetAcceptableFlw', {value: this.visitUserId})]).then(resArray => {
 						this.leftFlwNumber = resArray[0].data // 获取当前导师的剩余小红花
 						this.aceptFlwNumber = resArray[1].data // 获取当前学生可接受的小红花
 						this.isDataReady = true
 						this.$apply()
 					})
-
 					this.$API('GetQuestionList').then(response => {
 						if (!response.code) {
 							this.$API('GetAnswer', {userId: this.visitUserId}).then(res => {

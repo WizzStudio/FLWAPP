@@ -15,7 +15,8 @@ export default (apiKey, data, headers) => {
 		console.error(`此接口没有权限：${apiKey}`)
 		if (parseInt(getStorage('role')) === 0) {
 			if (getCurrentPages().length > 1) {
-				goBack()
+				// goBack() // BUG 造成闪退的原因
+				reLaunch('/pages/home')
 			}
 			modal('您尚未注册，是否前往注册？', '提示')
 				.then(res => {

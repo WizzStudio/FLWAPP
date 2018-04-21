@@ -101,6 +101,7 @@
 
     onLoad () {
 			this.restFlower = this.$WX.getStorage('redFlowerNum')
+			this.$apply()
       let role = this.$WX.getStorage('role')
 			this.role = role
       if (role === 1) {

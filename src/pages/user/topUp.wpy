@@ -74,6 +74,10 @@
 		<view class="l-box__verMid">
 			<toUpBtn :title.sync="btnTitle" width="524" height="80" :color.sync="btnStatus" key="topUp" font="28" radius="60"></toUpBtn>
 		</view>
+
+		<view wx:if="{{isShowTopUpSuccess}}">
+			<successDialog :title.sync="topUpText" key="sd-success"></successDialog>
+		</view>
 	</div>
 </template>
 
@@ -83,6 +87,7 @@
 	import basicSelector from '../../components/Selectors/BasicSelector'
 	import BasicInput from '../../components/Inputs/BasicInput'
 	import pay from '../../API/Payment/index'
+	import noticeDialog from '../../components/Dialogs/noticeDialog'
 
 	export default class Toup extends page {
 		config = {
@@ -93,7 +98,8 @@
 		components = {
 			toUpBtn: BasicButton,
 			flwSelector: basicSelector,
-			flwInput: BasicInput
+			flwInput: BasicInput,
+			successDialog: noticeDialog
 		}
 		data = {
 			leftFlwNumber: 0, // 现有小红花
@@ -121,7 +127,9 @@
 			diyNumber: 0,
 			btnStatus: 'red',
 			isDiy: false,
-			isMaxDiy: false
+			isMaxDiy: false,
+			isShowTopUpSuccess: false,
+			topUpText: ''
 		}
 		_toggleDiy (bool) {
 			this.isDiy = bool
@@ -146,7 +154,18 @@
 				item.pick = false
 			})
 		}
+		_queryRate () {
+			this.$API('GetFlwRate').then(res => {
+				this.exchangeRate = res.data
+				this.$apply()
+				this._changeBtnTitle(1, 'red')
+			})
+		}
 		onLoad () {
+//			this.topUpText = `成功捐赠${this.donateFlwNumber * this.exchangeRate}元!现有小红花${this.leftFlwNumber + this.donateFlwNumber}朵`
+//			this.$apply()
+//			this.isShowTopUpSuccess = true
+//
 			if (this.$WX.getStorage('role') !== 2) {
 				this.$WX.toast('当前用户不是导师！')
 				this.$WX.jumpTo('../home')
@@ -157,7 +176,9 @@
 				this.leftFlwNumber = res.data
 				this.$apply()
 			})
-			this._changeBtnTitle(1, 'red')
+
+			// 查询更新汇率
+			this._queryRate()
 		}
 		events = {
 			'choose': (key, data) => {
@@ -187,11 +208,16 @@
 			},
 			'btn-click': (key) => {
 				if (key === 'topUp' && this.donateFlwNumber) {
+					/* DEV  下面之后乘100 */
 					pay(this.donateFlwNumber).then(() => {
-						this.$WX.toast('支付成功！海鲸与你同行！')
-						setTimeout(() => {
-							this.$WX.goBack()
-						}, 2000)
+						this.topUpText = `成功捐赠${this.donateFlwNumber * this.exchangeRate}元!现有小红花${this.leftFlwNumber + this.donateFlwNumber}朵`
+						this.$apply()
+						this.isShowTopUpSuccess = true
+//						this.$WX.toast('支付成功！海鲸与你同行！')
+//						setTimeout(() => {
+//							this.$WX.goBack()
+//							this.isShowTopUpSuccess = false
+//						}, 2000)
 					}).catch(err => {
 						console.error(err)
 						this.$WX.toast('支付失败，请联系运营同学！')
