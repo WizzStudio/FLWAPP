@@ -1,7 +1,7 @@
 <style lang="scss" type="text/scss">
 	@import "../../common/styles/variables";
 	@import "../../common/styles/mixins";
-	@import "../../common/styles/animate";
+	/*@import "../../common/styles/animate";*/
 	@import "../../common/styles/common";
 	.info-module {
 		height: 60rpx;

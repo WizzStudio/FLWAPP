@@ -162,10 +162,6 @@
 			})
 		}
 		onLoad () {
-//			this.topUpText = `成功捐赠${this.donateFlwNumber * this.exchangeRate}元!现有小红花${this.leftFlwNumber + this.donateFlwNumber}朵`
-//			this.$apply()
-//			this.isShowTopUpSuccess = true
-//
 			if (this.$WX.getStorage('role') !== 2) {
 				this.$WX.toast('当前用户不是导师！')
 				this.$WX.jumpTo('../home')
@@ -214,10 +210,10 @@
 						this.$apply()
 						this.isShowTopUpSuccess = true
 //						this.$WX.toast('支付成功！海鲸与你同行！')
-//						setTimeout(() => {
-//							this.$WX.goBack()
-//							this.isShowTopUpSuccess = false
-//						}, 2000)
+						setTimeout(() => {
+							this.$WX.goBack()
+							this.isShowTopUpSuccess = false
+						}, 2500)
 					}).catch(err => {
 						console.error(err)
 						this.$WX.toast('支付失败，请联系运营同学！')

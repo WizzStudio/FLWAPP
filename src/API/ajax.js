@@ -115,8 +115,8 @@ function _configHeader (headers) {
 export default (rurl = argumentsErr(), method = argumentsErr(), data = null, headers = {'Content-Type': 'application/json'}) => {
 	if (!DEBUG) {
 		/* loading */
-		// hideLoading()
-		// showLoading('加载中...')
+		hideLoading()
+		showLoading('加载中')
 		let _method = method.toUpperCase()
 		let _url = HOST_URL + rurl
 		if (SUPPORT_METHODS.indexOf(_method) === -1) {

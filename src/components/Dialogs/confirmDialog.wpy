@@ -35,7 +35,7 @@
 
 	<conDialog>
 		<view slot="cont">
-			<div class="confirmDialog">
+			<div class="confirmDialog bounceIn">
 					<p class="confirmDialog-title t3-black__light">{{title}}</p>
 					<!--<p class="confirmDialog-title t3-black__light">给阿里巴巴的名字真的超级长啊赠送小红花1朵?</p>-->
 					<div class="confirmDialog-btnGroup">

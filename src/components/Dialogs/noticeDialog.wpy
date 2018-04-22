@@ -36,7 +36,7 @@
 
 	<conDialog>
 		<view slot="cont">
-			<div class="noticeDialog">
+			<div class="noticeDialog bounceIn">
 				<image class="noticeDialog-img" src="../../static/images/donation/toast-success.png"></image>
 				<div class="noticeDialog-cont l-box__allMid" >
 					<!--<p class="noticeDialog-title t1-c2__bold">{{title}}</p>-->

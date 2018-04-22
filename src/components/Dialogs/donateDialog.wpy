@@ -40,7 +40,7 @@
 <template>
 	<div class="donateDialog">
 		<view class="dd_musk"></view>
-		<div class="l-box__ver pl20 pr20 relative cont">
+		<div class="l-box__ver pl20 pr20 relative cont  slideInLeft">
 			<image src="../../static/images/donation/close.png" class="closeBtn" @tap="close"/>
 			<p class="t3-black__light t4 mt80">赠送小红花给<span class="t3-red__light t3-red t4" >{{stuName.name}}</span>,本年度TA还能接受<span
 				class="t3-red__light t3-red t4">{{aceptFlwNumber}}</span>朵小红花</p>
