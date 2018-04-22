@@ -144,10 +144,10 @@
 			this.moneyAll = data.totalWithdrawMoney || 0
 		}
 		GetTutorDatas (data) {
-			this.moneyAll = data.yearDonateMoney
-			this.studentsAll = data.yearGiftStuNum
-			this.redFlowerSend = 0
-			this.redFlowerRest = data.balance
+			this.moneyAll = data.yearDonateMoney || 0
+			this.studentsAll = data.yearGiftStuNum || 0
+			this.redFlowerSend = data.yearGiftFlowerNum || 0
+			this.redFlowerRest = data.balance || 0
 		}
 		onLoad () {
 			if (this.$WX.getStorage('role') === 1) {

@@ -536,14 +536,6 @@
         if (this.$WX.getStorage('role') === 1) {
           this.identityList = this.$WX.getStorage('identityList')
           this.attachNum = this.$WX.getStorage('attach_num')
-          for (let i = 0; i < this.attachNum; i++) {
-            let attachImgName = this.$WX.getStorage('userId') + '-info-' + i + '.jpg'
-            this.$API('DownLoad', {attachImgName: attachImgName})
-              .then(res => {
-                this.imagesList.push(res.data)
-                this.$apply()
-              })
-          }
           this.$API('GetQuestionList')
             .then(res => {
               res.data.forEach(item => {
@@ -559,6 +551,14 @@
                     id: item.id
                   })
                 })
+              for (let i = 0; i < this.attachNum; i++) {
+                let attachImgName = this.$WX.getStorage('userId') + '-info-' + i + '.jpg'
+                this.$API('DownLoad', {attachImgName: attachImgName})
+                  .then(res => {
+                  this.imagesList.push(res.data)
+                  this.$apply()
+                })
+              }
             })
             .catch(() => {
               this.isFirstSubmitAnswer = true
@@ -573,31 +573,32 @@
       } else {
         if (this.$WX.getStorage('role') === 1) {
           this.identity = 'student'
-          this.$API('GetQuestionList')
-            .then(res => {
-              res.data.forEach(item => {
-                this.questionList.push(item)
-              })
-              return this.$API('GetAnswer', {userId: this.$WX.getStorage('userId')})
-            })
-            .then(res => {
-              res.data.map(item => {
-                  this.answerList.push({
-                    answerContent: item.answerContent,
-                    questionId: item.questionId,
-                    id: item.id
-                  })
+          Promise.all([
+            this.$API('GetQuestionList')
+              .then(res => {
+                res.data.forEach(item => {
+                  this.questionList.push(item)
                 })
-                return this.$API('GetDirection')
-            })
-            .then(res => {
-              this.directionList = res.data
-              return this.$API('GetSchoolList')
-            })
-						.then(res => {
-              this.schoolList = res.data
-              return this.$API('StudentProfile')
-						})
+              }),
+              this.$API('GetAnswer', {userId: this.$WX.getStorage('userId')})
+                .then(res => {
+                  res.data.map(item => {
+                    this.answerList.push({
+                      answerContent: item.answerContent,
+                      questionId: item.questionId,
+                      id: item.id
+                    })
+                  })
+                }),
+                this.$API('GetDirection')
+                  .then(res => {
+                    this.directionList = res.data
+                }),
+                this.$API('GetSchoolList')
+                  .then(res => {
+                    this.schoolList = res.data
+                })
+          ]).then(() => this.$API('StudentProfile'))
             .then(data => {
               this.treatAjaxDatasStudent(data.data)
 							for (let i = 0, attachNum = data.data.attachNum; i < attachNum; i++) {
