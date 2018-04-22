@@ -35,7 +35,7 @@
 		circular="true"
 	>
 		<repeat for="{{BannerDatas}}" item="item">
-			<swiper-item id="{{item.id}}">
+			<swiper-item id="{{item.id}}" @tap="clickBannerArticle">
 				<image src="{{item.imgSrc}}" class="home-swiper-img" mode="aspectFill" lazy-load="true"/>
 				<view class="home-swiper-title">{{item.title}}</view>
 				<view class="home-swiper-title-background"></view>
@@ -52,9 +52,12 @@
 		components = {}
 		data = {}
 		computed = {}
-
 		onLoad () {}
-		methods = {}
+		methods = {
+			clickBannerArticle: (e) => {
+				this.$emit('jumpToArticle', e.currentTarget.id)
+			}
+		}
 		events = {}
 		props = {
 			BannerDatas: Array

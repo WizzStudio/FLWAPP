@@ -3,7 +3,7 @@
 </style>
 
 <template>
-	<scroll-view scroll-y="false" style="height: 101vh" scroll-x="false">
+	<scroll-view scroll-y="true">
 		<Swiper :BannerDatas.sync="BannerDatas"/>
 		<News :NewsDatas.sync="NewsDatas" :FlowerRankDatas.sync="FlowerRankDatas"/>
 		<Bar :role.sync="role"/>
@@ -62,13 +62,6 @@
 					id: item['b']
 				})
 			})
-			if (this.BannerDatas.length === 0) {
-				this.BannerDatas.push({
-					title: '深圳海鲸教育基金会',
-					id: 0,
-					imgSrc: 'http://www.ruanyifeng.com/blogimg/asset/2018/bg2018020901.png'
-				})
-			}
 		}
 
 		GetFlowerRankDatas (data) {

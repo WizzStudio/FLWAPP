@@ -46,7 +46,9 @@
   <ul class="record-ul">
     <repeat for="{{infoList}}" item="item">
     <li class="record-ul-item">
-      <span>{{item.time}}</span>{{item.name}}<span>{{item.reason}}小红花{{item.amount}}朵</span><span>{{item.mark}}{{item.amount}}</span>
+      <span>{{item.time}}</span>
+      <span>{{item.name}}{{item.reason}}小红花{{item.amount}}朵</span>
+      <span>{{item.mark}}{{item.amount}}</span>
     </li>
   </repeat>
   </ul>
@@ -60,7 +62,8 @@
 
   export default class record extends page {
     config = {
-      navigationBarTitleText: '我的花迹'
+      navigationBarTitleText: '我的花迹',
+      enablePullDownRefresh: false
     }
     components = {}
     getDatas (data) {

@@ -192,10 +192,10 @@
 						this.nodes = this.sourceArticle
 						this.$API('PostArticle', {title: this.articleTitle, content: this.sourceArticle})
 							.then(res => {
-								this.$WX.toast('文章已提交审核')
+								this.$WX.toast('文章已提交审核', 1500)
 								setTimeout(() => {
 									this.$WX.jumpTo('./home')
-								}, 500)
+								}, 2000)
 							})
 					})
 			}
