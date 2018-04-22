@@ -9,6 +9,10 @@
 		}
 	}
 
+	.contBox{
+		display: block;
+		height: 110rpx;
+	}
 	.question, .answer{
 		display: block;
 	}
@@ -50,16 +54,16 @@
 		<view class="card-base"></view>
 
 		<view class="card-container" wx:if="{{role == 1}}">
-			<usrCard class="card-main  " :role.sync="role" :stuInfo.sync="userInfo"></usrCard>
+			<usrCard class="card-main bounceIn" :role.sync="role" :stuInfo.sync="userInfo"></usrCard>
 		</view>
 
 		<view class="card-container" wx:if="{{role == 2}}">
-			<usrCard class="card-main  bounceInDown" :role.sync="role" :tutorInfo.sync="userInfo"></usrCard>
+			<usrCard class="card-main bounceIn" :role.sync="role" :tutorInfo.sync="userInfo"></usrCard>
 		</view>
 
 		<view>
 			<p class="title-bar">个人简历</p>
-			<view class="mt30 pl20 pr20 t3-c1__light ">{{userInfo.personalIntro}}</view>
+			<view class="mt30 pl20 pr20 t3-c1__light">{{userInfo.personalIntro}}</view>
 		</view>
 
 		<view wx:if="{{role == 1}}">
@@ -74,9 +78,13 @@
 			</view>
 		</view>
 
-		<view wx:if="{{role === 1 && isDataReady}}" class="donate-btn l-box__allMid bounceIn">
+		<view wx:if="{{role === 1 && isDataReady}}" class="donate-btn l-box__allMid  bounceIn">
 			<!--<donateBtn title="赠送小红花" width="300" height="88" color="red" key="donate" font="32" radius="60" class="shadow"></donateBtn>-->
 			<donateBtn title="赠送小红花" width="300" height="88" color="red" key="pp-donate" font="32" radius="60"></donateBtn>
+		</view>
+
+		<view>
+			<div class="contBox"></div>
 		</view>
 
 		<!--<view class="musk"></view>-->
@@ -105,6 +113,7 @@
 
 	export default class PersonalPage extends page {
 		config = {
+			navigationBarTitleText: '个人主页',
 			enablePullDownRefresh: false
 		}
 		components = {
@@ -120,7 +129,7 @@
 			role: 1,
 			userInfo: {
 //				'name': '红花君',
-				'avatar': '../../static/images/logo.png',
+//				'avatar': '../../static/images/logo.png',
 //				'sex': 1,
 //				'schoolId': 1,
 //				'profession': '软件工程',
@@ -154,9 +163,12 @@
 
 		_updateInfo (data) {
 			for (let key of Object.keys(data)) {
-				this.userInfo[key] = data[key]
+				if (!this.userInfo[key]) {
+					console.log(key)
+					this.userInfo[key] = data[key]
+					this.$apply()
+				}
 			}
-			this.$apply()
 		}
 		_showSuccess () {
 			this.isShowDonateSuccess = true
@@ -175,10 +187,19 @@
 			})
 		}
 
-		onLoad () {
+		onLoad (params, data) {
+//			if (data.preload.stuId) {
+//				this._updateInfo(this.$UTIL.filtrate(data.from.$data.studentList, {userId: data.preload.stuId})[0])
+//				console.log(this.$UTIL.filtrate(data.from.$data.studentList, {userId: data.preload.stuId}))
+//			}
+//			if (data.preload.tutorId) {
+//				this._updateInfo(this.$UTIL.filtrate(data.from.$data.tutorList, {userId: data.preload.tutorId})[0])
+//				console.log(this.$UTIL.filtrate(data.from.$data.tutorList, {userId: data.preload.tutorId}))
+//			}
 			this.visitUserId = this.$WX.getStorage('visit_userId') || false // 欲访问的用户id
 			this.role = this.$WX.getStorage('visit_role') || 1 // 访问用户的角色
 			this.nowUserRole = this.$WX.getStorage('role') || 1
+			this.$apply()
 
 			if (!this.visitUserId) {
 				this.$WX.toast('访问错误，回到首页')
@@ -186,39 +207,38 @@
 				return false
 			}
 
+			this.$API('DownLoad', {avatar: `${this.visitUserId}-avatar.jpg`}).then(res => {
+				this.userInfo.avatar = res.data // 获取头像
+			})
 			// 欲访问用户是学生
 			if (this.role === 1) {
 				this.$API('GetStuHomePage', { userId: this.visitUserId }).then(res => {
 					this._updateInfo(res.data)
-				})
-					.catch(() => (setTimeout(() => { this.$WX.goBack() }, 1500)))
-
-				// 当前用户是导师
-				if (this.nowUserRole === 2) {
-					Promise.all([this.$API('GetTutorFlower', {}), this.$API('GetAcceptableFlw', {value: this.visitUserId})]).then(resArray => {
-						this.leftFlwNumber = resArray[0].data // 获取当前导师的剩余小红花
-						this.aceptFlwNumber = resArray[1].data // 获取当前学生可接受的小红花
+				}).then(() => {
+					// 当前用户是导师
+					if (this.nowUserRole === 2) {
 						this.isDataReady = true
 						this.$apply()
-					})
-					this.$API('GetQuestionList').then(response => {
-						if (!response.code) {
-							this.$API('GetAnswer', {userId: this.visitUserId}).then(res => {
-								if (!res.code) {
-									res.data.forEach((item) => {
-										response.data.forEach((it) => {
-											if (it.id === item.questionId) {
-												it['answerContent'] = item.answerContent
-												this.QAmap.push(it)
-												this.$apply()
-											}
+						this.$API('GetQuestionList').then(response => {
+							if (!response.code) {
+								this.$API('GetAnswer', {userId: this.visitUserId}).then(res => {
+									if (!res.code) {
+										res.data.forEach((item) => {
+											response.data.forEach((it) => {
+												if (it.id === item.questionId) {
+													it['answerContent'] = item.answerContent
+													this.QAmap.push(it)
+													this.$apply()
+												}
+											})
 										})
-									})
-								}
-							})
-						}
-					})
-				}
+									}
+								})
+							}
+						})
+					}
+				})
+					.catch(() => (setTimeout(() => { this.$WX.goBack() }, 1500)))
 			}
 
 			// 欲访问用户是导师
@@ -243,7 +263,12 @@
 		events = {
 			'btn-click': (key) => {
 				if (key === 'pp-donate') {
-					this.isShowDialog = true
+					Promise.all([this.$API('GetTutorFlower', {}), this.$API('GetAcceptableFlw', {value: this.visitUserId})]).then(resArray => {
+						this.leftFlwNumber = resArray[0].data // 获取当前导师的剩余小红花
+						this.aceptFlwNumber = resArray[1].data // 获取当前学生可接受的小红花
+						this.isShowDialog = true
+						this.$apply()
+					})
 				}
 			},
 			'close': () => {
@@ -274,6 +299,10 @@
 				this.donateNumber = number
 				this.isShowConfirmDialog = true
 				this.confirmDialogTitle = `给${this.userInfo.name}赠送小红花${number}朵？`
+			},
+			'error-pic': () => {
+				this.userInfo.avatar = '../../static/images/logo.png'
+				this.$apply()
 			}
 		}
 	}

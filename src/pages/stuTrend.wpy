@@ -383,10 +383,13 @@
 			},
 			jumpToUserPage (event) {
 				this.$WX.setStorage('visit_userId', parseInt(event.currentTarget.id))
+
 				if (this.roleData.currentData === '学生') {
 					this.$WX.setStorage('visit_role', 1)
+					this.$preload('stuId', parseInt(event.currentTarget.id))
 				} else {
 					this.$WX.setStorage('visit_role', 2)
+					this.$preload('tutorId', parseInt(event.currentTarget.id))
 				}
 				this.$WX.jumpTo('./user/personalPage')
 			}

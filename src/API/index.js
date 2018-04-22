@@ -14,11 +14,11 @@ export default (apiKey, data, headers) => {
 	if (api.right && ((typeof parseInt(getStorage('role')) === 'number') && !(parseInt(api.right) & parseInt(getStorage('role'))))) {
 		console.error(`此接口没有权限：${apiKey}`)
 		if (parseInt(getStorage('role')) === 0) {
-			if (getCurrentPages().length > 1) {
-				// goBack() // BUG 造成闪退的原因
-				reLaunch('/pages/home')
-			}
-			modal('您尚未注册，是否前往注册？', '提示')
+			// if (getCurrentPages().length > 1) {
+			// 	// goBack() // BUG 造成闪退的原因
+			// 	// reLaunch('/pages/home')
+			// }
+			return modal('您尚未注册，是否前往注册？', '提示')
 				.then(res => {
 					if (res.confirm) {
 						toast('正前往注册页面')
