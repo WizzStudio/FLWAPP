@@ -128,7 +128,7 @@
 		<view class="stuTrend-infoList">
 			<repeat for="{{studentCurrentList}}" item="item" wx:if="{{roleData.currentData === '学生'}}">
 				<view class="stuTrend-infoList-item" id="{{item.userId}}" @tap="jumpToUserPage">
-					<image src="{{item.avatar}}" class="stuTrend-infoList-item-image" mode="aspectFill"/>
+					<image src="{{item.avatar}}" class="stuTrend-infoList-item-image" mode="aspectFill" binderror="imageError" id="stu-{{item.userId}}"/>
 					<view class="stuTrend-infoList-item-info">
 						<view class="stuTrend-infoList-item-info-name">{{item.name}}</view>
 						<view class="stuTrend-infoList-item-info-more">
@@ -141,7 +141,7 @@
 			</repeat>
 			<repeat for="{{tutorCurrentList}}" item="item" wx:if="{{roleData.currentData === '导师'}}">
 				<view class="stuTrend-infoList-item"  id="{{item.userId}}" @tap="jumpToUserPage">
-					<image src="{{item.avatar}}" class="stuTrend-infoList-item-image" mode="aspectFill"/>
+					<image src="{{item.avatar}}" class="stuTrend-infoList-item-image" mode="aspectFill" binderror="imageError" id="tutor-{{item.userId}}"/>
 					<view class="stuTrend-infoList-item-info">
 						<view class="stuTrend-infoList-item-info-name">{{item.name}}</view>
 						<view class="stuTrend-infoList-item-info-more">
@@ -376,6 +376,14 @@
 									this.$apply()
 								})
 						})
+				}
+			},
+			imageError (event) {
+				let mark = event.target.id
+				if (mark.slice(0, 1) === 's') {
+					this.studentCurrentList.filter(item => item.userId === parseInt(mark.slice(4)))[0].avatar = '../static/images/logo.png'
+				} else {
+					this.tutorCurrentList.filter(item => item.userId === parseInt(mark.slice(6)))[0].avatar = '../static/images/logo.png'
 				}
 			},
 			searchItemInput (event) {

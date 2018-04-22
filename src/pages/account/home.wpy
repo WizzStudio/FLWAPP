@@ -61,6 +61,7 @@
       showDatas: [],
       schoolList: [],
       isStudent: true,
+      isFirstShow: true,
       avatar: ''
     }
     computed = {}
@@ -189,7 +190,10 @@
     }
 
     onShow () {
-			if (this.$WX.getStorage('hasChangeAvatar') === true) {
+      if (this.isFirstShow) {
+        this.isFirstShow = false
+      } else {
+        if (this.$WX.getStorage('hasChangeAvatar') === true) {
 				this.$API('DownLoad', {avatar: this.$WX.getStorage('userId') + '-avatar.jpg'})
 					.then(res => {
 						this.avatar = res.data
@@ -198,21 +202,22 @@
 						this.$apply()
 					})
 			}
-			if (this.$WX.getStorage('role') === 1) {
-        this.isStudent = true
-				this.$API('StudentCenter')
-					.then(data => {
-						this.treatAjaxDatasStudent(data.data)
-				})
-			} else if (this.$WX.getStorage('role') === 2) {
-				this.isStudent = false
-				this.menuList[1].value = '发表文章'
-				this.$API('TutorCenter')
-					.then(data => {
-						this.treatAjaxDatasTutor(data.data)
-					})
-			}
-		}
+        if (this.$WX.getStorage('role') === 1) {
+          this.isStudent = true
+          this.$API('StudentCenter')
+            .then(data => {
+            this.treatAjaxDatasStudent(data.data)
+          })
+        } else if (this.$WX.getStorage('role') === 2) {
+          this.isStudent = false
+          this.menuList[1].value = '发表文章'
+          this.$API('TutorCenter')
+            .then(data => {
+              this.treatAjaxDatasTutor(data.data)
+          })
+        }
+      }
+    }
     onPageScroll () {
       this.$UTIL.debounce(() => {
         wx.stopPullDownRefresh()

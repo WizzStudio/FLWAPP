@@ -26,7 +26,7 @@ export default {
 	PostUserImagesName: {url: '/oss/down', method: 'post', data: {}, headers: {}, right: 3},
 	GetTutorRedFlower: {url: '/tutor/summary', method: 'get', data: {}, headers: {}, right: 2},
 	GetStuRedFlower: {url: '/stu/summary', method: 'get', data: {}, headers: {}, right: 1},
-	GetTutorTime: {url: '/tutor/voluntary', method: 'get', data: {}, headers: {}, right: 2},
+	GetTutorTime: {url: '/tutor/clock', method: 'get', data: {}, headers: {}, right: 2},
 	GetStudentTime: {url: '/stu/voluntary', method: 'get', data: {}, headers: {}, right: 1},
 	GetSchoolList: {url: '/conf/school', method: 'get', data: {}, headers: {}, right: 0},
 	GetDirection: {url: '/conf/direction', method: 'get', data: {}, headers: {}, right: 0},
