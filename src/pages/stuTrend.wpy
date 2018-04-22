@@ -337,10 +337,8 @@
 		}
 		methods = {
 			searchButtonClick () {
-				console.log('搜索ing')
 				if (this.roleData.currentData === '学生') {
 					this.searchStudentAvatarList = []
-					console.log('搜索学生:', this.searchText)
 					this.$API('GetSearchStudentList', {word: this.searchText})
 						.then(res => {
 							res.data.map(item => {
@@ -359,7 +357,6 @@
 						})
 				} else {
 					this.searchTutorAvatarList = []
-					console.log('搜索导师:', this.searchText)
 					this.$API('GetSearchTutorList', {word: this.searchText})
 						.then(res => {
 							res.data.map(item => {

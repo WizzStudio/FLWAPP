@@ -572,16 +572,19 @@
         }
       } else {
         if (this.$WX.getStorage('role') === 1) {
+          console.log('加载信息')
           this.identity = 'student'
           Promise.all([
             this.$API('GetQuestionList')
               .then(res => {
+                console.log('加载问题列表')
                 res.data.forEach(item => {
                   this.questionList.push(item)
                 })
               }),
               this.$API('GetAnswer', {userId: this.$WX.getStorage('userId')})
                 .then(res => {
+                  console.log('加载答案')
                   res.data.map(item => {
                     this.answerList.push({
                       answerContent: item.answerContent,
@@ -592,20 +595,24 @@
                 }),
                 this.$API('GetDirection')
                   .then(res => {
+                    console.log('加载方向')
                     this.directionList = res.data
                 }),
                 this.$API('GetSchoolList')
                   .then(res => {
+                    console.log('加载学校')
                     this.schoolList = res.data
                 })
           ]).then(() => this.$API('StudentProfile'))
-            .then(data => {
-              this.treatAjaxDatasStudent(data.data)
-							for (let i = 0, attachNum = data.data.attachNum; i < attachNum; i++) {
+            .then(res => {
+              console.log('加载个人信息')
+              this.treatAjaxDatasStudent(res.data)
+							for (let i = 0, attachNum = res.data.attachNum; i < attachNum; i++) {
                 let attachImgName = this.$WX.getStorage('userId') + '-info-' + i + '.jpg'
 								this.$API('DownLoad', {attachImgName: attachImgName})
 									.then(res => {
-										this.imagesList.push(res.data)
+                    this.imagesList.push(res.data)
+                    console.log('加载附件')
                   })
 							}
               this.$apply()
