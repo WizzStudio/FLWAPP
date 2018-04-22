@@ -201,8 +201,8 @@
 			<view class="mainInfo">
 				<!-- 头像 -->
 				<view class="mainInfo-avatar">
-					<image wx:if="{{role == 1}}" src="{{stuInfo.avatar}}" ></image>
-					<image wx:if="{{role == 2}}" src="{{tutorInfo.avatar}}" ></image>
+					<image wx:if="{{role == 1}}" src="{{stuInfo.avatar}}" binderror="defaultPic"></image>
+					<image wx:if="{{role == 2}}" src="{{tutorInfo.avatar}}" binderror="defaultPic"></image>
 				</view>
 
 				<!-- 基础信息 -->
@@ -285,6 +285,7 @@
 <script>
 	import wepy from 'wepy'
 	import api from '../../API/index'
+	import * as wx from '../../common/scripts/wxUtil'
 
 	export default class UserCard extends wepy.component {
 		components = {}
@@ -307,18 +308,29 @@
 			}
 		}
 		onLoad () {
-			api('GetSchoolList').then(res => {
-				res.data.forEach((item) => {
+			if (wx.getStorage('uc_schoolMap')) {
+				wx.getStorage('uc_schoolMap').forEach((item) => {
 					this.school[item.id] = item.schoolName
 				})
-//				console.log(this.school)
-			})
+			} else {
+				api('GetSchoolList').then(res => {
+					wx.setStorage('uc_schoolMap', res.data)
+					res.data.forEach((item) => {
+						this.school[item.id] = item.schoolName
+					})
+				})
+			}
+
 //			api('GetDirection').then(res => {
 //				console.log(res)
 //			})
 		}
 		computed = {}
-		methods = {}
+		methods = {
+			defaultPic() {
+				this.$emit('error-pic')
+			}
+		}
 		events = {}
 		props = {
 			/* 用户角色，0：游客；1：学生；2：导师 */
