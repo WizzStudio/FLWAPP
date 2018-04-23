@@ -124,7 +124,7 @@
           id: 'clock'
         }
       ]
-      this.$WX.setStorage('redflowerNum', data.redFlowerNum)
+      this.$WX.setStorage('redFlowerNum', data.redFlowerNum)
       this.$apply()
     }
     onLoad () {

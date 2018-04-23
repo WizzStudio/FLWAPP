@@ -23,7 +23,7 @@ function methodErr () {
 function _normalRequest (config = {}) {
 	return new Promise((resolve, reject) => {
 		config.fail = err => {
-			hideLoading()
+			// hideLoading()
 			toast(`请求失败 ${err.errMsg}`, 'none', 1500)
 			reject(err)
 		}
@@ -44,7 +44,7 @@ function _normalRequest (config = {}) {
 			/* TODO: TEST放出header里面的token为了做测试 */
 			// res.data.token = res.header['Authorization']
 			/* 在这里进行的返回的，那么在此之前完成重请求就可以 */
-			hideLoading() // 请求成功后释放
+			// hideLoading() // 请求成功后释放
 			resolve(res.data)
 		}
 		wx.request(config)

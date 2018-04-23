@@ -54,9 +54,9 @@
       <view class="empty-placeholder" wx:if="{{InfoList.length <= 0}}">
         {{emptyPlaceholder}}
       </view>
-			<repeat for="{{InfoList}}" item="item">
+			<repeat for="{{InfoList}}" item="item" index="index">
 				<li id="{{item.userId}}" @tap="jumpToUserPage">
-					<image src="{{item.avatar}}" mode="aspectFill"/>
+					<image src="{{item.avatar}}" mode="aspectFill" binderror="imageError" id="{{index}}"/>
 					<div>
 						<span class="name">{{item.name}}</span>
 						<span class="other">{{item.company}}</span>
@@ -157,6 +157,11 @@
           this.$WX.setStorage('visit_role', 2)
           this.$WX.jumpTo('../user/personalPage')
         }
+      },
+      imageError (event) {
+        let mark = event.target.id
+        this.InfoList[mark].avatar = '../../static/images/logo.png'
+        this.$apply()
 			}
     }
   }

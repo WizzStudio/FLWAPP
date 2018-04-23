@@ -215,6 +215,7 @@
 							this.$WX.jumpTo('./home')
 						})
 						.catch(err => {
+							this.$WX.toast('网络故障，请重新提交')
 							console.log(err)
 						})
 				} else {

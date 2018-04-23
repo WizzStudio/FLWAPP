@@ -433,7 +433,7 @@
 				{
 					name: '性别',
 					type: 'picker',
-					value: this.sexData[data.sex - 1] || this.sexData[0],
+					value: this.sexData[data.sex - 1] || '请选择',
 					data: this.sexData,
 					mode: 'selector',
 					id: 'gender'
@@ -528,8 +528,8 @@
           personalIntro: this.personalIntro.value
         }
         this.$API('SendTutorProfile', JSON.stringify(datas))
-          .then(data => {
-            if (data.data.code === 0) {
+          .then(res => {
+            if (res.code === 0) {
               this.$WX.toast('提交成功')
             } else {
               this.$WX.toast('提交失败')
