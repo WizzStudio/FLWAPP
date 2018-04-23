@@ -3,11 +3,11 @@
 </style>
 
 <template>
-	<scroll-view scroll-y="true" style="height: 100vh">
+	<view>
 		<Swiper :BannerDatas.sync="BannerDatas"/>
 		<News :NewsDatas.sync="NewsDatas" :FlowerRankDatas.sync="FlowerRankDatas"/>
 		<Bar :role.sync="role"/>
-	</scroll-view>
+	</view>
 </template>
 
 <script>
@@ -106,6 +106,7 @@
 				})
 		}
 		onPullDownRefresh () {
+			console.log('下拉刷新')
 			this.NewsDatas = []
 			this.FlowerRankDatas = []
 			this.page = 0
@@ -129,6 +130,7 @@
 				})
 		}
 		onReachBottom () {
+			console.log('上拉加载', this.page)
 			if (!this.isLastPage) {
 				this.$API('GetNewsList', {page: this.page})
 					.then(res => {

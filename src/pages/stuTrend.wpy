@@ -283,6 +283,7 @@
 							item.avatar = '../../static/images/logo.png'
 						})
 						this.$apply()
+						this.$WX.hideLoading()
 					} else {
 						this.$API('PostUserImagesName', this.tutorAvatarList)
 							.then(res => {
@@ -291,8 +292,8 @@
 								})
 								this.tutorCurrentList = this.tutorList
 								this.$apply()
+								this.$WX.hideLoading()
 							})
-							this.$WX.hideLoading()
 					}
 				})
 			this.$API('GetSearchStudentList')
@@ -306,6 +307,7 @@
 						this.studentList.map(item => {
 							item.avatar = '../../static/images/logo.png'
 						})
+						this.$WX.hideLoading()
 						this.$apply()
 					} else {
 						this.$API('PostUserImagesName', this.studentAvatarList)
