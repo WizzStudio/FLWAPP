@@ -166,10 +166,10 @@
 			}
 		}
 		onLoad () {
-			if (this.$WX.getStorage('role') === 2) {
-				this.isStudent = false
-			} else {
+			if (this.$WX.getStorage('role') === 1) {
 				this.isStudent = true
+			} else {
+				this.isStudent = false
 			}
 			const date = new Date()
 			const year = date.getFullYear()

@@ -205,7 +205,7 @@
 			'btn-click': (key) => {
 				if (key === 'topUp' && this.donateFlwNumber) {
 					/* DEV  下面之后乘100 */
-					pay(this.donateFlwNumber).then(() => {
+					pay(this.donateFlwNumber * 100).then(() => {
 						this.topUpText = `成功捐赠${this.donateFlwNumber * this.exchangeRate}元!现有小红花${this.leftFlwNumber + this.donateFlwNumber}朵`
 						this.$apply()
 						this.isShowTopUpSuccess = true

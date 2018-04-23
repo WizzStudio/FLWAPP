@@ -65,7 +65,7 @@
 <template>
   <view class="info-container" @tap="click">
     <div class="info-module-1">
-      <image src="{{avatar.length > 0? avatar: '../../static/images/logo.png'}}" class="info-module-1-avatar" alt="我的头像" mode="aspectFill"/>
+      <image src="{{avatar}}" class="info-module-1-avatar" alt="我的头像" mode="aspectFill" binderror="avatarError"/>
     </div>
     <div class="info-module-2">
       <div class="div-name">
@@ -103,6 +103,9 @@
         } else {
           this.$emit('change-information', event)
         }
+      },
+      avatarError (event) {
+        this.avatar = '../../static/images/logo.png'
       }
     }
     events = {}

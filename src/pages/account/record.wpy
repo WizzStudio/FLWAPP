@@ -103,7 +103,7 @@
     computed = {}
 
     onLoad () {
-			this.restFlower = this.$WX.getStorage('redFlowerNum')
+			this.restFlower = this.$WX.getStorage('redFlowerNum') || 0
 			this.$apply()
       let role = this.$WX.getStorage('role')
 			this.role = role
@@ -118,7 +118,7 @@
 						}
 						this.$apply()
           })
-        } else {
+        } else if (role === 2) {
           this.$API('GetTutorRecord', {page: this.page})
             .then(res => {
               this.totalPage = res.msg

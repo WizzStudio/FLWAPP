@@ -125,7 +125,7 @@
 		components = {}
 		computed = {}
 		data = {
-			isStudent: true,
+			isStudent: false,
 			hoursAll: 0,
 			clocksRest: 0
 		}

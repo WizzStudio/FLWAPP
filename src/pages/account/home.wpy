@@ -167,23 +167,23 @@
 				}
 				this.showDatas = [
 					{
-						name: '小红花',
-						src: '../../static/images/personalCenter/redFlower.png',
-						number: 0 + ' 朵',
-						id: 'redFlower'
-					},
-					{
-						name: '导师',
-						src: '../../static/images/personalCenter/tutor.png',
-						number: 0 + ' 人',
-						id: 'tutor'
-					},
-					{
-						name: '义工',
-						src: '../../static/images/personalCenter/workedTime.png',
-						number: 0 + ' 小时',
-						id: 'workedTime'
-					}
+            name: '小红花',
+            src: '../../static/images/personalCenter/redFlower.png',
+            number: 0 + ' 朵',
+            id: 'redFlower'
+          },
+          {
+            name: '捐赠学生',
+            src: '../../static/images/personalCenter/student.png',
+            number: 0 + ' 人',
+            id: 'stu'
+          },
+          {
+            name: '沙漏',
+            src: '../../static/images/personalCenter/clock.png',
+            number: 0 + ' 小时',
+            id: 'clock'
+          }
 				]
 				this.$apply()
 			}
@@ -194,14 +194,15 @@
         this.isFirstShow = false
       } else {
         if (this.$WX.getStorage('hasChangeAvatar') === true) {
-				this.$API('DownLoad', {avatar: this.$WX.getStorage('userId') + '-avatar.jpg'})
-					.then(res => {
-						this.avatar = res.data
-						this.$WX.setStorage('avatar', res.data)
-						this.$WX.clearStorage('hasChangeAvatar')
-						this.$apply()
+          this.$WX.setStorage('hasChangeAvatar', false)
+          console.log('更换了头像，重新请求头像')
+          this.$API('DownLoad', {avatar: this.$WX.getStorage('userId') + '-avatar.jpg'})
+            .then(res => {
+              this.avatar = res.data
+              this.$WX.setStorage('avatar', res.data)
+              this.$apply()
 					})
-			}
+        }
         if (this.$WX.getStorage('role') === 1) {
           this.isStudent = true
           this.$API('StudentCenter')
@@ -262,7 +263,11 @@
         // }
       }, 200),
       'change-information': this.$UTIL.debounce((key, event) => {
-        this.$WX.jumpTo('./info')
+        if (this.$WX.getStorage('role') === 0) {
+					this.$WX.interceptTourist()
+				} else {
+					this.$WX.jumpTo('./info')
+				}
       }, 200)
     }
   }

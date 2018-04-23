@@ -77,6 +77,7 @@
 		}
 
 		onLoad () {
+			this.$WX.showLoading()
 			this.$API('GetNewsList', {page: this.page})
 				.then(res => {
 					this.role = this.$WX.getStorage('role') // 首次获取role
@@ -86,6 +87,7 @@
 				})
 				.then(res => {
 					this.GetBannerDatas(res.data)
+					this.$WX.hideLoading()
 					this.$apply()
 				})
 		}
@@ -147,9 +149,13 @@
 				this.$WX.jumpTo('./article')
 			},
 			'jumpToTutorPage': (key) => {
-				this.$WX.setStorage('visit_userId', parseInt(key))
-				this.$WX.setStorage('visit_role', 2)
-				this.$WX.jumpTo('./user/personalPage')
+				if (this.$WX.getStorage('role') === 0) {
+					this.$WX.interceptTourist()
+				} else {
+					this.$WX.setStorage('visit_userId', parseInt(key))
+					this.$WX.setStorage('visit_role', 2)
+					this.$WX.jumpTo('./user/personalPage')
+				}
 			},
 			'BarClick': (key) => {
 				if (key === 'student') {

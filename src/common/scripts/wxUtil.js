@@ -68,8 +68,8 @@ const modal = (content, title) => {
 	})
 }
 
-const showLoading = (title = 'wait', content = 'loading') => {
-	return configFn(wx.showLoading, {title, content})
+const showLoading = (title = '加载中', content = 'loading', mask = 'true') => {
+	return configFn(wx.showLoading, {title, content, mask})
 }
 
 const hideLoading = () => {
@@ -161,6 +161,19 @@ const getUserInfo = () => {
 		})
 	})
 }
+const interceptTourist = () => {
+	return wx.showModal({
+			title: '提示',
+			content: '您现在尚未注册，是否前往注册？',
+			success: res => {
+				if (res.confirm) {
+					wx.reLaunch({
+						url: '/pages/account/login'
+					})
+				}
+			}
+		})
+}
 export {
 	ajax, // 发送ajax请求
 	jumpTo, // page跳转
@@ -183,5 +196,6 @@ export {
 	changeNavBarColor, // 改变顶部栏的颜色
 	chooseImg,	//	选择图片
 	UpLoadFile,	//	上传文件
-	getUserInfo
+	getUserInfo,
+	interceptTourist //	拦截游客非法访问
 }

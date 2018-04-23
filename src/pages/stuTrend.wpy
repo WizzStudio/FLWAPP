@@ -269,11 +269,7 @@
 			this.$apply()
 		}
 		onLoad () {
-			// if (this.$WX.getStorage('role') === 1) {
-			// 	this.roleData.currentData = '导师'
-			// } else {
-			// 	this.roleData.currentData = '学生'
-			// }
+			this.$WX.showLoading()
 			this.roleData.currentData = '学生'
 			this.$API('GetSearchTutorList')
 				.then(res => {
@@ -296,6 +292,7 @@
 								this.tutorCurrentList = this.tutorList
 								this.$apply()
 							})
+							this.$WX.hideLoading()
 					}
 				})
 			this.$API('GetSearchStudentList')
@@ -317,6 +314,7 @@
 									this.studentList[index].avatar = item
 								})
 								this.studentCurrentList = this.studentList
+								this.$WX.hideLoading()
 								this.$apply()
 							})
 					}
@@ -337,6 +335,7 @@
 		}
 		methods = {
 			searchButtonClick () {
+				this.$WX.showLoading()
 				if (this.roleData.currentData === '学生') {
 					this.searchStudentAvatarList = []
 					this.$API('GetSearchStudentList', {word: this.searchText})
@@ -345,33 +344,52 @@
 								this.searchStudentAvatarList.push(item.userId + '-avatar.jpg')
 							})
 							this.studentList = res.data
+							this.studentCurrentList = this.studentList
 							this.$apply()
-							this.$API('PostUserImagesName', this.searchStudentAvatarList)
+							if (this.$WX.getStorage('role') !== 0) {
+								this.$API('PostUserImagesName', this.searchStudentAvatarList)
 								.then(res => {
 									res.data.map((item, index) => {
 										this.studentList[index].avatar = item
 									})
-									this.studentCurrentList = this.studentList
+									this.$WX.hideLoading()
 									this.$apply()
 								})
+							} else {
+								this.studentList.map(item => {
+									item.avatar = '../../static/images/logo.png'
+									this.$WX.hideLoading()
+									this.$apply()
+								})
+							}
 						})
 				} else {
 					this.searchTutorAvatarList = []
+					this.$WX.showLoading()
 					this.$API('GetSearchTutorList', {word: this.searchText})
 						.then(res => {
 							res.data.map(item => {
 								this.searchTutorAvatarList.push(item.userId + '-avatar.jpg')
 							})
 							this.tutorList = res.data
+							this.tutorCurrentList = this.tutorList
 							this.$apply()
-							this.$API('PostUserImagesName', this.searchTutorAvatarList)
+							if (this.$WX.getStorage('role') !== 0) {
+								this.$API('PostUserImagesName', this.searchStudentAvatarList)
 								.then(res => {
 									res.data.map((item, index) => {
-										this.tutorList[index].avatar = item
+										this.studentList[index].avatar = item
 									})
-									this.tutorCurrentList = this.tutorList
+									this.$WX.hideLoading()
 									this.$apply()
 								})
+							} else {
+								this.tutorList.map(item => {
+									item.avatar = '../../static/images/logo.png'
+									this.$WX.hideLoading()
+									this.$apply()
+								})
+							}
 						})
 				}
 			},
@@ -387,16 +405,19 @@
 				this.searchText = event.detail.value
 			},
 			jumpToUserPage (event) {
-				this.$WX.setStorage('visit_userId', parseInt(event.currentTarget.id))
-
-				if (this.roleData.currentData === '学生') {
-					this.$WX.setStorage('visit_role', 1)
-					this.$preload('stuId', parseInt(event.currentTarget.id))
+				if (this.$WX.getStorage('role') === 0) {
+					this.$WX.interceptTourist()
 				} else {
-					this.$WX.setStorage('visit_role', 2)
-					this.$preload('tutorId', parseInt(event.currentTarget.id))
+					this.$WX.setStorage('visit_userId', parseInt(event.currentTarget.id))
+					if (this.roleData.currentData === '学生') {
+						this.$WX.setStorage('visit_role', 1)
+						this.$preload('stuId', parseInt(event.currentTarget.id))
+					} else {
+						this.$WX.setStorage('visit_role', 2)
+						this.$preload('tutorId', parseInt(event.currentTarget.id))
+					}
+						this.$WX.jumpTo('./user/personalPage')
 				}
-				this.$WX.jumpTo('./user/personalPage')
 			}
 		}
 		events = {

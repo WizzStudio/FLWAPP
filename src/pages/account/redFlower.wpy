@@ -121,7 +121,7 @@
 		}
 		components = {}
 		data = {
-			isStudent: true,
+			isStudent: false,
 			tutorsYear: 0,
 			amountYear: 0,
 			moneyYear: 0,
@@ -157,7 +157,7 @@
 						this.getStudentDatas(res.data)
 						this.$apply()
 					})
-			} else {
+			} else if (this.$WX.getStorage('role') === 2) {
 				this.isStudent = false
 				this.$API('GetTutorRedFlower')
 					.then(res => {

@@ -9,7 +9,7 @@ const notFound = () => {
 
 const forbidden = () => {
 	/* 登录失效后重登录 */
-	toast('登录失效，正在重新登录...', 'none', 1500)
+	// toast('登录失效，正在重新登录...', 'none', 1500)
 }
 
 const serverError = () => {
