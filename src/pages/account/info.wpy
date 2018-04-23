@@ -492,22 +492,24 @@
           personalIntro: this.personalIntro.value,
           attachNum: this.$WX.getStorage('attach_num')
         }
-        this.$API('EditAnswer', JSON.stringify(this.answerList))
-          .then(res => {
-            console.log('提交问题答案')
-            console.log(this.answerList)
+        if (this.isFirstSubmitAnswer) {
+          this.answerList.map(item => {
+            return {
+              questionId: item.questionId,
+              answerContent: item.answerContent
+            }
           })
-          .catch(err => {
-            console.error(err)
-            this.$WX.toast('网络故障，请稍后再尝试')
-          })
+          this.$API('EditAnswer', JSON.stringify(this.answerList))
+        } else {
+          this.$API('EditAnswer', JSON.stringify(this.answerList))
+        }
 				this.$API('SendStudentProfile', JSON.stringify(datas))
           .then(res => {
-            console.log('提交个人信息')
-            console.log(datas)
             if (res.code === 0) {
               this.$WX.toast('提交成功')
-              this.$WX.jumpTo('home')
+              setTimeout(() => {
+                this.$WX.jumpTo('./home')
+              }, 1500)
             } else {
               this.$WX.toast('提交失败')
             }
@@ -531,6 +533,9 @@
           .then(res => {
             if (res.code === 0) {
               this.$WX.toast('提交成功')
+              setTimeout(() => {
+                this.$WX.jumpTo('./home')
+              }, 1500)
             } else {
               this.$WX.toast('提交失败')
             }
@@ -543,49 +548,48 @@
     }
     onLoad () {
       this.avatar = this.$WX.getStorage('avatar')
-      this.$WX.showLoading()
       if (this.$WX.getStorage('isSave') === true && this.$WX.getStorage('isSubmit') === false) {
         this.optionList = this.$WX.getStorage('optionList')
         this.personalIntro = this.$WX.getStorage('personalIntro')
         this.avatar = this.$WX.getStorage('avatar')
         this.identity = this.$WX.getStorage('identity')
-        if (this.$WX.getStorage('role') === 1) {
-          this.identityList = this.$WX.getStorage('identityList')
-          this.attachNum = this.$WX.getStorage('attach_num')
-          this.$API('GetQuestionList')
-            .then(res => {
-              res.data.forEach(item => {
-                this.questionList.push(item)
+        if (this.$WX.getStorage('role') === 2) {
+          this.$API('GetTrade')
+						.then(res => {
+							res.data.forEach(item => {
+								this.tradeList = res.data
               })
-              this.$API('GetAnswer', {userId: this.$WX.getStorage('userId')})
-                .then(res => {
-                  res.data.map(item => {
-                    this.answerList.push({
-                      answerContent: item.answerContent,
-                      questionId: item.questionId,
-                      id: item.id
-                    })
-                  })
-                  this.$WX.hideLoading()
-                })
-                .catch(err => {
-                  console.error(err)
-                  this.$WX.hideLoading()
-                  this.isFirstSubmitAnswer = true
-                  this.questionList.map(item => {
-                    this.answerList.push({
-                    questionId: item.id,
-                    answerContent: ''
-                  })
-                })
-              })
-            })
+						})
         }
-      } else {
         if (this.$WX.getStorage('role') === 1) {
-          this.identity = 'student'
-          this.$API('GetAnswer', {userId: this.$WX.getStorage('userId')})
-            .then(res => {
+          this.$WX.showLoading()
+          Promise.all([
+            this.$API('GetQuestionList')
+              .then(res => {
+                res.data.forEach(item => {
+                  this.questionList.push(item)
+                })
+            }),
+            this.$API('GetDirection')
+              .then(res => {
+                this.directionList = res.data
+            }),
+            this.$API('GetSchoolList')
+              .then(res => {
+                this.schoolList = res.data
+            })
+          ])
+          .then(res => this.$API('GetAnswer', {userId: this.$WX.getStorage('userId')}))
+          .then(res => {
+            if (res.data.length === 0) {
+              this.isFirstSubmitAnswer = true
+              this.questionList.map(item => {
+                this.answerList.push({
+                  questionId: item.id,
+                  answerContent: ''
+                })
+              })
+            } else {
               res.data.map(item => {
                 this.answerList.push({
                   answerContent: item.answerContent,
@@ -593,60 +597,78 @@
                   id: item.id
                 })
               })
-            })
-            .catch(err => {
-              console.log(err)
-              this.isFirstSubmitAnswer = true
-              this.questionList.map(item => {
-                this.answerList.push({
-                  questionId: item.id,
-                   answerContent: ''
+            }
+            this.identityList = this.$WX.getStorage('identityList')
+            this.attachNum = this.$WX.getStorage('attach_num')
+            this.$WX.hideLoading()
+          })
+        }
+      } else {
+        if (this.$WX.getStorage('role') === 1) {
+          this.identity = 'student'
+          Promise.all([
+            this.$API('GetQuestionList')
+              .then(res => {
+                console.log('加载问题列表')
+                res.data.forEach(item => {
+                  this.questionList.push(item)
                 })
-              })
-            })
-        Promise.all([
-          this.$API('GetQuestionList')
-            .then(res => {
-              console.log('加载问题列表')
-              res.data.forEach(item => {
-                this.questionList.push(item)
-              })
+              }),
+            this.$API('GetDirection')
+              .then(res => {
+                console.log('加载方向')
+                this.directionList = res.data
             }),
-          this.$API('GetDirection')
-            .then(res => {
-              console.log('加载方向')
-              this.directionList = res.data
-            }),
-          this.$API('GetSchoolList')
-            .then(res => {
-              console.log('加载学校')
-              this.schoolList = res.data
-            })
-        ])
-        .then(() => this.$API('StudentProfile'))
+            this.$API('GetSchoolList')
+              .then(res => {
+                console.log('加载学校')
+                this.schoolList = res.data
+              }),
+            this.$API('GetAnswer', {userId: this.$WX.getStorage('userId')})
+              .then(res => {
+                if (res.data.length === 0) {
+                  this.isFirstSubmitAnswer = true
+                  this.questionList.map(item => {
+                    this.answerList.push({
+                      questionId: item.id,
+                      answerContent: ''
+                    })
+                  })
+                } else {
+                  res.data.map(item => {
+                    this.answerList.push({
+                      answerContent: item.answerContent,
+                      questionId: item.questionId,
+                      id: item.id
+                    })
+                  })
+                }    
+              })
+          ])
+          .then(() => this.$API('StudentProfile'))
           .then(res => {
             console.log('加载个人信息')
             this.treatAjaxDatasStudent(res.data)
-						for (let i = 0, attachNum = res.data.attachNum; i < attachNum; i++) {
+            for (let i = 0, attachNum = res.data.attachNum; i < attachNum; i++) {
               let attachImgName = this.$WX.getStorage('userId') + '-info-' + i + '.jpg'
-							this.$API('DownLoad', {attachImgName: attachImgName})
-								.then(res => {
+              this.$API('DownLoad', {attachImgName: attachImgName})
+                .then(res => {
                   this.imagesList.push(res.data)
                   console.log('加载附件')
-                })
+              })
             }
             this.$WX.hideLoading()
             this.$apply()
           })
         } else {
           this.identity = 'tutor'
-					this.$API('GetTrade')
-						.then(res => {
-							res.data.forEach(item => {
-								this.tradeList = res.data
-              })
-              return this.$API('TutorProfile')
-						})
+          this.$API('GetTrade')
+            .then(res => {
+              res.data.forEach(item => {
+							this.tradeList = res.data
+            })
+            return this.$API('TutorProfile')
+					})
             .then(data => {
               this.treatAjaxDatasTutor(data.data)
               this.$WX.hideLoading()
@@ -656,7 +678,6 @@
       }
     }
     onUnload () {
-      console.log('info 消失')
       this.$WX.setStorage('optionList', this.optionList)
       this.$WX.setStorage('identityList', this.identityList)
       this.$WX.setStorage('avatar', this.avatar)
@@ -691,9 +712,8 @@
               content: '审核结束前，不可修改个人资料，确认提交吗?',
               success: function (res) {
                 if (res.confirm) {
-                  confirm()
                   that.$WX.setStorage('isSubmit', true)
-                  that.$WX.jumpTo('./home')
+                  confirm()
                 } else if (res.cancel) {
                   cancel()
                 }
@@ -801,7 +821,7 @@
           }
         })
       }
-      if (flag === true) {
+      if (flag) {
         this.canSubmit = true
       } else {
         this.canSubmit = false

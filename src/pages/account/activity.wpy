@@ -166,6 +166,7 @@
 			}
 		}
 		onLoad () {
+			console.log(this.$WX.getStorage('clockNum'))
 			if (this.$WX.getStorage('role') === 1) {
 				this.isStudent = true
 			} else {
@@ -210,13 +211,14 @@
 						info: this.activity.info
 					})
 						.then(res => {
-							console.log(res)
 							this.$WX.toast('提交成功')
-							this.$WX.jumpTo('./home')
+							setTimeout(() => {
+								this.$WX.jumpTo('./home')
+							}, 1500)	
 						})
 						.catch(err => {
+							console.error(err)			
 							this.$WX.toast('网络故障，请重新提交')
-							console.log(err)
 						})
 				} else {
 					this.$API('PostTutorActivity', {
@@ -226,12 +228,14 @@
 						clockNum: this.activity.clock
 					})
 						.then(res => {
-							console.log(res)
 							this.$WX.toast('提交成功')
-							this.$WX.jumpTo('./home')
+							setTimeout(() => {
+								this.$WX.jumpTo('./home')
+							}, 1500)	
 						})
 						.catch(err => {
-							console.log(err)
+							console.error(err)
+							this.$WX.toast('网络故障，请重新提交')
 						})
 				}
 			}

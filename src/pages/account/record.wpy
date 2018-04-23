@@ -45,13 +45,13 @@
   <view class="record-rest">剩余小红花: {{restFlower}}朵</view>
   <ul class="record-ul">
     <repeat for="{{infoList}}" item="item">
-    <li class="record-ul-item">
-      <span>{{item.time}}</span>
-      <span wx:if="{{!isTutor}}">{{item.reason}}{{item.name}}小红花{{item.amount}}朵</span>
-      <span wx:if="{{isTutor}}">{{item.name}}{{item.reason}}小红花{{item.amount}}朵</span>
-      <span>{{item.mark}}{{item.amount}}</span>
-    </li>
-  </repeat>
+      <li class="record-ul-item">
+        <span>{{item.time}}</span>
+        <span wx:if="{{role === 2}}">{{item.reason}}{{item.name}}小红花{{item.amount}}朵</span>
+        <span wx:if="{{role === 1}}">{{item.name}}{{item.reason}}小红花{{item.amount}}朵</span>
+        <span>{{item.mark}}{{item.amount}}</span>
+      </li>
+    </repeat>
   </ul>
 	<view>
 		<view @tap="loadMore" class="loadMore {{isLast?'destroy':''}}"><span wx:if="{{restFlower === '0'}}">加载更多</span></view>
@@ -67,7 +67,7 @@
       enablePullDownRefresh: false
     }
     data = {
-      isTutor: true
+      role: 2
     }
     components = {}
     getDatas (data) {
@@ -87,11 +87,11 @@
             data.mark = '-'
 					}
 				} else if (item.type === 2) {
-          data.reason = '提现'
-          data.mark = '-'
-				} else if (item.type === 3) {
           data.reason = '充值'
           data.mark = '+'
+				} else if (item.type === 3) {
+          data.reason = '提现'
+          data.mark = '-'
 				}
         this.infoList.push(data)
       })
@@ -108,7 +108,6 @@
 
     onLoad () {
 			this.restFlower = this.$WX.getStorage('redFlowerNum') || 0
-			this.$apply()
       let role = this.$WX.getStorage('role')
 			this.role = role
       if (role === 1) {
