@@ -405,6 +405,7 @@
 			},
 			searchItemInput (event) {
 				this.searchText = event.detail.value
+				this.$apply()
 			},
 			jumpToUserPage (event) {
 				if (this.$WX.getStorage('role') === 0) {

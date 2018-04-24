@@ -164,7 +164,7 @@
 					name: '红花君',
 					company: '深圳海鲸教育基金',
 					position: 'CEO',
-          status: -1,
+          status: -1
         }
         this.menuList[1].value = '发表文章'
 				this.showDatas = [

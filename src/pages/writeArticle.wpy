@@ -182,7 +182,7 @@
 							return this.$API('DownLoad', {imgName: imgName})
 						})
 						.then(res => {
-							strImage += '<img src=' + '"' + res.data + '"' + 'style="max-width: 100%" />'
+							strImage += '<img src=' + '"' + res.data + '"' + ' style="max-width: 100%" />'
 						}))
 				})
 				Promise.all(promiseArray)

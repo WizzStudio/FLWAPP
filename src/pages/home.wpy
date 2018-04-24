@@ -40,6 +40,9 @@
 		GetNewsDatas (data) {
 			if (typeof data !== 'undefined' && data.length > 0) {
 				data.map(item => {
+					if (parseInt(item.tag) === parseInt(item.tag)) {
+						item.tag = this.tradeList.filter(tradeItem => tradeItem.id === parseInt(item.tag))[0].tradeName
+					}
 					this.NewsDatas.push(
 						{
 							id: item.id,
@@ -47,7 +50,7 @@
 							author: item.name || '匿名',
 							pageView: item.pageView || '1',
 							time: moment(item.createTime.split('.')[0], 'YYYY-MM-DD hh:mm:ss').fromNow() || '',
-							tag: item.tag || '导师精选'
+							tag: item.tag
 						}
 					)
 				})
@@ -78,7 +81,11 @@
 
 		onLoad () {
 			this.$WX.showLoading()
-			this.$API('GetNewsList', {page: this.page})
+			this.$API('GetTrade')
+				.then(res => {
+					this.tradeList = res.data
+					return this.$API('GetNewsList', {page: this.page})
+				})
 				.then(res => {
 					this.role = this.$WX.getStorage('role') // 首次获取role
 					this.page++
