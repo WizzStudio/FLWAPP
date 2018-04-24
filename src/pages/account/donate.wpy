@@ -70,7 +70,9 @@
 <script>
   import page from '../base/basicPage.wpy'
   export default class Donate extends page {
-    config = {}
+    config = {
+      enablePullDownRefresh: false
+    }
     component = {}
     data = {
       InfoList: [],
