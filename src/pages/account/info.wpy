@@ -499,8 +499,10 @@
               answerContent: item.answerContent
             }
           })
+          console.log(this.answerList)
           this.$API('EditAnswer', JSON.stringify(this.answerList))
         } else {
+          console.log(this.answerList)
           this.$API('EditAnswer', JSON.stringify(this.answerList))
         }
 				this.$API('SendStudentProfile', JSON.stringify(datas))

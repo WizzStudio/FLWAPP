@@ -207,10 +207,14 @@
         }
         if (this.$WX.getStorage('role') === 1) {
           this.isStudent = true
-          this.$API('StudentCenter')
+          this.$API('GetSchoolList')
+            .then(res => {
+              this.schoolList = res.data
+              return this.$API('StudentCenter')
+            })
             .then(data => {
-            this.treatAjaxDatasStudent(data.data)
-          })
+              this.treatAjaxDatasStudent(data.data)
+            })
         } else if (this.$WX.getStorage('role') === 2) {
           this.isStudent = false
           this.menuList[1].value = '发表文章'

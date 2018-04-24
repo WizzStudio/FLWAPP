@@ -338,9 +338,10 @@
 		methods = {
 			searchButtonClick () {
 				this.$WX.showLoading()
+				console.log('搜索')
 				if (this.roleData.currentData === '学生') {
 					this.searchStudentAvatarList = []
-					this.$API('GetSearchStudentList', {word: this.searchText})
+					this.$API('GetSearchStudentList', {word: encodeURI(this.searchText)})
 						.then(res => {
 							res.data.map(item => {
 								this.searchStudentAvatarList.push(item.userId + '-avatar.jpg')
@@ -348,27 +349,29 @@
 							this.studentList = res.data
 							this.studentCurrentList = this.studentList
 							this.$apply()
+							this.$WX.hideLoading()
 							if (this.$WX.getStorage('role') !== 0) {
 								this.$API('PostUserImagesName', this.searchStudentAvatarList)
 								.then(res => {
 									res.data.map((item, index) => {
 										this.studentList[index].avatar = item
 									})
-									this.$WX.hideLoading()
 									this.$apply()
 								})
 							} else {
 								this.studentList.map(item => {
 									item.avatar = '../../static/images/logo.png'
-									this.$WX.hideLoading()
 									this.$apply()
 								})
 							}
 						})
+						.catch(err => {
+							console.log(err)
+						})
 				} else {
 					this.searchTutorAvatarList = []
 					this.$WX.showLoading()
-					this.$API('GetSearchTutorList', {word: this.searchText})
+					this.$API('GetSearchTutorList', {word: encodeURI(this.searchText)})
 						.then(res => {
 							res.data.map(item => {
 								this.searchTutorAvatarList.push(item.userId + '-avatar.jpg')
@@ -376,22 +379,24 @@
 							this.tutorList = res.data
 							this.tutorCurrentList = this.tutorList
 							this.$apply()
+							this.$WX.hideLoading()
 							if (this.$WX.getStorage('role') !== 0) {
-								this.$API('PostUserImagesName', this.searchStudentAvatarList)
+								this.$API('PostUserImagesName', this.searchTutorAvatarList)
 								.then(res => {
 									res.data.map((item, index) => {
-										this.studentList[index].avatar = item
+										this.tutorList[index].avatar = item
 									})
-									this.$WX.hideLoading()
 									this.$apply()
 								})
 							} else {
 								this.tutorList.map(item => {
 									item.avatar = '../../static/images/logo.png'
-									this.$WX.hideLoading()
 									this.$apply()
 								})
 							}
+						})
+						.catch(err => {
+							console.log(err)
 						})
 				}
 			},
