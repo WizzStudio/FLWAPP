@@ -190,7 +190,8 @@
 						this.sourceArticle = '<p>' + this.sourceText + '</p>'
 						this.sourceArticle = strImage + '<br>' + JSON.parse(JSON.stringify(this.sourceArticle).replace(/\\n/g, '<br>')) + '<br><br>'
 						this.nodes = this.sourceArticle
-						this.$API('PostArticle', {title: this.articleTitle, content: this.sourceArticle})
+						if (this.$WX.getStorage('role') !== 0) {
+							this.$API('PostArticle', {title: this.articleTitle, content: this.sourceArticle})
 							.then(res => {
 								if (!res.code) {
 									this.$WX.toast('文章已提交审核')
@@ -202,6 +203,7 @@
 							.catch(err => {
 								this.$WX.toast(err)
 							})
+						}
 					})
 			}
 		}

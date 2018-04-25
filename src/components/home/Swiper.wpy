@@ -55,7 +55,9 @@
 		onLoad () {}
 		methods = {
 			clickBannerArticle: (e) => {
-				this.$emit('jumpToArticle', e.currentTarget.id)
+				if (e.currentTarget.id > 0) {
+					this.$emit('jumpToArticle', e.currentTarget.id)
+				}
 			}
 		}
 		events = {}

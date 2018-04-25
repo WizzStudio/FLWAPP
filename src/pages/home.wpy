@@ -30,6 +30,7 @@
 		data = {
 			NewsDatas: [],
 			FlowerRankDatas: [],
+			tradeList: [],
 			BannerDatas: [],
 			page: 0,
 			isLastPage: false,
@@ -41,7 +42,11 @@
 			if (typeof data !== 'undefined' && data.length > 0) {
 				data.map(item => {
 					if (parseInt(item.tag) === parseInt(item.tag)) {
-						item.tag = this.tradeList.filter(tradeItem => tradeItem.id === parseInt(item.tag))[0].tradeName
+						if (item.tag === -1) {
+							item.tag = '未知'
+						} else {
+							item.tag = this.tradeList.filter(tradeItem => tradeItem.id === parseInt(item.tag))[0].tradeName
+						}
 					}
 					this.NewsDatas.push(
 						{
@@ -61,7 +66,7 @@
 			data.map(item => {
 				this.BannerDatas.push({
 					imgSrc: item['a'],
-					title: item['c'],
+					title: item['c'] || '海鲸教育基金会',
 					id: item['b']
 				})
 			})
