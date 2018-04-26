@@ -49,14 +49,20 @@
 		display: inline-flex;
 		flex-flow: row nowrap;
 		height: 214rpx;
+		&-image {
+				width: 250rpx;
+				height: 150rpx;
+				border-radius: 10rpx;
+				margin-top: 52rpx;
+			}
 		&-info {
-			width: 600rpx;
+			width: 400rpx;
 			margin-right: 40rpx;
 			display: flex;
 			flex-flow: column;
 			padding-top: 54rpx;
 			&-title {
-				font-size: 29rpx;
+				font-size: 28rpx;
 				font-weight: bold;
 				padding-top: 15rpx;
 				padding-bottom: 15rpx;
@@ -127,6 +133,7 @@
 						<view class="News-Item-info-title">{{item.title}}</view>
 						<view class="News-Item-info-time">{{item.author}} • {{item.time}} • {{item.pageView}}次阅读</view>
 					</view>
+					<image class="News-Item-image" src="{{item.imgUrl}}" mode="aspectFill"/>
 				</view>
 			</repeat>
 		</view>

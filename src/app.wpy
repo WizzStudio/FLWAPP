@@ -27,7 +27,8 @@
 				'pages/article',
 				'pages/home',
 				'pages/writeArticle',
-				'pages/stuTrend'
+				'pages/stuTrend',
+				'pages/account/tutor'
 			],
 			'window': {
 				'backgroundTextStyle': 'light',

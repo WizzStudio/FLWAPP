@@ -241,7 +241,7 @@
 					this.$WX.jumpTo('./donate')
         }
         if (key === 'tutor') {
-          this.$WX.jumpTo('./donate')
+          this.$WX.jumpTo('./tutor')
         }
         if (key === 'clock') {
 					this.$WX.jumpTo('./time')
@@ -255,18 +255,16 @@
           this.$WX.jumpTo('./record')
         }
         if (key === 'application') {
-          if (this.isStudent) {
-						this.$WX.jumpTo('./activity')
-					} else {
-						this.$WX.jumpTo('../writeArticle')
-					}
+          if (this.$WX.getStorage('role') === 0) {
+            this.$WX.interceptTourist()
+          } else {
+            if (this.isStudent) {
+              this.$WX.jumpTo('./activity')
+            } else {
+              this.$WX.jumpTo('../writeArticle')
+            }
+          }
         }
-        // if (key === 'message') {
-        //   this.$WX.toast('前往消息通知', 'none')
-        // }
-        // if (key === 'problem') {
-        //   this.$WX.toast('前往问题反馈', 'none')
-        // }
       }, 200),
       'change-information': this.$UTIL.debounce((key, event) => {
         if (this.$WX.getStorage('role') === 0) {

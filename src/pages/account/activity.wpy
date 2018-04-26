@@ -203,40 +203,44 @@
 				this.activity.clock = event.detail.value
 			},
 			onSubmit () {
-				this.activity['date'] = this.date
-				if (this.isStudent) {
-					this.$API('PostStuActivity', {
-						campaignName: this.activity.title,
-						idealTime: this.activity.date,
-						info: this.activity.info
-					})
-						.then(res => {
-							this.$WX.toast('提交成功')
-							setTimeout(() => {
-								this.$WX.jumpTo('./home')
-							}, 1500)	
+				if (this.$WX.getStorage('role') !== 0) {
+					this.activity['date'] = this.date
+					if (this.isStudent) {
+						this.$API('PostStuActivity', {
+							campaignName: this.activity.title,
+							idealTime: this.activity.date,
+							info: this.activity.info
 						})
-						.catch(err => {
-							console.error(err)			
-							this.$WX.toast('网络故障，请重新提交')
+							.then(res => {
+								this.$WX.toast('提交成功')
+								setTimeout(() => {
+									this.$WX.jumpTo('./home')
+								}, 1500)	
+							})
+							.catch(err => {
+								console.error(err)			
+								this.$WX.toast('网络故障，请重新提交')
+							})
+					} else {
+						this.$API('PostTutorActivity', {
+							campaignName: this.activity.title,
+							idealTime: this.activity.date,
+							info: this.activity.info,
+							clockNum: this.activity.clock
 						})
+							.then(res => {
+								this.$WX.toast('提交成功')
+								setTimeout(() => {
+									this.$WX.jumpTo('./home')
+								}, 1500)	
+							})
+							.catch(err => {
+								console.error(err)
+								this.$WX.toast('网络故障，请重新提交')
+							})
+					}
 				} else {
-					this.$API('PostTutorActivity', {
-						campaignName: this.activity.title,
-						idealTime: this.activity.date,
-						info: this.activity.info,
-						clockNum: this.activity.clock
-					})
-						.then(res => {
-							this.$WX.toast('提交成功')
-							setTimeout(() => {
-								this.$WX.jumpTo('./home')
-							}, 1500)	
-						})
-						.catch(err => {
-							console.error(err)
-							this.$WX.toast('网络故障，请重新提交')
-						})
+					this.$WX.interceptTourist()
 				}
 			}
 		}

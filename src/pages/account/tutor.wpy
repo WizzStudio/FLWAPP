@@ -52,14 +52,14 @@
 <template>
 		<scroll-view style="height: 101vh" class="donate-ul" scroll-y="true">
       <view class="empty-placeholder" wx:if="{{InfoList.length <= 0}}">
-        您还没有为学生赠送小红花
+        您暂时还没有受到导师的青睐
       </view>
 			<repeat for="{{InfoList}}" item="item" index="index">
 				<li id="{{item.userId}}" @tap="jumpToUserPage">
 					<image src="{{item.avatar}}" mode="aspectFill" binderror="imageError" id="{{index}}"/>
 					<div>
 						<span class="name">{{item.name}}</span>
-						<span class="other">{{item.profession}} | {{item.school}}</span>
+						<span class="other">{{item.company}}</span>
 						<span class="info">捐赠小红花{{item.sum}}朵</span>
 					</div>
 				</li>
@@ -72,7 +72,7 @@
   export default class Donate extends page {
     config = {
       enablePullDownRefresh: false,
-      navigationBarTitleText: '捐赠学生'
+      navigationBarTitleText: '导师'
     }
     component = {}
     data = {
@@ -81,12 +81,10 @@
     }
     computed = {}
     getDatas (data) {
-      console.log(data)
       data.forEach(item => {
         this.InfoList.push({
           name: item.name,
-          profession: item.profession,
-          school: item.school,
+          company: item.company,
           sum: item.sum,
           userId: item.userId
         })
@@ -119,32 +117,26 @@
 			})
 		}
     onLoad () {
-      if (this.$WX.getStorage('role') === 2) {
-				this.LoadDatas('GetTutorStudents', 1)
-      }
+      this.LoadDatas('GetStudentTutors', 1)
     }
     onPullDownRefresh () {
 			this.InfoList = []
       this.page = 0
       this.$apply()
-			if (this.$WX.getStorage('role') === 2) {
-				this.LoadDatas('GetTutorStudents', 1)
-			}
+			this.LoadDatas('GetStudentTutors', 1)
 			setTimeout(() => {
 				wx.stopPullDownRefresh()
 			}, 1000)
 		}
     onReachBottom () {
-			if (this.$WX.getStorage('role') === 2) {
-				this.LoadDatas('GetTutorStudents')
-			}
+			this.LoadDatas('GetStudentTutors')
 		}
 
     methods = {
 			jumpToUserPage (event) {
-        if (this.$WX.getStorage('role') === 2) {
+        if (this.$WX.getStorage('role') === 1) {
           this.$WX.setStorage('visit_userId', parseInt(event.currentTarget.id))
-          this.$WX.setStorage('visit_role', 1)
+          this.$WX.setStorage('visit_role', 2)
           this.$WX.jumpTo('../user/personalPage')
         }
       },

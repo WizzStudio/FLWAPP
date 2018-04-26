@@ -39,6 +39,7 @@
 		computed = {}
 
 		GetNewsDatas (data) {
+			moment.locale('zh-cn')
 			if (typeof data !== 'undefined' && data.length > 0) {
 				data.map(item => {
 					if (parseInt(item.tag) === parseInt(item.tag)) {
@@ -48,6 +49,11 @@
 							item.tag = this.tradeList.filter(tradeItem => tradeItem.id === parseInt(item.tag))[0].tradeName
 						}
 					}
+					let imgUrl = '../static/images/logo.png'
+					let imageList = item.content.split(' ').filter(item => item.indexOf('src', 0) === 0).map(item => item.slice(item.indexOf('http', 0), item.length - 1))
+					if (imageList.length > 0) {
+						imgUrl = imageList[0]
+					}
 					this.NewsDatas.push(
 						{
 							id: item.id,
@@ -55,7 +61,8 @@
 							author: item.name || '匿名',
 							pageView: item.pageView || '1',
 							time: moment(item.createTime.split('.')[0], 'YYYY-MM-DD hh:mm:ss').fromNow() || '',
-							tag: item.tag
+							tag: item.tag,
+							imgUrl: imgUrl
 						}
 					)
 				})

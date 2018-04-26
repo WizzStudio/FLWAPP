@@ -63,6 +63,7 @@
 			articleData: {}
 		}
 		GetArticleData (data) {
+			moment.locale('zh-cn')
 			this.articleData = {
 			title: data.title || '标题',
 			content: data.content || '内容',
@@ -72,8 +73,6 @@
 			author: data.author || '匿名',
 			pageView: data.pageView || '阅读量'
 		}
-		//	取出富文本中的图片url
-		// this.imageList = data.content.split(' ').filter(item => item.indexOf('src', 0) === 0).map(item => item.slice(item.indexOf('http', 0), item.length - 1))
 	}
 		onLoad () {
 			this.articleId = this.$WX.getStorage('articleId') || 1
