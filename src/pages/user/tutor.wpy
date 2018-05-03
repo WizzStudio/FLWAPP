@@ -55,7 +55,7 @@
         您暂时还没有受到导师的青睐
       </view>
 			<repeat for="{{InfoList}}" item="item" index="index">
-				<li id="{{item.userId}}" @tap="jumpToUserPage">
+				<li id="{{item.userId}}">
 					<image src="{{item.avatar}}" mode="aspectFill" binderror="imageError" id="{{index}}"/>
 					<div>
 						<span class="name">{{item.name}}</span>
@@ -77,7 +77,6 @@
     component = {}
     data = {
       InfoList: [],
-      visitUserId: '',
 			page: 0
     }
     computed = {}
@@ -118,8 +117,8 @@
 			})
 		}
     onLoad () {
-      this.LoadDatas('GetStudentTutors', 1)
       this.visitUserId = this.$WX.getStorage('visit_userId')
+      this.LoadDatas('GetStudentTutors', 1)
     }
     onPullDownRefresh () {
 			this.InfoList = []
@@ -135,13 +134,6 @@
 		}
 
     methods = {
-			jumpToUserPage (event) {
-        if (this.$WX.getStorage('role') === 1) {
-          this.$WX.setStorage('visit_userId', parseInt(event.currentTarget.id))
-          this.$WX.setStorage('visit_role', 2)
-          this.$WX.jumpTo('../user/personalPage')
-        }
-      },
       imageError (event) {
         let mark = event.target.id
         this.InfoList[mark].avatar = '../../static/images/logo.png'

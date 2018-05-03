@@ -51,7 +51,7 @@
         },
         {
           unique: 'application',
-          value: '申请活动',
+          value: '申请服务',
           imgUrl: '../../static/images/personalCenter/apply.svg'
         }
       ],

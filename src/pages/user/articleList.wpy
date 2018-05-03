@@ -1,0 +1,183 @@
+<style lang="scss" type="text/scss">
+	.news-nav {
+		height: 88rpx;
+		display: flex;
+		align-items: center;
+		&-item-1 {
+			text-align: center;
+			width: 150rpx;
+			height: 50rpx;
+			padding-top: 20rpx;
+			padding-left: 30rpx;
+			margin-left: 80rpx;
+			padding-right: 30rpx;
+			margin-right: 70rpx;
+			font-size: 28rpx;
+			color: #333333;
+			border-bottom: 6rpx solid #fff;
+		}
+		&-item-2 {
+			text-align: center;
+			width: 150rpx;
+			height: 50rpx;
+			padding-top: 20rpx;
+			padding-right: 25rpx;
+			padding-left: 25rpx;
+			margin-left: 50rpx;
+			font-size: 28rpx;
+			color: #333333;
+			border-bottom: 6rpx solid #fff;
+		}
+	}
+	.item-active {
+		-webkit-transition: border-color 1.5s;
+		-moz-transition: border-color 1.5s;
+		-ms-transition: border-color 1.5s;
+		-o-transition: border-color 1.5s;
+		transition: border-color 1.5s;
+		border-bottom: 6rpx solid #e01b1c;
+		color: #e01b1c;
+		font-size: 28rpx;
+	}
+	.News-Content {
+		margin-left: 30rpx;
+		font-size: 28rpx;
+		display: flex;
+		flex-flow: column nowrap;
+	}
+	.News-Item {
+		display: inline-flex;
+		flex-flow: row nowrap;
+		height: 214rpx;
+		&-image {
+				width: 250rpx;
+				height: 150rpx;
+				border-radius: 10rpx;
+				margin-top: 52rpx;
+			}
+		&-info {
+			width: 400rpx;
+			margin-right: 40rpx;
+			display: flex;
+			flex-flow: column;
+			padding-top: 54rpx;
+			&-title {
+				font-size: 28rpx;
+				font-weight: bold;
+				padding-top: 15rpx;
+				padding-bottom: 15rpx;
+			}
+			&-time {
+				font-size: 24rpx;
+				color: #999999;
+			}
+		}
+	}
+</style>
+
+<template>
+	<view class="News-Content">
+		<repeat for="{{articleList}}" item="item">
+			<view class="News-Item" @tap="jumpToArticle" id="{{item.id}}">
+				<view class="News-Item-info">
+					<view style="font-size: 24rpx;color: #999;">{{item.tag}}</view>
+					<view class="News-Item-info-title">{{item.title}}</view>
+					<view class="News-Item-info-time">{{item.author}} • {{item.time}} • {{item.pageView}}次阅读</view>
+				</view>
+				<image class="News-Item-image" src="{{item.imgUrl}}" mode="aspectFill"/>
+			</view>
+		</repeat>
+	</view>
+</template>
+
+<script>
+	import moment from 'moment'
+	import page from '../base/basicPage.wpy'
+
+	export default class home extends page {
+		config = {
+			enablePullDownRefresh: false,
+			navigationBarTitleText: '文章列表'
+		}
+		data = {
+			articleList: [],
+      tradeList: [],
+      page: 0,
+      isLastPage: false
+		}
+		computed = {}
+    ParseArticle(data) {
+      moment.locale('zh-cn')
+			if (typeof data !== 'undefined' && data.length > 0) {
+				data.map(item => {
+					if (parseInt(item.tag) === parseInt(item.tag)) {
+						if (item.tag === -1) {
+							item.tag = '未知'
+						} else {
+							item.tag = this.tradeList.filter(tradeItem => tradeItem.id === parseInt(item.tag))[0].tradeName
+						}
+					}
+					let imgUrl = '../static/images/logo.png'
+					let imageList = item.content.split(' ').filter(item => item.indexOf('src', 0) === 0).map(item => item.slice(item.indexOf('http', 0), item.length - 1))
+					if (imageList.length > 0) {
+						imgUrl = imageList[0]
+					}
+					this.articleList.push(
+						{
+							id: item.id,
+							title: item.title,
+							author: item.name || '匿名',
+							pageView: item.pageView || '1',
+							time: moment(item.createTime.split('.')[0], 'YYYY-MM-DD hh:mm:ss').fromNow() || '',
+							tag: item.tag,
+							imgUrl: imgUrl
+						}
+					)
+				})
+			}
+    }
+		onLoad () {
+      console.log(123)
+      this.$WX.showLoading()
+      this.$API('GetTrade')
+				.then(res => {
+					this.tradeList = res.data
+          console.log(res.data)
+					return this.$API('GetNewsList', {page: this.page})
+				})
+        .then(res => {
+          this.$WX.hideLoading()
+          console.log(res.data)
+          if (res.data.length === 0) {
+            this.isLastPage = true
+          }
+          this.ParseArticle(res.data)
+          this.$apply()
+        })
+        .catch(err => {
+          console.error(err)
+        })
+		}
+		onReachBottom () {
+			if (!this.isLastPage) {
+        this.$API('GetNewsList', {page: this.page})
+        .then(res => {
+          this.$WX.hideLoading()
+          if (res.data.length === 0) {
+            this.isLastPage = true
+          }
+          this.ParseArticle(res.data)
+          this.$apply()
+        })
+      }
+		}
+		methods = {
+      jumpToArticle (e) {
+        this.$WX.setStorage('articleId', e.currentTarget.id)
+				this.$WX.jumpTo('./article')
+      }
+    }
+		events = {}
+		props = {}
+	}
+</script>

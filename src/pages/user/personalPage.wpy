@@ -250,7 +250,7 @@
 					})
 					.then(res => {
 						this._updateInfo(res.data)
-						this.userInfo.trade = res.data.trade !== -1? this.tradeList.filter(tradeItem => tradeItem.id === res.data.trade)[0].tradeName: '未知'
+						this.userInfo.trade = res.data.trade !== -1 ? this.tradeList.filter(tradeItem => tradeItem.id === res.data.trade)[0].tradeName : '未知'
 						this.$apply()
 					})
 					.catch(() => (setTimeout(() => { this.$WX.goBack() }, 1500)))

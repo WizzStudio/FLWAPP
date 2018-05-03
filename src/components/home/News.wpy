@@ -121,7 +121,7 @@
 
 <template>
 	<view class="news-nav">
-		<view class="news-nav-item-1 item-{{isNews?'active': ''}}" id="news" @tap="ItemClick">视界 </view>
+		<view class="news-nav-item-1 item-{{isNews?'active': ''}}" id="news" @tap="ItemClick">海域 </view>
 		<view class="news-nav-item-2 item-{{isNews?'':'active'}}" id="top" @tap="ItemClick">红花榜</view>
 	</view>
 	<view class="News-Content">
