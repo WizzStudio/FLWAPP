@@ -59,8 +59,8 @@
 				.then(res => {
 					this.$WX.setStorage('wxAvatar', res.userInfo.avatarUrl)
 					this.$WX.setStorage('wxName', res.userInfo.nickName)
-					this.$WX.jumpTo('./user/student')
-					// this.$WX.jumpTo('./home')
+//					this.$WX.jumpTo('./user/student')
+						this.$WX.jumpTo('./home')
 				})
 		}
 

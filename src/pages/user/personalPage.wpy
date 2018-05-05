@@ -259,12 +259,11 @@
 		onShow () {}
 
 		onReady () {
-			this.$WX.removeStorage('visit_userId') // 删除欲访问的用户id
-			this.$WX.removeStorage('visit_role') // 删除欲访问的用户role
+			// this.$WX.removeStorage('visit_userId') // 删除欲访问的用户id
+			// this.$WX.removeStorage('visit_role') // 删除欲访问的用户role
 		}
 
 		customFunction () {}
-
 		methods = {}
 		events = {
 			'btn-click': (key) => {
@@ -309,6 +308,21 @@
 			'error-pic': () => {
 				this.userInfo.avatar = '../../static/images/logo.png'
 				this.$apply()
+			},
+			'getMoreInfo': (key) => {
+				if (key === 'articles') {
+					this.$WX.jumpTo('./articleList')
+				}
+				if (key === 'tutors') {
+					this.$WX.jumpTo('./tutor')
+				}
+				if (key === 'students') {
+					this.$WX.jumpTo('./student')
+				}
+				if (key === 'flower') {
+					this.$WX.setStorage('_redFlowerNum', this.userInfo.redFlowerNum)
+					this.$WX.jumpTo('./flower')
+				}
 			}
 		}
 	}

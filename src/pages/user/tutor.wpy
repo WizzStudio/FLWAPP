@@ -52,7 +52,7 @@
 <template>
 		<scroll-view style="height: 101vh" class="donate-ul" scroll-y="true">
       <view class="empty-placeholder" wx:if="{{InfoList.length <= 0}}">
-        您暂时还没有受到导师的青睐
+        Ta暂时还没有受到导师的青睐
       </view>
 			<repeat for="{{InfoList}}" item="item" index="index">
 				<li id="{{item.userId}}">
@@ -72,7 +72,7 @@
   export default class Donate extends page {
     config = {
       enablePullDownRefresh: false,
-      navigationBarTitleText: '导师'
+      navigationBarTitleText: 'Ta的导师'
     }
     component = {}
     data = {
@@ -83,8 +83,8 @@
     getDatas (data) {
       data.forEach(item => {
         this.InfoList.push({
-          name: item.name,
-          company: item.company,
+          name: item.name || '匿名',
+          company: item.company || '',
           sum: item.sum,
           userId: item.userId
         })
@@ -92,7 +92,7 @@
     }
     LoadDatas (role, count = 2) {
       const InfoListLength = this.InfoList.length
-			this.$API(role, {page: this.page})
+			this.$API(role, {page: this.page, userId: this.visitUserId})
 				.then(res => {
 					this.page++
 					let imageArray = []
@@ -118,21 +118,11 @@
 		}
     onLoad () {
       this.visitUserId = this.$WX.getStorage('visit_userId')
-      this.LoadDatas('GetStudentTutors', 1)
+      this.LoadDatas('GetHomeTutor', 1)
     }
-    onPullDownRefresh () {
-			this.InfoList = []
-      this.page = 0
-      this.$apply()
-			this.LoadDatas('GetStudentTutors', 1)
-			setTimeout(() => {
-				wx.stopPullDownRefresh()
-			}, 1000)
-		}
     onReachBottom () {
-			this.LoadDatas('GetStudentTutors')
+			this.LoadDatas('GetHomeTutor')
 		}
-
     methods = {
       imageError (event) {
         let mark = event.target.id

@@ -52,7 +52,7 @@
 <template>
 		<scroll-view style="height: 101vh" class="donate-ul" scroll-y="true">
       <view class="empty-placeholder" wx:if="{{InfoList.length <= 0}}">
-        他还没有为学生赠送小红花
+        Ta还没有为学生赠送小红花
       </view>
 			<repeat for="{{InfoList}}" item="item" index="index">
 				<li id="{{item.userId}}">
@@ -72,7 +72,7 @@
   export default class Donate extends page {
     config = {
       enablePullDownRefresh: false,
-      navigationBarTitleText: '捐赠学生'
+      navigationBarTitleText: 'Ta捐赠的学生'
     }
     component = {}
     data = {
@@ -81,7 +81,6 @@
     }
     computed = {}
     getDatas (data) {
-      console.log(data)
       data.forEach(item => {
         this.InfoList.push({
           name: item.name,
@@ -94,7 +93,7 @@
     }
     LoadDatas (role, count = 2) {
       const InfoListLength = this.InfoList.length
-			this.$API(role, {page: this.page})
+			this.$API(role, {page: this.page, userId: this.visitUserId})
 				.then(res => {
 					this.page++
 					let imageArray = []
@@ -119,25 +118,11 @@
 			})
 		}
     onLoad () {
-      if (this.$WX.getStorage('role') === 2) {
-				this.LoadDatas('GetTutorStudents', 1)
-      }
+      this.visitUserId = this.$WX.getStorage('visit_userId')
+      this.LoadDatas('GetHomeStudent', 1)
     }
-    onPullDownRefresh () {
-			this.InfoList = []
-      this.page = 0
-      this.$apply()
-			if (this.$WX.getStorage('role') === 2) {
-				this.LoadDatas('GetTutorStudents', 1)
-			}
-			setTimeout(() => {
-				wx.stopPullDownRefresh()
-			}, 1000)
-		}
     onReachBottom () {
-			if (this.$WX.getStorage('role') === 2) {
-				this.LoadDatas('GetTutorStudents')
-			}
+			this.LoadDatas('GetHomeStudent')
 		}
 
     methods = {

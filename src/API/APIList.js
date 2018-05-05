@@ -49,5 +49,9 @@ export default {
 	GetQuestionList: {url: '/conf/question', method: 'get', data: {}, headers: {}, right: 0},
 	GetAnswer: {url: '/stu/home/answer', method: 'get', data: {userId: 0}, headers: {}, right: 0},
 	EditAnswer: {url: '/stu/answer', method: 'post', data: {}, headers: {}, right: 1},
-	GetFlwRate: {url: '/conf/exchangeRate', method: 'get', data: {}, headers: {}, right: 2}
+	GetFlwRate: {url: '/conf/exchangeRate', method: 'get', data: {}, headers: {}, right: 2},
+	GetHomeTutor: {url: '/stu/home/tutors', method: 'get', data: {}, headers: {}, right: 0},
+	GetHomeStudent: {url: '/tutor/home/students', method: 'get', data: {}, headers: {}, right: 0},
+	GetStuArticles: {url: '/stu/home/articles', method: 'get', data: {}, headers: {}, right: 0},
+	GetTutorArticles: { url: '/tutor/home/articles', method: 'get', data: {}, headers: {}, right: 0 }
 }

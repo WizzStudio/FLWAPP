@@ -76,7 +76,7 @@
 </style>
 
 <template>
-	<view class="News-Content">
+	<scroll-view class="News-Content" style="height: 101vh" scroll-y="true">
 		<repeat for="{{articleList}}" item="item">
 			<view class="News-Item" @tap="jumpToArticle" id="{{item.id}}">
 				<view class="News-Item-info">
@@ -87,7 +87,7 @@
 				<image class="News-Item-image" src="{{item.imgUrl}}" mode="aspectFill"/>
 			</view>
 		</repeat>
-	</view>
+	</scroll-view>
 </template>
 
 <script>
@@ -110,14 +110,7 @@
       moment.locale('zh-cn')
 			if (typeof data !== 'undefined' && data.length > 0) {
 				data.map(item => {
-					if (parseInt(item.tag) === parseInt(item.tag)) {
-						if (item.tag === -1) {
-							item.tag = '未知'
-						} else {
-							item.tag = this.tradeList.filter(tradeItem => tradeItem.id === parseInt(item.tag))[0].tradeName
-						}
-					}
-					let imgUrl = '../static/images/logo.png'
+					let imgUrl = '../../static/images/logo.png'
 					let imageList = item.content.split(' ').filter(item => item.indexOf('src', 0) === 0).map(item => item.slice(item.indexOf('http', 0), item.length - 1))
 					if (imageList.length > 0) {
 						imgUrl = imageList[0]
@@ -126,10 +119,8 @@
 						{
 							id: item.id,
 							title: item.title,
-							author: item.name || '匿名',
 							pageView: item.pageView || '1',
 							time: moment(item.createTime.split('.')[0], 'YYYY-MM-DD hh:mm:ss').fromNow() || '',
-							tag: item.tag,
 							imgUrl: imgUrl
 						}
 					)
@@ -137,44 +128,76 @@
 			}
     }
 		onLoad () {
-      console.log(123)
-      this.$WX.showLoading()
-      this.$API('GetTrade')
-				.then(res => {
-					this.tradeList = res.data
-          console.log(res.data)
-					return this.$API('GetNewsList', {page: this.page})
-				})
-        .then(res => {
-          this.$WX.hideLoading()
-          console.log(res.data)
-          if (res.data.length === 0) {
-            this.isLastPage = true
-          }
-          this.ParseArticle(res.data)
-          this.$apply()
-        })
-        .catch(err => {
-          console.error(err)
-        })
+			this.visitUserId = this.$WX.getStorage('visit_userId')
+			this.role = this.$WX.getStorage('visit_role') || 1
+			this.$WX.showLoading()
+			if (this.role === 2) {
+				this.$API('GetTutorArticles', {page: this.page, userId: this.visitUserId})
+					.then(res => {
+						this.page++
+						this.$WX.hideLoading()
+						if (res.data.length === 0) {
+							this.isLastPage = true
+						}
+						this.ParseArticle(res.data)
+						this.$apply()
+					})
+					.catch(err => {
+						console.error(err)
+					})
+			} else {
+				this.$API('GetStuArticles', {page: this.page, userId: this.visitUserId})
+					.then(res => {
+						this.page++
+						this.$WX.hideLoading()
+						if (res.data.length === 0) {
+							this.isLastPage = true
+						}
+						this.ParseArticle(res.data)
+						this.$apply()
+					})
+					.catch(err => {
+						console.error(err)
+					})
+			}
 		}
 		onReachBottom () {
 			if (!this.isLastPage) {
-        this.$API('GetNewsList', {page: this.page})
-        .then(res => {
-          this.$WX.hideLoading()
-          if (res.data.length === 0) {
-            this.isLastPage = true
-          }
-          this.ParseArticle(res.data)
-          this.$apply()
-        })
+        if (this.role === 2) {
+					this.$API('GetTutorArticles', {page: this.page, userId: this.visitUserId})
+						.then(res => {
+							this.page++
+							this.$WX.hideLoading()
+							if (res.data.length === 0) {
+								this.isLastPage = true
+							}
+							this.ParseArticle(res.data)
+							this.$apply()
+						})
+						.catch(err => {
+							console.error(err)
+						})
+				} else {
+					this.$API('GetStuArticles', {page: this.page, userId: this.visitUserId})
+						.then(res => {
+							this.page++
+							this.$WX.hideLoading()
+							if (res.data.length === 0) {
+								this.isLastPage = true
+							}
+							this.ParseArticle(res.data)
+							this.$apply()
+						})
+						.catch(err => {
+							console.error(err)
+						})
+				}
       }
 		}
 		methods = {
       jumpToArticle (e) {
         this.$WX.setStorage('articleId', e.currentTarget.id)
-				this.$WX.jumpTo('./article')
+				this.$WX.jumpTo('../article')
       }
     }
 		events = {}
