@@ -128,16 +128,16 @@
 		computed = {}
 		data = {
 			isStudent: false,
-			hoursAll: 0,
-			clocksRest: 0,
-			hoursWorked: 0
+			workedTime: 0,
+			needWorkedTime: 0,
+			clocksRest: 0
 		}
 		getStudentDatas (data) {
-			this.workedTime = data.workedTime
-			this.needWorkedTime = data.sumNeedWorkedTime
+			this.workedTime = data.workedTime || 0
+			this.needWorkedTime = data.sumNeedWorkedTime || 0
 		}
 		getTutorDatas (data) {
-			this.clocksRest = data.clock
+			this.clocksRest = data.clock || 0
 		}
 		onLoad () {
 			let role = this.$WX.getStorage('role')
