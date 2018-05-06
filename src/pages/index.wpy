@@ -41,10 +41,10 @@
 		components = {}
 
 		onLoad () {
-			let debug = false
+			let debug = true
 			if (debug) {
-				this.$WX.jumpTo('./home')
-//			this.$WX.jumpTo('./account/login')
+//				this.$WX.jumpTo('./home')
+			this.$WX.jumpTo('./account/login')
 //				this.$WX.jumpTo('./user/personalPage')
 //				this.$WX.jumpTo('./user/topUp')
 				return false
