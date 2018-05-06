@@ -231,7 +231,7 @@
 			<p 	wx:if="{{ role == 2 }}" class="intro">{{tutorInfo.simpleIntro}}</p>
 			<view class="userCard-info-bar">
 				<!--学生-->
-					<view class="item" wx:if="{{ role == 1 }}">
+					<view class="item" wx:if="{{ role == 1 }}" data-id="flower" @tap="barClick">
 						<view class="item-number">
 							<p>{{stuInfo.redFlowerNum}}</p>
 							<span>朵</span>
@@ -239,8 +239,8 @@
 						<view class="item-title">小红花</view>
 					</view>
 
-					<view class="item" wx:if="{{ role == 1 }}">
-						<view class="item-number">
+					<view class="item" wx:if="{{ role == 1 }}" data-id="tutors" @tap="barClick">
+						<view class="item-number" >
 							<p>{{stuInfo.tutorNum}}</p>
 							<span>位</span>
 						</view>
@@ -249,7 +249,7 @@
 
 
 				<!--导师-->
-					<view class="item" wx:if="{{ role == 2 }}">
+					<view class="item" wx:if="{{ role == 2 }}" data-id="flower" @tap="barClick">
 						<view class="item-number">
 							<p>{{tutorInfo.redFlowerNum}}</p>
 							<span>朵</span>
@@ -257,7 +257,7 @@
 						<view class="item-title">小红花</view>
 					</view>
 
-					<view class="item" wx:if="{{ role == 2 }}">
+					<view class="item" wx:if="{{ role == 2 }}" data-id="students" @tap="barClick">
 						<view class="item-number">
 							<p>{{tutorInfo.stuNum}}</p>
 							<span>位</span>
@@ -267,7 +267,7 @@
 
 
 				<!--导师学生共有部分-->
-				<view class="item">
+				<view class="item" data-id="articles" @tap="barClick">
 					<view class="item-number">
 						<p wx:if="{{role == 1}}">{{stuInfo.articleNum}}</p>
 						<p wx:if="{{role == 2}}">{{tutorInfo.articleNum}}</p>
@@ -329,6 +329,9 @@
 		methods = {
 			defaultPic() {
 				this.$emit('error-pic')
+			},
+			barClick(e) {
+				this.$emit('getMoreInfo', e.currentTarget.dataset.id)
 			}
 		}
 		events = {}

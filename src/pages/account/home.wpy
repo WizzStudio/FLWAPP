@@ -50,10 +50,15 @@
           imgUrl: '../../static/images/personalCenter/trace.svg'
         },
         {
-          unique: 'application',
-          value: '申请活动',
-          imgUrl: '../../static/images/personalCenter/apply.svg'
-        }
+					unique: 'article',
+					value: '发表文章',
+					imgUrl: '../../static/images/personalCenter/brush.svg'
+				},
+				{
+					unique: 'application',
+					value: '基金会服务',
+					imgUrl: '../../static/images/personalCenter/apply.svg'
+				}
       ],
       infoDatas: {
 				status: -1
@@ -197,7 +202,6 @@
       } else {
         if (this.$WX.getStorage('hasChangeAvatar') === true) {
           this.$WX.setStorage('hasChangeAvatar', false)
-          console.log('更换了头像，重新请求头像')
           this.$API('DownLoad', {avatar: this.$WX.getStorage('userId') + '-avatar.jpg'})
             .then(res => {
               this.avatar = res.data
@@ -258,13 +262,16 @@
           if (this.$WX.getStorage('role') === 0) {
             this.$WX.interceptTourist()
           } else {
-            if (this.isStudent) {
-              this.$WX.jumpTo('./activity')
-            } else {
-              this.$WX.jumpTo('../writeArticle')
-            }
+						this.$WX.jumpTo('./activity')
           }
         }
+        if (key === 'article') {
+					if (this.$WX.getStorage('role') === 0) {
+						this.$WX.interceptTourist()
+					} else {
+						this.$WX.jumpTo('../writeArticle')
+					}
+				}
       }, 200),
       'change-information': this.$UTIL.debounce((key, event) => {
         if (this.$WX.getStorage('role') === 0) {

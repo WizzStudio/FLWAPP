@@ -148,7 +148,7 @@
 
 	export default class Activity extends basicPage {
 		config = {
-			navigationBarTitleText: '申请活动',
+			navigationBarTitleText: '基金会服务',
 			enablePullDownRefresh: false
 		}
 		components = {}

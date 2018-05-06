@@ -1,0 +1,206 @@
+<style lang="scss" type="text/scss">
+	.news-nav {
+		height: 88rpx;
+		display: flex;
+		align-items: center;
+		&-item-1 {
+			text-align: center;
+			width: 150rpx;
+			height: 50rpx;
+			padding-top: 20rpx;
+			padding-left: 30rpx;
+			margin-left: 80rpx;
+			padding-right: 30rpx;
+			margin-right: 70rpx;
+			font-size: 28rpx;
+			color: #333333;
+			border-bottom: 6rpx solid #fff;
+		}
+		&-item-2 {
+			text-align: center;
+			width: 150rpx;
+			height: 50rpx;
+			padding-top: 20rpx;
+			padding-right: 25rpx;
+			padding-left: 25rpx;
+			margin-left: 50rpx;
+			font-size: 28rpx;
+			color: #333333;
+			border-bottom: 6rpx solid #fff;
+		}
+	}
+	.item-active {
+		-webkit-transition: border-color 1.5s;
+		-moz-transition: border-color 1.5s;
+		-ms-transition: border-color 1.5s;
+		-o-transition: border-color 1.5s;
+		transition: border-color 1.5s;
+		border-bottom: 6rpx solid #e01b1c;
+		color: #e01b1c;
+		font-size: 28rpx;
+	}
+	.News-Content {
+		margin-left: 30rpx;
+		font-size: 28rpx;
+		display: flex;
+		flex-flow: column nowrap;
+	}
+	.News-Item {
+		display: inline-flex;
+		flex-flow: row nowrap;
+		height: 214rpx;
+		&-image {
+				width: 250rpx;
+				height: 150rpx;
+				border-radius: 10rpx;
+				margin-top: 52rpx;
+			}
+		&-info {
+			width: 400rpx;
+			margin-right: 40rpx;
+			display: flex;
+			flex-flow: column;
+			padding-top: 54rpx;
+			&-title {
+				font-size: 28rpx;
+				font-weight: bold;
+				padding-top: 15rpx;
+				padding-bottom: 15rpx;
+			}
+			&-time {
+				font-size: 24rpx;
+				color: #999999;
+			}
+		}
+	}
+</style>
+
+<template>
+	<scroll-view class="News-Content" style="height: 101vh" scroll-y="true">
+		<repeat for="{{articleList}}" item="item">
+			<view class="News-Item" @tap="jumpToArticle" id="{{item.id}}">
+				<view class="News-Item-info">
+					<view style="font-size: 24rpx;color: #999;">{{item.tag}}</view>
+					<view class="News-Item-info-title">{{item.title}}</view>
+					<view class="News-Item-info-time">{{item.author}} • {{item.time}} • {{item.pageView}}次阅读</view>
+				</view>
+				<image class="News-Item-image" src="{{item.imgUrl}}" mode="aspectFill"/>
+			</view>
+		</repeat>
+	</scroll-view>
+</template>
+
+<script>
+	import moment from 'moment'
+	import page from '../base/basicPage.wpy'
+
+	export default class home extends page {
+		config = {
+			enablePullDownRefresh: false,
+			navigationBarTitleText: '文章列表'
+		}
+		data = {
+			articleList: [],
+      tradeList: [],
+      page: 0,
+      isLastPage: false
+		}
+		computed = {}
+    ParseArticle(data) {
+      moment.locale('zh-cn')
+			if (typeof data !== 'undefined' && data.length > 0) {
+				data.map(item => {
+					let imgUrl = '../../static/images/logo.png'
+					let imageList = item.content.split(' ').filter(item => item.indexOf('src', 0) === 0).map(item => item.slice(item.indexOf('http', 0), item.length - 1))
+					if (imageList.length > 0) {
+						imgUrl = imageList[0]
+					}
+					this.articleList.push(
+						{
+							id: item.id,
+							title: item.title,
+							pageView: item.pageView || '1',
+							time: moment(item.createTime.split('.')[0], 'YYYY-MM-DD hh:mm:ss').fromNow() || '',
+							imgUrl: imgUrl
+						}
+					)
+				})
+			}
+    }
+		onLoad () {
+			this.visitUserId = this.$WX.getStorage('visit_userId')
+			this.role = this.$WX.getStorage('visit_role') || 1
+			this.$WX.showLoading()
+			if (this.role === 2) {
+				this.$API('GetTutorArticles', {page: this.page, userId: this.visitUserId})
+					.then(res => {
+						this.page++
+						this.$WX.hideLoading()
+						if (res.data.length === 0) {
+							this.isLastPage = true
+						}
+						this.ParseArticle(res.data)
+						this.$apply()
+					})
+					.catch(err => {
+						console.error(err)
+					})
+			} else {
+				this.$API('GetStuArticles', {page: this.page, userId: this.visitUserId})
+					.then(res => {
+						this.page++
+						this.$WX.hideLoading()
+						if (res.data.length === 0) {
+							this.isLastPage = true
+						}
+						this.ParseArticle(res.data)
+						this.$apply()
+					})
+					.catch(err => {
+						console.error(err)
+					})
+			}
+		}
+		onReachBottom () {
+			if (!this.isLastPage) {
+        if (this.role === 2) {
+					this.$API('GetTutorArticles', {page: this.page, userId: this.visitUserId})
+						.then(res => {
+							this.page++
+							this.$WX.hideLoading()
+							if (res.data.length === 0) {
+								this.isLastPage = true
+							}
+							this.ParseArticle(res.data)
+							this.$apply()
+						})
+						.catch(err => {
+							console.error(err)
+						})
+				} else {
+					this.$API('GetStuArticles', {page: this.page, userId: this.visitUserId})
+						.then(res => {
+							this.page++
+							this.$WX.hideLoading()
+							if (res.data.length === 0) {
+								this.isLastPage = true
+							}
+							this.ParseArticle(res.data)
+							this.$apply()
+						})
+						.catch(err => {
+							console.error(err)
+						})
+				}
+      }
+		}
+		methods = {
+      jumpToArticle (e) {
+        this.$WX.setStorage('articleId', e.currentTarget.id)
+				this.$WX.jumpTo('../article')
+      }
+    }
+		events = {}
+		props = {}
+	}
+</script>

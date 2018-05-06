@@ -28,7 +28,11 @@
 				'pages/home',
 				'pages/writeArticle',
 				'pages/stuTrend',
-				'pages/account/tutor'
+				'pages/account/tutor',
+				'pages/user/articleList',
+				'pages/user/student',
+				'pages/user/tutor',
+				'pages/user/flower'
 			],
 			'window': {
 				'backgroundTextStyle': 'light',
