@@ -80,7 +80,7 @@
 <template>
 	<view>
 		<image src="../../static/images/personalCenter/background.png" class="background-image"/>
-  	<view class="redFlower-content">
+		<view class="redFlower-content">
 			<view class="redFlower-content-modal-1">在这里，小红花是导师与学生连接的纽带，导师可以通过赠送小红花发现并激励人才，学生可以发布简历、文章，展示自己的与众不同。</view>
 			<view class="redFlower-content-modal-2">深圳市海鲸教育基金会将会根据学生获得的小红花情况，向学生颁发所在高校的海鲸奖学金，共同创建美好未来。</view>
 			<view class="redFlower-content-modal-3" wx:if="{{isStudent}}">
@@ -90,10 +90,11 @@
 			<view class="redFlower-content-modal-3" wx:if="{{!isStudent}}">
 				<view>从注册以来</view><br/>
 				<view>
-				<view>Ta总共送出<span> {{redFlowerNum}} </span>朵小红花</view><br/>
+					<view>Ta总共送出<span> {{redFlowerNum}} </span>朵小红花</view><br/>
+				</view>
+			</view>
 			</view>
 		</view>
-	</view>
 </template>
 
 <script>
