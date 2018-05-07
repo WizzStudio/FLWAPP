@@ -45,7 +45,7 @@
 			if (debug) {
 				// this.$WX.jumpTo('./home')
 //			this.$WX.jumpTo('./account/login')
-//				this.$WX.jumpTo('./user/topUp')
+				this.$WX.jumpTo('./user/topUp')
 				return false
 			}
 

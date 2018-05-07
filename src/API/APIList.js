@@ -53,5 +53,6 @@ export default {
 	GetHomeTutor: {url: '/stu/home/tutors', method: 'get', data: {}, headers: {}, right: 0},
 	GetHomeStudent: {url: '/tutor/home/students', method: 'get', data: {}, headers: {}, right: 0},
 	GetStuArticles: {url: '/stu/home/articles', method: 'get', data: {}, headers: {}, right: 0},
-	GetTutorArticles: { url: '/tutor/home/articles', method: 'get', data: {}, headers: {}, right: 0 }
+	GetTutorArticles: { url: '/tutor/home/articles', method: 'get', data: {}, headers: {}, right: 0 },
+	GetTutorDonateMoney: { url: '/tutor/sumMoney', method: 'get', data: {}, headers: {}, right: 0 } // 获取导师总共捐赠的钱数额
 }

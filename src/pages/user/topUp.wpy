@@ -6,10 +6,10 @@
 	.topUp{
 		.whale{
 			margin-top: 100rpx;
-			@include wh(100%,400rpx);
+			@include wh(100%,200rpx);
 			overflow: hidden;
 			&-img{
-				@include wh(400rpx,100%);
+				@include wh(200rpx,100%);
 				animation:  kf-rotate 500s  infinite;
 			}
 		}
@@ -50,12 +50,13 @@
 		<div class="whale l-box__allMid">
 			<image class="whale-img" src="../../static/images/whale.jpg"></image>
 		</div>
-		<p class="slogan mt20 t2-black__light">海鲸宗旨：连接优秀人才，助力青年成长</p>
-		<p class="slogan  mb60 t3-c2__light"> connecting mentor and elite students</p>
+		<p class="slogan mt20 t3-black__light t3">海鲸宗旨：寻找海鲸 共同成长 缔造传统 服务社会</p>
+		<p class="slogan  mb60 t3-c2__light">Service for Whale</p>
 		<div class="main l-box__ver">
-			<p class="t3-black__light mb20">现有小红花：<span class="t2-red t2-red__light">{{leftFlwNumber}}朵</span></p>
-			<p class="t3-black__light mb30">捐赠金额<span class="t2-red t2-red__light">（{{exchangeRate}}元=1朵小红花）</span></p>
-			<div class="l-box__rowGutter mb30">
+			<p class="t3 t3-black__light mb20">现有小红花：<span class="t2-red t2-red__light">{{leftFlwNumber}}朵</span></p>
+			<p class="t3 t3-black__light mb20">总计捐赠金额<span class="t3 t3-red t3-red__light">{{tutorTotalDonateMoney}}</span>元</p>
+			<p class="t3 t3-red t3-red__light mb30">({{exchangeRate}}元=1朵小红花)</p>
+			<div class="l-box__rowGutter mb60">
 				<flwSelector :list.sync="selectorList" type="single" key="follower"></flwSelector>
 			</div>
 			<view wx:if="{{!isDiy}}">
@@ -72,7 +73,9 @@
 			</view>
 		</div>
 		<view class="l-box__verMid">
-			<toUpBtn :title.sync="btnTitle" width="524" height="80" :color.sync="btnStatus" key="topUp" font="28" radius="60"></toUpBtn>
+			<!--<toUpBtn :title.sync="btnTitle" width="524" height="80" :color.sync="btnStatus" key="topUp" font="28" radius="60"></toUpBtn>-->
+			<!--mention: 5.7日改为静态按钮文本-->
+			<toUpBtn title="立即捐赠，获得小红花" width="524" height="80" :color.sync="btnStatus" key="topUp" font="28" radius="60"></toUpBtn>
 		</view>
 
 		<view wx:if="{{isShowTopUpSuccess}}">
@@ -129,7 +132,8 @@
 			isDiy: false,
 			isMaxDiy: false,
 			isShowTopUpSuccess: false,
-			topUpText: ''
+			topUpText: '',
+			tutorTotalDonateMoney: ''
 		}
 		_toggleDiy (bool) {
 			this.isDiy = bool
@@ -157,8 +161,8 @@
 		_queryRate () {
 			this.$API('GetFlwRate').then(res => {
 				this.exchangeRate = res.data
-				this.$apply()
 				this._changeBtnTitle(1, 'red')
+				this.$apply()
 			})
 		}
 		onLoad () {
@@ -171,6 +175,11 @@
 			this.$API('GetTutorFlower', {}).then(res => {
 				this.leftFlwNumber = res.data
 				this.$apply()
+			})
+
+			// 查询导师总共捐过的金额
+			this.$API('GetTutorDonateMoney', {}).then(res => {
+				this.tutorTotalDonateMoney = res.data
 			})
 
 			// 查询更新汇率
@@ -204,7 +213,7 @@
 			},
 			'btn-click': (key) => {
 				if (key === 'topUp' && this.donateFlwNumber) {
-					/* DEV  下面之后乘100 */
+					/* DEV  开发者模式下，下面乘1，否则乘100 */
 					pay(this.donateFlwNumber * 100).then(() => {
 						this.topUpText = `成功捐赠${this.donateFlwNumber * this.exchangeRate}元!现有小红花${this.leftFlwNumber + this.donateFlwNumber}朵`
 						this.$apply()
