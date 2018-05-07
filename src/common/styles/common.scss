@@ -46,7 +46,7 @@ view{
 
 
 .l-container__normal{
-	@include genContainer(0rpx,20rpx);
+	@include genContainer(0rpx,20rpx)
 }
 
 .relative{
@@ -265,6 +265,54 @@ p.title-bar{
 		vertical-align: bottom;
 	}
 }
+
+
+/*栅格结构 pl15 等同于padding-left 15rpx，依次类推*/
+.pl15{padding-left: 15rpx;}
+.pl20{padding-left: 20rpx;}
+.pl30{padding-left: 30rpx;}
+
+.pr30{padding-right: 30rpx;}
+.pr15{padding-right: 15rpx;}
+
+.pt5{padding-top: 5rpx;}
+.pt20{padding-top: 20rpx;}
+.pt30{padding-top: 30rpx;}
+
+.pb20{padding-bottom: 20rpx;}
+.pb30{padding-bottom: 30rpx;}
+
+.ml5{margin-left: 5rpx;}
+.ml20{margin-left: 20rpx;}
+.ml10{margin-left: 10rpx;}
+.ml14{margin-left: 14rpx;}
+.ml15{margin-left: 15rpx;}
+.ml20{margin-left: 20rpx;}
+.ml30{margin-left: 30rpx;}
+.ml40{margin-left: 40rpx;}
+.ml60{margin-left: 60rpx;}
+
+.mr5{margin-right: 5rpx;}
+.mr10{margin-right: 10rpx;}
+.mr30{margin-right: 30rpx;}
+
+.mt5{margin-top: 5rpx;}
+.mt10{margin-top: 10rpx;}
+.mt20{margin-top:20rpx;}
+.mt30{margin-top: 30rpx;}
+.mt40{margin-top: 40rpx;}
+.mt14{margin-top: 14rpx;}
+.mt15{margin-top: 15rpx;}
+.mt50{margin-top: 50rpx;}
+.mt60{margin-top: 60rpx;}
+
+.mb15{margin-bottom: 15rpx;}
+.mb14{margin-bottom: 14rpx;}
+.mb20{margin-bottom: 20rpx;}
+.mb30{margin-bottom: 30rpx;}
+.mb60{margin-bottom: 60rpx;}
+.mb150{margin-bottom: 150rpx;}
+.w90{width: 90rpx;}
 
 
 /*栅格结构 pl15 等同于padding-left 15rpx，依次类推*/
