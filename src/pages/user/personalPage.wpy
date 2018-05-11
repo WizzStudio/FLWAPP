@@ -218,24 +218,24 @@
 					if (this.nowUserRole === 2) {
 						this.isDataReady = true
 						this.$apply()
-						this.$API('GetQuestionList').then(response => {
-							if (!response.code) {
-								this.$API('GetAnswer', {userId: this.visitUserId}).then(res => {
-									if (!res.code) {
-										res.data.forEach((item) => {
-											response.data.forEach((it) => {
-												if (it.id === item.questionId) {
-													it['answerContent'] = item.answerContent
-													this.QAmap.push(it)
-													this.$apply()
-												}
-											})
-										})
-									}
-								})
-							}
-						})
 					}
+					this.$API('GetQuestionList').then(response => {
+						if (!response.code) {
+							this.$API('GetAnswer', {userId: this.visitUserId}).then(res => {
+								if (!res.code) {
+									res.data.forEach((item) => {
+										response.data.forEach((it) => {
+											if (it.id === item.questionId) {
+												it['answerContent'] = item.answerContent
+												this.QAmap.push(it)
+												this.$apply()
+											}
+										})
+									})
+								}
+							})
+						}
+					})
 				})
 					.catch(() => (setTimeout(() => { this.$WX.goBack() }, 1500)))
 			}
