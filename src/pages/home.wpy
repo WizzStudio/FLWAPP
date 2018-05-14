@@ -46,7 +46,11 @@
 						if (item.tag === -1) {
 							item.tag = '未知'
 						} else {
-							item.tag = this.tradeList.filter(tradeItem => tradeItem.id === parseInt(item.tag))[0].tradeName
+							try {
+								item.tag = this.tradeList.filter(tradeItem => tradeItem.id === parseInt(item.tag))[0].tradeName
+							} catch (e) {
+								item.tag = '未知'
+							}
 						}
 					}
 					let imgUrl = '../static/images/logo.png'
