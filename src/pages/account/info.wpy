@@ -88,7 +88,7 @@
 			background-color: #f8f8f8;
 			@include fontSizeColor(18rpx, #666666);
 			width: 210rpx;
-			height: 210rpx;
+			height: 240rpx;
 			margin-right: 30rpx;
 			margin-top: 30rpx;
 			image {
@@ -243,14 +243,13 @@
   <view wx:if="{{identity === 'student'}}">
     <view class="info-module">
       <div class="info-module-title-Icon">1</div>
-      <span class="info-module-title">附件</span>
+      <span class="info-module-title">附件（格式仅支持图片，限5张，选填)</span>
     </view>
     <view class="info-upload-images">
 			<view class="info-upload-images-info">
 				<image src="../../static/images/personalCenter/attach.png" @tap="upLoad"/>
 				<view>
-					<view style="text-align: center">点击添加图片(最多5张)</view>
-					<view style="text-align: center">提交相关材料证明你的才华，包括但不限于证书、奖状、各项证明等</view>
+					<view style="text-align: center">提交相关材料证明你的才华，包括但不限于证书、奖状、各项证明。如有小红花认证导师的推荐信，推荐下将成为重要的参评材料。</view>
 				</view>
 			</view>
 			<repeat for="{{imagesList}}" item="item">

@@ -76,10 +76,10 @@ const isIdentityCard = (IdentityCard) => {
 }
 
 const isCardNumber = (CardNumber) => {
-	if (CardNumber.length < 16 || CardNumber.length > 19) {
+	if (CardNumber.length <= 14 || CardNumber.length >= 26) {
 		return false
 	}
-	let reg = /\d{16,19}/
+	let reg = /\d{15,25}/
 	return reg.test(CardNumber.toString())
 }
 /**

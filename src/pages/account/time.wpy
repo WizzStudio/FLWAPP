@@ -105,10 +105,10 @@
 				</view>
 				<view class="time-content-body-2">
 					<view style="margin-bottom: 56rpx">您当前有<span> {{clocksRest}} </span>个沙漏</view>
-					<view>可申请<span> {{clocksRest}} </span>小时基金会服务</view>
+					<view>可申请<span> {{clocksRest}} </span>小时服务</view>
 					<view style="font-size: 20rpx;color: #999999; width: 300rpx">注：此服务时间为一人一小时工作量的基金会服务</view>
 				</view>
-				<button @tap="buttonClick"><span>申请基金会服务</span></button>
+				<button @tap="buttonClick"><span>申请服务</span></button>
 			</view>
 		</view>
 		<image src="../../static/images/personalCenter/whale.png" class="time-image-whale"/>
