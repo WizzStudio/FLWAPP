@@ -168,7 +168,7 @@
 		}
 		methods = {
 			buttonClick () {
-				if (this.restAmount >= 10) {
+				if (this.restAmount >= 5) {
 					this.$WX.jumpTo('./scholarship')
 				} else {
 					this.$WX.toast('未到达申请奖学金最低额度')
