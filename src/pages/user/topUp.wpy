@@ -6,10 +6,10 @@
 	.topUp{
 		.whale{
 			margin-top: 100rpx;
-			@include wh(100%,200rpx);
+			@include wh(100%,296rpx);
 			overflow: hidden;
 			&-img{
-				@include wh(200rpx,100%);
+				@include wh(296rpx,100%);
 				animation:  kf-rotate 500s  infinite;
 			}
 		}
@@ -20,6 +20,9 @@
 		.main{
 			width: 680rpx;
 			margin: 0 auto;
+		}
+		.nowFlw {
+			border-bottom: 1px solid $borderClr;
 		}
 		@keyframes kf-rotate {
 			0% {
@@ -50,13 +53,14 @@
 		<div class="whale l-box__allMid">
 			<image class="whale-img" src="../../static/images/whale.jpg"></image>
 		</div>
-		<p class="slogan mt20 t3-black__light t3">海鲸宗旨：寻找海鲸 共同成长 缔造传统 服务社会</p>
-		<p class="slogan  mb60 t3-c2__light">Service for Whale</p>
+		<p class="slogan mt20 t3-black__light t3">寻找海鲸 共同成长 缔造传统 服务社会</p>
+		<p class="slogan  mb60 t3-c2__light mt20">Service for Whale</p>
 		<div class="main l-box__ver">
-			<p class="t3 t3-black__light mb20">现有小红花：<span class="t2-red t2-red__light">{{leftFlwNumber}}朵</span></p>
-			<p class="t3 t3-black__light mb20">总计捐赠金额<span class="t3 t3-red t3-red__light">{{tutorTotalDonateMoney}}</span>元</p>
-			<p class="t3 t3-red t3-red__light mb30">({{exchangeRate}}元=1朵小红花)</p>
-			<div class="l-box__rowGutter mb60">
+			<p class="t3 t3-black mb20 pb30 nowFlw">现有小红花：<span class="t2-red t2-red__light">{{leftFlwNumber}}朵</span></p>
+			<!--<p class="t3 t3-black mb20">捐赠金额<span class="t3 t3-red t3-red__light">{{tutorTotalDonateMoney}}</span>元</p>-->
+			<p class="t3 t3-black mb20">捐赠金额<span class="t3 t3-c2 t3-c2__light">({{exchangeRate}}元=1朵小红花)</span></p>
+			<!--<p class="t3 t3-red t3-red__light mb30">({{exchangeRate}}元=1朵小红花)</p>-->
+			<div class="l-box__rowGutter mb60 mt40">
 				<flwSelector :list.sync="selectorList" type="single" key="follower"></flwSelector>
 			</div>
 			<view wx:if="{{!isDiy}}">
