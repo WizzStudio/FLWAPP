@@ -107,7 +107,7 @@
 			<button @tap="buttonClick"><span>申请奖学金</span></button>
 		</view>
 		<view class="redFlower-content-modal-6" wx:if="{{isStudent}}">
-			申请奖学金的最低额度是10朵小红花
+			申请奖学金的最低额度是5朵小红花
 		</view>
 	</view>
 </template>
