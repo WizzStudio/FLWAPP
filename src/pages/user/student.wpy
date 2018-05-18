@@ -60,7 +60,7 @@
 					<div>
 						<span class="name">{{item.name}}</span>
 						<span class="other">{{item.profession}} | {{item.school}}</span>
-						<span class="info">捐赠小红花{{item.sum}}朵</span>
+						<span class="info">赠送Ta小红花{{item.sum}}朵</span>
 					</div>
 				</li>
 			</repeat>
@@ -72,7 +72,7 @@
   export default class Donate extends page {
     config = {
       enablePullDownRefresh: false,
-      navigationBarTitleText: 'Ta捐赠的学生'
+      navigationBarTitleText: 'Ta欣赏的学生'
     }
     component = {}
     data = {

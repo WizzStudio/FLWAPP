@@ -85,6 +85,10 @@
 			<view class="scholarship-info-value">{{info.bankNumber}}</view>
 		</view>
 		<view class="scholarship-info">
+			<view class="scholarship-info-name">开户行：</view>
+			<view class="scholarship-info-value">{{info.bankBranch}}</view>
+		</view>
+		<view class="scholarship-info">
 			<view class="scholarship-info-name">申请数额：</view>
 			<view class="scholarship-info-value"><input type="number" placeholder="输入要提现的小红花数量" bindinput="onInput"/></view>
 		</view>
@@ -123,6 +127,7 @@
 				phone: data.phone,
 				idNumber: data.idNum,
 				bankNumber: data.bankNumber,
+				bankBranch: data.bankBranch,
 				school: this.schoolList[data.schoolId]
 			}
 		}
@@ -131,6 +136,7 @@
 			this.redFlowerAmount = this.$WX.getStorage('redFlowerNum')
 			this.$API('GetSchoolList')
 				.then(res => {
+					console.log(res.data)
 					res.data.forEach(item => {
 						this.schoolList.push(item.schoolName)
 					})

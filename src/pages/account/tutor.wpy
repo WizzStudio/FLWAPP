@@ -52,7 +52,7 @@
 <template>
 		<scroll-view style="height: 101vh" class="donate-ul" scroll-y="true">
       <view class="empty-placeholder" wx:if="{{InfoList.length <= 0}}">
-        您暂时还没有受到导师的青睐
+        快去发表文章，让导师发现你的闪光点吧~
       </view>
 			<repeat for="{{InfoList}}" item="item" index="index">
 				<li id="{{item.userId}}" @tap="jumpToUserPage">

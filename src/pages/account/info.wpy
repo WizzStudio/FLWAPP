@@ -281,6 +281,7 @@
       isFirstSubmitAnswer: false,
       optionList: [],
       isSubmit: false,
+      flag: true,
       identityList: [],
       imagesList: [],
       previewImageList: [],
@@ -410,6 +411,12 @@
           maxLength: 19,
           value: data.bankNumber || '',
           id: 'cardNumber'
+        }, {
+          name: '开户行',
+          type: 'input',
+          maxLength: 19,
+          value: data.bankBranch || '',
+          id: 'bankBranch'
         }
       ]
       this.avatar = this.$WX.getStorage('avatar')
@@ -485,6 +492,7 @@
           simpleIntro: this.optionList[9].value,
           idNum: this.identityList[1].value,
           bankNumber: this.identityList[2].value,
+          bankBranch: this.identityList[3].value,
           stuNumber: this.identityList[0].value,
           personalIntro: this.personalIntro.value,
           attachNum: this.$WX.getStorage('attach_num')
@@ -718,8 +726,6 @@
                 }
               }
             })
-          } else {
-            this.$WX.toast('请正确填写个人信息')
           }
         }
       },
@@ -802,11 +808,10 @@
 				})
     }
     checkingValue () {
-      let flag = true
+      this.flag = true
       this.optionList.forEach((item, index, array) => {
         if (item.value === '' || item.value < 1) {
-          this.$WX.toast('请填写基础信息')
-          flag = false
+          this.flag = false
         }
       })
       if (this.identity === 'student') {
@@ -816,11 +821,11 @@
         this.answerList.forEach(item => {
           if (item.answerContent.length === 0) {
             this.$WX.toast('问题答案不能为空')
-            flag = false
+            this.flag = false
           }
         })
       }
-      if (flag) {
+      if (this.flag) {
         this.canSubmit = true
       } else {
         this.canSubmit = false
@@ -866,20 +871,26 @@
         if (key === 'studentNumber') {
           if (!this.$UTIL.isStudentNumber(value)) {
             this.$WX.toast('请输入正确的学号')
+            this.flag = false
           }
           this.identityList[0].value = value
         }
         if (key === 'identityCard') {
           if (!this.$UTIL.isIdentityCard(value)) {
             this.$WX.toast('请输入正确的身份证号码')
+            this.flag = false
           }
           this.identityList[1].value = value
         }
         if (key === 'cardNumber') {
           if (!this.$UTIL.isCardNumber(value)) {
              this.$WX.toast('请输入正确的银行卡账号')
+             this.flag = false
           }
           this.identityList[2].value = value
+        }
+        if (key === 'bankBranch') {
+          this.identityList[3].value = value
         }
       }
     }

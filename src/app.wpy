@@ -32,7 +32,8 @@
 				'pages/user/articleList',
 				'pages/user/student',
 				'pages/user/tutor',
-				'pages/user/flower'
+				'pages/user/flower',
+				'pages/account/workedTime'
 			],
 			'window': {
 				'backgroundTextStyle': 'light',
@@ -59,7 +60,7 @@
 						{
 							'pagePath': 'pages/stuTrend',
 							'iconPath': 'static/images/tabBar/focus.png',
-							'text': '导学',
+							'text': '寻鲸',
 							'selectedIconPath': 'static/images/tabBar/focus_selected.png'
 						},
 						{
