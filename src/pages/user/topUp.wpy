@@ -53,7 +53,7 @@
 		<div class="whale l-box__allMid">
 			<image class="whale-img" src="../../static/images/whale.jpg"></image>
 		</div>
-		<p class="slogan mt20 t3-black__light t3">寻找海鲸 共同成长 缔造传统 服务社会</p>
+		<p class="slogan mt20 t3-black__light t3">寻找鲸鱼 共同成长 缔造传统 服务社会</p>
 		<p class="slogan  mb60 t3-c2__light mt20">Service for Whale</p>
 		<div class="main l-box__ver">
 			<p class="t3 t3-black mb20 pb30 nowFlw">现有小红花：<span class="t2-red t2-red__light">{{leftFlwNumber}}朵</span></p>
@@ -99,7 +99,7 @@
 	export default class Toup extends page {
 		config = {
 			'backgroundColorTop': '#ffffff',
-			'navigationBarTitleText': '海鲸与你同行！',
+			'navigationBarTitleText': '与海鲸共同成长',
 			enablePullDownRefresh: false
 		}
 		components = {

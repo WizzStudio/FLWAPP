@@ -165,34 +165,35 @@
 
 			<view wx-if="{{role == 1}}">
 				<!--创新创业-->
-				<view wx-if="{{stuInfo.direction == 1}}">
+				<!--<view wx-if="{{stuInfo.direction == 1}}">-->
+				<view>
 					<!--方向(限学生)tag-->
 					<image class="apply-tag" src="{{tag_creative}}"></image>
-					<p class="apply-tag-txt">创新创业</p>
+					<!--<p class="apply-tag-txt">创新创业</p>-->
 
 					<!--方向（限学生）icon-->
 					<image class="apply-icon" src="{{icon_creative}}"></image>
 				</view>
 
-				<!--学术科研-->
-				<view wx-if="{{stuInfo.direction == 3}}">
-					<!--方向(限学生)tag-->
-					<image class="apply-tag" src="{{tag_research}}"></image>
-					<p class="apply-tag-txt">学术研究</p>
+				<!--&lt;!&ndash;学术科研&ndash;&gt;-->
+				<!--<view wx-if="{{stuInfo.direction == 3}}">-->
+					<!--&lt;!&ndash;方向(限学生)tag&ndash;&gt;-->
+					<!--<image class="apply-tag" src="{{tag_research}}"></image>-->
+					<!--<p class="apply-tag-txt">学术研究</p>-->
 
-					<!--方向（限学生）icon-->
-					<image class="apply-icon" src="{{icon_research}}"></image>
-				</view>
+					<!--&lt;!&ndash;方向（限学生）icon&ndash;&gt;-->
+					<!--<image class="apply-icon" src="{{icon_research}}"></image>-->
+				<!--</view>-->
 
-				<!--社会贡献-->
-				<view wx-if="{{stuInfo.direction == 2}}">
-					<!--方向(限学生)tag-->
-					<image class="apply-tag" src="{{tag_commonLove}}"></image>
-					<p class="apply-tag-txt">社会实践</p>
+				<!--&lt;!&ndash;社会贡献&ndash;&gt;-->
+				<!--<view wx-if="{{stuInfo.direction == 2}}">-->
+					<!--&lt;!&ndash;方向(限学生)tag&ndash;&gt;-->
+					<!--<image class="apply-tag" src="{{tag_commonLove}}"></image>-->
+					<!--<p class="apply-tag-txt">社会实践</p>-->
 
-					<!--方向（限学生）icon-->
-					<image class="apply-icon" src="{{icon_commonLove}}"></image>
-				</view>
+					<!--&lt;!&ndash;方向（限学生）icon&ndash;&gt;-->
+					<!--<image class="apply-icon" src="{{icon_commonLove}}"></image>-->
+				<!--</view>-->
 			</view>
 		</view>
 
