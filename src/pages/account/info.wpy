@@ -221,9 +221,9 @@
       <span class="info-module-title">个人简历</span>
     </view>
     <div class="info-container">
-      <textarea class="info-textarea" maxlength="600" bindinput="onInput" id="resume" value="{{personalIntro.value}}">
+      <textarea class="info-textarea" maxlength="2000" bindinput="onInput" id="resume" value="{{personalIntro.value}}">
       </textarea>
-      <span class="info-textarea-count">{{personalIntro.length}}/600</span>
+      <span class="info-textarea-count">{{personalIntro.length}}/2000</span>
     </div>
   </view>
   <view wx:if="{{identity === 'student'}}">
@@ -234,9 +234,9 @@
     <repeat for="{{questionList}}" item="item" index="index">
       <view class="info-module-problem">{{item.title}}</view>
       <div class="info-container">
-        <textarea class="info-textarea" maxlength="200" bindinput="onInputQuestion" data-index="{{index}}" value="{{answerList[index].answerContent}}">
+        <textarea class="info-textarea" maxlength="1000" bindinput="onInputQuestion" data-index="{{index}}" value="{{answerList[index].answerContent}}">
         </textarea>
-        <span class="info-textarea-count" >{{answerList[index].answerContent.length}}/200</span>
+        <span class="info-textarea-count" >{{answerList[index].answerContent.length}}/1000</span>
       </div>
     </repeat>
   </view>

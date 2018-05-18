@@ -128,18 +128,20 @@
 				idNumber: data.idNum,
 				bankNumber: data.bankNumber,
 				bankBranch: data.bankBranch,
-				school: this.schoolList[data.schoolId]
+				school: ''
 			}
+			this.schoolList.find((item) => {
+				if (item.id === data.schoolId) {
+					this.info.school = item.schoolName
+				}
+			})
 		}
 		onLoad () {
 			this.avatar = this.$WX.getStorage('avatar')
 			this.redFlowerAmount = this.$WX.getStorage('redFlowerNum')
 			this.$API('GetSchoolList')
 				.then(res => {
-					console.log(res.data)
-					res.data.forEach(item => {
-						this.schoolList.push(item.schoolName)
-					})
+					this.schoolList = res.data
 					this.$API('GetWithdrawInfo')
 						.then(res => {
 							this.getAjaxInfo(res.data)
