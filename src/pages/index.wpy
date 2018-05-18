@@ -19,6 +19,13 @@
 		color: #b3b3b3;
 	}
 
+	.midBox {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-top: 40rpx;
+	}
+
 
 </style>
 
@@ -28,6 +35,9 @@
 	</view>
 	<p class="title">Red Flower Project</p>
 	<p class="intro">Connecting Mentor & Elite With Lightweight Platform.</p>
+	<view class="midBox">
+		<button open-type="getUserInfo" bindgetuserinfo="GetInfo" size="default">获取用户信息</button>
+	</view>
 </template>
 
 <script>
@@ -52,16 +62,23 @@
 			// 首次进入清除缓存
 			this.$WX.clearStorage()
 
-			this.$WX.wxLogin()
-				.then(res => {
-					return this.$WX.getUserInfo()
-				})
-				.then(res => {
-					this.$WX.setStorage('wxAvatar', res.userInfo.avatarUrl)
-					this.$WX.setStorage('wxName', res.userInfo.nickName)
+//			this.$WX.wxLogin()
+//				.then(res => {
+//					return this.$WX.getUserInfo()
+//				})
+//				.then(res => {
+//					this.$WX.setStorage('wxAvatar', res.userInfo.avatarUrl)
+//					this.$WX.setStorage('wxName', res.userInfo.nickName)
 //					this.$WX.jumpTo('./user/student')
-						this.$WX.jumpTo('./home')
-				})
+//						this.$WX.jumpTo('./home')
+//				})
+		}
+
+		GetInfo (res) {
+//			console.log(res.detail.rawData)
+			this.$WX.setStorage('wxAvatar', res.detail.rawData.avatarUrl)
+			this.$WX.setStorage('wxName', res.detail.rawData.nickName)
+			this.$WX.jumpTo('./home')
 		}
 
 		onReady () {}
