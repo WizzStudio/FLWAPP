@@ -1,0 +1,329 @@
+<style lang="scss" type="text/scss">
+	@import "../../common/styles/mixins";
+	@import "../../common/styles/variables";
+	@import "../../common/styles/common";
+
+	.personPage{
+		.shadow{
+			box-shadow: 0rpx 6rpx 50rpx lighten($red,20%);
+		}
+	}
+
+	.contBox{
+		display: block;
+		height: 110rpx;
+	}
+	.question, .answer{
+		display: block;
+	}
+	.answer{}
+
+	.card{
+		&-container{
+			@include allMidBox();
+		}
+		/* 用户图片的底部红色 */
+		&-base {
+			height: 200rpx;
+			background: $red_new;
+		}
+		&-main {
+			margin-top: -170rpx;
+		}
+	}
+
+	.donate-btn{
+		position: fixed;
+		bottom: 20rpx;
+		left: 0;
+		z-index: 2;
+		width: 100%;
+	}
+	.musk {
+		position: fixed;
+		z-index: 1;
+		bottom: 0;
+		width: 100%;
+		height: 160rpx;
+		background: linear-gradient(to top, $borderClr, transparent);
+	}
+</style>
+
+<template>
+	<view class="personPage">
+		<view class="card-base"></view>
+
+		<view class="card-container" wx:if="{{role == 1}}">
+			<usrCard class="card-main bounceIn" :role.sync="role" :stuInfo.sync="userInfo"></usrCard>
+		</view>
+
+		<view class="card-container" wx:if="{{role == 2}}">
+			<usrCard class="card-main bounceIn" :role.sync="role" :tutorInfo.sync="userInfo"></usrCard>
+		</view>
+
+		<view>
+			<p class="title-bar">个人简历</p>
+			<view class="mt30 pl20 pr20 t3-c1__light">{{userInfo.personalIntro}}</view>
+		</view>
+
+		<view wx:if="{{role == 1}}">
+			<p class="title-bar">问题</p>
+			<view class="mt30 pl20 pr20 t3-c1__light">
+				<repeat for="{{QAmap}}" item="item" index="index" key="index">
+					<view>
+						<p class="mt20 mb20 t2-black__normal question">{{item.title}}</p>
+						<p class="t3-c1__light answer pl20">{{item.answerContent}}</p>
+					</view>
+				</repeat>
+			</view>
+		</view>
+
+		<view wx:if="{{role === 1 && isDataReady}}" class="donate-btn l-box__allMid  bounceIn">
+			<!--<donateBtn title="赠送小红花" width="300" height="88" color="red" key="donate" font="32" radius="60" class="shadow"></donateBtn>-->
+			<donateBtn title="赠送小红花" width="300" height="88" color="red" key="pp-donate" font="32" radius="60"></donateBtn>
+		</view>
+
+		<view>
+			<div class="contBox"></div>
+		</view>
+
+		<!--<view class="musk"></view>-->
+		<view wx:if="{{isShowDialog}}">
+			<dialog :aceptFlwNumber.sync="aceptFlwNumber" :leftFlwNumber.sync="leftFlwNumber" :stuName.sync="userInfo"></dialog>
+		</view>
+
+		<view wx:if="{{isShowConfirmDialog}}">
+			<conDialog :title.sync="confirmDialogTitle" key="donate"></conDialog>
+		</view>
+
+		<view wx:if="{{isShowDonateSuccess}}">
+			<successDialog title="赠送成功" key="sd-success"></successDialog>
+		</view>
+
+	</view>
+</template>
+
+<script>
+	import page from '../base/basicPage.wpy'
+	import userCard from '../../components/Cards/userCard'
+	import BasicButton from '../../components/Buttons/BasicButton'
+	import donateDialog from '../../components/Dialogs/donateDialog'
+	import confirmDialog from '../../components/Dialogs/confirmDialog'
+	import noticeDialog from '../../components/Dialogs/noticeDialog'
+
+	export default class PersonalPage extends page {
+		config = {
+			navigationBarTitleText: '个人主页',
+			enablePullDownRefresh: false
+		}
+		components = {
+			usrCard: userCard,
+			donateBtn: BasicButton,
+			dialog: donateDialog,
+			conDialog: confirmDialog,
+			successDialog: noticeDialog
+		}
+		data = {
+			nowUserRole: 0,
+			visitUserId: false,
+			role: 1,
+			userInfo: {
+//				'name': '红花君',
+//				'avatar': '../../static/images/logo.png',
+//				'sex': 1,
+//				'schoolId': 1,
+//				'profession': '软件工程',
+//				'direction': 1,
+//				'simpleIntro': '这个人很懒，没有填写个人介绍',
+//				'personalIntro': '这个人很懒，没有填写个人简历',
+//				'answer': 'default',
+//				'userId': 1,
+//				'age': 0,
+//				'grade': 'default',
+//				'redFlowerNum': 0,
+//				'tutorNum': 0,
+//				'articleNum': 0,
+//				'isTutor': 1,
+//				'trade': 'default',
+//				'company': 'default',
+//				'position': 'default',
+//				'stuNum': 1
+			},
+			isShowDialog: false, // 是否显示捐赠弹框
+			isShowConfirmDialog: false,
+			isShowDonateSuccess: false,
+			confirmDialogTitle: '',
+			aceptFlwNumber: 0,
+			leftFlwNumber: 0,
+			donateNumber: 0,
+			isDataReady: false, // 是否所有的数据加载完成
+			QAmap: []
+		}
+		computed = {}
+
+		_updateInfo (data) {
+			for (let key of Object.keys(data)) {
+				if (!this.userInfo[key]) {
+					this.userInfo[key] = data[key]
+					this.$apply()
+				}
+			}
+		}
+		_showSuccess () {
+			this.isShowDonateSuccess = true
+			this.$apply()
+			setTimeout(() => {
+				this.isShowDonateSuccess = false
+				this.$apply()
+			}, 2000)
+		}
+		_freshFlwData () {
+			this.$API('GetTutorFlower', {}).then(res => {
+				this.leftFlwNumber = res.data
+			})
+			this.$API('GetAcceptableFlw', {value: this.visitUserId}).then(res => {
+				this.aceptFlwNumber = res.data
+			})
+		}
+
+		onLoad (params, data) {
+//			if (data.preload.stuId) {
+//				this._updateInfo(this.$UTIL.filtrate(data.from.$data.studentList, {userId: data.preload.stuId})[0])
+//				console.log(this.$UTIL.filtrate(data.from.$data.studentList, {userId: data.preload.stuId}))
+//			}
+//			if (data.preload.tutorId) {
+//				this._updateInfo(this.$UTIL.filtrate(data.from.$data.tutorList, {userId: data.preload.tutorId})[0])
+//				console.log(this.$UTIL.filtrate(data.from.$data.tutorList, {userId: data.preload.tutorId}))
+//			}
+			this.visitUserId = this.$WX.getStorage('visit_userId') || false // 欲访问的用户id
+			this.role = this.$WX.getStorage('visit_role') || 1 // 访问用户的角色
+			this.nowUserRole = this.$WX.getStorage('role') || 1
+			this.$apply()
+
+			if (!this.visitUserId) {
+				this.$WX.toast('访问错误，回到首页')
+				setTimeout(() => { this.$WX.goBack() }, 1500)
+				return false
+			}
+
+			this.$API('DownLoad', {avatar: `${this.visitUserId}-avatar.jpg`}).then(res => {
+				this.userInfo.avatar = res.data // 获取头像
+			})
+			// 欲访问用户是学生
+			if (this.role === 1) {
+				this.$API('GetStuHomePage', { userId: this.visitUserId }).then(res => {
+					this._updateInfo(res.data)
+				}).then(() => {
+					// 当前用户是导师
+					if (this.nowUserRole === 2) {
+						this.isDataReady = true
+						this.$apply()
+					}
+					this.$API('GetQuestionList').then(response => {
+						if (!response.code) {
+							this.$API('GetAnswer', {userId: this.visitUserId}).then(res => {
+								if (!res.code) {
+									res.data.forEach((item) => {
+										response.data.forEach((it) => {
+											if (it.id === item.questionId) {
+												it['answerContent'] = item.answerContent
+												this.QAmap.push(it)
+												this.$apply()
+											}
+										})
+									})
+								}
+							})
+						}
+					})
+				})
+					.catch(() => (setTimeout(() => { this.$WX.goBack() }, 1500)))
+			}
+
+			// 欲访问用户是导师
+			if (this.role === 2) {
+				// 获取导师信息
+				this.$API('GetTrade')
+					.then(res => {
+						this.tradeList = res.data
+						return this.$API('GetMentorHomePage', { userId: this.visitUserId })
+					})
+					.then(res => {
+						this._updateInfo(res.data)
+						this.userInfo.trade = res.data.trade !== -1 ? this.tradeList.filter(tradeItem => tradeItem.id === res.data.trade)[0].tradeName : '未知'
+						this.$apply()
+					})
+					.catch(() => (setTimeout(() => { this.$WX.goBack() }, 1500)))
+			}
+		}
+		onShow () {}
+
+		onReady () {
+			// this.$WX.removeStorage('visit_userId') // 删除欲访问的用户id
+			// this.$WX.removeStorage('visit_role') // 删除欲访问的用户role
+		}
+
+		customFunction () {}
+		methods = {}
+		events = {
+			'btn-click': (key) => {
+				if (key === 'pp-donate') {
+					Promise.all([this.$API('GetTutorFlower', {}), this.$API('GetAcceptableFlw', {value: this.visitUserId})]).then(resArray => {
+						this.leftFlwNumber = resArray[0].data // 获取当前导师的剩余小红花
+						this.aceptFlwNumber = resArray[1].data // 获取当前学生可接受的小红花
+						this.isShowDialog = true
+						this.$apply()
+					})
+				}
+			},
+			'close': () => {
+				this.isShowDialog = false
+			},
+			'dialog-cancle': () => {
+				this.isShowConfirmDialog = false
+				this.donateNumber = 0
+			},
+			'dialog-confirm': () => {
+				this.isShowConfirmDialog = false
+				if (this.nowUserRole === 2 && this.role === 1) {
+					this.$API('DonateFlw', { stuId: this.visitUserId, amount: this.donateNumber }).then(() => {
+						this.userInfo.redFlowerNum = parseInt(this.userInfo.redFlowerNum, 10) + parseInt(this.donateNumber, 10)
+						this.$apply()
+						this._freshFlwData()
+						setTimeout(() => { this._showSuccess() }, 0)
+					}).catch(() => {
+						this.$WX.toast('捐赠失败！')
+					})
+				}
+			},
+			'showDonateConfirmDialog': (number) => {
+				if (number === 0) {
+					this.isShowConfirmDialog = false
+					return false
+				}
+				this.donateNumber = number
+				this.isShowConfirmDialog = true
+				this.confirmDialogTitle = `给${this.userInfo.name}赠送小红花${number}朵？`
+			},
+			'error-pic': () => {
+				this.userInfo.avatar = '../../static/images/logo.png'
+				this.$apply()
+			},
+			'getMoreInfo': (key) => {
+				if (key === 'articles') {
+					this.$WX.jumpTo('./articleList')
+				}
+				if (key === 'tutors') {
+					this.$WX.jumpTo('./tutor')
+				}
+				if (key === 'students') {
+					this.$WX.jumpTo('./student')
+				}
+				if (key === 'flower') {
+					this.$WX.setStorage('_redFlowerNum', this.userInfo.redFlowerNum)
+					this.$WX.jumpTo('./flower')
+				}
+			}
+		}
+	}
+</script>

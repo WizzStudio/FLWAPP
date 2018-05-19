@@ -1,0 +1,21 @@
+<style lang="scss" type="text/scss">
+
+</style>
+
+<template>
+
+</template>
+
+<script>
+	/* 页面基类 */
+	import wepy from 'wepy'
+	import API from '../../API/index'
+	import * as UTIL from '../../common/scripts/utils'
+	import * as WXUTIL from '../../common/scripts/wxUtil'
+
+	export default class BasicPage extends wepy.page {
+		$API = API // 全局安装API方法（已经更新）
+		$UTIL = UTIL // 全局工具函数
+		$WX = WXUTIL // 全局微信工具函数
+	}
+</script>

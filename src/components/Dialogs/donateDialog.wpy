@@ -1,0 +1,190 @@
+<style lang="scss" type="text/scss">
+	@import "../../common/styles/mixins";
+	@import "../../common/styles/variables";
+	@import "../../common/styles/common";
+
+	.donateDialog{
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 999;
+		height: 100%;
+		width: 100%;
+		.dd_musk{
+			width: 100%;
+			height: 60%;
+			background:rgba(0,0,0,.5);
+		}
+		.cont{
+			width: 100%;
+			height: 40%;
+			background: #ffffff;
+			box-sizing: border-box;
+		}
+		.closeBtn{
+			position: absolute;
+			top:40rpx;
+			right: 30rpx;
+			height: 48rpx;
+			width: 48rpx;
+		}
+		.gutter {
+			display: flex;
+			flex-flow: row nowrap;
+			justify-content: space-between;
+			align-items: center;
+		}
+	}
+</style>
+
+<template>
+	<div class="donateDialog">
+		<view class="dd_musk"></view>
+		<div class="l-box__ver pl20 pr20 relative cont  slideInLeft">
+			<image src="../../static/images/donation/close.png" class="closeBtn" @tap="close"/>
+			<p class="t3-black__light t4 mt80">赠送小红花给<span class="t3-red__light t3-red t4" >{{stuName.name}}</span>,本年度TA还能接受<span
+				class="t3-red__light t3-red t4">{{aceptFlwNumber}}</span>朵小红花</p>
+			<div class="mt40 gutter">
+				<sinSelector :list.sync="list" type="single" key="follower"></sinSelector>
+			</div>
+			<div class="gutter mt20">
+				<view wx:if="{{isChooseDiy}}">
+					<flwInput confirm-type="done" type="digit" placeholder="自定义" key="diyflw" width="360"></flwInput>
+				</view>
+				<view wx:if="{{!isChooseDiy}}" @tap="toggleDiy(true)">
+					<diyBtn title="自定义数量" width="360" height="60" color="white" key="diy" font="28" radius="10"></diyBtn>
+				</view>
+				<p class="t4-c2__light ml40"> 剩余<span class="t3-red__light t4-red">{{leftFlwNumber}}</span>朵小红花</p>
+			</div>
+
+			<view class="mt50 l-box__allMid">
+				<donateBtn :title.sync="btnTitle" width="324" height="80" color="red" key="donate" font="28" radius="60"></donateBtn>
+			</view>
+		</div>
+	</div>
+
+</template>
+
+<script>
+	import wepy from 'wepy'
+	import basicSelector from '../../components/Selectors/BasicSelector'
+	import BasicInput from '../../components/Inputs/BasicInput'
+	import BasicButton from '../../components/Buttons/BasicButton'
+	import { toast } from '../../common/scripts/wxUtil'
+
+	export default class DonateDialog extends wepy.component {
+		config = {}
+		components = {
+			sinSelector: basicSelector,
+			flwInput: BasicInput,
+			donateBtn: BasicButton,
+			diyBtn: BasicButton
+		}
+		data = {
+			list: [
+				{
+					pick: false,
+					key: '1朵',
+					value: 1
+				},
+				{
+					pick: false,
+					key: '2朵',
+					value: 2
+				},
+				{
+					pick: false,
+					key: '5朵',
+					value: 5
+				}
+			],
+			btnTitle: '赠送小红花',
+			resultNum: 0,
+			maxNum: 0,
+			isChooseDiy: false
+		}
+		props = {
+			stuName: Object,
+			aceptFlwNumber: Number,
+			leftFlwNumber: Number
+		}
+
+		_toggleDiy (bool) {
+			this.isChooseDiy = bool
+		}
+		methods = {
+			close () {
+				this.$emit('close')
+			},
+			toggleDiy (bool) {
+				this._clearSelectorState()
+				this.isChooseDiy = bool
+			}
+		}
+		_isDonateNumOk (num) {
+			if (num > this.aceptFlwNumber) {
+				toast('超出该同学可接受小红花数量')
+				this._clearSelectorState()
+				this.btnTitle = this.maxNum === 0 ? '赠送小红花' : `赠送${this.maxNum}朵小红花`
+				this.resultNum = this.maxNum
+				return false
+			}
+			if (num > this.leftFlwNumber) {
+				modal('小红花余额不足，是否前往捐赠？', '提示')
+					.then(res => {
+						if (res.confirm) {
+							toast('正前往捐赠系统..')
+							setTimeout(() => { reLaunch('/pages/user/topUp') }, 1500)
+						} else if (res.cancel) {
+							this._clearSelectorState()
+							this.btnTitle = `赠送小红花`
+							this.resultNum = this.maxNum
+						}
+					})
+				return false
+			}
+			return true
+		}
+		_clearSelectorState () {
+			this.list.map(item => {
+				item.pick = false
+			})
+		}
+		onLoad () {
+			this.maxNum = Math.min(this.leftFlwNumber, this.aceptFlwNumber)
+		}  // 在Page和Component共用的生命周期函数
+		events = {
+			'choose': (key, data) => {
+//				console.log(data)
+				this._toggleDiy(false)
+				if (!this._isDonateNumOk(data.value)) { return false }
+				if (data.pick) {
+					this.btnTitle = `赠送${data.key}小红花`
+					this.resultNum = data.value
+				} else {
+					this.btnTitle = `赠送小红花`
+					this.resultNum = 0
+				}
+			},
+			'input-focus': () => {
+				this._clearSelectorState()
+			},
+			'input-typein': (key, data) => {
+				if (!this._isDonateNumOk(data.detail.value)) { return false }
+				if (!data.detail.value) {
+					this.btnTitle = `赠送小红花`
+					this.resultNum = 0
+					return false
+				}
+				this.btnTitle = `赠送${data.detail.value}朵小红花`
+				this.resultNum = data.detail.value
+			},
+			'btn-click': (key) => {
+				if (key === 'donate') {
+					this.$emit('close')
+					this.$emit('showDonateConfirmDialog', this.resultNum)
+				}
+			}
+		}
+	}
+</script>

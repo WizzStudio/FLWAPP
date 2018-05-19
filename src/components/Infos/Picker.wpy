@@ -1,0 +1,63 @@
+<style lang="scss" type="text/scss">
+
+</style>
+
+<template>
+  <picker wx:if="{{Mode === 'selector'}}"  mode="selector" bindchange="bindPickerChange" value="{{index}}" range="{{Datas}}" disabled="{{PickerIsDisabled}}" id="{{PickerId}}">
+    <label>
+      {{value === '' ? '请选择' : value}}
+    </label>
+  </picker>
+  <picker wx:if="{{Mode === 'multiSelector'}}" mode="multiSelector" bindchange="bindMultiSelectorChange" value="{{multiIndex}}" range="{{Datas}}" disabled="{{PickerIsDisabled}}" id="{{PickerId}}">
+    <label>
+      {{value === '' ? '请选择' : value}}
+    </label>
+  </picker>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Picker extends wepy.component {
+    components = {}
+    data = {
+      indexArray: {
+        birth: -1,
+        sex: -1,
+        school: -1,
+        xueli: -1,
+        xueyuan: -1,
+        zhaunye: -1,
+        time: -1
+      }
+    }
+    computed = {}
+
+    customFunction () {}
+    onLoad () {}
+    methods = {
+      bindPickerChange (event) {
+        this.$emit('changePicker', event.target.id, event.detail.value)
+      },
+      bindMultiSelectorChange (event) {
+        this.$emit('changeMultiPicker', event.target.id, event.detail.value)
+      }
+    }
+    events = {}
+    props = {
+      PickerIsDisabled: Boolean,
+      PickerId: String,
+      Mode: String,
+      Data: Array,
+      value: String,
+      index: {
+        type: Number,
+        default: 0
+      },
+      multiIndex: {
+        type: Array,
+        default: [0, 0]
+      }
+    }
+  }
+</script>

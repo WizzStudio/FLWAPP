@@ -1,0 +1,152 @@
+<style lang="scss" type="text/scss">
+.empty-placeholder {
+  font-size: 28rpx;
+  color: #999999;
+  position: absolute;
+  top: 30%;
+  left: 25%;
+}
+.donate-ul {
+  display: flex;
+  flex-flow: column nowrap;
+  li {
+     border-bottom: solid;
+     border-color: #f4f4f4;
+     border-width: 1rpx;
+     height: 190rpx;
+		 width: 750rpx;
+     display: inline-flex;
+     align-items: center;
+     image:nth-child(1) {
+       margin-left: 30rpx;
+       margin-right: 30rpx;
+       width: 128rpx;
+       height: 128rpx;
+       border-radius: 50%;
+     }
+     .avatar {
+       width: 40rpx;
+       height: 80rpx;
+       position: absolute;
+       right: 30rpx;
+     }
+     .name {
+       font-size: 34rpx;
+       color: #333333;
+     }
+     .other {
+       margin-left: 30rpx;
+       font-size: 26rpx;
+       color: #999999;
+     }
+     .info {
+       display: block;
+       margin-top: 20rpx;
+       font-size: 26rpx;
+       color: #999999;
+     }
+   }
+ }
+</style>
+
+<template>
+		<scroll-view style="height: 101vh" class="donate-ul" scroll-y="true">
+      <view class="empty-placeholder" wx:if="{{InfoList.length <= 0}}">
+        快去发表文章，让导师发现你的闪光点吧~
+      </view>
+			<repeat for="{{InfoList}}" item="item" index="index">
+				<li id="{{item.userId}}" @tap="jumpToUserPage">
+					<image src="{{item.avatar}}" mode="aspectFill" binderror="imageError" id="{{index}}"/>
+					<div>
+						<span class="name">{{item.name}}</span>
+						<span class="other">{{item.company}}</span>
+						<span class="info">捐赠小红花{{item.sum}}朵</span>
+					</div>
+				</li>
+			</repeat>
+		</scroll-view>
+</template>
+
+<script>
+  import page from '../base/basicPage.wpy'
+  export default class Donate extends page {
+    config = {
+      enablePullDownRefresh: false,
+      navigationBarTitleText: '导师'
+    }
+    component = {}
+    data = {
+      InfoList: [],
+      visitUserId: '',
+			page: 0
+    }
+    computed = {}
+    getDatas (data) {
+      data.forEach(item => {
+        this.InfoList.push({
+          name: item.name,
+          company: item.company,
+          sum: item.sum,
+          userId: item.userId
+        })
+      })
+    }
+    LoadDatas (role, count = 2) {
+      const InfoListLength = this.InfoList.length
+			this.$API(role, {page: this.page})
+				.then(res => {
+					this.page++
+					let imageArray = []
+					this.getDatas(res.data)
+					res.data.forEach(item => {
+						imageArray.push(String(item.userId))
+					})
+          imageArray = imageArray.map(item => item + '-avatar.jpg')
+          return this.$API('PostUserImagesName', imageArray)
+        })
+				.then(res => {
+					this.InfoList.forEach((item, index) => {
+						if (count === 1) {
+							item.avatar = res.data[index]
+						} else {
+              if (index >= InfoListLength) {
+                item.avatar = res.data[index - InfoListLength]
+              }
+            }
+            this.$apply()
+					})
+			})
+		}
+    onLoad () {
+      this.LoadDatas('GetStudentTutors', 1)
+      this.visitUserId = this.$WX.getStorage('visit_userId')
+    }
+    onPullDownRefresh () {
+			this.InfoList = []
+      this.page = 0
+      this.$apply()
+			this.LoadDatas('GetStudentTutors', 1)
+			setTimeout(() => {
+				wx.stopPullDownRefresh()
+			}, 1000)
+		}
+    onReachBottom () {
+			this.LoadDatas('GetStudentTutors')
+		}
+
+    methods = {
+			jumpToUserPage (event) {
+        if (this.$WX.getStorage('role') === 1) {
+          this.$WX.setStorage('visit_userId', parseInt(event.currentTarget.id))
+          this.$WX.setStorage('visit_role', 2)
+          this.$WX.jumpTo('../user/personalPage')
+        }
+      },
+      imageError (event) {
+        let mark = event.target.id
+        this.InfoList[mark].avatar = '../../static/images/logo.png'
+        this.$apply()
+			}
+    }
+  }
+</script>

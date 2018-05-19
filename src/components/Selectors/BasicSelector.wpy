@@ -1,0 +1,109 @@
+<style lang="scss" type="text/scss">
+	@import "../../common/styles/mixins";
+	@import "../../common/styles/variables";
+	@import "../../common/styles/common";
+
+	.black {
+		color: red;
+	}
+
+	.red {
+		color: black;
+	}
+
+
+	.selector{
+		&-basic{
+			@include allMidBox();
+			width: 210rpx;
+			height: 60rpx;
+			font-size: 28rpx;
+			font-weight: 300;
+			/*margin-right: 30rpx;*/
+			border-radius: 10rpx;
+		}
+		&-basic:first-child {
+		}
+		&-basic:last-child {
+		}
+	}
+	.se_unpick{
+		color: $fontClr_2nd;
+		border:1px solid $borderClr;
+	}
+	.se_picked{
+		color: $red;
+		border:1px solid $red;
+	}
+</style>
+
+<template>
+	<repeat for="{{list}}" item="item" index="index" key="index">
+		<div @tap="choose({{index}})" class="{{item.pick ? 'se_picked':'se_unpick'}} selector-basic">
+			<p>{{item.key}}</p>
+		</div>
+	</repeat>
+</template>
+
+<script>
+	import wepy from 'wepy'
+
+	export default class BasicSelector extends wepy.component {
+		onLoad () {}
+
+		data = {
+			lastClick: null
+		}
+
+		_clearState () {
+			this.list.forEach((item) => {
+				item.pick = false
+			})
+			this.$apply()
+		}
+
+		methods = {
+			choose: function (index) {
+				if (index === this.lastClick) {
+					this.list[index].pick = !this.list[index].pick
+					this.$emit('choose', this.key, this.list[index]) // 将选择的选项数据发射出去
+					return false
+				}
+				this.lastClick = index
+				if (this.type !== 'single' && this.type !== 'muti') {
+					throw new Error('selector.props.type ERROR: you should choose muti or single!')
+				}
+				if (this.type === 'single') {
+					this._clearState()
+				}
+				this.list[index].pick = !this.list[index].pick
+				this.$emit('choose', this.key, this.list[index]) // 将选择的选项数据发射出去
+			}
+		}
+		props = {
+			key: String, // 特殊标识组件
+			type: String, // 'single','muti' 单选框还是多选框
+			list: {
+				type: Array,
+				default: [
+					{
+						pick: false,
+						key: '1朵',
+						value: 1
+					},
+					{
+						pick: false,
+						key: '2朵',
+						value: 2
+					},
+					{
+						pick: false,
+						key: '3朵',
+						value: 3
+					}
+				]
+			}, // 传入选框的各选项
+			$class: String
+		}
+	}
+</script>

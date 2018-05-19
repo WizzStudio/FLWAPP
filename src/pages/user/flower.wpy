@@ -1,0 +1,124 @@
+<style lang="scss" type="text/scss">
+		.background-image {
+		width: 750rpx;
+		height: 1206rpx;
+		z-index: -10;
+	}
+	.redFlower-content {
+		position: absolute;
+		top: 0;
+		font-size: 24rpx;
+		color: #333333;
+		padding-left: 50rpx;
+		padding-right: 50rpx;
+		line-height: 40rpx;
+		&-modal-1 {
+			margin-top: 50rpx;
+		}
+		&-modal-2 {
+			margin-top: 56rpx;
+		}
+		&-modal-3 {
+			margin-top: 56rpx;
+			line-height: 60rpx;
+			view span {
+				font-size: 36rpx;
+				color: #ed4d3d;
+			}
+		}
+		&-modal-4 {
+			margin-top: 72rpx;
+			line-height: 50rpx;
+			view span {
+				font-size: 36rpx;
+				color: #ed4d3d;
+			}
+		}
+		&-modal-5 {
+			margin-top: 92rpx;
+			button {
+				text-align: center;
+				font-size: 28rpx;
+				color: white;
+				width: 386rpx;
+				height: 60rpx;
+				background-color: #e01b1c;
+				border-radius: 60rpx;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				span {
+					margin-top: 5rpx;
+				}
+			}
+			button:active {
+				text-align: center;
+				font-size: 28rpx;
+				color: white;
+				width: 386rpx;
+				height: 60rpx;
+				background-color: #a50707;
+				border-radius: 60rpx;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				span {
+					margin-top: 5rpx;
+				}
+			}
+		}
+		&-modal-6 {
+			padding-top: 12rpx;
+			padding-bottom: 12rpx;
+			text-align: center;
+			font-size: 24rpx;
+			color: #999999;
+		}
+	}
+</style>
+
+<template>
+	<view>
+		<image src="../../static/images/personalCenter/background.png" class="background-image"/>
+		<view class="redFlower-content">
+			<view class="redFlower-content-modal-1">在这里，小红花是导师与学生连接的纽带，导师可以通过赠送小红花发现并激励人才，学生可以发布简历、文章，展示自己的与众不同。</view>
+			<view class="redFlower-content-modal-2">深圳市海鲸教育基金会将会根据学生获得的小红花情况，向学生颁发所在高校的海鲸奖学金，共同创建美好未来。</view>
+			<view class="redFlower-content-modal-3" wx:if="{{isStudent}}">
+				<view>从注册以来</view><br/>
+				<view>Ta总共获得了<span> {{redFlowerNum}} </span>朵小红花</view><br/>
+			</view>
+			<view class="redFlower-content-modal-3" wx:if="{{!isStudent}}">
+				<view>从注册以来</view><br/>
+				<view>
+					<view>Ta总共送出<span> {{redFlowerNum}} </span>朵小红花</view><br/>
+				</view>
+			</view>
+			</view>
+		</view>
+</template>
+
+<script>
+	import page from '../base/basicPage.wpy'
+	export default class Flower extends page {
+		config = {
+			enablePullDownRefresh: false,
+			navigationBarTitleText: '小红花'
+		}
+		components = {}
+		data = {
+			isStudent: false,
+			redFlowerNum: 0
+		}
+		computed = {}
+		onLoad () {
+			this.role = this.$WX.getStorage('visit_role') || 1 // 访问用户的角色
+			if (this.role === 1) {
+				this.isStudent = true
+			}
+			this.redFlowerNum = this.$WX.getStorage('_redFlowerNum') || 0
+		}
+		methods = {}
+		events = {}
+		props = {}
+	}
+</script>

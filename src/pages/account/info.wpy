@@ -1,0 +1,899 @@
+<style lang="scss" type="text/scss">
+	@import "../../common/styles/variables";
+	@import "../../common/styles/mixins";
+	/*@import "../../common/styles/animate";*/
+  @import "../../common/styles/common";
+
+  .info-container {
+    display: flex;
+    flex-flow: column nowrap;
+    padding-left: 30rpx;
+		padding-bottom: 50rpx;
+  }
+  .info-item-container {
+    @include fontSizeColor(32rpx, #333333);
+    height: 88rpx;
+    border-bottom: 2rpx solid #f4f4f4;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+  }
+  .info-item-input-container {
+    display: flex;
+    flex-flow: row nowrap;
+  }
+  .info-item-name {
+    width: 310rpx;
+  }
+  .info-item-input {
+    text-align:right;
+    width: 350rpx;
+    @include fontSizeColor(32rpx, #666666);
+  }
+  .Info-Tag {
+    width: 30rpx;
+    height: 50rpx;
+		margin-bottom: 5rpx;
+    padding-right: 10rpx;
+    padding-left: 10rpx;
+  }
+  .info-item-avatar-container {
+    height: 160rpx;
+    padding-left: 30rpx;
+  }
+  .info-item-avatar-img {
+    position: absolute;
+    right: 60rpx;
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 50%;
+  }
+  .info-tag-value {
+    display: inline-flex;
+    position: absolute;
+    right: 60rpx;
+    @include fontSizeColor(32rpx, #666666);
+  }
+  .info-module {
+    height: 60rpx;
+    border-top: 20rpx solid #f4f4f4;
+		margin-bottom: 40rpx;
+    &-title {
+      font-size: 28rpx;
+      color: #999999;
+    }
+    &-title-son {
+      font-size: 24rpx;
+      color: #999999;
+    }
+    &-title-Icon {
+      height: 40rpx;
+      max-width: 10rpx;
+      margin-right: 20rpx;
+      margin-left: 30rpx;
+      background-color: #e10b1c;
+      color: #e10b1c;
+    }
+  }
+	.info-upload-images {
+		display: flex;
+		flex-flow: row wrap;
+		margin-left: 30rpx;
+		margin-bottom: 50rpx;
+    @include fontSizeColor(20rpx, #666666);
+		&-info {
+			display: flex;
+			flex-flow: column nowrap;
+			justify-content: center;
+			align-items: center;
+			background-color: #f8f8f8;
+			width: 210rpx;
+			height: 210rpx;
+			margin-right: 30rpx;
+			margin-top: 30rpx;
+			image {
+				width: 80rpx;
+				height: 80rpx;
+				margin-bottom: 15rpx;
+			}
+		}
+		&-list {
+			margin-top: 30rpx;
+			width: 210rpx;
+			height: 210rpx;
+			margin-right: 30rpx;
+		}
+		&-delete {
+			width: 40rpx;
+			height: 40rpx;
+			position: relative;
+			margin-left: -70rpx;
+		}
+	}
+  .info-textarea {
+    height: 340rpx;
+    border: 2rpx solid #b7c6cd;
+    box-shadow: inset 0 2px 4px 0 hsla(0, 0%, 0%, 0.08);
+    border-radius: 12rpx;
+    width: 680rpx;
+    @include fontSizeColor(30rpx, #666666);
+  }
+  .info-textarea-count {
+    font-size: 20rpx;
+    color: #999;
+    padding:10rpx;
+    margin-left: 620rpx;
+  }
+  .info-item-avatar-tag {
+    position: absolute;
+    right: 30rpx;
+  }
+  .fuck {
+    font-size: 20rpx;
+    color: #999999;
+  }
+  .info-module-attachment {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 50rpx;
+    image {
+      height: 80rpx;
+      width: 80rpx;
+      padding-bottom: 20rpx;
+    }
+    span {
+      @include fontSizeColor(22rpx, #999999);
+    }
+    div {
+      width: 750rpx;
+      display: inline-flex;
+      button {
+        @include fontSizeColor(28rpx, #e01b1c);
+        width: 375rpx;
+        height: 60rpx;
+        padding-left: 70rpx;
+        padding-right: 70rpx;
+        background-color: #fff;
+        &:active {
+          background-color: #bfbfbf;
+        }
+        &::after {
+          border: none;
+        }
+      }
+    }
+  }
+	.info-module-problem {
+		padding: 0rpx 30rpx 30rpx 30rpx;
+		@include fontSizeColor(24rpx, #888888);
+	}
+</style>
+<template>
+  <view>
+    <view class="info-module">
+      <div class="info-module-title-Icon">1</div>
+      <span class="info-module-title" @tap="checkItemIndex">基本资料</span>
+      <span class="info-module-title-son">（请务必填写）</span>
+    </view>
+    <div class="info-item-container info-item-avatar-container">
+        <label class="info-item-name">头像</label>
+        <image src="{{avatar}}" class="info-item-avatar-img" alt="我的头像" @tap="changeAvatar" mode="aspectFill" binderror="avatarError"/>
+    </div>
+    <ul class="info-container">
+      <repeat for="{{optionList}}" item="item" index="index">
+        <div class="info-item-container">
+          <view wx:if="{{item.type === 'picker'}}">
+            <label class="info-item-name info-item-repair-name">{{item.name}}</label>
+            <div class="info-tag-value">
+              <Picker :Datas="item.data" :PickerIsDisabled="item.disabled" :syncNumber.sync="item.index" :PickerId="item.id" :value.sync="item.value" :Mode="item.mode"/>
+            </div>
+          </view>
+          <view wx:if="{{item.type === 'input'}}" class="info-item-input-container">
+            <label class="info-item-name">{{item.name}}</label>
+            <input placeholder="请填写" class="info-item-input" bindblur="onBlur" id="{{item.id}}" value="{{item.value}}"/>
+          </view>
+        </div>
+      </repeat>
+    </ul>
+  </view>
+  <view wx:if="{{identity === 'student'}}">
+    <view class="info-module">
+      <div class="info-module-title-Icon">1</div>
+      <span class="info-module-title">身份认证</span>
+      <span class="info-module-title-son">（审核学生身份必备，其他用户无法查看）</span>
+    </view>
+    <ul class="info-container">
+      <repeat for="{{identityList}}" item="item" index="index">
+        <div class="info-item-container">
+          <view wx:if="{{item.type === 'input'}}" class="info-item-input-container">
+            <label class="info-item-name">{{item.name}}</label>
+            <input placeholder="请填写" class="info-item-input" bindblur="onBlur" id="{{item.id}}" value="{{item.value}}" maxlength="{{item.maxLength}}"/>
+          </view>
+        </div>
+      </repeat>
+    </ul>
+  </view>
+  <view>
+    <view class="info-module">
+      <div class="info-module-title-Icon">1</div>
+      <span class="info-module-title">个人简历</span>
+    </view>
+    <div class="info-container">
+      <textarea class="info-textarea" maxlength="2000" bindinput="onInput" id="resume" value="{{personalIntro.value}}">
+      </textarea>
+      <span class="info-textarea-count">{{personalIntro.length}}/2000</span>
+    </div>
+  </view>
+  <view wx:if="{{identity === 'student'}}">
+    <view class="info-module">
+      <div class="info-module-title-Icon">1</div>
+      <span class="info-module-title">问题</span>
+    </view>
+    <repeat for="{{questionList}}" item="item" index="index">
+      <view class="info-module-problem">{{item.title}}</view>
+      <div class="info-container">
+        <textarea class="info-textarea" maxlength="1000" bindinput="onInputQuestion" data-index="{{index}}" value="{{answerList[index].answerContent}}">
+        </textarea>
+        <span class="info-textarea-count" >{{answerList[index].answerContent.length}}/1000</span>
+      </div>
+    </repeat>
+  </view>
+  <view wx:if="{{identity === 'student'}}">
+    <view class="info-module">
+      <div class="info-module-title-Icon">1</div>
+      <span class="info-module-title">附件（格式仅支持图片，限5张，选填)</span>
+    </view>
+    <view class="info-upload-images">
+      <view style="padding-right: 26rpx">提交相关材料证明你的才华，包括但不限于证书、奖状、各项证明。如有小红花认证导师的推荐信，推荐下将成为重要的参评材料。</view>
+			<view class="info-upload-images-info">
+				<image src="../../static/images/personalCenter/attach.png" @tap="upLoad"/>
+			</view>
+			<repeat for="{{imagesList}}" item="item">
+				<view>
+					<image src="{{item}}" class="info-upload-images-list" data-index="{{index}}" @tap="imagePreview" mode="aspectFill"/>
+					<image class="info-upload-images-delete" src="../../static/images/article/delete.svg" wx:if="{{item.length > 0}}" data-index="{{index}}" @tap="imageDelete"/>
+				</view>
+			</repeat>
+		</view>
+  </view>
+  <div class="info-module-attachment">
+    <div>
+      <button @tap="ButtonClick" id="save" class="add-center-border">保存</button>
+      <button @tap="ButtonClick" id="submit">提交</button>
+    </div>
+  </div>
+</template>
+
+<script>
+  import page from '../base/basicPage.wpy'
+  import Picker from '../../components/Infos/Picker'
+  export default class Info extends page {
+    config = {
+      navigationBarTitleText: '修改信息',
+      enablePullDownRefresh: false
+    }
+    components = {
+      Picker: Picker
+    }
+    data = {
+      isFirstSubmitAnswer: false,
+      optionList: [],
+      isSubmit: false,
+      flag: true,
+      identityList: [],
+      imagesList: [],
+      previewImageList: [],
+      questionList: [],
+      avatar: '',
+      identity: '',
+      answerList: [],
+      questionAndAnswer: [],
+      personalIntro: {},
+      canSubmit: false,
+      sexData: ['男', '女'],
+			degreeData: ['本科', '硕士', '博士'],
+			schoolList: [],
+			directionList: [],
+			tradeList: []
+    }
+    computed = {}
+    //  获取全局配置接口中id匹配的数据
+    //  若异步获取的数据属性值为空则设置其长度为0
+    setTextLength (data) {
+      if (typeof data === 'undefined') {
+        return 0
+      } else {
+        return data.length
+      }
+    }
+    // 解析获取的学生信息修改页的数据
+    treatAjaxDatasStudent (data) {
+      const years = []
+      const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+      const currentDate = new Date()
+      for (let i = currentDate.getFullYear(), year = 1990; i >= year; i--) {
+        years.push(i)
+      }
+      this.optionList = [
+        {
+          name: '真实姓名',
+          type: 'input',
+          value: data.name || '',
+          id: 'name'
+        },
+        {
+          name: '出生年月',
+          type: 'picker',
+          value: this.$UTIL.transformTime(data.birthday),
+          data: [years, months],
+          mode: 'multiSelector',
+          id: 'birth'
+        },
+        {
+          name: '性别',
+          type: 'picker',
+          value: this.sexData[data.sex - 1] || '请选择',
+          data: this.sexData,
+          mode: 'selector',
+          id: 'gender'
+        },
+        {
+          name: '学校',
+          type: 'picker',
+          value: (data.schoolId !== -1 && (this.schoolList.filter(item => item.id === data.schoolId))[0].schoolName) || '请选择',
+          data: this.schoolList.map(item => item.schoolName),
+          mode: 'selector',
+          id: 'university'
+        },
+        {
+          name: '学历',
+          type: 'picker',
+          value: this.degreeData[data.degree - 1] || '请选择',
+          data: this.degreeData,
+          mode: 'selector',
+          id: 'degree'
+        },
+        {
+          name: '学院',
+          type: 'input',
+          value: data.academy || '',
+          id: 'faculty'
+        },
+        {
+          name: '专业',
+          type: 'input',
+          value: data.profession || '',
+          id: 'major'
+        },
+        {
+          name: '入学时间',
+          type: 'picker',
+          value: this.$UTIL.transformTime(data.admissionDate),
+          data: [years, months],
+          mode: 'multiSelector',
+          id: 'time'
+        },
+        {
+          name: '申请方向',
+          type: 'picker',
+          mode: 'selector',
+          data: this.directionList.map(item => item.directionName),
+          value: (data.direction !== -1 && (this.directionList.filter(item => item.id === data.direction))[0].directionName) || '请选择',
+          id: 'orientation'
+        },
+        {
+          name: '一句话介绍自己',
+          type: 'input',
+          value: data.simpleIntro || '',
+          maxLength: 20,
+          id: 'intro'
+        }
+      ]
+      this.identityList = [
+        {
+          name: '学号',
+          type: 'input',
+          maxLength: 20,
+          value: data.stuNumber || '',
+          id: 'studentNumber'
+        },
+        {
+          name: '身份证号',
+          type: 'input',
+          maxLength: 18,
+          value: data.idNum || '',
+          id: 'identityCard'
+        }, {
+          name: '银行卡账号',
+          type: 'input',
+          maxLength: 19,
+          value: data.bankNumber || '',
+          id: 'cardNumber'
+        }, {
+          name: '开户行',
+          type: 'input',
+          maxLength: 19,
+          value: data.bankBranch || '',
+          id: 'bankBranch'
+        }
+      ]
+      this.avatar = this.$WX.getStorage('avatar')
+      this.personalIntro = {
+        value: data.personalIntro || '',
+        length: this.setTextLength(data.personalIntro)
+      }
+    }
+    // 解析获取的导师信息修改页的数据
+    treatAjaxDatasTutor (data) {
+      this.optionList = [
+        {
+          name: '真实姓名',
+          type: 'input',
+          value: data.name || '',
+          id: 'name'
+        },
+				{
+					name: '性别',
+					type: 'picker',
+					value: this.sexData[data.sex - 1] || '请选择',
+					data: this.sexData,
+					mode: 'selector',
+					id: 'gender'
+				},
+        {
+          name: '行业',
+          type: 'picker',
+          mode: 'selector',
+          data: this.tradeList.map(item => item.tradeName),
+          value: (data.trade !== -1 && (this.tradeList.filter(item => item.id === data.trade))[0].tradeName) || '请选择',
+          id: 'trade'
+        },
+        {
+          name: '公司/机构',
+          type: 'input',
+          value: data.company || '',
+          id: 'company'
+        },
+        {
+          name: '职位',
+          type: 'input',
+          value: data.position || '',
+          id: 'position'
+        },
+        {
+          name: '一句话介绍自己',
+          type: 'input',
+          value: data.simpleIntro || '',
+          maxLength: 20,
+          id: 'intro'
+        }
+      ]
+      this.personalIntro = {
+        value: data.personalIntro || '',
+        length: 1 || this.setTextLength(data.personalIntro)
+      }
+    }
+    getDatas () {
+      let datas
+      if (this.identity === 'student') {
+        console.log(this.schoolList.filter(item => item.schoolName === this.optionList[3].value))
+        datas = {
+          name: this.optionList[0].value,
+          birthday: this.$UTIL.transformTimeToUnix(this.optionList[1].value),
+          sex: this.sexData.indexOf(this.optionList[2].value) + 1 || 0,
+          schoolId: this.schoolList.filter(item => item.schoolName === this.optionList[3].value)[0].id || '',
+          degree: this.degreeData.indexOf(this.optionList[4].value) + 1 || 0,
+          academy: this.optionList[5].value,
+          profession: this.optionList[6].value,
+          admissionDate: this.$UTIL.transformTimeToUnix(this.optionList[7].value),
+          direction: this.directionList.filter(item => item.directionName === this.optionList[8].value)[0].id || -1,
+          simpleIntro: this.optionList[9].value,
+          idNum: this.identityList[1].value,
+          bankNumber: this.identityList[2].value,
+          bankBranch: this.identityList[3].value,
+          stuNumber: this.identityList[0].value,
+          personalIntro: this.personalIntro.value,
+          attachNum: this.$WX.getStorage('attach_num')
+        }
+        if (this.isFirstSubmitAnswer) {
+          this.answerList.map(item => {
+            return {
+              questionId: item.questionId,
+              answerContent: item.answerContent
+            }
+          })
+          console.log(this.answerList)
+          this.$API('EditAnswer', JSON.stringify(this.answerList))
+        } else {
+          console.log(this.answerList)
+          this.$API('EditAnswer', JSON.stringify(this.answerList))
+        }
+				this.$API('SendStudentProfile', JSON.stringify(datas))
+          .then(res => {
+            if (res.code === 0) {
+              this.$WX.toast('提交成功')
+              setTimeout(() => {
+                this.$WX.jumpTo('./home')
+              }, 1500)
+            } else {
+              this.$WX.toast('提交失败')
+            }
+          })
+          .catch(err => {
+            console.error(err)
+            this.$WX.toast('网络故障，请稍后再尝试')
+          })
+      }
+      if (this.identity === 'tutor') {
+        datas = {
+          name: this.optionList[0].value,
+          sex: this.sexData.indexOf(this.optionList[1].value) + 1 || 0,
+          trade: this.tradeList.filter(item => item.tradeName === this.optionList[2].value)[0].id || -1,
+          company: this.optionList[3].value,
+          position: this.optionList[4].value,
+          simpleIntro: this.optionList[5].value,
+          personalIntro: this.personalIntro.value
+        }
+        this.$API('SendTutorProfile', JSON.stringify(datas))
+          .then(res => {
+            if (res.code === 0) {
+              this.$WX.toast('提交成功')
+              setTimeout(() => {
+                this.$WX.jumpTo('./home')
+              }, 1500)
+            } else {
+              this.$WX.toast('提交失败')
+            }
+          })
+          .catch(err => {
+            console.error(err)
+            this.$WX.toast('网络故障，请稍后再尝试')
+          })
+      }
+    }
+    onLoad () {
+      this.avatar = this.$WX.getStorage('avatar')
+      if (this.$WX.getStorage('isSave') === true && this.$WX.getStorage('isSubmit') === false) {
+        this.optionList = this.$WX.getStorage('optionList')
+        this.personalIntro = this.$WX.getStorage('personalIntro')
+        this.avatar = this.$WX.getStorage('avatar')
+        this.identity = this.$WX.getStorage('identity')
+        if (this.$WX.getStorage('role') === 2) {
+          this.$API('GetTrade')
+						.then(res => {
+							res.data.forEach(item => {
+								this.tradeList = res.data
+              })
+						})
+        }
+        if (this.$WX.getStorage('role') === 1) {
+          this.$WX.showLoading()
+          Promise.all([
+            this.$API('GetQuestionList')
+              .then(res => {
+                res.data.forEach(item => {
+                  this.questionList.push(item)
+                })
+            }),
+            this.$API('GetDirection')
+              .then(res => {
+                this.directionList = res.data
+            }),
+            this.$API('GetSchoolList')
+              .then(res => {
+                this.schoolList = res.data
+            })
+          ])
+          .then(res => this.$API('GetAnswer', {userId: this.$WX.getStorage('userId')}))
+          .then(res => {
+            if (res.data.length === 0) {
+              this.isFirstSubmitAnswer = true
+              this.questionList.map(item => {
+                this.answerList.push({
+                  questionId: item.id,
+                  answerContent: ''
+                })
+              })
+            } else {
+              res.data.map(item => {
+                this.answerList.push({
+                  answerContent: item.answerContent,
+                  questionId: item.questionId,
+                  id: item.id
+                })
+              })
+            }
+            this.identityList = this.$WX.getStorage('identityList')
+            this.attachNum = this.$WX.getStorage('attach_num')
+            this.$WX.hideLoading()
+          })
+        }
+      } else {
+        if (this.$WX.getStorage('role') === 1) {
+          this.identity = 'student'
+          Promise.all([
+            this.$API('GetQuestionList')
+              .then(res => {
+                console.log('加载问题列表')
+                res.data.forEach(item => {
+                  this.questionList.push(item)
+                })
+              }),
+            this.$API('GetDirection')
+              .then(res => {
+                console.log('加载方向')
+                this.directionList = res.data
+            }),
+            this.$API('GetSchoolList')
+              .then(res => {
+                console.log('加载学校')
+                this.schoolList = res.data
+              }),
+            this.$API('GetAnswer', {userId: this.$WX.getStorage('userId')})
+              .then(res => {
+                if (res.data.length === 0) {
+                  this.isFirstSubmitAnswer = true
+                  this.questionList.map(item => {
+                    this.answerList.push({
+                      questionId: item.id,
+                      answerContent: ''
+                    })
+                  })
+                } else {
+                  res.data.map(item => {
+                    this.answerList.push({
+                      answerContent: item.answerContent,
+                      questionId: item.questionId,
+                      id: item.id
+                    })
+                  })
+                }    
+              })
+          ])
+          .then(() => this.$API('StudentProfile'))
+          .then(res => {
+            console.log('加载个人信息')
+            this.treatAjaxDatasStudent(res.data)
+            for (let i = 0, attachNum = res.data.attachNum; i < attachNum; i++) {
+              let attachImgName = this.$WX.getStorage('userId') + '-info-' + i + '.jpg'
+              this.$API('DownLoad', {attachImgName: attachImgName})
+                .then(res => {
+                  this.imagesList.push(res.data)
+                  console.log('加载附件')
+              })
+            }
+            this.$WX.hideLoading()
+            this.$apply()
+          })
+        } else {
+          this.identity = 'tutor'
+          this.$API('GetTrade')
+            .then(res => {
+              res.data.forEach(item => {
+							this.tradeList = res.data
+            })
+            return this.$API('TutorProfile')
+					})
+            .then(data => {
+              this.treatAjaxDatasTutor(data.data)
+              this.$WX.hideLoading()
+              this.$apply()
+          })
+        }
+      }
+    }
+    onUnload () {
+      this.$WX.setStorage('optionList', this.optionList)
+      this.$WX.setStorage('identityList', this.identityList)
+      this.$WX.setStorage('avatar', this.avatar)
+      this.$WX.setStorage('personalIntro', this.personalIntro)
+      this.$WX.setStorage('identity', this.identity)
+      this.$WX.setStorage('isSave', true)
+    }
+    props = {}
+    methods = {
+      avatarError (event) {
+        this.avatar = '../../static/images/logo.png'
+        this.$apply()
+      },
+      ButtonClick (event) {
+        const that = this
+        if (event.target.id === 'save') {
+          this.$WX.toast('已保存', 'success')
+          this.$WX.setStorage('isSave', true)
+        }
+        if (event.target.id === 'submit') {
+          this.checkingValue()
+          if (this.canSubmit) {
+            const confirm = () => {
+              this.$WX.setStorage('isSave', false)
+							this.getDatas()
+            }
+            const cancel = () => {
+              this.$WX.toast('取消提交')
+            }
+            wx.showModal({
+              title: '提示',
+              content: '审核结束前，不可修改个人资料，确认提交吗?',
+              success: function (res) {
+                if (res.confirm) {
+                  that.$WX.setStorage('isSubmit', true)
+                  confirm()
+                } else if (res.cancel) {
+                  cancel()
+                }
+              }
+            })
+          }
+        }
+      },
+      onBlur (event) {
+        this.$emit('input-blur', event.target.id, event.detail.value)
+      },
+      //  实时更新多行输入框的长度
+      onInput (event) {
+        this.personalIntro.value = event.detail.value
+        this.personalIntro.length = this.personalIntro.value.length
+        this.$WX.setStorage('isSubmit', false)
+      },
+      onInputQuestion (event) {
+        this.answerList[event.target.dataset.index].answerContent = event.detail.value
+      },
+      upLoad () {
+        const userId = this.$WX.getStorage('userId')
+				if (this.imagesList.length >= 5) {
+					this.$WX.toast('最多选择5张图片')
+					return
+				}
+				this.$WX.chooseImg(5 - this.imagesList.length)
+					.then(res => {
+						res.tempFilePaths.forEach(item => {
+							this.imagesList.push(item)
+						})
+            this.$apply()
+            this.$WX.setStorage('attach_num', this.imagesList.length)
+						this.imagesList.forEach((item, index) => {
+							let imgPath = item
+							let imgName = userId + '-info-' + index + '.jpg'
+							this.$API('UpLoad', {id: imgName})
+								.then(res => {
+                  let token = res.data
+									return this.$WX.UpLoadFile(imgPath, {'key': imgName, token: token})
+                })
+						})
+					})
+      },
+			imageDelete (event) {
+        let index = event.currentTarget.dataset.index
+        const userId = this.$WX.getStorage('userId')
+        this.imagesList.splice(index, 1)
+				this.imagesList.forEach((item, index) => {
+          let imgPath = item
+          let imgName = userId + '-info-' + index + '.jpg'
+					this.$API('UpLoad', {id: imgName})
+						.then(res => {
+							this.$WX.setStorage('attach_num', index + 1)
+              let token = res.data
+							return this.$WX.UpLoadFile(imgPath, {'key': imgName, token: token})
+            })
+				})
+			},
+			imagePreview (event) {
+				let index = event.currentTarget.dataset.index
+				wx.previewImage({
+					urls: this.imagesList,
+					current: this.imagesList[index]
+				})
+			}
+    }
+    changeAvatar (event) {
+			this.$WX.chooseImg(1)
+				.then(res => {
+					this.avatar = res.tempFilePaths[0]
+					this.$apply()
+					let imgPath = this.avatar
+          let imgName = this.$WX.getStorage('userId') + '-avatar.jpg'
+          this.$WX.setStorage('hasChangeAvatar', true)
+          console.log(this.$WX.getStorage('hasChangeAvatar'))
+					this.$API('UpLoad', {id: imgName})
+						.then(res => {
+							return res
+						})
+						.then(res => {
+							let token = res.data
+              this.$WX.UpLoadFile(imgPath, {'key': imgName, token: token})
+            })
+				})
+    }
+    checkingValue () {
+      this.flag = true
+      this.optionList.forEach((item, index, array) => {
+        if (item.value === '' || item.value < 1) {
+          this.flag = false
+        }
+      })
+      if (this.identity === 'student') {
+        this.identityList.forEach(item => {
+          this.$emit('input-blur', item.id, item.value)
+        })
+        this.answerList.forEach(item => {
+          if (item.answerContent.length === 0) {
+            this.$WX.toast('问题答案不能为空')
+            this.flag = false
+          }
+        })
+      }
+      if (this.flag) {
+        this.canSubmit = true
+      } else {
+        this.canSubmit = false
+      }
+    }
+    events = {
+      //  下拉框
+      'changePicker': (key, index) => {
+        this.$WX.setStorage('isSubmit', false)
+        this.optionList.forEach((item) => {
+          if ((item.id === key && key === 'gender') || (item.id === 'degree' && key === 'degree')) {
+            console.log(item.id)
+            item.value = item.data[index]
+            this.$apply()
+          } else if (item.id === key && key === 'university') {
+            item.value = this.schoolList.filter((schoolItem, arrayIndex) => arrayIndex === parseInt(index))[0].schoolName
+            this.$apply()
+          } else if (item.id === key && key === 'orientation') {
+            item.value = this.directionList.filter((directionItem, arrayIndex) => arrayIndex === parseInt(index))[0].directionName
+            this.$apply()
+          } else if (item.id === key && key === 'trade') {
+            item.value = this.tradeList.filter((tradeItem, arrayIndex) => arrayIndex === parseInt(index))[0].tradeName
+            this.$apply()
+          }
+        })
+      },
+      'changeMultiPicker': (key, multiIndex) => {
+        this.$WX.setStorage('isSubmit', false)
+        this.optionList.forEach((item) => {
+          if (item.id === key) {
+            item.value = item.data[0][multiIndex[0]] + '-' + item.data[1][multiIndex[1]]
+          }
+        })
+      },
+      //  输入框
+      'input-blur': (key, value) => {
+        this.$WX.setStorage('isSubmit', false)
+        this.optionList.forEach(item => {
+          if (item.id === key) {
+            item.value = value
+          }
+        })
+        if (key === 'studentNumber') {
+          if (!this.$UTIL.isStudentNumber(value)) {
+            this.$WX.toast('请输入正确的学号')
+            this.flag = false
+          }
+          this.identityList[0].value = value
+        }
+        if (key === 'identityCard') {
+          if (!this.$UTIL.isIdentityCard(value)) {
+            this.$WX.toast('请输入正确的身份证号码')
+            this.flag = false
+          }
+          this.identityList[1].value = value
+        }
+        if (key === 'cardNumber') {
+          if (!this.$UTIL.isCardNumber(value)) {
+             this.$WX.toast('请输入正确的银行卡账号')
+             this.flag = false
+          }
+          this.identityList[2].value = value
+        }
+        if (key === 'bankBranch') {
+          this.identityList[3].value = value
+        }
+      }
+    }
+    props = {}
+  }
+</script>

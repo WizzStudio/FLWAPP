@@ -1,0 +1,301 @@
+<style lang="scss" type="text/scss">
+  .centerInfomation {
+    padding-top: 20rpx;
+    border-bottom: 400rpx solid #f4f4f4;
+    // box-sizing: border-box;
+    // position: fixed;
+  }
+  .centerInfomation-Module {
+    &-1 {
+      height: 240rpx;
+    }
+    &-2 {
+      height: 180rpx;
+    }
+  }
+  .centerInfomation-Tag {
+    width: 48rpx;
+    height: 96rpx;
+  }
+
+</style>
+
+<template>
+  <view class="centerInfomation">
+    <Info class="centerInfomation-Module-1" :infoDatas.sync="infoDatas" :isStudent.sync="isStudent" :avatar.sync="avatar" ></Info>
+    <Show class="centerInfomation-Module-2" :showDatas.sync="showDatas" :isStudent.sync="isStudent"></Show>
+    <Menu class="centerInfomation-Module-3" :menuList.sync="menuList" :isStudent.sync="isStudent"></Menu>
+  </view>
+</template>
+
+<script>
+	import page from '../base/basicPage.wpy'
+  import GeneralIntroduction from '../../components/Menus/GeneralIntroduction'
+  import MenuItems from '../../components/Menus/MenuItem'
+  import Exhibits from '../../components/Menus/show'
+
+  export default class Home extends page {
+    config = {
+      navigationBarTitleText: '个人中心',
+			enablePullDownRefresh: false
+    }
+    components = {
+      Info: GeneralIntroduction,
+      Show: Exhibits,
+      Menu: MenuItems
+    }
+    data = {
+      menuList: [
+        {
+          unique: 'record',
+          value: '我的花迹',
+          imgUrl: '../../static/images/personalCenter/trace.svg'
+        },
+        {
+					unique: 'article',
+					value: '发表文章',
+					imgUrl: '../../static/images/personalCenter/brush.svg'
+				},
+        {
+          unique: 'articleList',
+          value: '我的文章',
+          imgUrl: '../../static/images/personalCenter/articleList.svg'
+        },
+				{
+					unique: 'application',
+					value: '基金会服务',
+					imgUrl: '../../static/images/personalCenter/apply.svg'
+				}
+      ],
+      infoDatas: {
+				status: -1
+			},
+      showDatas: [],
+      schoolList: [],
+      isStudent: false,
+      isFirstShow: true,
+      avatar: ''
+    }
+    computed = {}
+    treatAjaxDatasStudent (data) {
+      this.infoDatas = {
+        name: data.name || this.$WX.getStorage('wxName'),
+        school: (data.schoolId !== -1 && (this.schoolList.filter((item, index) => item.id === data.schoolId))[0].schoolName) || '请填写',
+        profession: data.profession || '请填写',
+        status: data.status
+      }
+      this.showDatas = [
+        {
+          name: '小红花',
+          src: '../../static/images/personalCenter/redFlower.png',
+          number: data.redFlowerNum || 0 + ' 朵',
+          id: 'redFlower'
+        },
+        {
+          name: '导师',
+          src: '../../static/images/personalCenter/tutor.png',
+          number: data.tutorNum || 0 + ' 人',
+          id: 'tutor'
+        },
+        {
+          name: '义工',
+          src: '../../static/images/personalCenter/workedTime.png',
+          number: data.workedTime || 0 + ' 小时',
+          id: 'workedTime'
+        }
+      ]
+      this.$WX.setStorage('redFlowerNum', data.redFlowerNum)
+      this.$apply()
+    }
+    treatAjaxDatasTutor (data) {
+      this.infoDatas = {
+        name: data.name || '请填写',
+        isTutor: data.isTutor,
+        trade: data.trade || '请填写',
+        company: data.company || '请填写',
+        position: data.position || '请填写',
+				status: data.status
+      }
+      this.showDatas = [
+        {
+          name: '小红花',
+          src: '../../static/images/personalCenter/redFlower.png',
+          number: data.redFlowerNum || 0 + ' 朵',
+          id: 'redFlower'
+        },
+        {
+          name: '捐赠学生',
+          src: '../../static/images/personalCenter/student.png',
+          number: data.stuNum || 0 + ' 人',
+          id: 'stu'
+        },
+        {
+          name: '沙漏',
+          src: '../../static/images/personalCenter/clock.png',
+          number: data.clockNum || 0 + ' 小时',
+          id: 'clock'
+        }
+      ]
+      this.$WX.setStorage('redFlowerNum', data.redFlowerNum)
+      this.$apply()
+    }
+    onLoad () {
+      if (this.$WX.getStorage('role') === 1) {
+        this.isStudent = true
+        this.$API('GetSchoolList')
+          .then(res => {
+            this.schoolList = res.data
+            return this.$API('StudentCenter')
+          })
+          .then(data => {
+            this.treatAjaxDatasStudent(data.data)
+            return this.$API('DownLoad', {avatar: this.$WX.getStorage('userId') + '-avatar.jpg'})
+          })
+          .then(res => {
+							this.avatar = res.data
+							this.$WX.setStorage('avatar', res.data)
+							this.$apply()
+					})
+      } else if (this.$WX.getStorage('role') === 2) {
+        this.isStudent = false
+				this.menuList[1].value = '发表文章'
+        this.$API('TutorCenter')
+          .then(data => {
+            this.treatAjaxDatasTutor(data.data)
+            this.$WX.setStorage('clockNum', data.data.clockNum)
+            return this.$API('DownLoad', {avatar: this.$WX.getStorage('userId') + '-avatar.jpg'})
+          })
+          .then(res => {
+							this.avatar = res.data
+							this.$WX.setStorage('avatar', res.data)
+							this.$apply()
+					})
+      } else {
+        this.avatar = '../../static/images/logo.png'
+				this.infoDatas = {
+					name: '红花君',
+					company: '深圳海鲸教育基金',
+					position: 'CEO',
+          status: -1
+        }
+        this.menuList[1].value = '发表文章'
+				this.showDatas = [
+					{
+            name: '小红花',
+            src: '../../static/images/personalCenter/redFlower.png',
+            number: 0 + ' 朵',
+            id: 'redFlower'
+          },
+          {
+            name: '捐赠学生',
+            src: '../../static/images/personalCenter/student.png',
+            number: 0 + ' 人',
+            id: 'stu'
+          },
+          {
+            name: '沙漏',
+            src: '../../static/images/personalCenter/clock.png',
+            number: 0 + ' 小时',
+            id: 'clock'
+          }
+				]
+				this.$apply()
+			}
+    }
+
+    onShow () {
+      if (this.isFirstShow) {
+        this.isFirstShow = false
+      } else {
+        if (this.$WX.getStorage('hasChangeAvatar') === true) {
+          this.$WX.setStorage('hasChangeAvatar', false)
+          this.$API('DownLoad', {avatar: this.$WX.getStorage('userId') + '-avatar.jpg'})
+            .then(res => {
+              this.avatar = res.data
+              this.$WX.setStorage('avatar', res.data)
+              this.$apply()
+					})
+        }
+        if (this.$WX.getStorage('role') === 1) {
+          this.isStudent = true
+          this.$API('GetSchoolList')
+            .then(res => {
+              this.schoolList = res.data
+              return this.$API('StudentCenter')
+            })
+            .then(data => {
+              this.treatAjaxDatasStudent(data.data)
+            })
+        } else if (this.$WX.getStorage('role') === 2) {
+          this.isStudent = false
+          this.menuList[1].value = '发表文章'
+          this.$API('TutorCenter')
+            .then(data => {
+              this.treatAjaxDatasTutor(data.data)
+          })
+        }
+      }
+    }
+    onPageScroll () {
+      this.$UTIL.debounce(() => {
+        wx.stopPullDownRefresh()
+      }, 300)
+    }
+    customData = {}
+    methods = {}
+    events = {
+      'show-click': this.$UTIL.debounce((key, event) => {
+        if (key === 'redFlower') {
+          this.$WX.jumpTo('./redFlower')
+        }
+        if (key === 'stu') {
+					this.$WX.jumpTo('./donate')
+        }
+        if (key === 'tutor') {
+          this.$WX.jumpTo('./tutor')
+        }
+        if (key === 'clock') {
+					this.$WX.jumpTo('./time')
+        }
+        if (key === 'workedTime') {
+					this.$WX.jumpTo('./workedTime')
+        }
+      }, 200),
+      'menu-click': this.$UTIL.debounce((key, event) => {
+        if (key === 'record') {
+          this.$WX.jumpTo('./record')
+        }
+        if (key === 'application') {
+          if (this.$WX.getStorage('role') === 0) {
+            this.$WX.interceptTourist()
+          } else {
+						this.$WX.jumpTo('./activity')
+          }
+        }
+        if (key === 'article') {
+					if (this.$WX.getStorage('role') === 0) {
+						this.$WX.interceptTourist()
+					} else {
+						this.$WX.jumpTo('../writeArticle')
+					}
+				}
+        if (key === 'articleList') {
+					if (this.$WX.getStorage('role') === 0) {
+						this.$WX.interceptTourist()
+					} else {
+            this.$WX.setStorage('visit_userId', this.$WX.getStorage('userId'))
+            this.$WX.setStorage('visit_role', this.$WX.getStorage('role'))
+						this.$WX.jumpTo('../user/articleList')
+					}
+				}
+      }, 200),
+      'change-information': this.$UTIL.debounce((key, event) => {
+        if (this.$WX.getStorage('role') === 0) {
+					this.$WX.interceptTourist()
+				} else {
+					this.$WX.jumpTo('./info')
+				}
+      }, 200)
+    }
+  }
+</script>

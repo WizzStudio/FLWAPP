@@ -1,0 +1,68 @@
+<style lang="scss" type="text/scss">
+	.home-swiper {
+		width: 750rpx;
+		min-height: 350rpx;
+		&-img {
+			width: 750rpx;
+			height: 350rpx;
+		}
+		&-title {
+			position: absolute;
+			z-index: 25;
+			margin-top: -65rpx;
+			font-size: 28rpx;
+			color: white;
+			font-weight: 200;
+			padding-left: 20rpx;
+		}
+		&-title-background {
+			width: 750rpx;
+			height: 100rpx;
+			filter: opacity(40%);
+			background-color: black;
+			margin-top: -80rpx;
+			z-index: 22;
+		}
+	}
+</style>
+
+<template>
+	<swiper
+		autoplay="true"
+		interval="5000"
+		duration="500"
+		class="home-swiper-img"
+		circular="true"
+	>
+		<repeat for="{{BannerDatas}}" item="item">
+			<swiper-item id="{{item.id}}" @tap="clickBannerArticle">
+				<image src="{{item.imgSrc}}" class="home-swiper-img" mode="aspectFill" lazy-load="true"/>
+				<view class="home-swiper-title">{{item.title}}</view>
+				<view class="home-swiper-title-background"></view>
+			</swiper-item>
+		</repeat>
+	</swiper>
+</template>
+
+<script>
+	import wepy from 'wepy'
+
+	export default class Swiper extends wepy.component {
+		config = {}
+		components = {}
+		data = {}
+		computed = {}
+		onLoad () {}
+		methods = {
+			clickBannerArticle: (e) => {
+				if (e.currentTarget.id > 0) {
+					this.$emit('jumpToArticle', e.currentTarget.id)
+				}
+			}
+		}
+		events = {}
+		props = {
+			BannerDatas: Array
+		}
+	}
+</script>

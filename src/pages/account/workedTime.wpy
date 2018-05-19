@@ -1,0 +1,143 @@
+<style lang="scss" type="text/scss">
+	.time-body {
+		background-color: #90d6fc;
+		width: 760rpx;
+		height: 1200rpx;
+		padding-top: 30rpx;
+	}
+	.time-content {
+		padding-top: 60rpx;
+		margin-left: 33rpx;
+		width: 690rpx;
+		height: 1120rpx;
+		background-color: white;
+		border-radius: 20rpx;
+		&-body {
+			padding-left: 60rpx;
+			padding-right: 60rpx;
+			font-size: 28rpx;
+			font-weight: 200;
+			line-height: 50rpx;
+			font-family: "Helvetica Neue";
+			&-1 {
+				margin-bottom: 134rpx;
+			}
+			&-2 {
+				span {
+					font-size: 60rpx;
+					font-family: "Helvetica Neue";
+					font-weight: 200;
+					color: #eb5454;
+				}
+			}
+			button {
+				position: absolute;
+				margin-left:50rpx;
+				bottom: 70rpx;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				background-color: #eb5454;
+				border-radius: 60rpx;
+				color: white;
+				font-size: 32rpx;
+				height: 88rpx;
+				width: 440rpx;
+				z-index: 9999;
+			}
+			button:active {
+				position: absolute;
+				margin-left:50rpx;
+				bottom: 70rpx;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				background-color: #a50707;
+				border-radius: 60rpx;
+				color: white;
+				font-size: 32rpx;
+				height: 88rpx;
+				width: 440rpx;
+				z-index: 9999;
+			}
+		}
+	}
+	.time-image-whale {
+		position: absolute;
+		bottom: 220rpx;
+		right: 0rpx;
+		width: 370rpx;
+		height: 370rpx;
+		z-index: 10;
+	}
+	.time-image-sea {
+		position: absolute;
+		bottom: -10rpx;
+		left: 0rpx;
+		width: 759rpx;
+		height: 260rpx;
+		z-index: 9;
+	}
+</style>
+
+<template>
+	<view class="time-body">
+		<view class="time-content">
+			<view class="time-content-body">
+				<view class="time-content-body-1">
+					慷慨生慷慨，是深圳市海鲸教育基金会的初衷之一。作为未来的鲸鱼，你每次通过深圳市海鲸鱼教育基金会，为这个社会作出贡献，我们将会记录在此处，愿你能将这份公益之心，与人们分享。
+				</view>
+				<view class="time-content-body-2">
+					<view style="margin-bottom: 10rpx">从注册以来，你已承诺义工
+						<span> {{needWorkedTime}} </span>小时
+					</view>
+					<view style="margin-bottom: 60rpx">当前，你已服务
+						<span> {{workedTime}} </span>小时
+					</view>
+				</view>
+			</view>
+		</view>
+		<image src="../../static/images/personalCenter/whale.png" class="time-image-whale"/>
+		<image src="../../static/images/personalCenter/sea.png" class="time-image-sea"/>
+	</view>
+</template>
+
+<script>
+	import page from '../base/basicPage.wpy'
+
+	export default class time extends page {
+		config = {
+			navigationBarBackgroundColor: '#90d6fc',
+			enablePullDownRefresh: false,
+			navigationBarTitleText: '义工'
+		}
+		components = {}
+		computed = {}
+		data = {
+			workedTime: 0,
+			needWorkedTime: 0
+		}
+		getStudentDatas (data) {
+			this.workedTime = data.workedTime || 0
+			this.needWorkedTime = data.sumNeedWorkedTime || 0
+		}
+		onLoad () {
+			let role = this.$WX.getStorage('role')
+			if (role === 1) {
+				this.isStudent = true
+				this.$API('GetStudentTime')
+					.then(res => {
+						this.getStudentDatas(res.data)
+						this.$apply()
+					})
+			}
+		}
+		methods = {
+			buttonClick () {
+				this.$WX.jumpTo('./activity')
+			}
+		}
+		events = {}
+		props = {}
+	}
+</script>

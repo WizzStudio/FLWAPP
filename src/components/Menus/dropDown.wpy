@@ -1,0 +1,84 @@
+<style lang="scss" type="text/scss">
+	.dropDown {
+		display: flex;
+		flex-flow: row;
+		&-info {
+			position: relative;
+			display: flex;
+			width: 100%;
+			flex-flow: row nowrap;
+			image {
+				margin-left: 10rpx;
+				margin-top: 5rpx;
+				width: 32rpx;
+				height: 32rpx;
+			}
+			&-active {
+				color: #e01b1c;
+			}
+		}
+	}
+	.dropDown-content {
+		box-shadow: 0rpx 0rpx 5rpx #999;
+		margin-top: 50rpx;
+		padding-left: 20rpx;
+		padding-top: 20rpx;
+		background-color: white;
+		width: 260rpx;
+		position: absolute;
+		display: flex;
+		flex-flow: column nowrap;
+		&-item {
+			display: flex;
+			flex-flow: row nowrap;
+			margin-bottom: 20rpx;
+		}
+		&-hidden {
+			display: none;
+		}
+		&-show {
+			display: block;
+		}
+	}
+</style>
+
+<template>
+	<view class="dropDown">
+		<view class="dropDown-info" @tap="menuClick" wx:if="{{!dropDownData.isClick}}" data-name="{{dropDownData.id}}">
+			<view><span>{{dropDownData.currentData}}</span></view>
+			<image src="../../static/images/stuTrend/arrow-down.svg"/>
+		</view>
+		<view class="dropDown-info dropDown-info-active" @tap="menuClick" wx:if="{{dropDownData.isClick}}" data-name="{{dropDownData.id}}">
+			<view><span>{{dropDownData.currentData}}</span></view>
+			<image src="../../static/images/stuTrend/arrow-down_active.svg"/>
+		</view>
+		<view class="dropDown-content dropDown-content-{{dropDownData.isHidden? 'hidden': 'show'}}">
+			<repeat for="{{dropDownData.data}}" item="item"  index="index">
+				<view id="{{index}}" @tap="itemClick" class="dropDown-content-item" data-name="{{dropDownData.id}}" data-index="{{index}}">
+					{{item}}
+				</view>
+			</repeat>
+		</view>
+	</view>
+</template>
+
+<script>
+	import wepy from 'wepy'
+	export default class dropDown extends wepy.component {
+		config = {}
+		components = {}
+		data = {}
+		onLoad () {}
+		methods = {
+			menuClick (event) {
+				this.$emit('dropDownMenuClick', event.currentTarget.dataset.name)
+			},
+			itemClick (event) {
+				this.$emit('dropDownItemClick', event.currentTarget.dataset.name, event.currentTarget.dataset.index)
+			}
+		}
+		props = {
+			dropDownData: Object
+		}
+	}
+</script>

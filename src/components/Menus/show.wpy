@@ -1,0 +1,70 @@
+<style lang="scss" type="text/scss">
+  @import "../../common/styles/mixins";
+  @import "../../common/styles/variables";
+  @import "../../common/styles/common";
+  .c-show-main {
+    display: inline-flex;
+    margin-left: 40rpx;
+    margin-right: 60rpx;
+    &:nth-child(3) {
+      margin-right: 40rpx;
+    }
+  }
+  .c-show-item-img {
+    width: 60rpx;
+    height: 60rpx;
+  }
+  .c-show-item {
+    display:flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center; 
+    width: 220rpx;
+  }
+  .c-show-item {
+    &-name {
+      font-size: 24rpx;
+      color: #333333;
+    }
+    &-number {
+      font-size: 18rpx;
+      color: #666666;
+    }
+  }
+</style>
+
+<template>
+  <ul class="c-show-main">
+    <repeat for="{{showDatas}}">
+      <div class="c-show-item" id="{{item.id}}" @tap="itemClick">
+        <image src="{{item.src}}" class="c-show-item-img"/>
+        <div class="c-show-item-name">{{item.name}}</div>
+        <div class="c-show-item-number"> {{item.number}}</div>
+      </div>
+    </repeat>
+  </ul>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Exhibits extends wepy.component {
+    components = {}
+    datas = {}
+    computed = {}
+
+    customFunction () {}
+
+    methods = {
+      itemClick (event) {
+        this.$emit('show-click', event.currentTarget.id)
+      }
+    }
+
+    onLoad () {}
+    events = {}
+    props = {
+      showDatas: Array
+    }
+  }
+</script>

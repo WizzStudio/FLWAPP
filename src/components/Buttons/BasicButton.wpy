@@ -1,0 +1,98 @@
+<style lang="scss" type="text/scss">
+	@import "../../common/styles/mixins";
+	@import "../../common/styles/variables";
+
+	.basic-btn {
+		@include allMidBox();
+		font-weight: 300;
+	}
+
+	.basic-btn.pink {
+		background: $pink;
+		color: $fontClr_4th;
+	}
+
+	.basic-btn.red {
+		background: $red;
+		color: $fontClr_4th;
+	}
+
+	.basic-btn.white {
+		background: $white;
+		color: $fontClr_2nd;
+		border: 1px solid $borderClr;
+	}
+
+	.basic-btn.red-border {
+		background: transparent;
+		border: 1px solid $red;
+		color: $red;
+	}
+</style>
+
+
+<template>
+	<div class="basic-btn  {{color}}"
+			 style="height: {{height}}rpx; width: {{width}}rpx; border-radius: {{radius}}rpx;"
+			 @tap="click">
+		<p style="font-size: {{font}}rpx;">{{title}}</p>
+	</div>
+</template>
+
+<script>
+	import wepy from 'wepy'
+
+	/**
+	 * {props}: title 文字内容/height 高度/width 宽度/show 是否显示/color 风格/radius 圆角
+	 */
+	export default class BasicButton extends wepy.component {
+		components = {}
+		data = {
+			colors: ['white', 'pink', 'red', 'red-border'] // 按钮颜色枚举
+		}
+		computed = {}
+
+		customFunction () {}
+
+		methods = {
+			click (event) {
+				this.$emit('btn-click', this.key, event)
+			}
+		}
+		events = {}
+		props = {
+			title: {
+				type: String,
+				default: 'title'
+			},
+			width: {
+				type: String,
+				default: '200'
+			},
+			height: {
+				type: String,
+				default: '60'
+			},
+			show: {
+				type: Boolean,
+				default: true
+			},
+			color: {
+				type: String,
+				default: 'red-border'
+			},
+			radius: {
+				type: String,
+				default: '20'
+			},
+			key: {
+				type: String,
+				default: 'default-key'
+			},
+			font: {
+				type: String,
+				default: '40'
+			}
+		}
+	}
+</script>

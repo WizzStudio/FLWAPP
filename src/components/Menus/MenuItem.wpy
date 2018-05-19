@@ -1,0 +1,84 @@
+<style lang="scss" type="text/scss">
+  @import "../../common/styles/mixins";
+  @import "../../common/styles/variables";
+  @import "../../common/styles/common";
+
+  .MenuItem-Container {
+    display: flex;
+    flex-flow: column nowrap;
+    border-top: 20rpx solid #f4f4f4;
+    div:nth-child(0) {
+      visibility: hidden;
+    }
+    div:active {
+      background-color: #f0f0f0;
+    }
+  }
+  .MenuItem-Item{
+    display: inline-flex;
+    margin-top: -1rpx !important;
+    height: 81rpx;
+    width: 100vw;
+    //  border-bottom: 1rpx solid #f0f0f0;
+  }
+  .MenuItem-Item-name{
+    width: 642rpx;
+    margin-left: 20rpx;
+    padding-top: 20rpx;
+    font-size: 28rpx;
+    color: #333333;
+  }
+  .MenuItem-Img {
+    padding-top: 14rpx;
+    margin-left: 30rpx;
+    width: 50rpx;
+    height: 50rpx;
+  }
+  .MenuItem-Tag {
+    width: 30rpx;
+    height: 60rpx;
+    padding-top: 10rpx;
+    padding-right: 30rpx;
+  }
+</style>
+
+<template>
+  <ul class="MenuItem-Container">
+    <repeat for="{{menuList}}" item="item">
+      <!--div style="margin-bottom: -1rpx; background-color: #f0f0f0; height: 1rpx; width: 100%; margin-left:85rpx"/>-->
+      <div class="MenuItem-Item" @tap="click" id="{{item.unique}}">
+        <div style="margin-bottom: -1rpx; background-color: #f0f0f0; height: 1rpx; width: 665rpx; position: absolute; left: 85rpx;"/>
+        <image class="MenuItem-Img" src="{{item.imgUrl}}" />
+        <li class="MenuItem-Item-name">
+          {{item.value}}
+        </li>
+        <div class="MenuItem-Tag-borderBottom">
+          <image class="MenuItem-Tag" src="../../static/images/personalCenter/arrow-right.svg"/>
+        </div>
+      </div>
+    </repeat>
+  </ul> 
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class MenuItems extends wepy.component {
+    component = {}
+    data = {}
+    computed = {}
+
+    customFunction () {}
+
+    methods = {
+      click (event) {
+        this.key = event.currentTarget.id
+        this.$emit('menu-click', this.key)
+      }
+    }
+    onLoad () {}
+    events = {}
+    props = {
+      menuList: Array
+    }
+  }
+</script>

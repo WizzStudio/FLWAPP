@@ -1,0 +1,66 @@
+<style lang="scss" type="text/scss">
+	@import "../../common/styles/mixins";
+	@import "../../common/styles/variables";
+	@import "../../common/styles/common";
+
+	.noticeDialog {
+		@include rowMidBox();
+		/*justify-content: space-between;*/
+		flex-flow: nowrap;
+		position: relative;
+		height: 300rpx;
+		width: 580rpx;
+		margin-top: 400rpx;
+		padding: 40rpx;
+		background: #ffffff;
+		border-radius: 10rpx;
+		box-sizing: border-box;
+		overflow: hidden; // 构造FBC
+		&-img {
+				width: 248rpx;
+				height: 100%;
+				object-fit: cover;
+		}
+		&-cont {
+			width: 210rpx;
+			height: 260rpx;
+			p{
+				text-align: center;
+			}
+		}
+	}
+
+</style>
+
+<template>
+
+	<conDialog>
+		<view slot="cont">
+			<div class="noticeDialog bounceIn">
+				<image class="noticeDialog-img" src="../../static/images/donation/toast-success.png"></image>
+				<div class="noticeDialog-cont l-box__allMid" >
+					<!--<p class="noticeDialog-title t1-c2__bold">{{title}}</p>-->
+					<p class="noticeDialog-title t3-c1__normal">{{title}}</p>
+				</div>
+			</div>
+		</view>
+	</conDialog>
+
+</template>
+
+<script>
+	import wepy from 'wepy'
+	import Dialog from './DialogSlot'
+
+	export default class BasicSelector extends wepy.component {
+		components = {
+			conDialog: Dialog
+		}
+		data = {}
+		methods = {}
+		props = {
+			key: String,
+			title: String
+		}
+	}
+</script>

@@ -1,0 +1,238 @@
+<style lang="scss" type="text/scss">
+	@import "../../common/styles/mixins";
+	@import "../../common/styles/variables";
+	@import "../../common/styles/common";
+
+	.topUp{
+		.whale{
+			margin-top: 100rpx;
+			@include wh(100%,296rpx);
+			overflow: hidden;
+			&-img{
+				@include wh(296rpx,100%);
+				animation:  kf-rotate 500s  infinite;
+			}
+		}
+		.slogan{
+			display: block;
+			text-align: center;
+		}
+		.main{
+			width: 680rpx;
+			margin: 0 auto;
+		}
+		.nowFlw {
+			border-bottom: 1px solid $borderClr;
+		}
+		@keyframes kf-rotate {
+			0% {
+				transform: rotate(-360deg);
+			}
+			100% {
+				transform: rotate(360deg);
+			}
+		}
+		.fixBtn {
+			padding: 10rpx;
+			text-align: center;
+			width: 180rpx;
+			border: 1px solid $borderClr;
+			border-radius: 10rpx;
+		}
+
+		.isDiy {
+			border: 1px solid $red;
+			color: $red;
+		}
+	}
+
+</style>
+
+<template>
+	<div class="topUp">
+		<div class="whale l-box__allMid">
+			<image class="whale-img" src="../../static/images/whale.jpg"></image>
+		</div>
+		<p class="slogan mt20 t3-black__light t3">寻找鲸鱼 共同成长 缔造传统 服务社会</p>
+		<p class="slogan  mb60 t3-c2__light mt20">Service for Whale</p>
+		<div class="main l-box__ver">
+			<p class="t3 t3-black mb20 pb30 nowFlw">现有小红花：<span class="t2-red t2-red__light">{{leftFlwNumber}}朵</span></p>
+			<!--<p class="t3 t3-black mb20">捐赠金额<span class="t3 t3-red t3-red__light">{{tutorTotalDonateMoney}}</span>元</p>-->
+			<p class="t3 t3-black mb20">捐赠金额<span class="t3 t3-c2 t3-c2__light">({{exchangeRate}}元=1朵小红花)</span></p>
+			<!--<p class="t3 t3-red t3-red__light mb30">({{exchangeRate}}元=1朵小红花)</p>-->
+			<div class="l-box__rowGutter mb60 mt40">
+				<flwSelector :list.sync="selectorList" type="single" key="follower"></flwSelector>
+			</div>
+			<view wx:if="{{!isDiy}}">
+				<div class="mb60 l-box__rowMid">
+					<p class="t3-c2__light fixBtn {{isMaxDiy ? 'isDiy': '' }}" @tap="toggleDiy(true)">{{isMaxDiy? maxOnceDonate : '自定义' }}</p>
+				</div>
+			</view>
+			<view wx:if="{{isDiy}}">
+				<div class="mb60 l-box__rowMid">
+					<p class="t3-c2__light">自定义金额</p>
+					<flwInput confirm-type="done" type="number" placeholder="" key="diyflw" width="60"></flwInput>
+					<p class="t3-c2__light">*{{exchangeRate}}元</p>
+				</div>
+			</view>
+		</div>
+		<view class="l-box__verMid">
+			<!--<toUpBtn :title.sync="btnTitle" width="524" height="80" :color.sync="btnStatus" key="topUp" font="28" radius="60"></toUpBtn>-->
+			<!--mention: 5.7日改为静态按钮文本-->
+			<toUpBtn title="立即捐赠，获得小红花" width="524" height="80" :color.sync="btnStatus" key="topUp" font="28" radius="60"></toUpBtn>
+		</view>
+
+		<view wx:if="{{isShowTopUpSuccess}}">
+			<successDialog :title.sync="topUpText" key="sd-success"></successDialog>
+		</view>
+	</div>
+</template>
+
+<script>
+	import page from '../base/basicPage.wpy'
+	import BasicButton from '../../components/Buttons/BasicButton'
+	import basicSelector from '../../components/Selectors/BasicSelector'
+	import BasicInput from '../../components/Inputs/BasicInput'
+	import pay from '../../API/Payment/index'
+	import noticeDialog from '../../components/Dialogs/noticeDialog'
+
+	export default class Toup extends page {
+		config = {
+			'backgroundColorTop': '#ffffff',
+			'navigationBarTitleText': '与海鲸共同成长',
+			enablePullDownRefresh: false
+		}
+		components = {
+			toUpBtn: BasicButton,
+			flwSelector: basicSelector,
+			flwInput: BasicInput,
+			successDialog: noticeDialog
+		}
+		data = {
+			leftFlwNumber: 0, // 现有小红花
+			exchangeRate: 100,
+			maxOnceDonate: 200, // 单次最大限额
+			donateFlwNumber: 0,
+			selectorList: [
+				{
+					pick: true,
+					key: '1朵',
+					value: 1
+				},
+				{
+					pick: false,
+					key: '2朵',
+					value: 2
+				},
+				{
+					pick: false,
+					key: '5朵',
+					value: 5
+				}
+			],
+			btnTitle: '',
+			diyNumber: 0,
+			btnStatus: 'red',
+			isDiy: false,
+			isMaxDiy: false,
+			isShowTopUpSuccess: false,
+			topUpText: '',
+			tutorTotalDonateMoney: ''
+		}
+		_toggleDiy (bool) {
+			this.isDiy = bool
+		}
+		methods = {
+			toggleDiy (bool) {
+				this.isDiy = bool
+			}
+		}
+		_changeBtnTitle (flwNumber, status) {
+			this.btnStatus = status
+			if (!flwNumber) {
+				this.btnTitle = '立即捐赠'
+				this.donateFlwNumber = 0
+			} else {
+				this.btnTitle = `立即捐赠${this.exchangeRate * flwNumber}元，获得${flwNumber}朵小红花`
+				this.donateFlwNumber = this.exchangeRate * flwNumber
+			}
+		}
+		_clearSelectorState () {
+			this.selectorList.map(item => {
+				item.pick = false
+			})
+		}
+		_queryRate () {
+			this.$API('GetFlwRate').then(res => {
+				this.exchangeRate = res.data
+				this._changeBtnTitle(1, 'red')
+				this.$apply()
+			})
+		}
+		onLoad () {
+			if (this.$WX.getStorage('role') !== 2) {
+				this.$WX.toast('当前用户不是导师！')
+				this.$WX.jumpTo('../home')
+				return
+			}
+			// 查询剩余小红花
+			this.$API('GetTutorFlower', {}).then(res => {
+				this.leftFlwNumber = res.data
+				this.$apply()
+			})
+
+			// 查询导师总共捐过的金额
+			this.$API('GetTutorDonateMoney', {}).then(res => {
+				this.tutorTotalDonateMoney = res.data
+			})
+
+			// 查询更新汇率
+			this._queryRate()
+		}
+		events = {
+			'choose': (key, data) => {
+				this.isMaxDiy = false
+				this._toggleDiy(false)
+				this._changeBtnTitle(data.value, 'red')
+			},
+			'input-focus': (key, data) => {
+				this._clearSelectorState()
+				if (!data.detail.value.length) {
+					this._changeBtnTitle(null, 'pink')
+				}
+			},
+			'input-typein': (key, data) => {
+				if (data.detail.value.length === 0) {
+					this._changeBtnTitle(null, 'pink')
+					return false
+				}
+				if (data.detail.value >= this.maxOnceDonate) {
+					this._toggleDiy(false)
+					this._changeBtnTitle(this.maxOnceDonate, 'red')
+					this.isMaxDiy = true
+					this.$WX.toast('单次最大充值200朵小红花！')
+					return false
+				}
+				this._changeBtnTitle(data.detail.value, 'red')
+			},
+			'btn-click': (key) => {
+				if (key === 'topUp' && this.donateFlwNumber) {
+					/* DEV  开发者模式下，下面乘1，否则乘100 */
+					pay(this.donateFlwNumber * 100).then(() => {
+						this.topUpText = `成功捐赠${this.donateFlwNumber * this.exchangeRate}元!现有小红花${this.leftFlwNumber + this.donateFlwNumber}朵`
+						this.$apply()
+						this.isShowTopUpSuccess = true
+//						this.$WX.toast('支付成功！海鲸与你同行！')
+						setTimeout(() => {
+							this.$WX.goBack()
+							this.isShowTopUpSuccess = false
+						}, 2500)
+					}).catch(err => {
+						console.error(err)
+						this.$WX.toast('支付失败，请联系运营同学！')
+					})
+				}
+			}
+		}
+	}
+</script>

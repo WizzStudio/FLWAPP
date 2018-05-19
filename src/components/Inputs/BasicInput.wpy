@@ -1,0 +1,85 @@
+<style lang="scss" type="text/scss">
+	@import "../../common/styles/mixins";
+	@import "../../common/styles/variables";
+
+	.basic-input {
+		font-size: 32rpx;
+		padding-left: 20rpx;
+		padding-bottom: 4rpx;
+		border-bottom: 1px solid $borderClr;
+		&__placeholder {
+			font-size: 32rpx;
+			font-weight: 200;
+		}
+	}
+
+	.basic-input:hover {
+		/*padding-bottom: 16rpx;*/
+		border-bottom: 1px solid $borderClr__hover;
+	}
+
+	.basic-input {
+		transition: all ease-in .2s;
+	}
+</style>
+
+<template>
+	<div>
+		<input class="basic-input" type="{{type}}" style="width: {{width}}rpx;" placeholder="{{placeholder}}"
+					 placeholder-class="basic-input__placeholder" bindinput="oninput" bindfocus="onfocus"
+					 bindconfirm="onconfirm"/>
+	</div>
+</template>
+
+<script>
+	import wepy from 'wepy'
+
+	/**
+	 * {props}
+	 * 1. width 宽度
+	 * 2. placeholder 占位字符
+	 * 3. type 种类：text文本输入键盘/number数字输入键盘/idcard身份证/digit带小数点的数字键盘
+	 * 4. confirm-type(send发送/search搜索/next下一步/go前往/done完成
+	 * 5. key特殊标识组件
+	 */
+	export default class BasicInput extends wepy.component {
+		components = {}
+		data = {}
+		computed = {}
+
+		methods = {
+			oninput (e) {
+				this.$emit('input-typein', this.key, e)
+			},
+			onfocus (e) {
+				this.$emit('input-focus', this.key, e)
+			},
+			onconfirm (e) {
+				this.$emit('input-confirm', this.key, e)
+			}
+		}
+		events = {}
+		props = {
+			width: {
+				type: String,
+				default: 'auto'
+			},
+			placeholder: {
+				type: String,
+				default: '输入框默认文字'
+			},
+			type: {
+				type: String,
+				default: 'text'
+			},
+			key: {
+				type: String,
+				default: 'default-key'
+			},
+			'confirm-type': {
+				type: String,
+				default: 'next'
+			}
+		}
+	}
+</script>

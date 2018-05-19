@@ -1,0 +1,118 @@
+<style lang="scss" type="text/scss">
+  @import "../../common/styles/mixins";
+  @import "../../common/styles/variables";
+  @import "../../common/styles/common";
+  .info-container {
+    display: inline-flex;
+    align-items: center;
+    width: 100vw;
+    border-bottom: 2rpx solid #f4f4f4;
+  }
+  .info-module {
+    &-1 {
+      margin-left: 30rpx;
+      margin-right: 25rpx;
+    }
+    &-1-avatar {
+      height: 160rpx;
+      width: 160rpx;
+      border-radius: 50%;
+      background-color: #f3f3f3;
+    }
+    &-2 {
+      display:flex;
+      flex-flow: column nowrap;
+      width: 450rpx;
+    }
+    &-2-name {
+      font-size: 32rpx;
+      color: #333333;
+    }
+    &-2-basic-statu {
+      font-size: 22rpx;
+      border: 1px solid gray;
+      padding: 4rpx 8rpx 0rpx 8rpx;
+      border-radius: 10rpx;
+      margin-left: 50rpx;
+    }
+    &-2-more {
+      margin-top: 10rpx;
+      font-size: 24rpx;
+      color: #666666;
+    }
+    &-3 {
+      padding-right: 30rpx;
+    }
+  }
+  .info-module-2-checking {
+    color: #fde039;
+    border-color: #fde039;
+  }
+  .info-module-2-success {
+    color: green;
+    border-color: green;
+  }
+  .info-module-2-failed {
+    color: #e64949;
+    border-color: #e64949;
+  }
+  .div-name {
+    display: inline-flex;
+
+  }
+</style>
+
+<template>
+  <view class="info-container" @tap="click">
+    <div class="info-module-1">
+      <image src="{{avatar}}" class="info-module-1-avatar" alt="我的头像" mode="aspectFill" binderror="avatarError"/>
+    </div>
+    <div class="info-module-2">
+      <div class="div-name">
+        <span class="info-module-2-name">{{infoDatas.name?infoDatas.name:'请填写'}}</span>
+        <span class="info-module-2-basic-statu {{isStudent? statuClass[infoDatas.status]: tutorClass[infoDatas.isTutor]}}" wx:if="{{infoDatas.status !== -1}}">{{isStudent? statuTitle[infoDatas.status]: tutorTitle[infoDatas.isTutor]}}</span>
+      </div>
+      <div class="info-module-2-more">
+        <span>{{isStudent? infoDatas.school: infoDatas.company}} | {{isStudent? infoDatas.profession: infoDatas.position }}</span>
+      </div>
+    </div>
+    <div class="info-module-3">
+        <image class="centerInfomation-Tag" src="../../static/images/personalCenter/arrow-right.svg"/>
+    </div>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import {toast} from '../../common/scripts/wxUtil'
+  export default class GeneralIntroduction extends wepy.component {
+    data = {
+      statuTitle: ['审核中', '审核未通过', '已通过审核', '已停用'],
+      statuClass: ['info-module-2-checking', 'info-module-2-failed', 'info-module-2-success'],
+      tutorTitle: ['未认证', '导师'],
+      tutorClass: ['info-module-2-failed', 'info-module-2-success']
+    }
+    components = {}
+
+    onLoad () {}
+
+    methods = {
+      click (event) {
+        if (this.infoDatas.status === 0) {
+          toast('您提交的信息正在审核中，暂时无法修改信息，请等待审核结束')
+        } else {
+          this.$emit('change-information', event)
+        }
+      },
+      avatarError (event) {
+        this.avatar = '../../static/images/logo.png'
+      }
+    }
+    events = {}
+    props = {
+      infoDatas: Object,
+      isStudent: Boolean,
+      avatar: String
+    }
+  }
+</script>

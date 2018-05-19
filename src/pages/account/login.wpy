@@ -1,0 +1,309 @@
+<style lang="scss" type="text/scss">
+	@import "../../common/styles/variables";
+	@import "../../common/styles/mixins";
+	/*@import "../../common/styles/animate";*/
+	@import "../../common/styles/common";
+
+	/*logo*/
+	.container-logo {
+		@include allMidBox();
+		margin-top: 120rpx;
+		margin-bottom: 200rpx;
+
+		.icon {
+			width: 100px;
+			height: 100px;
+		}
+
+		.title, .intro {
+			display: block;
+			text-align: center;
+		}
+
+		.intro {
+			color: #b3b3b3;
+			font-size: 28rpx;
+			font-weight: 300;
+		}
+	}
+	.anmi-rotate {
+//		@include anmi-rotate()
+	}
+
+	/*邀请码相关*/
+	.login-invite{
+		box-sizing: border-box;
+		padding: 0 20rpx;
+		.container-input__invite {
+
+		}
+		.container-btn__next {
+			@include allMidBox();
+			margin-top: 145rpx;
+		}
+		.container-link__forget{
+			position: relative;
+			display: block;
+			margin-top: 30rpx;
+			a{
+				float: right;
+				font-size: 30rpx;
+				color: $fontClr_2nd;
+				font-weight: 300;
+			}
+		}
+	}
+
+	/*手机号相关*/
+	.login-phone{
+		box-sizing: border-box;
+		padding: 0 20rpx;
+		.container-verify{
+			@include rowMidBox();
+			&__btn{
+				margin-left: 40rpx;
+			}
+		}
+		.container-btn__done {
+			@include allMidBox();
+			margin-top: 100rpx;
+		}
+		.container-input__verify {
+			margin-top: 40rpx;
+		}
+	}
+</style>
+
+<template>
+	<!--logo-->
+	<view class="container-logo">
+		<image src="{{logoURL}}" class="icon anmi-rotate"></image>
+		<p class="title">小红花Project</p>
+		<p class="intro">链接优秀导师和精英人才的轻量级信息交互平台</p>
+	</view>
+
+	<view class="login-invite" wx-if="{{state ==0 || state == 1}}">
+		<!--邀请码输入框-->
+		<view class="container-input__invite">
+			<inviteCodeInput confirm-type="done" type="text" placeholder="请输入邀请码" key="invite"></inviteCodeInput>
+		</view>
+
+		<view class="container-link__forget">
+			<a href="">未获得/忘记邀请码</a>
+		</view>
+
+		<!--下一步按钮-->
+		<view class="container-btn__next">
+			<nextBtn width="500" height="80" title="下一步" radius="40" :color.sync="nextBtnColor" key="next"></nextBtn>
+		</view>
+
+	</view>
+
+	<view class="login-phone" wx-if="{{state >= 2}}">
+		<!--输入手机号&获取验证码-->
+		<view class="container-verify">
+			<phoneInput width="445" confirm-type="next" type="digit" placeholder="请输入手机号" key="phone"></phoneInput>
+			<view class="container-verify__btn">
+				<verifyBtn  width="182" height="55" :title.sync="verifyNum" radius="40" :color.sync="verifyBtnColor" key="verify" font="26"></verifyBtn>
+			</view>
+		</view>
+
+		<!--输入验证码-->
+		<view class="container-input__verify">
+			<verifyCodeInput confirm-type="done" type="digit" placeholder="请输入验证码" key="verify"></verifyCodeInput>
+		</view>
+
+		<!--完成按钮-->
+		<view class="container-btn__done">
+			<finishBtn width="500" height="80" title="登录" radius="40" :color.sync="finishBtnColor" key="done"></finishBtn>
+		</view>
+	</view>
+</template>
+
+<script>
+	import page from '../base/basicPage.wpy'
+	import BasicButton from '../../components/Buttons/BasicButton'
+	import BasicInput from '../../components/Inputs/BasicInput'
+
+	export default class Login extends page {
+		config = {
+			enablePullDownRefresh: false
+		}
+		components = {
+			verifyBtn: BasicButton, // 验证码按钮
+			nextBtn: BasicButton, // 下一步按钮
+			finishBtn: BasicButton, // 完成按钮
+			inviteCodeInput: BasicInput,  // 邀请码输入框
+			phoneInput: BasicInput, // 电话号码输入框
+			verifyCodeInput: BasicInput // 验证码输入框
+		}
+		data = {
+			nextBtnColor: 'pink',
+			finishBtnColor: 'pink',
+			verifyBtnColor: 'white',
+			logoURL: '../../static/images/logo.png',
+			state: 0, // 状态机初始状态
+			verifyNum: '获取验证码', // 获取手机验证码按钮上的文字显示
+			isCounting: false, // 获取验证码是否正在计时
+			/* 下面是数据域 */
+			inviteCode: 0, // 邀请码
+			phoneNumber: 0, // 手机号
+			verifyCode: 0 // 验证码
+		}
+		computed = {}
+
+		onLoad () {
+		}
+
+		onShow () {
+			/* MENTION 测试流程的临时代码 */
+		}
+		state0 () {
+			// 0：未输入邀请码或者输入错误
+			this.nextBtnColor = 'pink'
+			this.state = 0
+			this.$apply()
+		}
+		state1 (inviteCode) {
+			// 1：输入了正确格式的邀请码
+			this.state = 1
+			this.inviteCode = inviteCode
+			this.nextBtnColor = 'red'
+			this.$apply()
+		}
+		state2 () {
+			// 2: 邀请码验证正确
+			this.verifyBtnColor = 'white'
+			this.state = 2
+			this.$apply()
+		}
+		state3 (phoneNumber) {
+			// 3：输入了正确格式的手机号
+			this.state = 3
+			this.phoneNumber = phoneNumber
+			this.verifyBtnColor = 'red-border'
+			this.$apply()
+		}
+		state4 () {
+			// 4: 点击获取验证码
+			if (this.isCounting) {
+				console.log('get')
+				return false
+			}
+			this.isCounting = true
+			this.state = 4
+			let num = 60
+			this.$UTIL.countFn(60, 1000, () => {
+				num--
+				this.verifyNum = num.toString()
+				this.$apply()
+			}, () => {
+				this.state3()
+				this.isCounting = false
+				this.verifyNum = '重新发送'
+				this.$apply()
+			})
+		}
+		state5 () {
+			// 5: 获取了验证码但没有输入正确的格式
+			this.state = 5
+			this.finishBtnColor = 'pink'
+			this.$apply()
+		}
+		state6 (verifyCode) {
+			// 6: 获取了验证码且输入正确格式
+			this.state = 6
+			this.verifyCode = verifyCode
+			this.finishBtnColor = 'red'
+			this.$apply()
+		}
+		methods = {
+		}
+		events = {
+			'input-typein': this.$UTIL.debounce((key, event) => {
+				/* 验证邀请码 */
+				if (this.$UTIL.isInviteCode(event.detail.value) && key === 'invite') {
+					this.state1(event.detail.value)
+				}
+				if (!this.$UTIL.isInviteCode(event.detail.value) && key === 'invite') {
+					this.state0()
+				}
+				/* 验证手机号 */
+				if (this.$UTIL.isPhoneNumber(event.detail.value) && key === 'phone') {
+					this.state3(event.detail.value)
+				}
+				if (!this.$UTIL.isPhoneNumber(event.detail.value) && key === 'phone') {
+					this.state2()
+				}
+				/* 验证验证码 */
+				if (this.$UTIL.isVerifyCode(event.detail.value) && key === 'verify') {
+					this.state6(event.detail.value)
+				}
+				if (!this.$UTIL.isVerifyCode(event.detail.value) && key === 'verify') {
+					this.state5()
+				}
+			}, 200),
+			'input-confirm': (key) => {
+			},
+			'btn-click': (key) => {
+				if (key === 'next' && this.state === 0) {
+					return this.$WX.toast('请输入正确邀请码！')
+				}
+				/* 邀请码格式通过 */
+				if (key === 'next' && this.state === 1) {
+//					console.log('该去验证邀请码了')
+					this.$API('UserInviteCodeCheck', {code: this.inviteCode})
+						//					this.$API.UserInviteCodeCheck(this.inviteCode) :弃用
+						.then(data => {
+							if (!data.code) {
+								this.$WX.toast('验证成功！')
+								this.state2()
+							}
+						})
+				}
+				/* 手机号格式通过 */
+				if (key === 'verify' && this.state >= 3) {
+//					console.log('该请求验证码了')
+					if (this.isCounting) {
+						return false
+					}
+					this.$API('UserVerifyCode', {phone: this.phoneNumber})
+						.then(data => {
+							if (!data.code) {
+								this.$WX.toast(data.msg)
+								this.state4()
+							}
+						})
+				}
+
+				/* 验证码格式通过 */
+				if (key === 'done' && this.state === 6) {
+//					console.log('该请求验证验证码了')
+					this.$API('UserVerifyCodeCheck', {phone: this.phoneNumber, captcha: this.verifyCode})
+						.then(data => {
+							if (!data.code) {
+								this.$API('UserRegister', {phone: this.phoneNumber, code: this.inviteCode})
+								.then(data => {
+									if (!data.code) {
+										this.$WX.toast('注册成功！', 'success', 3000)
+										this.$WX.setStorage('role', data.data.role)
+										this.$WX.jumpTo('../home')
+									}
+								}).catch(() => { setTimeout(() => { this.$WX.jumpTo('./home') }, 2000) })
+							}
+						})
+				}
+
+				/* 没有请求邀请码 */
+				if (key === 'done' && this.state < 4) {
+					this.$WX.toast('请先获取验证码!')
+				}
+
+				/* 输入了错误格式的验证码 */
+				if (key === 'done' && this.state >= 4 && this.state < 6) {
+					this.$WX.toast('请输入正确格式的验证码！')
+				}
+			}
+		}
+	}
+</script>

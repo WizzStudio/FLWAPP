@@ -1,0 +1,40 @@
+<style lang="scss" type="text/scss">
+
+	.code, .token {
+		width: 200px;
+		word-wrap: break-word;
+		display: block;
+		font-size: 12px;
+	}
+</style>
+<template>
+	<div>
+		<p>code</p>
+		<p class="code">{{code}}</p>
+		<p>token</p>
+		<p class="token">{{token}}</p>
+	</div>
+</template>
+
+<script>
+	import page from '../base/basicPage.wpy'
+
+	export default class TestPage extends page {
+		data = {
+			code: '',
+			token: ''
+		}
+
+		onShow () {
+			this.$WX.wxLogin().then(data => {
+				this.code = data.code
+				this.$API('UserLogin', {code: data.code})
+					.then(data => {
+						this.token = data.token
+						this.$apply()
+					})
+			})
+			this.$WX.changeNavBarColor()
+		}
+	}
+</script>

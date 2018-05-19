@@ -1,0 +1,149 @@
+<style lang="scss" type="text/scss">
+	.record-rest {
+		display: inline-flex;
+		align-items: center;
+		height: 88rpx;
+		font-size: 28rpx;
+		background-color: #f4f4f4;
+		padding-left: 30rpx;
+		width: 100vw;
+	}
+  .record-ul {
+    display: flex;
+    flex-flow: column nowrap;
+    padding-left: 30rpx;
+    padding-right: 30rpx;
+    &-item {
+			font-size: 24rpx;
+			color: #999999;
+      display: inline-flex;
+			align-items: center;
+			height: 88rpx;
+      span:nth-child(1) {
+        width: 250rpx;
+      }
+      span:nth-child(2) {
+        width: 400rpx;
+      }
+      span:nth-child(3){
+        width: 50rpx;
+      }
+    }
+  }
+	.loadMore {
+		width: 100vw;
+		font-size: 26rpx;
+		color: #999999;
+		text-align: center;
+	}
+	.destroy {
+		display: none;
+	}
+</style>
+
+<template>
+  <view class="record-rest">剩余小红花: {{restFlower}}朵</view>
+  <ul class="record-ul">
+    <repeat for="{{infoList}}" item="item">
+      <li class="record-ul-item">
+        <span>{{item.time}}</span>
+        <span wx:if="{{role === 2}}">{{item.reason}}{{item.name}}小红花{{item.amount}}朵</span>
+        <span wx:if="{{role === 1}}">{{item.name}}{{item.reason}}小红花{{item.amount}}朵</span>
+        <span>{{item.mark}}{{item.amount}}</span>
+      </li>
+    </repeat>
+  </ul>
+	<view>
+		<view @tap="loadMore" class="loadMore {{isLast?'destroy':''}}"><span wx:if="{{restFlower === '0'}}">加载更多</span></view>
+	</view>
+</template>
+
+<script>
+  import page from '../base/basicPage.wpy'
+
+  export default class record extends page {
+    config = {
+      navigationBarTitleText: '我的花迹',
+      enablePullDownRefresh: false
+    }
+    data = {
+      role: 2
+    }
+    components = {}
+    getDatas (data) {
+      data.forEach(item => {
+        let data = {
+          time: item.createTime.split('T')[0] || '',
+          name: item.name || '',
+          amount: item.amount || 0,
+          type: item.type || 0
+        }
+        if (item.type === 1) {
+          data.reason = '赠送'
+          if (this.role === 1) {
+						data.mark = '+'
+					}
+					if (this.role === 2) {
+            data.mark = '-'
+					}
+				} else if (item.type === 2) {
+          data.reason = '充值'
+          data.mark = '+'
+				} else if (item.type === 3) {
+          data.reason = '提现'
+          data.mark = '-'
+				}
+        this.infoList.push(data)
+      })
+    }
+    data = {
+      restFlower: 0,
+      page: 0,
+      totalPage: 0,
+			role: 1,
+			isLast: false,
+      infoList: []
+    }
+    computed = {}
+
+    onLoad () {
+			this.restFlower = this.$WX.getStorage('redFlowerNum') || 0
+      let role = this.$WX.getStorage('role')
+			this.role = role
+      if (role === 1) {
+        this.isTutor = false
+        this.$API('GetStudentRecord', {page: this.page})
+          .then(res => {
+            this.totalPage = parseInt(res.msg)
+            this.getDatas(res.data)
+            this.page++
+						if (this.page === this.totalPage) {
+              this.isLast = true
+						}
+						this.$apply()
+          })
+        } else if (role === 2) {
+          this.isTutor = true
+          this.$API('GetTutorRecord', {page: this.page})
+            .then(res => {
+              this.totalPage = res.msg
+              this.getDatas(res.data)
+							this.page++
+							if (this.page === this.totalPage) {
+                this.isLast = true
+							}
+              this.$apply()
+            })
+        }
+      }
+    methods = {
+			loadMore () {
+			if (this.page >= this.totalPage) {
+          this.$WX.toast('没有更多的内容了')
+				}
+			}
+		}
+    events = {}
+    props = {}
+  }
+</script>

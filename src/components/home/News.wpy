@@ -1,0 +1,189 @@
+<style lang="scss" type="text/scss">
+	.news-nav {
+		height: 88rpx;
+		display: flex;
+		align-items: center;
+		&-item-1 {
+			text-align: center;
+			width: 150rpx;
+			height: 50rpx;
+			padding-top: 20rpx;
+			padding-left: 30rpx;
+			margin-left: 80rpx;
+			padding-right: 30rpx;
+			margin-right: 70rpx;
+			font-size: 28rpx;
+			color: #333333;
+			border-bottom: 6rpx solid #fff;
+		}
+		&-item-2 {
+			text-align: center;
+			width: 150rpx;
+			height: 50rpx;
+			padding-top: 20rpx;
+			padding-right: 25rpx;
+			padding-left: 25rpx;
+			margin-left: 50rpx;
+			font-size: 28rpx;
+			color: #333333;
+			border-bottom: 6rpx solid #fff;
+		}
+	}
+	.item-active {
+		-webkit-transition: border-color 1.5s;
+		-moz-transition: border-color 1.5s;
+		-ms-transition: border-color 1.5s;
+		-o-transition: border-color 1.5s;
+		transition: border-color 1.5s;
+		border-bottom: 6rpx solid #e01b1c;
+		color: #e01b1c;
+		font-size: 28rpx;
+	}
+	.News-Content {
+		margin-left: 30rpx;
+		font-size: 28rpx;
+		display: flex;
+		flex-flow: column nowrap;
+	}
+	.News-Item {
+		display: inline-flex;
+		flex-flow: row nowrap;
+		height: 214rpx;
+		&-image {
+				width: 250rpx;
+				height: 150rpx;
+				border-radius: 10rpx;
+				margin-top: 52rpx;
+			}
+		&-info {
+			width: 400rpx;
+			margin-right: 40rpx;
+			display: flex;
+			flex-flow: column;
+			padding-top: 54rpx;
+			&-title {
+				font-size: 28rpx;
+				font-weight: bold;
+				padding-top: 15rpx;
+				padding-bottom: 15rpx;
+			}
+			&-time {
+				font-size: 24rpx;
+				color: #999999;
+			}
+		}
+	}
+	.Top-List {
+		display: flex;
+		flex-flow: column nowrap;
+		// width: 100vw;
+		&-item {
+			height: 128rpx;
+			padding-right: 60rpx;
+			padding-left: 30rpx;
+			display: inline-flex;
+			align-items: center;
+			&-icon {
+				margin-right: 30rpx;
+				height: 70rpx;
+				width: 50rpx;
+			}
+			&-avatar {
+				margin-right: 20rpx;
+				width: 46rpx;
+				height: 46rpx;
+				border-radius: 50%;
+			}
+			&-name {
+				font-size: 28rpx;
+				width: 300rpx;
+				color: #333333;
+			}
+			&-amount {
+				width: 100rpx;
+				margin-left: 100rpx;
+				color: #999999;
+			}
+			&-top {
+				color: black;
+				font-style: 36rpx;
+				margin-left: 15rpx;
+				margin-right: 50rpx;
+			}
+		}
+		&-more {
+			text-align: center;
+			font-size: 24rpx;
+			color: #999999;
+		}
+	}
+</style>
+
+<template>
+	<view class="news-nav">
+		<view class="news-nav-item-1 item-{{isNews?'active': ''}}" id="news" @tap="ItemClick">海域 </view>
+		<view class="news-nav-item-2 item-{{isNews?'':'active'}}" id="top" @tap="ItemClick">红花榜</view>
+	</view>
+	<view class="News-Content">
+		<view wx:if="{{isNews}}">
+			<repeat for="{{NewsDatas}}" item="item">
+				<view class="News-Item" @tap="InfoClick" id="{{item.id}}">
+					<view class="News-Item-info">
+						<view style="font-size: 24rpx;color: #999;">{{item.tag}}</view>
+						<view class="News-Item-info-title">{{item.title}}</view>
+						<view class="News-Item-info-time">{{item.author}} • {{item.time}} • {{item.pageView}}次阅读</view>
+					</view>
+					<image class="News-Item-image" src="{{item.imgUrl}}" mode="aspectFill"/>
+				</view>
+			</repeat>
+		</view>
+		<view wx:if="{{!isNews}}" class="Top-List">
+			<repeat for="{{FlowerRankDatas}}" item="item" index="index">
+				<view class="Top-List-item">
+					<image class="Top-List-item-icon" src="../../static/images/home/1.png" wx:if="{{index + 1 === 1}}"/>
+					<image class="Top-List-item-icon" src="../../static/images/home/2.png" wx:if="{{index + 1 === 2}}"/>
+					<image class="Top-List-item-icon" src="../../static/images/home/3.png" wx:if="{{index + 1 === 3}}"/>
+					<view class="Top-List-item-top" wx:if="{{index + 1 > 3}}">
+						{{index + 1}}
+					</view>
+					<view class="Top-List-item-name" @tap="RankClick" id="{{item.userId}}">{{item.tutorName}}</view>
+					<view class="Top-List-item-amount">{{item.giftFlowerNum}}</view>
+				</view>
+			</repeat>
+		</view>
+	</view>
+</template>
+
+<script>
+	import wepy from 'wepy'
+	export default class News extends wepy.component {
+		config = {}
+		components = {}
+		data = {
+			isNews: true
+		}
+		computed = {}
+
+		methods = {
+			ItemClick (event) {
+				if (event.target.id === 'news') {
+					this.isNews = true
+				} else {
+					this.isNews = false
+				}
+			},
+			InfoClick (event) {
+				this.$emit('jumpToArticle', event.currentTarget.id)
+			},
+			RankClick (event) {
+				this.$emit('jumpToTutorPage', event.target.id)
+			}
+		}
+		events = {}
+
+		props = {
+			NewsDatas: Array,
+			FlowerRankDatas: Array
+		}
+	}
+</script>

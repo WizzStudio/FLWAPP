@@ -1,0 +1,535 @@
+<style lang="scss" type="text/scss">
+	.stuTrend {
+		font-weight: 300rpx;
+		display: flex;
+		flex-flow: column;
+		padding-top: 15rpx;
+		padding-left: 30rpx;
+		padding-right: 30rpx;
+		font-size: 28rpx;
+		&-search {
+			&-active {
+				color: black;
+			}
+			color: #999999;
+			height: 90rpx;
+			display: inline-flex;
+			align-items: center;
+			div {
+				display: inline-flex;
+				align-items: center;
+				padding-bottom: 10rpx;
+				border-bottom: 1px solid #ddd;
+				image {
+					height: 35rpx;
+					width: 35rpx;
+					margin-right: 20rpx;
+				}
+				input {
+					width: 540rpx;
+					font-weight: 200;
+				}
+				&:hover {
+					border-bottom: 1px solid #e01b1c;
+				}
+			}
+			&-button {
+				color: #333;
+				font-size: 30rpx;
+				margin-left: 20rpx;
+			}
+		}
+		&-option {
+			display: inline-flex;
+			flex-flow: row;
+			height: 60rpx;
+			font-size: 28rpx;
+			color: #333;
+			&-active {
+				color: #e01b1c;
+			}
+			&-item {
+				margin-right: 64rpx;
+				display: inline-flex;
+				flex-flow: row nowrap;
+				image {
+					margin-left: 10rpx;
+					margin-top: 8rpx;
+					width: 30rpx;
+					height: 30rpx;
+				}
+			}
+		}
+		&-infoList {
+			color: #333;
+			&-item {
+				display: inline-flex;
+				flex-flow: row nowrap;
+				height: 230rpx;
+				align-items: center;
+				border-bottom: 2rpx solid #f4f4f4;
+				&-image {
+					width: 128rpx;
+					height: 128rpx;
+					border-radius: 50%;
+					margin-right: 40rpx;
+				}
+				&-info {
+					width: 480rpx;
+					&-name {
+						padding-top: 10rpx;
+						padding-bottom: 10rpx;
+					}
+					&-more {
+						color: #999999;
+						font-size: 24rpx;
+						padding-bottom: 12rpx;
+						display: inline-flex;
+						flex-flow: row nowrap;
+						&-1 {
+							margin-right: 15rpx;
+						}
+					}
+					&-introduce {
+						color: #999999;
+						font-size: 24rpx;
+						line-height: 38rpx;
+					}
+				}
+				&-tag {
+					width: 44rpx;
+					height: 88rpx;
+				}
+			}
+
+		}
+	}
+</style>
+
+<template>
+	<view class="stuTrend">
+		<view class="stuTrend-search">
+			<div>
+				<image src="../static/images/stuTrend/search.svg" />
+				<input placeholder="搜索姓名，行业，单位，专业" maxlength="20" bindinput="searchItemInput" class="stuTrend-search-active"/>
+			</div>
+			<view class="stuTrend-search-button" @tap="searchButtonClick">搜索</view>
+		</view>
+		<view class="stuTrend-option">
+			<view class="stuTrend-option-item">
+				<DropDown :dropDownData.sync="roleData"/>
+			</view>
+			<repeat for="{{optionData[roleIndex]}}" item="item">
+				<view class="stuTrend-option-item">
+					<DropDown :dropDownData.sync="item"/>
+				</view>
+			</repeat>
+		</view>
+		<view class="stuTrend-infoList">
+			<repeat for="{{studentCurrentList}}" item="item" wx:if="{{roleData.currentData === '学生'}}">
+				<view class="stuTrend-infoList-item" id="{{item.userId}}" @tap="jumpToUserPage">
+					<image src="{{item.avatar}}" class="stuTrend-infoList-item-image" mode="aspectFill" binderror="imageError" id="stu-{{item.userId}}"/>
+					<view class="stuTrend-infoList-item-info">
+						<view class="stuTrend-infoList-item-info-name">{{item.name}}</view>
+						<view class="stuTrend-infoList-item-info-more">
+							<view class="stuTrend-infoList-item-info-more-1">{{item.school}}</view>
+						<view>{{item.profession}}</view>
+						</view>
+						<view class="stuTrend-infoList-item-info-introduce">{{item.intro}}</view>
+					</view>
+				</view>
+			</repeat>
+			<repeat for="{{tutorCurrentList}}" item="item" wx:if="{{roleData.currentData === '导师'}}">
+				<view class="stuTrend-infoList-item"  id="{{item.userId}}" @tap="jumpToUserPage">
+					<image src="{{item.avatar}}" class="stuTrend-infoList-item-image" mode="aspectFill" binderror="imageError" id="tutor-{{item.userId}}"/>
+					<view class="stuTrend-infoList-item-info">
+						<view class="stuTrend-infoList-item-info-name">{{item.name}}</view>
+						<view class="stuTrend-infoList-item-info-more">
+							<view class="stuTrend-infoList-item-info-more-1">{{item.company}}</view>
+							<view>{{item.field}}</view>
+						</view>
+						<view class="stuTrend-infoList-item-info-introduce">{{item.intro}}</view>
+					</view>
+				</view>
+			</repeat>
+		</view>
+	</view>
+</template>
+
+<script>
+	import dropDown from '../components/Menus/dropDown'
+	import basicPage from './base/basicPage.wpy'
+	export default class stuTrend extends basicPage {
+		config = {
+			navigationBarTitleText: '导学信息',
+			enablePullDownRefresh: false
+		}
+		components = {
+			DropDown: dropDown
+		}
+		data = {
+			searchText: '',
+			studentList: [],
+			tutorList: [],
+			studentAvatarList: [],
+			searchStudentAvatarList: [],
+			searchTutorAvatarList: [],
+			tutorAvatarList: [],
+			studentCurrentList: [],
+			tutorCurrentList: [],
+			studentKeyWord: {},
+			tutorKeyWord: {},
+			roleData: {
+				id: 'role',
+				currentData: '',
+				data: ['学生', '导师'],
+				isClick: false,
+				isHidden: true
+			},
+			roleIndex: 0,
+			optionData: [
+				[
+					{
+						id: 'school',
+						currentData: '所有学校',
+						data: ['所有学校'],
+						isClick: false,
+						isHidden: true
+					},
+					{
+						id: 'degree',
+						currentData: '所有学历',
+						data: ['所有学历', '本科', '硕士', '博士'],
+						isClick: false,
+						isHidden: true
+					}
+				],
+				[
+					{
+						id: 'field',
+						currentData: '所有行业',
+						data: ['所有行业'],
+						isClick: false,
+						isHidden: true
+					}
+				]
+			]
+		}
+		computed = {}
+		shortenedInfo (str) {
+			if (str.length >= 6) {
+				return str.slice(0, 6) + '...'
+			} else {
+				return str
+			}
+		}
+		hiddenAllOption () {
+			this.optionData.map(item => {
+				item.map(item => {
+					item.isClick = false
+					item.isHidden = true
+				})
+			})
+			this.roleData.isHidden = true
+			this.roleData.isClick = false
+		}
+		hiddenOtherOption (currentItem) {
+			if (currentItem.isClick !== true) {
+				this.hiddenAllOption()
+				currentItem.isClick = !currentItem.isClick
+				currentItem.isHidden = !currentItem.isHidden
+			} else {
+				currentItem.isClick = !currentItem.isClick
+				currentItem.isHidden = !currentItem.isHidden
+			}
+		}
+		changeCurrentItem (currentItem, keyWord, key, index, currentList, list) {
+			currentItem.isClick = !currentItem.isClick
+			currentItem.isHidden = !currentItem.isHidden
+			currentItem.currentData = this.shortenedInfo(currentItem.data[index])
+			if (keyWord[key] !== undefined) {
+				if (keyWord[key] !== currentItem.data[index]) {
+					if (index === 0) {
+						delete keyWord[key]
+					} else {
+						keyWord[key] = currentItem.data[index]
+					}
+				} else {
+					keyWord[key] = currentItem.data[index]
+				}
+				currentList = list
+			} else {
+				if (index === 0) {
+					delete keyWord[key]
+				} else {
+					keyWord[key] = currentItem.data[index]
+				}
+			}
+			currentList = this.$UTIL.filtrate(currentList, keyWord)
+			this.$apply()
+		}
+		onLoad () {
+			this.$WX.showLoading()
+			this.roleData.currentData = '学生'
+			this.$API('GetSearchTutorList')
+				.then(res => {
+					res.data.map(item => {
+						this.tutorAvatarList.push(item.userId + '-avatar.jpg')
+						this.tutorList.push(item)
+					})
+					this.tutorCurrentList = this.tutorList
+					if (this.$WX.getStorage('role') === 0) {
+						this.tutorList.map(item => {
+							item.avatar = '../../static/images/logo.png'
+						})
+						this.$apply()
+						this.$WX.hideLoading()
+					} else {
+						this.$API('PostUserImagesName', this.tutorAvatarList)
+							.then(res => {
+								res.data.map((item, index) => {
+									this.tutorList[index].avatar = item
+								})
+								this.tutorCurrentList = this.tutorList
+								this.$apply()
+								this.$WX.hideLoading()
+							})
+					}
+				})
+			this.$API('GetSearchStudentList')
+				.then(res => {
+					res.data.map(item => {
+						this.studentAvatarList.push(item.userId + '-avatar.jpg')
+					})
+					this.studentList = res.data
+					this.studentCurrentList = this.studentList
+					if (this.$WX.getStorage('role') === 0) {
+						this.studentList.map(item => {
+							item.avatar = '../../static/images/logo.png'
+						})
+						this.$WX.hideLoading()
+						this.$apply()
+					} else {
+						this.$API('PostUserImagesName', this.studentAvatarList)
+							.then(res => {
+								res.data.map((item, index) => {
+									this.studentList[index].avatar = item
+								})
+								this.studentCurrentList = this.studentList
+								this.$WX.hideLoading()
+								this.$apply()
+							})
+					}
+				})
+			this.$API('GetTrade')
+				.then(res => {
+					res.data.map(item => {
+						this.optionData[1][0].data.push(item.tradeName)
+					})
+				})
+			this.$API('GetSchoolList')
+				.then(res => {
+					res.data.map(item => {
+						this.optionData[0][0].data.push(item.schoolName)
+					})
+					this.$apply()
+				})
+		}
+		methods = {
+			searchButtonClick () {
+				this.$WX.showLoading()
+				console.log('搜索')
+				if (this.roleData.currentData === '学生') {
+					this.searchStudentAvatarList = []
+					this.$API('GetSearchStudentList', {word: encodeURI(this.searchText)})
+						.then(res => {
+							res.data.map(item => {
+								this.searchStudentAvatarList.push(item.userId + '-avatar.jpg')
+							})
+							this.studentList = res.data
+							this.studentCurrentList = this.studentList
+							this.$apply()
+							this.$WX.hideLoading()
+							if (this.$WX.getStorage('role') !== 0) {
+								this.$API('PostUserImagesName', this.searchStudentAvatarList)
+								.then(res => {
+									res.data.map((item, index) => {
+										this.studentList[index].avatar = item
+									})
+									this.$apply()
+								})
+							} else {
+								this.studentList.map(item => {
+									item.avatar = '../../static/images/logo.png'
+									this.$apply()
+								})
+							}
+						})
+						.catch(err => {
+							console.log(err)
+						})
+				} else {
+					this.searchTutorAvatarList = []
+					this.$WX.showLoading()
+					this.$API('GetSearchTutorList', {word: encodeURI(this.searchText)})
+						.then(res => {
+							res.data.map(item => {
+								this.searchTutorAvatarList.push(item.userId + '-avatar.jpg')
+							})
+							this.tutorList = res.data
+							this.tutorCurrentList = this.tutorList
+							this.$apply()
+							this.$WX.hideLoading()
+							if (this.$WX.getStorage('role') !== 0) {
+								this.$API('PostUserImagesName', this.searchTutorAvatarList)
+								.then(res => {
+									res.data.map((item, index) => {
+										this.tutorList[index].avatar = item
+									})
+									this.$apply()
+								})
+							} else {
+								this.tutorList.map(item => {
+									item.avatar = '../../static/images/logo.png'
+									this.$apply()
+								})
+							}
+						})
+						.catch(err => {
+							console.log(err)
+						})
+				}
+			},
+			imageError (event) {
+				let mark = event.target.id
+				if (mark.slice(0, 1) === 's') {
+					this.studentCurrentList.filter(item => item.userId === parseInt(mark.slice(4)))[0].avatar = '../static/images/logo.png'
+				} else {
+					this.tutorCurrentList.filter(item => item.userId === parseInt(mark.slice(6)))[0].avatar = '../static/images/logo.png'
+				}
+			},
+			searchItemInput (event) {
+				this.searchText = event.detail.value
+				this.$apply()
+			},
+			jumpToUserPage (event) {
+				if (this.$WX.getStorage('role') === 0) {
+					this.$WX.interceptTourist()
+				} else {
+					this.$WX.setStorage('visit_userId', parseInt(event.currentTarget.id))
+					if (this.roleData.currentData === '学生') {
+						this.$WX.setStorage('visit_role', 1)
+						this.$preload('stuId', parseInt(event.currentTarget.id))
+					} else {
+						this.$WX.setStorage('visit_role', 2)
+						this.$preload('tutorId', parseInt(event.currentTarget.id))
+					}
+						this.$WX.jumpTo('./user/personalPage')
+				}
+			}
+		}
+		events = {
+			'dropDownMenuClick': (key) => {
+				if (key === 'role') {
+					this.hiddenOtherOption(this.roleData)
+				}
+				if (key === 'school') {
+					this.hiddenOtherOption(this.optionData[0][0])
+				}
+				if (key === 'degree') {
+					this.hiddenOtherOption(this.optionData[0][1])
+				}
+				if (key === 'field') {
+					this.hiddenOtherOption(this.optionData[1][0])
+				}
+				this.$apply()
+			},
+			'dropDownItemClick': (key, index) => {
+				if (key === 'role') {
+					console.log('切换导师')
+					this.roleData.isClick = !this.roleData.isClick
+					this.roleData.isHidden = !this.roleData.isHidden
+					this.roleData.currentData = this.roleData.data[index]
+					this.roleIndex = index
+					this.searchText = ''
+				}
+				if (key === 'school') {
+					this.optionData[0][0].isClick = !this.optionData[0][0].isClick
+					this.optionData[0][0].isHidden = !this.optionData[0][0].isHidden
+					this.optionData[0][0].currentData = this.shortenedInfo(this.optionData[0][0].data[index])
+					if (this.studentKeyWord['school'] !== undefined) {
+						if (this.studentKeyWord['school'] !== this.optionData[0][0].data[index]) {
+							if (index === 0) {
+								delete this.studentKeyWord['school']
+							} else {
+								this.studentKeyWord['school'] = this.optionData[0][0].data[index]
+							}
+						} else {
+							this.studentKeyWord['school'] = this.optionData[0][0].data[index]
+						}
+						this.studentCurrentList = this.studentList
+					} else {
+						if (index === 0) {
+							delete this.studentKeyWord['school']
+						} else {
+							this.studentKeyWord['school'] = this.optionData[0][0].data[index]
+						}
+					}
+					this.studentCurrentList = this.$UTIL.filtrate(this.studentCurrentList, this.studentKeyWord)
+					this.$apply()
+				}
+				if (key === 'degree') {
+					this.optionData[0][1].isClick = !this.optionData[0][1].isClick
+					this.optionData[0][1].isHidden = !this.optionData[0][1].isHidden
+					this.optionData[0][1].currentData = this.optionData[0][1].data[index]
+					if (this.studentKeyWord['degree'] !== undefined) {
+						if (this.studentKeyWord['degree'] !== index.toString()) {
+							if (index === 0) {
+								delete this.studentKeyWord['degree']
+							} else {
+								this.studentKeyWord['degree'] = index.toString()
+							}
+						} else {
+							this.studentKeyWord['degree'] = index.toString()
+						}
+						this.studentCurrentList = this.studentList
+					} else {
+						if (index === 0) {
+							delete this.studentKeyWord['degree']
+						} else {
+							this.studentKeyWord['degree'] = index.toString()
+						}
+					}
+					this.studentCurrentList = this.$UTIL.filtrate(this.studentCurrentList, this.studentKeyWord)
+					this.$apply()
+				}
+				if (key === 'field') {
+					this.optionData[1][0].isClick = !this.optionData[1][0].isClick
+					this.optionData[1][0].isHidden = !this.optionData[1][0].isHidden
+					this.optionData[1][0].currentData = this.shortenedInfo(this.optionData[1][0].data[index])
+					if (this.tutorKeyWord['field'] !== undefined) {
+						if (this.tutorKeyWord['field'] !== this.optionData[1][0].data[index.toString()]) {
+							if (index === 0) {
+								delete this.tutorKeyWord['field']
+							} else {
+								this.tutorKeyWord['field'] = this.optionData[1][0].data[index.toString()]
+							}
+						} else {
+							this.tutorKeyWord['field'] = this.optionData[1][0].data[index.toString()]
+						}
+						this.tutorCurrentList = this.tutorList
+					} else {
+						if (index === 0) {
+							delete this.tutorKeyWord['field']
+						} else {
+							this.tutorKeyWord['field'] = this.optionData[1][0].data[index.toString()]
+						}
+					}
+					this.tutorCurrentList = this.$UTIL.filtrate(this.tutorCurrentList, this.tutorKeyWord)
+					this.$apply()
+				}
+			}
+		}
+		props = {}
+	}
+</script>

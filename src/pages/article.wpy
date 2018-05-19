@@ -1,0 +1,105 @@
+<style lang="scss" type="text/scss">
+	.article {
+		padding-top: 48rpx;
+		padding-right: 30rpx;
+		padding-left: 30rpx;
+		&-img {
+			width: 500rpx;
+			height: 500rpx;
+		}
+		&-title {
+			margin-bottom: 10rpx;
+			font-size: 34rpx;
+			color: #333333;
+		}
+		&-info {
+			font-size: 24rpx;
+			color: #999999;
+			display: inline-flex;
+			margin-bottom: 36rpx;
+			span {
+				display: block;
+			}
+			span:nth-child(1){
+				margin-right: 20rpx;
+			}
+			span:nth-child(2){
+				margin-right: 20rpx;
+				color: #607fa6;
+			}
+		}
+		&-body {
+			font-size: 28rpx;
+			color: #666666;
+			line-height: 48rpx;
+		}
+	}
+</style>
+<template>
+	<view class="article">
+		<view class="article-title">
+			{{articleData.title}}
+		</view>
+		<view class="article-info">
+			<span>{{articleData.time}}</span>
+			<span id="{{articleData.userId}}" @tap="jumpToUserPage" data-role="{{articleData.role}}">{{articleData.author}}</span>
+			<span>阅读次数：{{articleData.pageView}}</span>
+		</view>
+		<rich-text class="article-body" nodes="{{articleData.content}}" />
+	</view>
+</template>
+
+<script>
+	import moment from 'moment'
+	import basicPage from './base/basicPage'
+	export default class Article extends basicPage {
+		config = {
+			navigationBarTitleText: '文章详情',
+			enablePullDownRefresh: false
+		}
+		components = {}
+		data = {
+			articleId: 1,
+			articleData: {}
+		}
+		GetArticleData (data) {
+			moment.locale('zh-cn')
+			this.articleData = {
+			title: data.title || '标题',
+			content: data.content || '内容',
+			role: data.role,
+			time: moment(data.createTime.split('.')[0], 'YYYY-MM-DD hh:mm:ss').fromNow() || '发表时间',
+			userId: data.userId,
+			author: data.author || '匿名',
+			pageView: data.pageView || '阅读量'
+		}
+	}
+		onLoad () {
+			this.articleId = this.$WX.getStorage('articleId') || 1
+			this.$API('GetArticle', {articleId: this.articleId})
+				.then((res) => {
+					this.GetArticleData(res.data)
+					this.$apply()
+				})
+		}
+		methods = {
+			jumpToUserPage (event) {
+				if (this.$WX.getStorage('role') === 0) {
+					this.$WX.interceptTourist()
+				} else {
+					this.$WX.setStorage('visit_userId', parseInt(event.target.id))
+					if (event.target.dataset.role === 1) {
+						this.$WX.setStorage('visit_role', 1)
+						this.$preload('stuId', parseInt(event.target.id))
+					} else {
+						this.$WX.setStorage('visit_role', 2)
+						this.$preload('tutorId', parseInt(event.target.id))
+					}
+						this.$WX.jumpTo('./user/personalPage')
+				}
+			}
+		}
+		events = {}
+		props = {}
+	}
+</script>

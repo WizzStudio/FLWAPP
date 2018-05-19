@@ -1,0 +1,96 @@
+/* 盒子排列mixin */
+
+// 横向盒子
+@mixin rowBox() {
+	display: flex;
+	flex-flow: row nowrap;
+}
+
+// 竖向盒子
+@mixin colBox() {
+	display: flex;
+	flex-flow: column nowrap;
+}
+
+// 水平垂直居中盒子
+@mixin allMidBox() {
+	display: flex;
+	flex-flow: nowrap column;
+	justify-content: center;
+	align-items: center;
+}
+
+@mixin rowMidBox(){
+	@include rowBox();
+	//justify-content: center;
+	align-items: center;
+}
+
+@mixin colMidBox(){
+	@include colBox();
+	//justify-content: center;
+	align-items: center;
+}
+
+
+/************************************************************************************/
+
+/* 图片相关mixin */
+
+// 背景图片地址和大小 覆盖
+@mixin bgCover($url) {
+	background-image: url($url);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+
+// 给Image标签设置的cover
+@mixin imgCover() {
+	object-fit: cover;
+}
+
+/************************************************************************************/
+
+/**/
+
+
+// 设置盒子的圆角
+@mixin borderRadius($radius) {
+	border-radius: $radius;
+}
+
+// 宽高
+@mixin wh($width, $height) {
+	width: $width;
+	height: $height;
+}
+
+
+
+
+// 字体大小，颜色
+@mixin fontSizeColor($size, $color) {
+	font-size: $size;
+	color: $color;
+}
+
+// 全边框
+@mixin fullBorder($px,$color) {
+	border: $px solid $color;
+}
+
+
+// 创建带padding的border-box
+@mixin genContainer($verPadding,$horPadding) {
+	display: block;
+	box-sizing: border-box;
+	padding: $verPadding $horPadding;
+}
+
+/* p标签不换行且自带省略号 */
+@mixin p_overflow_eli () {
+	display: block;
+	white-space:nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
