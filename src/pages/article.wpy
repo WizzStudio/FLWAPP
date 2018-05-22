@@ -73,6 +73,7 @@
 			author: data.author || '匿名',
 			pageView: data.pageView || '阅读量'
 		}
+		console.log(this.articleData.content)
 	}
 		onLoad () {
 			this.articleId = this.$WX.getStorage('articleId') || 1
@@ -80,6 +81,9 @@
 				.then((res) => {
 					this.GetArticleData(res.data)
 					this.$apply()
+				})
+				.catch(err => {
+					console.log(err)
 				})
 		}
 		methods = {

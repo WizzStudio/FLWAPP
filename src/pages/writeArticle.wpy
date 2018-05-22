@@ -187,6 +187,8 @@
 				})
 				Promise.all(promiseArray)
 					.then(res => {
+						this.sourceText = this.sourceText.replace(/</g, '&lt;').replace(/>/g, '&gt;')
+						console.log(this.sourceText)
 						this.sourceArticle = '<p>' + this.sourceText + '</p>'
 						this.sourceArticle = strImage + '<br>' + JSON.parse(JSON.stringify(this.sourceArticle).replace(/\\n/g, '<br>')) + '<br><br>'
 						this.nodes = this.sourceArticle
