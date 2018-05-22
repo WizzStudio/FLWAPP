@@ -624,7 +624,6 @@
                     })
                   }
                 })
-                console.log(this.answerList)
               })
           ])
           .then(() => this.$API('StudentProfile'))

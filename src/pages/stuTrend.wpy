@@ -162,7 +162,7 @@
 	export default class stuTrend extends basicPage {
 		config = {
 			navigationBarTitleText: '导学信息',
-			enablePullDownRefresh: false
+			enablePullDownRefresh: true
 		}
 		components = {
 			DropDown: dropDown
@@ -333,6 +333,65 @@
 						this.optionData[0][0].data.push(item.schoolName)
 					})
 					this.$apply()
+				})
+		}
+		onPullDownRefresh () {
+			this.tutorAvatarList = []
+			this.tutorList = []
+			this.tutorCurrentList = []
+			this.studentAvatarList = []
+			this.studentList = []
+			this.studentCurrentList = []
+			this.$API('GetSearchTutorList')
+				.then(res => {
+					res.data.map(item => {
+						this.tutorAvatarList.push(item.userId + '-avatar.jpg')
+						this.tutorList.push(item)
+					})
+					this.tutorCurrentList = this.tutorList
+					if (this.$WX.getStorage('role') === 0) {
+						this.tutorList.map(item => {
+							item.avatar = '../../static/images/logo.png'
+						})
+						this.$apply()
+						this.$WX.hideLoading()
+					} else {
+						this.$API('PostUserImagesName', this.tutorAvatarList)
+							.then(res => {
+								res.data.map((item, index) => {
+									this.tutorList[index].avatar = item
+								})
+								this.tutorCurrentList = this.tutorList
+								this.$apply()
+								wx.stopPullDownRefresh()
+								this.$WX.hideLoading()
+							})
+					}
+				})
+			this.$API('GetSearchStudentList')
+				.then(res => {
+					res.data.map(item => {
+						this.studentAvatarList.push(item.userId + '-avatar.jpg')
+					})
+					this.studentList = res.data
+					this.studentCurrentList = this.studentList
+					if (this.$WX.getStorage('role') === 0) {
+						this.studentList.map(item => {
+							item.avatar = '../../static/images/logo.png'
+						})
+						this.$WX.hideLoading()
+						this.$apply()
+					} else {
+						this.$API('PostUserImagesName', this.studentAvatarList)
+							.then(res => {
+								res.data.map((item, index) => {
+									this.studentList[index].avatar = item
+								})
+								this.studentCurrentList = this.studentList
+								this.$WX.hideLoading()
+								this.$apply()
+							})
+					}
 				})
 		}
 		methods = {
