@@ -73,7 +73,6 @@
 			author: data.author || '匿名',
 			pageView: data.pageView || '阅读量'
 		}
-		console.log(this.articleData.content)
 	}
 		onLoad () {
 			this.articleId = this.$WX.getStorage('articleId') || 1

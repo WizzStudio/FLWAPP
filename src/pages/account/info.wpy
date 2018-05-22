@@ -497,19 +497,7 @@
           personalIntro: this.personalIntro.value,
           attachNum: this.$WX.getStorage('attach_num')
         }
-        if (this.isFirstSubmitAnswer) {
-          this.answerList.map(item => {
-            return {
-              questionId: item.questionId,
-              answerContent: item.answerContent
-            }
-          })
-          console.log(this.answerList)
-          this.$API('EditAnswer', JSON.stringify(this.answerList))
-        } else {
-          console.log(this.answerList)
-          this.$API('EditAnswer', JSON.stringify(this.answerList))
-        }
+        this.$API('EditAnswer', JSON.stringify(this.answerList))
 				this.$API('SendStudentProfile', JSON.stringify(datas))
           .then(res => {
             if (res.code === 0) {
@@ -560,6 +548,7 @@
         this.personalIntro = this.$WX.getStorage('personalIntro')
         this.avatar = this.$WX.getStorage('avatar')
         this.identity = this.$WX.getStorage('identity')
+        this.answerList = this.$WX.getStorage('answer')
         if (this.$WX.getStorage('role') === 2) {
           this.$API('GetTrade')
 						.then(res => {
@@ -586,25 +575,17 @@
                 this.schoolList = res.data
             })
           ])
-          .then(res => this.$API('GetAnswer', {userId: this.$WX.getStorage('userId')}))
           .then(res => {
-            if (res.data.length === 0) {
-              this.isFirstSubmitAnswer = true
-              this.questionList.map(item => {
+            this.answerList = this.$WX.getStorage('answer')
+            this.questionList.forEach(problemItem => {
+              let item = this.answerList.find(item => item.questionId === problemItem.id)
+              if (typeof item === 'undefined') {
                 this.answerList.push({
-                  questionId: item.id,
+                  questionId: problemItem.id,
                   answerContent: ''
                 })
-              })
-            } else {
-              res.data.map(item => {
-                this.answerList.push({
-                  answerContent: item.answerContent,
-                  questionId: item.questionId,
-                  id: item.id
-                })
-              })
-            }
+              }
+            })
             this.identityList = this.$WX.getStorage('identityList')
             this.attachNum = this.$WX.getStorage('attach_num')
             this.$WX.hideLoading()
@@ -633,23 +614,18 @@
               }),
             this.$API('GetAnswer', {userId: this.$WX.getStorage('userId')})
               .then(res => {
-                if (res.data.length === 0) {
-                  this.isFirstSubmitAnswer = true
-                  this.questionList.map(item => {
+                this.questionList.forEach((problemItem, index) => {
+                  let questionAndAnswerItem = res.data.find(item => item.questionId === problemItem.id)
+                  if (typeof questionAndAnswerItem !== 'undefined') {
+                    this.answerList.push(questionAndAnswerItem)
+                  } else {
                     this.answerList.push({
-                      questionId: item.id,
+                      questionId: problemItem.id,
                       answerContent: ''
                     })
-                  })
-                } else {
-                  res.data.map(item => {
-                    this.answerList.push({
-                      answerContent: item.answerContent,
-                      questionId: item.questionId,
-                      id: item.id
-                    })
-                  })
-                }    
+                  }
+                })
+                console.log(this.answerList)
               })
           ])
           .then(() => this.$API('StudentProfile'))
@@ -691,6 +667,7 @@
       this.$WX.setStorage('personalIntro', this.personalIntro)
       this.$WX.setStorage('identity', this.identity)
       this.$WX.setStorage('isSave', true)
+      this.$WX.setStorage('answer', this.answerList)
     }
     props = {}
     methods = {
@@ -740,6 +717,7 @@
       },
       onInputQuestion (event) {
         this.answerList[event.target.dataset.index].answerContent = event.detail.value
+        this.$WX.setStorage('isSubmit', false)
       },
       upLoad () {
         const userId = this.$WX.getStorage('userId')

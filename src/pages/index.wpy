@@ -75,7 +75,7 @@
 		}
 
 		GetInfo (res) {
-//			console.log(res.detail.rawData)
+			// console.log(res.detail.rawData)
 			this.$WX.setStorage('wxAvatar', res.detail.rawData.avatarUrl)
 			this.$WX.setStorage('wxName', res.detail.rawData.nickName)
 			this.$WX.jumpTo('./home')
