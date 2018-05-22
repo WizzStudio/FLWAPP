@@ -1,6 +1,6 @@
 <style lang="scss" type="text/scss">
 	.container {
-		margin-top: 200rpx;
+		padding-top: 200rpx;
 		display: flex;
 		justify-content: center;
 		.icon {

@@ -1,0 +1,70 @@
+<style lang="scss" type="text/scss">
+	@import "../../common/styles/loader";
+
+	.load-1, .loader-logo,.load-wrapp {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background: transparent;
+	}
+	.loader {
+		position: fixed;
+		top:0;
+		left: 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-color: rgba(255,255, 255, 1);
+		height: 100%;
+		width: 100%;
+		z-index: 65535;
+		&-logo{
+			z-index: 65536;
+			height: 300rpx;
+			width: 100%;
+			/*background: #f44336;*/
+			background-size: cover;
+		}
+	}
+</style>
+
+<template>
+	<div class="loader"  wx:if="{{isShowLoader}}">
+		<!--<div class="loader-logo" style="background: url('{{bgURL}}') center no-repeat">-->
+		<div class="loader-logo">
+			<div class="load-wrapp">
+				<div class="load-3">
+					<div class="line"></div>
+					<div class="line"></div>
+					<div class="line"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</template>
+
+<script>
+	import wepy from 'wepy'
+
+	export default class Loader extends wepy.component {
+		onLoad () {
+		}
+
+		data = {
+			bgURL: '../../static/images/loader2.svg',
+			isShowLoader: true
+		}
+		methods = {}
+		events = {
+			'loader-close': () => {
+				console.log('get loader-close !')
+				this.isShowLoader = false
+			},
+			'loader-open': () => {
+				console.log('get loader-open !')
+				this.isShowLoader = true
+			}
+		}
+		props = {}
+	}
+</script>
