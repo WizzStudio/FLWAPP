@@ -278,7 +278,6 @@
       Picker: Picker
     }
     data = {
-      isFirstSubmitAnswer: false,
       optionList: [],
       isSubmit: false,
       flag: true,
