@@ -76,7 +76,6 @@
 	.Top-List {
 		display: flex;
 		flex-flow: column nowrap;
-		// width: 100vw;
 		&-item {
 			height: 128rpx;
 			padding-right: 60rpx;

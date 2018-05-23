@@ -217,9 +217,9 @@
 			},
 			'btn-click': (key) => {
 				if (key === 'topUp' && this.donateFlwNumber) {
-					/* DEV  开发者模式下，下面乘1，否则乘100 */
+					/* DEV  开发者模式下，下面乘1，否则乘100 因为小红花是以0.01作为单位 */
 					pay(this.donateFlwNumber * 100).then(() => {
-						this.topUpText = `成功捐赠${this.donateFlwNumber * this.exchangeRate}元!现有小红花${this.leftFlwNumber + this.donateFlwNumber}朵`
+						this.topUpText = `成功捐赠${this.donateFlwNumber}元!现有小红花${parseInt(this.leftFlwNumber) + parseInt(this.donateFlwNumber / this.exchangeRate)}朵`
 						this.$apply()
 						this.isShowTopUpSuccess = true
 //						this.$WX.toast('支付成功！海鲸与你同行！')
