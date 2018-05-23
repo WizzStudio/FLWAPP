@@ -1,24 +1,28 @@
 <style lang="scss" type="text/scss">
 	@import "../../common/styles/loader";
 
-	.load-1, .loader-logo,.load-wrapp {
+	.load-4, .loader-logo, .load-wrapp {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		background: transparent;
 	}
+	.load-4,.ring-1 {
+		display: block;
+	}
+
 	.loader {
 		position: fixed;
-		top:0;
+		top: 0;
 		left: 0;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		background-color: rgba(255,255, 255, 1);
+		background-color: rgba(255, 255, 255, 1);
 		height: 100%;
 		width: 100%;
 		z-index: 65535;
-		&-logo{
+		&-logo {
 			z-index: 65536;
 			height: 300rpx;
 			width: 100%;
@@ -29,14 +33,12 @@
 </style>
 
 <template>
-	<div class="loader"  wx:if="{{isShowLoader}}">
+	<div class="loader" wx:if="{{isShowLoader}}">
 		<!--<div class="loader-logo" style="background: url('{{bgURL}}') center no-repeat">-->
 		<div class="loader-logo">
 			<div class="load-wrapp">
-				<div class="load-3">
-					<div class="line"></div>
-					<div class="line"></div>
-					<div class="line"></div>
+				<div class="load-4">
+					<div class="ring-1"></div>
 				</div>
 			</div>
 		</div>

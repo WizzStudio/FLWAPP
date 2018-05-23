@@ -114,8 +114,8 @@
 				.then(res => {
 					this.GetBannerDatas(res.data)
 					/* DEV 目前改为 自定义加载动画 */
-//					this.$WX.hideLoading()
 					this.$broadcast('loader-close')
+					//					this.$WX.hideLoading()
 					this.$apply()
 				})
 		}
