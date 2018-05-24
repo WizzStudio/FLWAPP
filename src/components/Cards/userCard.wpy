@@ -157,7 +157,7 @@
 		<!--上半部分无阴影处-->
 		<view class="white-cont">
 			<!-- 导师tag -->
-			<view wx-if="{{role == 2}}">
+			<view wx-if="{{role == 2 && tutorInfo.isTutor}}">
 				<image class="mentor-tag" src="{{tag_mentor}}"></image>
 				<p class="mentor-tag-txt">导师</p>
 			</view>
