@@ -36,7 +36,7 @@
 	<p class="title">Red Flower Project</p>
 	<p class="intro">Connecting Mentor & Elite With Lightweight Platform.</p>
 	<view class="midBox">
-		<button open-type="getUserInfo" bindgetuserinfo="GetInfo" size="default">获取用户信息</button>
+		<button open-type="getUserInfo" bindgetuserinfo="GetInfo" size="default">开启海鲸之旅</button>
 	</view>
 </template>
 
