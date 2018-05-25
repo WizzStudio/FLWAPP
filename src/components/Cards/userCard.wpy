@@ -202,8 +202,8 @@
 			<view class="mainInfo">
 				<!-- 头像 -->
 				<view class="mainInfo-avatar">
-					<image wx:if="{{role == 1}}" src="{{stuInfo.avatar}}" binderror="defaultPic"  @tap="showImage"></image>
-					<image wx:if="{{role == 2}}" src="{{tutorInfo.avatar}}" binderror="defaultPic"  @tap="showImage"></image>
+					<image wx:if="{{role == 1}}" src="{{stuInfo.avatar}}" binderror="defaultPic"  @tap="showImage" mode="aspectFill"></image>
+					<image wx:if="{{role == 2}}" src="{{tutorInfo.avatar}}" binderror="defaultPic"  @tap="showImage" mode="aspectFill"></image>
 				</view>
 
 				<!-- 基础信息 -->
