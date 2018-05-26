@@ -496,10 +496,11 @@
           personalIntro: this.personalIntro.value,
           attachNum: this.$WX.getStorage('attach_num')
         }
-        this.$API('EditAnswer', JSON.stringify(this.answerList))
+        console.log(this.answerList)
 				this.$API('SendStudentProfile', JSON.stringify(datas))
           .then(res => {
             if (res.code === 0) {
+              this.$API('EditAnswer', JSON.stringify(this.answerList))
               this.$WX.toast('提交成功')
               setTimeout(() => {
                 this.$WX.jumpTo('./home')
@@ -546,8 +547,6 @@
         this.optionList = this.$WX.getStorage('optionList')
         this.personalIntro = this.$WX.getStorage('personalIntro')
         this.avatar = this.$WX.getStorage('avatar')
-        this.identity = this.$WX.getStorage('identity')
-        this.answerList = this.$WX.getStorage('answer')
         if (this.$WX.getStorage('role') === 2) {
           this.$API('GetTrade')
 						.then(res => {
@@ -557,6 +556,7 @@
 						})
         }
         if (this.$WX.getStorage('role') === 1) {
+          this.identity = this.$WX.getStorage('identity')
           this.$WX.showLoading()
           Promise.all([
             this.$API('GetQuestionList')

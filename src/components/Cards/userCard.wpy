@@ -157,7 +157,7 @@
 		<!--上半部分无阴影处-->
 		<view class="white-cont">
 			<!-- 导师tag -->
-			<view wx-if="{{role == 2}}">
+			<view wx-if="{{role == 2 && tutorInfo.isTutor}}">
 				<image class="mentor-tag" src="{{tag_mentor}}"></image>
 				<p class="mentor-tag-txt">导师</p>
 			</view>
@@ -202,8 +202,8 @@
 			<view class="mainInfo">
 				<!-- 头像 -->
 				<view class="mainInfo-avatar">
-					<image wx:if="{{role == 1}}" src="{{stuInfo.avatar}}" binderror="defaultPic"></image>
-					<image wx:if="{{role == 2}}" src="{{tutorInfo.avatar}}" binderror="defaultPic"></image>
+					<image wx:if="{{role == 1}}" src="{{stuInfo.avatar}}" binderror="defaultPic"  @tap="showImage" mode="aspectFill"></image>
+					<image wx:if="{{role == 2}}" src="{{tutorInfo.avatar}}" binderror="defaultPic"  @tap="showImage" mode="aspectFill"></image>
 				</view>
 
 				<!-- 基础信息 -->
@@ -306,7 +306,8 @@
 			school: {
 				'1': '西安电子科技大学',
 				'2': '华中科技大学'
-			}
+			},
+			picError: false
 		}
 		onLoad () {
 			if (wx.getStorage('uc_schoolMap')) {
@@ -329,10 +330,24 @@
 		computed = {}
 		methods = {
 			defaultPic() {
+				this.picError = true
 				this.$emit('error-pic')
 			},
 			barClick(e) {
 				this.$emit('getMoreInfo', e.currentTarget.dataset.id)
+			},
+			showImage() {
+				if (this.picError) {
+					// 图片加载错误则不展示
+					return false
+				} else {
+					if (this.role === 1) {
+						wx.showImage(this.stuInfo.avatar)
+					}
+					if (this.role === 2) {
+						wx.showImage(this.tutorInfo.avatar)
+					}
+				}
 			}
 		}
 		events = {}

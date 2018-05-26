@@ -4,6 +4,7 @@
 
 <template>
 	<view>
+		<Loader></Loader>
 		<Swiper :BannerDatas.sync="BannerDatas"/>
 		<News :NewsDatas.sync="NewsDatas" :FlowerRankDatas.sync="FlowerRankDatas"/>
 		<Bar :role.sync="role"/>
@@ -16,6 +17,7 @@
 	import News from '../components/home/News'
 	import Swiper from '../components/home/Swiper'
 	import Bar from '../components/home/bar'
+	import loader from '../components/Dialogs/loader'
 
 	export default class home extends page {
 		config = {
@@ -25,7 +27,8 @@
 		components = {
 			Swiper: Swiper,
 			News: News,
-			Bar: Bar
+			Bar: Bar,
+			Loader: loader
 		}
 		data = {
 			NewsDatas: [],
@@ -96,7 +99,7 @@
 		}
 
 		onLoad () {
-			this.$WX.showLoading()
+//			this.$WX.showLoading()
 			this.$API('GetTrade')
 				.then(res => {
 					this.tradeList = res.data
@@ -110,7 +113,9 @@
 				})
 				.then(res => {
 					this.GetBannerDatas(res.data)
-					this.$WX.hideLoading()
+					/* DEV 目前改为 自定义加载动画 */
+					this.$broadcast('loader-close')
+					//					this.$WX.hideLoading()
 					this.$apply()
 				})
 		}

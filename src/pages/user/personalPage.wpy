@@ -186,6 +186,17 @@
 			})
 		}
 
+		// 去除重复的问题
+		_removeRepeatItem (data) {
+			let bitArray = []
+			return	data.filter((item) => {
+				if (bitArray.indexOf(item.questionId) === -1) {
+					bitArray.push(item.questionId)
+					return item
+				}
+			})
+		}
+
 		onLoad (params, data) {
 //			if (data.preload.stuId) {
 //				this._updateInfo(this.$UTIL.filtrate(data.from.$data.studentList, {userId: data.preload.stuId})[0])
@@ -223,7 +234,7 @@
 						if (!response.code) {
 							this.$API('GetAnswer', {userId: this.visitUserId}).then(res => {
 								if (!res.code) {
-									res.data.forEach((item) => {
+									this._removeRepeatItem(res.data).forEach((item) => {
 										response.data.forEach((it) => {
 											if (it.id === item.questionId) {
 												it['answerContent'] = item.answerContent

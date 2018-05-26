@@ -91,6 +91,12 @@ const wxLogin = () => {
 	return configFn(wx.login)
 }
 
+const showImage = (url) => {
+	return configFn(wx.previewImage, {
+		urls: [url]
+	})
+}
+
 const wxGetUserInfo = () => {
 	return configFn(wx.getUserInfo)
 }
@@ -162,16 +168,16 @@ const getUserInfo = () => {
 }
 const interceptTourist = () => {
 	return wx.showModal({
-			title: '提示',
-			content: '您现在尚未注册，是否前往注册？',
-			success: res => {
-				if (res.confirm) {
-					wx.reLaunch({
-						url: '/pages/account/login'
-					})
-				}
+		title: '提示',
+		content: '您现在尚未注册，是否前往注册？',
+		success: res => {
+			if (res.confirm) {
+				wx.reLaunch({
+					url: '/pages/account/login'
+				})
 			}
-		})
+		}
+	})
 }
 export {
 	ajax, // 发送ajax请求
@@ -196,5 +202,6 @@ export {
 	chooseImg,	//	选择图片
 	UpLoadFile,	//	上传文件
 	getUserInfo,
-	interceptTourist //	拦截游客非法访问
+	interceptTourist, //	拦截游客非法访问
+	showImage // 全屏预览图片
 }
