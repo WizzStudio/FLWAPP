@@ -59,6 +59,7 @@
 
 <script>
 	import page from './base/basicPage.wpy'
+	import updator from '../common/scripts/updator'
 
 	export default class Index extends page {
 		config = {
@@ -71,25 +72,14 @@
 		onLoad () {
 			let debug = false
 			if (debug) {
-				// this.$WX.jumpTo('./home')
-//			this.$WX.jumpTo('./account/login')
 				this.$WX.jumpTo('./user/topUp')
 				return false
 			}
 
 			// 首次进入清除缓存
 			this.$WX.clearStorage()
-
-//			this.$WX.wxLogin()
-//				.then(res => {
-//					return this.$WX.getUserInfo()
-//				})
-//				.then(res => {
-//					this.$WX.setStorage('wxAvatar', res.userInfo.avatarUrl)
-//					this.$WX.setStorage('wxName', res.userInfo.nickName)
-//					this.$WX.jumpTo('./user/student')
-//						this.$WX.jumpTo('./home')
-//				})
+			// 检查更新
+			updator()
 		}
 
 		GetInfo (res) {
