@@ -179,6 +179,7 @@ const interceptTourist = () => {
 		}
 	})
 }
+
 export {
 	ajax, // 发送ajax请求
 	jumpTo, // page跳转

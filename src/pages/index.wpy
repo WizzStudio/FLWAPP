@@ -1,11 +1,17 @@
 <style lang="scss" type="text/scss">
 	.container {
-		padding-top: 200rpx;
+		padding-top: 50rpx;
 		display: flex;
 		justify-content: center;
 		.icon {
-			width: 100px;
-			height: 100px;
+			width: 200rpx;
+			height: 200rpx;
+		}
+
+		&-button {
+			margin-top: -60rpx;
+			background: rgb(30, 60, 185);
+			color: #ffffff;
 		}
 	}
 
@@ -15,8 +21,11 @@
 	}
 
 	.intro {
+		margin-top: 20rpx;
 		font-size: 36rpx;
-		color: #b3b3b3;
+		color: rgba(129,129, 129,1);
+		font-family: "Arial Narrow";
+		font-weight: normal;
 	}
 
 	.midBox {
@@ -26,25 +35,35 @@
 		margin-top: 40rpx;
 	}
 
+	.banner{
+		display: block;
+		width: 100%;
+		height: 840rpx;
+		margin-top:-126rpx;
+	}
 
 </style>
 
 <template>
 	<view class="container">
-		<image src="{{logoURL}}" class="icon"></image>
+		<image src="{{logoURL}}" class="icon fadeIn animated"></image>
 	</view>
-	<p class="title">Red Flower Project</p>
-	<p class="intro">Connecting Mentor & Elite With Lightweight Platform.</p>
+	<!--<p class="title"></p>-->
+	<!--<p class="intro">Connecting Mentor & Elite With Lightweight Platform.</p>-->
+	<p class="intro"> —    SERVICE FOR WHALE    — </p>
+	<image class="banner fadeIn animated" src="{{bannerURL}}"></image>
 	<view class="midBox">
-		<button open-type="getUserInfo" bindgetuserinfo="GetInfo" size="default">开启海鲸之旅</button>
+		<button open-type="getUserInfo" bindgetuserinfo="GetInfo" size="default" class="container-button animated fadeIn">开启海鲸之旅</button>
 	</view>
 </template>
 
 <script>
 	import page from './base/basicPage.wpy'
+	import updator from '../common/scripts/updator'
 
 	export default class Index extends page {
 		config = {
+			enablePullDownRefresh: false,
 			navigationBarTitleText: '小红花'
 		}
 
@@ -53,29 +72,17 @@
 		onLoad () {
 			let debug = false
 			if (debug) {
-				// this.$WX.jumpTo('./home')
-//			this.$WX.jumpTo('./account/login')
 				this.$WX.jumpTo('./user/topUp')
 				return false
 			}
 
 			// 首次进入清除缓存
 			this.$WX.clearStorage()
-
-//			this.$WX.wxLogin()
-//				.then(res => {
-//					return this.$WX.getUserInfo()
-//				})
-//				.then(res => {
-//					this.$WX.setStorage('wxAvatar', res.userInfo.avatarUrl)
-//					this.$WX.setStorage('wxName', res.userInfo.nickName)
-//					this.$WX.jumpTo('./user/student')
-//						this.$WX.jumpTo('./home')
-//				})
+			// 检查更新
+			updator()
 		}
 
 		GetInfo (res) {
-			// console.log(res.detail.rawData)
 			this.$WX.setStorage('wxAvatar', res.detail.rawData.avatarUrl)
 			this.$WX.setStorage('wxName', res.detail.rawData.nickName)
 			this.$WX.jumpTo('./home')
@@ -83,7 +90,8 @@
 
 		onReady () {}
 		data = {
-			logoURL: '../static/images/logo.png'
+			logoURL: '../static/images/logo.png',
+			bannerURL: '../static/images/banner.png'
 		}
 	}
 </script>
