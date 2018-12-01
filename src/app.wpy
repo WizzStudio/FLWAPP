@@ -33,6 +33,7 @@
 				'pages/user/student',
 				'pages/user/tutor',
 				'pages/user/flower',
+				'pages/user/subDonate',
 				'pages/account/workedTime'
 			],
 			'window': {

@@ -1,4 +1,5 @@
 <style lang="scss" type="text/scss">
+	@import "../common/styles/variables";
 	.container {
 		padding-top: 50rpx;
 		display: flex;
@@ -9,9 +10,13 @@
 		}
 
 		&-button {
-			margin-top: -60rpx;
 			background: rgb(30, 60, 185);
 			color: #ffffff;
+		}
+		&-button__red {
+			background: $red;
+			color: #ffffff;
+			width: 272rpx;
 		}
 	}
 
@@ -22,6 +27,7 @@
 
 	.intro {
 		margin-top: 20rpx;
+		margin-bottom: 600rpx; // make the button postion
 		font-size: 36rpx;
 		color: rgba(129,129, 129,1);
 		font-family: "Arial Narrow";
@@ -36,10 +42,11 @@
 	}
 
 	.banner{
+		position: absolute;
 		display: block;
 		width: 100%;
 		height: 840rpx;
-		margin-top:-126rpx;
+		bottom: 160rpx;
 	}
 
 </style>
@@ -54,6 +61,9 @@
 	<image class="banner fadeIn animated" src="{{bannerURL}}"></image>
 	<view class="midBox">
 		<button open-type="getUserInfo" bindgetuserinfo="GetInfo" size="default" class="container-button animated fadeIn">开启海鲸之旅</button>
+	</view>
+	<view class="midBox">
+		<button @tap="clickDonate" size="default" class="container-button__red animated fadeIn">独立捐赠</button>
 	</view>
 </template>
 
@@ -86,6 +96,11 @@
 			this.$WX.setStorage('wxAvatar', res.detail.rawData.avatarUrl)
 			this.$WX.setStorage('wxName', res.detail.rawData.nickName)
 			this.$WX.jumpTo('./home')
+		}
+
+		// 捐赠按钮点击事件
+		clickDonate () {
+			this.$WX.jumpTo('./user/subDonate')	
 		}
 
 		onReady () {}

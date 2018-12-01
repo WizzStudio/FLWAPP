@@ -1,0 +1,203 @@
+<style lang="scss" type="text/scss">
+	@import "../../common/styles/mixins";
+	@import "../../common/styles/variables";
+	@import "../../common/styles/common";
+
+	.topUp{
+		.whale{
+			margin-top: 100rpx;
+			@include wh(100%,296rpx);
+			overflow: hidden;
+			&-img{
+				@include wh(296rpx,100%);
+				animation:  kf-rotate 500s  infinite;
+			}
+		}
+		.slogan{
+			display: block;
+			text-align: center;
+		}
+		.main{
+			width: 680rpx;
+			margin: 0 auto;
+		}
+		.nowFlw {
+			border-bottom: 1px solid $borderClr;
+		}
+		@keyframes kf-rotate {
+			0% {
+				transform: rotate(-360deg);
+			}
+			100% {
+				transform: rotate(360deg);
+			}
+		}
+		.fixBtn {
+			padding: 10rpx;
+			text-align: center;
+			width: 180rpx;
+			border: 1px solid $borderClr;
+			border-radius: 10rpx;
+		}
+
+		.isDiy {
+			border: 1px solid $red;
+			color: $red;
+		}
+	}
+
+</style>
+
+<template>
+	<div class="topUp">
+		<div class="whale l-box__allMid">
+			<image class="whale-img" src="../../static/images/whale.jpg"></image>
+		</div>
+		<p class="slogan mt20 t3-black__light t3">寻找鲸鱼 共同成长 缔造传统 服务社会</p>
+		<p class="slogan  mb60 t3-c2__light mt20">Service for Whale</p>
+		<div class="main l-box__ver">
+
+			<!--姓名 input-->
+			<p class="t3 t3-black">捐赠者姓名</p>
+			<donateNameInput key="donateName" class="mt10 mb20" placeholder="请输入捐赠者姓名"></donateNameInput>
+
+			<!--电话 input-->
+			<p class="t3 t3-black">捐赠者电话</p>
+			<donateTelInput key="donateTel" type="number" placeholder="请输入捐赠者电话" class="mt10 mb20"></donateTelInput>
+
+			<!--金额 input block-->
+			<p class="t3 t3-black mb20">捐赠金额</p>
+			<donateMountInput key="donateMount" type="number" placeholder="请输入捐赠金额" class="mt10 mb20"></donateMountInput>
+
+		</div>
+		<view class="l-box__verMid">
+			<!--<toUpBtn :title.sync="btnTitle" width="524" height="80" :color.sync="btnStatus" key="topUp" font="28" radius="60"></toUpBtn>-->
+			<toUpBtn title="立即捐赠" width="524" height="80" :color.sync="btnStatus" key="topUp" font="28" radius="60" class="mt20"></toUpBtn>
+		</view>
+
+		<view wx:if="{{isShowTopUpSuccess}}">
+			<successDialog :title.sync="topUpText" key="sd-success"></successDialog>
+		</view>
+	</div>
+</template>
+
+<script>
+	import page from '../base/basicPage.wpy'
+	import BasicButton from '../../components/Buttons/BasicButton'
+	import basicSelector from '../../components/Selectors/BasicSelector'
+	import BasicInput from '../../components/Inputs/BasicInput'
+	import pay from '../../API/Payment/index'
+	import noticeDialog from '../../components/Dialogs/noticeDialog'
+
+	export default class Toup extends page {
+		config = {
+			'backgroundColorTop': '#ffffff',
+			'navigationBarTitleText': '基金会捐赠',
+			enablePullDownRefresh: false
+		}
+		components = {
+			toUpBtn: BasicButton,
+			flwSelector: basicSelector,
+			flwInput: BasicInput,
+			successDialog: noticeDialog,
+			donateNameInput: BasicInput,
+			donateTelInput: BasicInput,
+			donateMountInput: BasicInput
+		}
+		data = {
+			maxOnceDonate: 20000, // 单次最大限额2W
+			donateFlwNumber: 0,
+			btnTitle: '',
+			diyNumber: 0,
+			btnStatus: 'red',
+			isDiy: false,
+			isMaxDiy: false,
+			isShowTopUpSuccess: false,
+			topUpText: '',
+			tutorTotalDonateMoney: '',
+			donatePersonTel: '', // 捐赠者电话
+			donatePersonName: '', // 捐赠者姓名
+			donatePersonMount: '' // 捐款金额
+		}
+		_toggleDiy (bool) {
+			this.isDiy = bool
+		}
+		methods = {
+			toggleDiy (bool) {
+				this.isDiy = bool
+			}
+		}
+		_changeBtnTitle (flwNumber, status) {
+			this.btnStatus = status
+			if (!flwNumber) {
+				this.btnTitle = '立即捐赠'
+				this.donateFlwNumber = 0
+			} else {
+				// TODO 填充下面文字
+				this.btnTitle = `捐赠元`
+			}
+		}
+		_clearSelectorState () {
+
+		}
+		onLoad () {
+			this._changeBtnTitle(null, 'pink')
+		}
+		events = {
+			'input-focus': (key, data) => {
+				if (!data.detail.value.length) {
+					this._changeBtnTitle(null, 'pink')
+				}
+			},
+			'input-typein': (key, data) => {
+				const value = data.detail.value || ''
+				switch (key) {
+					case 'donateName':
+						this.data.donatePersonName = value
+						break
+					case 'donateTel':
+						this.data.donatePersonTel = value
+						break
+					case 'donateMount':
+						this.data.donatePersonMount = value
+						if (value > this.maxOnceDonate) {
+							this.$WX.toast(`单次最大捐赠${this.maxOnceDonate}元`)
+							// BUG：input框 设置失败
+							this.data.donatePersonMount = this.maxOnceDonate
+						}
+						break
+				}
+				const {donatePersonName, donatePersonTel, donatePersonMount} = this.data
+				if (!(donatePersonName && donatePersonTel && donatePersonMount)) {
+					this._changeBtnTitle(null, 'pink')
+					return false
+				}
+				// if (data.detail.value >= this.maxOnceDonate) {
+				// 	this._toggleDiy(false)
+				// 	this._changeBtnTitle(this.maxOnceDonate, 'red')
+				// 	this.isMaxDiy = true
+				// 	this.$WX.toast(`单次最大捐赠${this.maxOnceDonate}元`)
+				// 	return false
+				// }
+				this._changeBtnTitle(data.detail.value, 'red')
+			},
+			'btn-click': (key) => {
+				if (key === 'topUp' && this.data.btnStatus === 'red') {
+					// TODO： 下面写支付函数
+					pay(0).then(() => {
+						this.topUpText = ``
+						this.$apply()
+						this.isShowTopUpSuccess = true
+						setTimeout(() => {
+							this.$WX.goBack()
+							this.isShowTopUpSuccess = false
+						}, 2500)
+					}).catch(err => {
+						console.error(err)
+						this.$WX.toast('支付失败，请联系运营同学！')
+					})
+				}
+			}
+		}
+	}
+</script>
