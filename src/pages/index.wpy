@@ -63,7 +63,7 @@
 		<button open-type="getUserInfo" bindgetuserinfo="GetInfo" size="default" class="container-button animated fadeIn">开启海鲸之旅</button>
 	</view>
 	<view class="midBox">
-		<button @tap="clickDonate" size="default" class="container-button__red animated fadeIn">独立捐赠</button>
+		<button open-type="getUserInfo" bindgetuserinfo="clickDonate" size="default" class="container-button__red animated fadeIn">独立捐赠</button>
 	</view>
 </template>
 
@@ -100,7 +100,9 @@
 
 		// 捐赠按钮点击事件
 		clickDonate () {
-			this.$WX.jumpTo('./user/subDonate')	
+			this.$WX.setStorage('donate_name', 'xxxx')
+			// this.$WX.jumpTo('./user/subDonate')
+			this.$WX.jumpTo('./test/poster')
 		}
 
 		onReady () {}

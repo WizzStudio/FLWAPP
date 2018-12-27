@@ -1,0 +1,57 @@
+<style lang="scss" type="text/scss">
+</style>
+<template>
+	<!--<canvas  style="width: 375px;height: 667px;position:fixed;top:9999px" canvas-id="poster"/>-->
+</template>
+
+<script>
+	/*eslint-disable */
+	import page from '../base/basicPage.wpy'
+
+	export default class TestPage extends page {
+		components = {
+		};
+
+		methods = {
+		};
+		data = {
+			donateName: '',
+			imgURL: '',
+			painting: null
+		}
+
+		onShow () {
+		}
+
+		downloadFile () {
+			const self = this
+			wx.downloadFile({
+				url: 'http://cdn.helloyzy.cn/post2.jpeg',
+				success: function (res) {
+					if (res.statusCode === 200) {
+						console.log(res)
+						self.setData({
+							imgURL: res.tempFilePath
+						})
+					}
+				}
+			})
+		}
+		onLoad () {
+			this.data.donateName = this.$WX.getStorage('donate_name')
+			console.log(this.data.donateName)
+			// this.downloadFile()
+			this.createPoster()
+		}
+
+		createPoster() {
+			const ctx = wx.createCanvasContext('poster')
+			ctx.setFillStyle('#ffe200')
+			ctx.fillRect(0, 0, 375, 667)
+			ctx.setFontSize(14)
+			ctx.setFillStyle('#333333')
+			ctx.setTextAlign('center')
+			ctx.save()
+		}
+	}
+</script>

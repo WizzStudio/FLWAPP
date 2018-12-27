@@ -86,7 +86,8 @@
 	import BasicButton from '../../components/Buttons/BasicButton'
 	import basicSelector from '../../components/Selectors/BasicSelector'
 	import BasicInput from '../../components/Inputs/BasicInput'
-	import pay from '../../API/Payment/index'
+	import pay from '../../API/Payment/donate'
+	import getOpenId from '../../API/Relogin_v2'
 	import noticeDialog from '../../components/Dialogs/noticeDialog'
 
 	export default class Toup extends page {
@@ -117,7 +118,8 @@
 			tutorTotalDonateMoney: '',
 			donatePersonTel: '', // 捐赠者电话
 			donatePersonName: '', // 捐赠者姓名
-			donatePersonMount: '' // 捐款金额
+			donatePersonMount: '', // 捐款金额
+			openId: ''
 		}
 		_toggleDiy (bool) {
 			this.isDiy = bool
@@ -142,6 +144,7 @@
 		}
 		onLoad () {
 			this._changeBtnTitle(null, 'pink')
+			getOpenId()
 		}
 		events = {
 			'input-focus': (key, data) => {
@@ -183,15 +186,13 @@
 			},
 			'btn-click': (key) => {
 				if (key === 'topUp' && this.data.btnStatus === 'red') {
-					// TODO： 下面写支付函数
-					pay(0).then(() => {
-						this.topUpText = ``
-						this.$apply()
-						this.isShowTopUpSuccess = true
-						setTimeout(() => {
-							this.$WX.goBack()
-							this.isShowTopUpSuccess = false
-						}, 2500)
+					pay({
+						amount: this.data.donatePersonMount,
+						phone: this.data.donatePersonTel,
+						name: this.data.donatePersonName
+					}).then(() => {
+						this.$WX.setStorage('donate_name', this.data.donatePersonName)
+						this.$WX.jumpTo('../test/poster')
 					}).catch(err => {
 						console.error(err)
 						this.$WX.toast('支付失败，请联系运营同学！')

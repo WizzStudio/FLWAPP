@@ -13,6 +13,7 @@
 			'pages': [
 				'pages/index',
 				'pages/test/test',
+				'pages/test/poster',
 				'pages/account/login',
 				'pages/account/info',
 				'pages/account/home',
