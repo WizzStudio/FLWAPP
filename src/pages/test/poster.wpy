@@ -1,7 +1,48 @@
 <style lang="scss" type="text/scss">
+	@import "../../common/styles/mixins";
+	@import "../../common/styles/variables";
+	@import "../../common/styles/common";
+
+	.canvasBox {
+
+	}
+
+	.canvasMain {
+		width:1654px;
+
+		position: absolute;
+	}
+
+	.musk{
+		position: fixed;
+		z-index: 21;
+		height: 100%;
+		width: 750rpx;
+		background: rgb(0,0,0);
+	}
+	.img {
+		position: fixed;
+		height: 1060rpx;
+		width: 750rpx;
+		z-index: 22;
+	}
+
+	.btn{
+		position: fixed;
+		bottom: 40rpx;
+		z-index: 23;
+		left: 246rpx;
+	}
 </style>
 <template>
-	<!--<canvas  style="width: 375px;height: 667px;position:fixed;top:9999px" canvas-id="poster"/>-->
+	<div class="musk"></div>
+	<button @tap="saveToAlbum" class="btn">保存到相册</button>
+	<div class="canvasBox">
+		<!-- positon 如果不为fixed的话 显示不全 因为overflow hidden了-->
+			<canvas  class="canvasMain" style="height: {{height}}px" canvas-id="poster"/>
+		<!--<canvas style="width:375px;height: 667px;" canvas-id="poster"/>-->
+	</div>
+	<image src="{{imagePath}}" class="img"></image>
 </template>
 
 <script>
@@ -9,49 +50,154 @@
 	import page from '../base/basicPage.wpy'
 
 	export default class TestPage extends page {
-		components = {
-		};
+		components = {}
+		config = {
+			enablePullDownRefresh: false,
+			navigationBarTitleText: '捐赠证书'
+		}
 
-		methods = {
-		};
+		methods = {}
 		data = {
 			donateName: '',
 			imgURL: '',
-			painting: null
+			painting: null,
+			imagePath: '',
+			isNotOK: false,
+			height:2339
 		}
 
 		onShow () {
 		}
 
-		downloadFile () {
-			const self = this
-			wx.downloadFile({
-				url: 'http://cdn.helloyzy.cn/post2.jpeg',
-				success: function (res) {
-					if (res.statusCode === 200) {
-						console.log(res)
-						self.setData({
-							imgURL: res.tempFilePath
+		saveToAlbum () {
+			var that = this
+			that.$WX.toast('请等待')
+			wx.getSetting({
+				success (res) {
+					if (!res.authSetting['scope.writePhotosAlbum']) {
+						wx.authorize({
+							scope: 'scope.writePhotosAlbum',
+							success () {
+								wx.saveImageToPhotosAlbum({
+									filePath: that.imagePath,
+									success (res) {
+										wx.showModal({
+											content: '图片已保存到相册，赶紧晒一下吧~',
+											showCancel: false,
+											confirmText: '好的',
+											confirmColor: '#333',
+											success: function (res) {
+												if (res.confirm) {
+													console.log('用户点击确定');
+												}
+											},
+											fail:function(res){
+												console.log(11111)
+											}
+										})
+									},
+									fail (err) {
+										console.log(err)
+									}
+								})
+							},
+							fail (err) {
+								console.log(err)
+							}
+						})
+					} else  {
+						wx.saveImageToPhotosAlbum({
+							filePath: that.imagePath,
+							success (res) {
+								wx.showModal({
+									content: '证书已保存到相册，赶紧晒一下吧~',
+									showCancel: false,
+									confirmText: '好的',
+									confirmColor: '#333',
+									success: function (res) {
+										if (res.confirm) {
+											console.log('用户点击确定');
+										}
+									},
+									fail:function(res){
+										console.log(11111)
+									}
+								})
+							},
+							fail (err) {
+								console.log(err)
+							}
 						})
 					}
 				}
 			})
 		}
+
+		downloadFile (cb) {
+			const self = this
+			wx.downloadFile({
+				url: 'https://api.helloyzy.cn/post2.jpeg',
+				success: function (res) {
+					if (res.statusCode === 200) {
+						console.log(res)
+						self.imgURL = res.tempFilePath
+						cb();
+					}
+				}
+			})
+		}
+
 		onLoad () {
 			this.data.donateName = this.$WX.getStorage('donate_name')
 			console.log(this.data.donateName)
-			// this.downloadFile()
-			this.createPoster()
+			this.$WX.showLoading('生成捐赠证书中')
+			this.downloadFile(() => {
+				this.createPoster(this.data.donateName)
+			})
+
 		}
 
-		createPoster() {
+		createPoster (name) {
+			const that = this;
+			const bgImg = this.imgURL;
 			const ctx = wx.createCanvasContext('poster')
-			ctx.setFillStyle('#ffe200')
-			ctx.fillRect(0, 0, 375, 667)
-			ctx.setFontSize(14)
+			const time = new Date()
+			const year = time.getFullYear()
+			const month = time.getMonth() + 1
+			const date = time.getDate()
+			ctx.drawImage(bgImg, 0, 0, 1654, 2339)
+			// ctx.drawImage(bgImg, 0, 0, 375, 667)
+			ctx.setFontSize(32)
 			ctx.setFillStyle('#333333')
 			ctx.setTextAlign('center')
-			ctx.save()
+			ctx.setFillStyle('#333333')
+			ctx.setTextAlign('center')
+			ctx.fillText(name, 803, 974)
+			ctx.fillText(year, 730, 2058) // 42
+			ctx.fillText(month, 842, 2058)
+			ctx.fillText(date, 933, 2058)
+			ctx.stroke()
+			ctx.draw(true, () => {
+				wx.canvasToTempFilePath({
+					canvasId: 'poster',
+					destHeight: 2339,
+					height: 2339,
+					width: 1654,
+					destWidth: 1654,
+					success: function (res) {
+						let tempFilePath = res.tempFilePath
+						that.imagePath = tempFilePath
+						that.$WX.hideLoading();
+						that.isNotOK = false
+						that.height = 0
+						that.$apply();
+						console.log('绘制完成！', tempFilePath)
+					},
+					fail: function (res) {
+						console.log(res)
+					}
+				})
+			})
 		}
 	}
 </script>

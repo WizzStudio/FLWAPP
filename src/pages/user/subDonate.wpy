@@ -187,7 +187,7 @@
 			'btn-click': (key) => {
 				if (key === 'topUp' && this.data.btnStatus === 'red') {
 					pay({
-						amount: this.data.donatePersonMount,
+						amount: this.data.donatePersonMount * 100,
 						phone: this.data.donatePersonTel,
 						name: this.data.donatePersonName
 					}).then(() => {

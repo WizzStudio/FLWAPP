@@ -100,9 +100,10 @@
 
 		// 捐赠按钮点击事件
 		clickDonate () {
-			this.$WX.setStorage('donate_name', 'xxxx')
-			// this.$WX.jumpTo('./user/subDonate')
-			this.$WX.jumpTo('./test/poster')
+			// 测试用数据
+			// this.$WX.setStorage('donate_name', '史蒂芬周')
+			this.$WX.jumpTo('./user/subDonate')
+			// this.$WX.jumpTo('./test/poster')
 		}
 
 		onReady () {}
