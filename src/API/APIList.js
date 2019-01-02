@@ -12,7 +12,7 @@ export default {
 	UserLogin: {url: '/user/login', method: 'post', data: {code: ''}, headers: {}, right: 0}, // 用户登录
 	UserVerifyCode: {url: '/verify/captcha', method: 'get', data: {phone: 0}, headers: {}, right: 0}, // 用户获取验证码
 	UserVerifyCodeCheck: {url: '/verify/captcha', method: 'post', data: {phone: 0, captcha: 0}, headers: {}, right: 0}, // 用户校验验证码
-	UserRegister: {url: '/user/register', method: 'post', data: {phone: 0, code: 0}, headers: {}, right: 0}, // 用户注册
+	UserRegister: {url: '/user/register', method: 'post', data: {phone: 0, role: 0}, headers: {}, right: 0}, // 用户注册
 	SendStudentProfile: {url: '/stu/profile', method: 'put', data: {}, headers: {}, right: 1},
 	SendTutorProfile: {url: '/tutor/profile', method: 'put', data: {}, headers: {}, right: 2},
 	UpLoad: {url: '/oss/up', method: 'get_restful', data: {}, headers: {}, right: 3},

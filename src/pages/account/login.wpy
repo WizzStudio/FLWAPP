@@ -54,6 +54,13 @@
 		}
 	}
 
+	/*角色选择*/
+	.login-role{
+		box-sizing: border-box;
+		padding: 0 20rpx;
+		@include allMidBox();
+	}
+
 	/*手机号相关*/
 	.login-phone{
 		box-sizing: border-box;
@@ -99,7 +106,16 @@
 
 	</view>
 
-	<view class="login-phone" wx-if="{{state >= 2}}">
+	<!--新增：选择角色 1学生 2导师-->
+	<view class="login-role" wx-if="{{state === 7}}">
+		<p class="slogan mt20 mb30 t3-black__light t3">寻找鲸鱼 共同成长 缔造传统 服务社会</p>
+		<view class="container-btn__next">
+			<role1ChooseBtn class="mb60" width="500" height="80" title="学生" radius="40"  key="role1"></role1ChooseBtn>
+			<role2ChooseBtn class="mb20" width="500" height="80" title="导师" radius="40"  key="role2"></role2ChooseBtn>
+		</view>
+	</view>
+
+	<view class="login-phone" wx-if="{{state >= 2 && state <7}}">
 		<!--输入手机号&获取验证码-->
 		<view class="container-verify">
 			<phoneInput width="445" confirm-type="next" type="digit" placeholder="请输入手机号" key="phone"></phoneInput>
@@ -127,7 +143,8 @@
 
 	export default class Login extends page {
 		config = {
-			enablePullDownRefresh: false
+			enablePullDownRefresh: false,
+			navigationBarTitleText: '注册'
 		}
 		components = {
 			verifyBtn: BasicButton, // 验证码按钮
@@ -135,14 +152,16 @@
 			finishBtn: BasicButton, // 完成按钮
 			inviteCodeInput: BasicInput,  // 邀请码输入框
 			phoneInput: BasicInput, // 电话号码输入框
-			verifyCodeInput: BasicInput // 验证码输入框
+			verifyCodeInput: BasicInput, // 验证码输入框
+			role1ChooseBtn: BasicButton,
+			role2ChooseBtn: BasicButton
 		}
 		data = {
 			nextBtnColor: 'pink',
 			finishBtnColor: 'pink',
 			verifyBtnColor: 'white',
 			logoURL: '../../static/images/logo.png',
-			state: 0, // 状态机初始状态
+			state: 7, // 状态机初始状态
 			verifyNum: '获取验证码', // 获取手机验证码按钮上的文字显示
 			isCounting: false, // 获取验证码是否正在计时
 			/* 下面是数据域 */
@@ -217,6 +236,10 @@
 			this.finishBtnColor = 'red'
 			this.$apply()
 		}
+		// 新增：选择学生或导师身份
+		state7 () {
+			this.state = 7
+		}
 		methods = {
 		}
 		events = {
@@ -246,12 +269,17 @@
 			'input-confirm': (key) => {
 			},
 			'btn-click': (key) => {
+				// 选择导师或学生身份
+				if (key === 'role1' || key === 'role2') {
+					this.inviteCode = parseInt(key.replace('role', ''), 10) // 现在邀请码固定 1学生 2导师
+					this.$apply()
+					this.state2()
+				}
 				if (key === 'next' && this.state === 0) {
 					return this.$WX.toast('请输入正确邀请码！')
 				}
 				/* 邀请码格式通过 */
 				if (key === 'next' && this.state === 1) {
-//					console.log('该去验证邀请码了')
 					this.$API('UserInviteCodeCheck', {code: this.inviteCode})
 						//					this.$API.UserInviteCodeCheck(this.inviteCode) :弃用
 						.then(data => {
@@ -263,7 +291,6 @@
 				}
 				/* 手机号格式通过 */
 				if (key === 'verify' && this.state >= 3) {
-//					console.log('该请求验证码了')
 					if (this.isCounting) {
 						return false
 					}
@@ -278,18 +305,19 @@
 
 				/* 验证码格式通过 */
 				if (key === 'done' && this.state === 6) {
-//					console.log('该请求验证验证码了')
 					this.$API('UserVerifyCodeCheck', {phone: this.phoneNumber, captcha: this.verifyCode})
 						.then(data => {
 							if (!data.code) {
-								this.$API('UserRegister', {phone: this.phoneNumber, code: this.inviteCode})
+								this.$API('UserRegister', {phone: this.phoneNumber, role: this.inviteCode})
 								.then(data => {
 									if (!data.code) {
 										this.$WX.toast('注册成功！', 'success', 3000)
 										this.$WX.setStorage('role', data.data.role)
 										this.$WX.jumpTo('../home')
 									}
-								}).catch(() => { setTimeout(() => { this.$WX.jumpTo('./home') }, 2000) })
+								}).catch(() => {
+									// setTimeout(() => { this.$WX.jumpTo('./home') }, 2000)
+								})
 							}
 						})
 				}
