@@ -66,17 +66,17 @@
 			<view class="mt30 pl20 pr20 t3-c1__light">{{userInfo.personalIntro}}</view>
 		</view>
 
-		<view wx:if="{{role == 1}}">
-			<p class="title-bar">问题</p>
-			<view class="mt30 pl20 pr20 t3-c1__light">
-				<repeat for="{{QAmap}}" item="item" index="index" key="index">
-					<view>
-						<p class="mt20 mb20 t2-black__normal question">{{item.title}}</p>
-						<p class="t3-c1__light answer pl20">{{item.answerContent}}</p>
-					</view>
-				</repeat>
-			</view>
-		</view>
+		<!--<view wx:if="{{role == 1}}">-->
+			<!--<p class="title-bar">问题</p>-->
+			<!--<view class="mt30 pl20 pr20 t3-c1__light">-->
+				<!--<repeat for="{{QAmap}}" item="item" index="index" key="index">-->
+					<!--<view>-->
+						<!--<p class="mt20 mb20 t2-black__normal question">{{item.title}}</p>-->
+						<!--<p class="t3-c1__light answer pl20">{{item.answerContent}}</p>-->
+					<!--</view>-->
+				<!--</repeat>-->
+			<!--</view>-->
+		<!--</view>-->
 
 		<view wx:if="{{role === 1 && isDataReady}}" class="donate-btn l-box__allMid  bounceIn">
 			<!--<donateBtn title="赠送小红花" width="300" height="88" color="red" key="donate" font="32" radius="60" class="shadow"></donateBtn>-->
