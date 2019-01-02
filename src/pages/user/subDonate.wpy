@@ -10,7 +10,6 @@
 			overflow: hidden;
 			&-img{
 				@include wh(296rpx,100%);
-				animation:  kf-rotate 500s  infinite;
 			}
 		}
 		.slogan{
@@ -67,7 +66,7 @@
 
 			<!--金额 input block-->
 			<p class="t3 t3-black mb20">捐赠金额</p>
-			<donateMountInput key="donateMount" type="number" placeholder="请输入捐赠金额" class="mt10 mb20"></donateMountInput>
+			<donateMountInput key="donateMount" type="digit" placeholder="请输入捐赠金额" class="mt10 mb20"></donateMountInput>
 
 		</div>
 		<view class="l-box__verMid">

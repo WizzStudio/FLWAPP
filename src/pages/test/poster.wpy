@@ -22,7 +22,7 @@
 	}
 	.img {
 		position: fixed;
-		height: 1060rpx;
+		height: 100%;
 		width: 750rpx;
 		z-index: 22;
 	}

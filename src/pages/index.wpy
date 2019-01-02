@@ -27,7 +27,7 @@
 
 	.intro {
 		margin-top: 20rpx;
-		margin-bottom: 600rpx; // make the button postion
+		/*margin-bottom: 300rpx; // make the button postion*/
 		font-size: 36rpx;
 		color: rgba(129,129, 129,1);
 		font-family: "Arial Narrow";
@@ -49,6 +49,23 @@
 		bottom: 160rpx;
 	}
 
+	.hintBox {
+		margin-top: 60rpx;
+		display: block;
+		margin-bottom: 380rpx;
+		padding: 0 20px;
+	}
+	.hint {
+		text-align: center;
+		display: block;
+		color: #565656;
+		font-size: 32rpx;
+		font-weight: 400;
+	}
+	.mb20{
+		margin-bottom: 20rpx;
+	}
+
 </style>
 
 <template>
@@ -57,13 +74,19 @@
 	</view>
 	<!--<p class="title"></p>-->
 	<!--<p class="intro">Connecting Mentor & Elite With Lightweight Platform.</p>-->
-	<p class="intro"> —    SERVICE FOR WHALE    — </p>
+	<p class="intro mb30"> —    SERVICE FOR WHALE    — </p>
+	<div class="hintBox">
+		<p class="hint">开启海鲸之旅</p>
+		<p class="hint mb20">参与小红花社区交流，捐赠以获得小红花。</p>
+		<p class="hint">汇聚微光</p>
+		<p class="hint">独立捐赠，捐赠以获得捐赠证书。</p>
+	</div>
 	<image class="banner fadeIn animated" src="{{bannerURL}}"></image>
 	<view class="midBox">
 		<button open-type="getUserInfo" bindgetuserinfo="GetInfo" size="default" class="container-button animated fadeIn">开启海鲸之旅</button>
 	</view>
 	<view class="midBox">
-		<button open-type="getUserInfo" bindgetuserinfo="clickDonate" size="default" class="container-button__red animated fadeIn">独立捐赠</button>
+		<button open-type="getUserInfo" bindgetuserinfo="clickDonate" size="default" class="container-button__red animated fadeIn">汇聚微光</button>
 	</view>
 </template>
 
