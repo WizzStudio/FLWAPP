@@ -198,23 +198,23 @@
       </repeat>
     </ul>
   </view>
-  <view wx:if="{{identity === 'student'}}">
-    <view class="info-module">
-      <div class="info-module-title-Icon">1</div>
-      <span class="info-module-title">身份认证</span>
-      <span class="info-module-title-son">（审核学生身份必备，其他用户无法查看）</span>
-    </view>
-    <ul class="info-container">
-      <repeat for="{{identityList}}" item="item" index="index">
-        <div class="info-item-container">
-          <view wx:if="{{item.type === 'input'}}" class="info-item-input-container">
-            <label class="info-item-name">{{item.name}}</label>
-            <input placeholder="请填写" class="info-item-input" bindblur="onBlur" id="{{item.id}}" value="{{item.value}}" maxlength="{{item.maxLength}}"/>
-          </view>
-        </div>
-      </repeat>
-    </ul>
-  </view>
+  <!--<view wx:if="{{identity === 'student'}}">-->
+    <!--<view class="info-module">-->
+      <!--<div class="info-module-title-Icon">1</div>-->
+      <!--<span class="info-module-title">身份认证</span>-->
+      <!--<span class="info-module-title-son">（审核学生身份必备，其他用户无法查看）</span>-->
+    <!--</view>-->
+    <!--<ul class="info-container">-->
+      <!--<repeat for="{{identityList}}" item="item" index="index">-->
+        <!--<div class="info-item-container">-->
+          <!--<view wx:if="{{item.type === 'input'}}" class="info-item-input-container">-->
+            <!--<label class="info-item-name">{{item.name}}</label>-->
+            <!--<input placeholder="请填写" class="info-item-input" bindblur="onBlur" id="{{item.id}}" value="{{item.value}}" maxlength="{{item.maxLength}}"/>-->
+          <!--</view>-->
+        <!--</div>-->
+      <!--</repeat>-->
+    <!--</ul>-->
+  <!--</view>-->
   <view>
     <view class="info-module">
       <div class="info-module-title-Icon">1</div>
@@ -226,20 +226,20 @@
       <span class="info-textarea-count">{{personalIntro.length}}/2000</span>
     </div>
   </view>
-  <view wx:if="{{identity === 'student'}}">
-    <view class="info-module">
-      <div class="info-module-title-Icon">1</div>
-      <span class="info-module-title">问题</span>
-    </view>
-    <repeat for="{{questionList}}" item="item" index="index">
-      <view class="info-module-problem">{{item.title}}</view>
-      <div class="info-container">
-        <textarea class="info-textarea" maxlength="1000" bindinput="onInputQuestion" data-index="{{index}}" value="{{answerList[index].answerContent}}">
-        </textarea>
-        <span class="info-textarea-count" >{{answerList[index].answerContent.length}}/1000</span>
-      </div>
-    </repeat>
-  </view>
+  <!--<view wx:if="{{identity === 'student'}}">-->
+    <!--<view class="info-module">-->
+      <!--<div class="info-module-title-Icon">1</div>-->
+      <!--<span class="info-module-title">问题</span>-->
+    <!--</view>-->
+    <!--<repeat for="{{questionList}}" item="item" index="index">-->
+      <!--<view class="info-module-problem">{{item.title}}</view>-->
+      <!--<div class="info-container">-->
+        <!--<textarea class="info-textarea" maxlength="1000" bindinput="onInputQuestion" data-index="{{index}}" value="{{answerList[index].answerContent}}">-->
+        <!--</textarea>-->
+        <!--<span class="info-textarea-count" >{{answerList[index].answerContent.length}}/1000</span>-->
+      <!--</div>-->
+    <!--</repeat>-->
+  <!--</view>-->
   <view wx:if="{{identity === 'student'}}">
     <view class="info-module">
       <div class="info-module-title-Icon">1</div>
@@ -788,19 +788,20 @@
       this.optionList.forEach((item, index, array) => {
         if (item.value === '' || item.value < 1) {
           this.flag = false
+					this.$WX.toast('选项不能为空')
         }
       })
-      if (this.identity === 'student') {
-        this.identityList.forEach(item => {
-          this.$emit('input-blur', item.id, item.value)
-        })
-        this.answerList.forEach(item => {
-          if (item.answerContent.length === 0) {
-            this.$WX.toast('问题答案不能为空')
-            this.flag = false
-          }
-        })
-      }
+      // if (this.identity === 'student') {
+      //   this.identityList.forEach(item => {
+      //     this.$emit('input-blur', item.id, item.value)
+      //   })
+      //   this.answerList.forEach(item => {
+      //     if (item.answerContent.length === 0) {
+      //       this.$WX.toast('问题答案不能为空')
+      //       this.flag = false
+      //     }
+      //   })
+      // }
       if (this.flag) {
         this.canSubmit = true
       } else {
