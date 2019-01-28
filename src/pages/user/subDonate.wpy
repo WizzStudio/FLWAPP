@@ -61,8 +61,8 @@
 			<donateNameInput key="donateName" class="mt10 mb20" placeholder="请输入捐赠者姓名"></donateNameInput>
 
 			<!--电话 input-->
-			<p class="t3 t3-black">捐赠者电话</p>
-			<donateTelInput key="donateTel" type="number" placeholder="请输入捐赠者电话" class="mt10 mb20"></donateTelInput>
+			<p class="t3 t3-black">捐赠者电话及收件地址</p>
+			<donateTelInput key="donateTel"  placeholder="如：0755-8323-1336-深圳市海鲸教育基金会" class="mt10 mb20"></donateTelInput>
 
 			<!--金额 input block-->
 			<p class="t3 t3-black mb20">捐赠金额</p>
