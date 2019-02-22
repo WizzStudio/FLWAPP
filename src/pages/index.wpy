@@ -1,7 +1,8 @@
 <style lang="scss" type="text/scss">
 	@import "../common/styles/variables";
+	@import "../common/styles/common";
 	.container {
-		padding-top: 50rpx;
+		padding-top: 150rpx;
 		display: flex;
 		justify-content: center;
 		.icon {
@@ -12,11 +13,14 @@
 		&-button {
 			background: rgb(30, 60, 185);
 			color: #ffffff;
+			width: 380rpx;
+			border-radius: 40rpx;
 		}
 		&-button__red {
 			background: $red;
 			color: #ffffff;
-			width: 272rpx;
+			width: 380rpx;
+			border-radius: 40rpx;
 		}
 	}
 
@@ -27,8 +31,8 @@
 
 	.intro {
 		margin-top: 20rpx;
-		/*margin-bottom: 300rpx; // make the button postion*/
-		font-size: 36rpx;
+		margin-bottom: 200rpx;
+		font-size: 28rpx;
 		color: rgba(129,129, 129,1);
 		font-family: "Arial Narrow";
 		font-weight: normal;
@@ -58,8 +62,8 @@
 	.hint {
 		text-align: center;
 		display: block;
-		color: #565656;
-		font-size: 32rpx;
+		color: #7a7a7a;
+		font-size: 24rpx;
 		font-weight: 400;
 	}
 	.mb20{
@@ -75,18 +79,21 @@
 	<!--<p class="title"></p>-->
 	<!--<p class="intro">Connecting Mentor & Elite With Lightweight Platform.</p>-->
 	<p class="intro mb30"> —    SERVICE FOR WHALE    — </p>
-	<div class="hintBox">
+	<!-- <div class="hintBox">
 		<p class="hint">开启海鲸之旅</p>
 		<p class="hint mb20">参与小红花社区交流，捐赠以获得小红花。</p>
 		<p class="hint">汇聚微光</p>
 		<p class="hint">独立捐赠，捐赠以获得捐赠证书。</p>
-	</div>
-	<image class="banner fadeIn animated" src="{{bannerURL}}"></image>
-	<view class="midBox">
-		<button open-type="getUserInfo" bindgetuserinfo="GetInfo" size="default" class="container-button animated fadeIn">开启海鲸之旅</button>
-	</view>
-	<view class="midBox">
+	</div> -->
+	<!-- <image class="banner fadeIn animated" src="{{bannerURL}}"></image> -->
+	<view class="allMidBox">
 		<button open-type="getUserInfo" bindgetuserinfo="clickDonate" size="default" class="container-button__red animated fadeIn">汇聚微光</button>
+		<p class="hint mt20">向海鲸捐赠，缔造美好传统</p>
+	</view>
+
+	<view class="allMidBox mt20">
+		<button open-type="getUserInfo" bindgetuserinfo="GetInfo" size="default" class="container-button animated fadeIn">开启海鲸之旅</button>
+		<p class="hint mt20">参与社区交流，发现美好事物</p>
 	</view>
 </template>
 
