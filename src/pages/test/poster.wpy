@@ -160,30 +160,31 @@
 		createPoster (name) {
 			const that = this;
 			const bgImg = this.imgURL;
+			const baseRate = 2.15;
 			const ctx = wx.createCanvasContext('poster')
 			const time = new Date()
 			const year = time.getFullYear()
 			const month = time.getMonth() + 1
 			const date = time.getDate()
-			ctx.drawImage(bgImg, 0, 0, 1654, 2339)
+			ctx.drawImage(bgImg, 0, 0, 1654/ baseRate, 2339/ baseRate)
 			// ctx.drawImage(bgImg, 0, 0, 375, 667)
-			ctx.setFontSize(32)
+			ctx.setFontSize(32 / baseRate)
 			ctx.setFillStyle('#333333')
 			ctx.setTextAlign('center')
 			ctx.setFillStyle('#333333')
 			ctx.setTextAlign('center')
-			ctx.fillText(name, 803, 974)
-			ctx.fillText(year, 730, 2058) // 42
-			ctx.fillText(month, 842, 2058)
-			ctx.fillText(date, 933, 2058)
+			ctx.fillText(name, 803 / baseRate , 974 / baseRate)
+			ctx.fillText(year, 730 / baseRate, 2058 / baseRate) // 42
+			ctx.fillText(month, 842/ baseRate, 2058/ baseRate)
+			ctx.fillText(date, 933/ baseRate, 2058/ baseRate)
 			ctx.stroke()
 			ctx.draw(true, () => {
 				wx.canvasToTempFilePath({
 					canvasId: 'poster',
-					destHeight: 2339,
-					height: 2339,
-					width: 1654,
-					destWidth: 1654,
+					destHeight: 2339 / baseRate,
+					height: 2339 / baseRate,
+					width: 1654 / baseRate,
+					destWidth: 1654 / baseRate,
 					success: function (res) {
 						let tempFilePath = res.tempFilePath
 						that.imagePath = tempFilePath
